@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.venv-tools/
+
+# Node / web build
+node_modules/
+apps/web/node_modules/
+apps/web/dist/
+
+# Local env
+.env
+.env.*
+
+# Audio assets (do not push)
+apps/web/public/audio/
+assets_raw/audio/
+*.mp3
+*.wav
+*.m4a
+*.tsbuildinfo

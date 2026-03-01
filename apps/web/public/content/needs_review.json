@@ -1,0 +1,394 @@
+{
+  "review": [
+    {
+      "type": "wordlist_unpaired_left",
+      "page": 2,
+      "theme": null,
+      "nl": "Nederlands"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 1,
+      "exercise": 2,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 1,
+      "exercise": 3,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 1,
+      "exercise": 8,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 1,
+      "exercise": 19,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 2,
+      "exercise": 2,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 2,
+      "exercise": 3,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 2,
+      "exercise": 8,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 2,
+      "exercise": 11,
+      "title": "Luisteren, schrijven en spreken"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 2,
+      "exercise": 15,
+      "title": "Dictee ➤ woorden"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 2,
+      "exercise": 16,
+      "title": "Dictee ➤ zinnen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 3,
+      "exercise": 6,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 3,
+      "exercise": 8,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 3,
+      "exercise": 9,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 3,
+      "exercise": 13,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 3,
+      "exercise": 15,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 3,
+      "exercise": 20,
+      "title": "Dictee ➤ woorden"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 3,
+      "exercise": 21,
+      "title": "Dictee ➤ zinnen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 4,
+      "exercise": 2,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 4,
+      "exercise": 3,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 4,
+      "exercise": 9,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 4,
+      "exercise": 4,
+      "title": "lunchen in de tuin 9 muziek luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 4,
+      "exercise": 18,
+      "title": "Dictee ➤ woorden"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 4,
+      "exercise": 19,
+      "title": "Dictee ➤ zinnen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 5,
+      "exercise": 2,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 5,
+      "exercise": 3,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 5,
+      "exercise": 4,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 5,
+      "exercise": 9,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 5,
+      "exercise": 21,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 5,
+      "exercise": 24,
+      "title": "Dictee ➤ woorden"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 5,
+      "exercise": 25,
+      "title": "Dictee ➤ zinnen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 6,
+      "exercise": 2,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 6,
+      "exercise": 3,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 6,
+      "exercise": 9,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 6,
+      "exercise": 16,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 6,
+      "exercise": 20,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 6,
+      "exercise": 23,
+      "title": "Dictee ➤ woorden"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 6,
+      "exercise": 24,
+      "title": "Dictee ➤ zinnen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 7,
+      "exercise": 2,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 7,
+      "exercise": 3,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 7,
+      "exercise": 11,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 7,
+      "exercise": 15,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 7,
+      "exercise": 17,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 7,
+      "exercise": 19,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 7,
+      "exercise": 25,
+      "title": "Dictee ➤ woorden"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 7,
+      "exercise": 26,
+      "title": "Dictee ➤ zinnen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 8,
+      "exercise": 2,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 8,
+      "exercise": 3,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 8,
+      "exercise": 6,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 8,
+      "exercise": 7,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 8,
+      "exercise": 13,
+      "title": "Luisteren, schrijven en spreken"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 8,
+      "exercise": 26,
+      "title": "Dictee ➤ woorden"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 8,
+      "exercise": 27,
+      "title": "Dictee ➤ zinnen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 9,
+      "exercise": 2,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 9,
+      "exercise": 3,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 9,
+      "exercise": 7,
+      "title": "Luisteren en spreken"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 9,
+      "exercise": 11,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 9,
+      "exercise": 26,
+      "title": "Dictee ➤ woorden"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 9,
+      "exercise": 27,
+      "title": "Dictee ➤ zinnen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 10,
+      "exercise": 2,
+      "title": "Luisteren en lezen"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 10,
+      "exercise": 3,
+      "title": "Luisteren en schrijven"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 10,
+      "exercise": 10,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 10,
+      "exercise": 21,
+      "title": "Luisteren"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 10,
+      "exercise": 22,
+      "title": "Dictee ➤ woorden"
+    },
+    {
+      "type": "missing_audio_for_exercise",
+      "theme": 10,
+      "exercise": 23,
+      "title": "Dictee ➤ zinnen"
+    }
+  ]
+}
