@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-type Vocab = { id:string; theme:number; nl:string; en?:string|null; article?:'de'|'het'|null }
+type Vocab = { id:string; theme:number; nl:string; en?:string|null; article?:'de'|'het'|null; image?:string|null }
 type Review = { id:string; due:number; interval:number; ease:number; reps:number; lapses:number }
 type Stats = {
   streak:number
@@ -21,7 +21,7 @@ type Settings = {
 }
 type Course = { version:string; themes:{id:number;title:string}[]; vocab:Vocab[]; audio:{groups:Record<string, any>} }
 
-const LS = { reviews:'klimop.reviews.v1', stats:'klimop.stats.v1', settings:'klimop.settings.v1' }
+const LS = { reviews:'klimop.reviews.v1', stats:'klimop.stats.v1', settings:'klimop.settings.v1', difficult:'klimop.difficult.v1' }
 const todayISO = ()=> new Date().toISOString().slice(0,10)
 const loadJSON = <T,>(k:string, f:T):T => { try{ const s=localStorage.getItem(k); return s? JSON.parse(s):f }catch{return f} }
 const saveJSON = (k:string,v:any)=> localStorage.setItem(k, JSON.stringify(v))
@@ -102,16 +102,25 @@ export default function App(){
   const [course,setCourse]=useState<Course|null>(null)
   const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'>('home')
   const [reviewsMap,setReviewsMap]=useState<Record<string,Review>>(()=>loadJSON(LS.reviews,{}))
+  const [difficultMap,setDifficultMap]=useState<Record<string,boolean>>(()=>loadJSON(LS.difficult,{}))
   const [stats,setStats]=useState<Stats>(()=>ensureStats())
   const [studyTheme,setStudyTheme]=useState<number>(0)
   const [studyContinueMode,setStudyContinueMode]=useState(false)
+  const [studySeenSession,setStudySeenSession]=useState<Record<string,boolean>>({})
   const [settings,setSettings]=useState<Settings>(()=>normalizeSettings(loadJSON(LS.settings,null)))
   const [voices,setVoices]=useState<string[]>([])
   const [err,setErr]=useState('')
 
   useEffect(()=>{ fetchJSON<Course>('/content/course.json').then(setCourse).catch(e=>setErr(String(e))) },[])
   useEffect(()=>saveJSON(LS.reviews,reviewsMap),[reviewsMap])
+  useEffect(()=>saveJSON(LS.difficult,difficultMap),[difficultMap])
   useEffect(()=>saveJSON(LS.settings,settings),[settings])
+  useEffect(()=>{
+    if(route!=='study') setStudySeenSession({})
+  },[route])
+  useEffect(()=>{
+    setStudySeenSession({})
+  },[studyTheme])
 
   const dueCount = useMemo(()=>{
     if(!course) return 0
@@ -120,10 +129,15 @@ export default function App(){
       const r = reviewsMap[v.id]
       return !!r && r.due<=now
     })
+    const difficultRepeat = course.vocab.filter(v=>{
+      if(!difficultMap[v.id]) return false
+      const r = reviewsMap[v.id]
+      return !r || r.due>now
+    }).length
     const unseen = course.vocab.filter(v=>!reviewsMap[v.id]).length
     const newSlots = Math.max(0, settings.newPerDay - stats.newToday)
-    return Math.min(settings.dailyTarget, dueReviews.length + Math.min(unseen, newSlots))
-  },[course,reviewsMap,stats.newToday,settings.dailyTarget,settings.newPerDay])
+    return Math.min(settings.dailyTarget, dueReviews.length + difficultRepeat + Math.min(unseen, newSlots))
+  },[course,reviewsMap,difficultMap,stats.newToday,settings.dailyTarget,settings.newPerDay])
 
   async function refreshVoices(){
     setErr('')
@@ -234,33 +248,59 @@ export default function App(){
 
     const queue = useMemo(()=>{
       const dueReviews = baseDeck
-        .filter(v=>{ const r=reviewsMap[v.id]; return !!r && r.due<=now })
+        .filter(v=>{
+          if(studySeenSession[v.id]) return false
+          const r=reviewsMap[v.id]
+          return !!r && r.due<=now
+        })
         .sort((a,b)=>(reviewsMap[a.id]?.due||0)-(reviewsMap[b.id]?.due||0))
 
-      const unseen = baseDeck.filter(v=>!reviewsMap[v.id])
+      const difficultPart = baseDeck
+        .filter(v=>{
+          if(!difficultMap[v.id]) return false
+          if(studySeenSession[v.id]) return false
+          const r = reviewsMap[v.id]
+          return !r || r.due>now
+        })
+        .sort((a,b)=>(reviewsMap[a.id]?.due||Number.MAX_SAFE_INTEGER)-(reviewsMap[b.id]?.due||Number.MAX_SAFE_INTEGER))
+
+      const unseen = baseDeck.filter(v=>!reviewsMap[v.id] && !studySeenSession[v.id])
       const newSlots = Math.max(0, settings.newPerDay - stats.newToday)
       const newPart = studyContinueMode ? unseen : unseen.slice(0,newSlots)
 
-      return studyContinueMode
-        ? [...dueReviews, ...newPart]
-        : [...dueReviews, ...newPart].slice(0,settings.dailyTarget)
-    },[baseDeck,reviewsMap,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
+      const seen = new Set<string>()
+      const merged = [...difficultPart, ...dueReviews, ...newPart].filter(v=>{
+        if(seen.has(v.id)) return false
+        seen.add(v.id)
+        return true
+      })
 
-    const cur=queue[idx]
+      return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
+    },[baseDeck,reviewsMap,difficultMap,studySeenSession,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
+
+    const cur=queue[0]
+    const answeredSessionCount = Object.keys(studySeenSession).length
+    const plannedTotal = answeredSessionCount + queue.length
+    const currentPos = plannedTotal===0 ? 0 : Math.min(plannedTotal, answeredSessionCount + 1)
 
     const themePlan = useMemo(()=>course.themes.map(t=>{
       const cards=course.vocab.filter(v=>v.theme===t.id)
       const dueReviews = cards.filter(v=>{const r=reviewsMap[v.id]; return !!r && r.due<=now}).length
+      const difficultRepeat = cards.filter(v=>{
+        if(!difficultMap[v.id]) return false
+        const r = reviewsMap[v.id]
+        return !r || r.due>now
+      }).length
       const unseen = cards.filter(v=>!reviewsMap[v.id]).length
       const planned = studyContinueMode
-        ? (dueReviews + unseen)
-        : Math.min(settings.dailyTarget, dueReviews + Math.min(unseen, Math.max(0, settings.newPerDay - stats.newToday)))
-      return {id:t.id,title:t.title,planned,dueReviews,unseen}
-    }),[course,reviewsMap,now,stats.newToday,studyContinueMode,settings.dailyTarget,settings.newPerDay])
+        ? (dueReviews + difficultRepeat + unseen)
+        : Math.min(settings.dailyTarget, dueReviews + difficultRepeat + Math.min(unseen, Math.max(0, settings.newPerDay - stats.newToday)))
+      return {id:t.id,title:t.title,planned,dueReviews,difficultRepeat,unseen}
+    }),[course,reviewsMap,difficultMap,now,stats.newToday,studyContinueMode,settings.dailyTarget,settings.newPerDay])
 
     useEffect(()=>{
-      if(idx>=queue.length) setIdx(0)
-    },[queue.length,idx])
+      if(idx!==0) setIdx(0)
+    },[idx,queue.length])
 
     useEffect(()=>{
       setIdx(0)
@@ -278,7 +318,7 @@ export default function App(){
     useEffect(()=>{
       if(cur && settings.autoSpeak) speak(cur.article? `${cur.article} ${cur.nl}`:cur.nl)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[idx,settings.autoSpeak,cur?.id])
+    },[settings.autoSpeak,cur?.id])
 
     function answer(correct:boolean){
       if(!cur) return
@@ -295,10 +335,16 @@ export default function App(){
       setStats(s)
       saveJSON(LS.stats,s)
 
-      setIdx(i=>i+1)
+      setStudySeenSession(s=>({ ...s, [cur.id]: true }))
+      setIdx(0)
       setShowTranslation(false)
       setShowClue(false)
       setClueError(false)
+    }
+
+    function toggleDifficult(){
+      if(!cur) return
+      setDifficultMap(m=>({ ...m, [cur.id]: !m[cur.id] }))
     }
 
     if(!cur){
@@ -316,7 +362,7 @@ export default function App(){
     }
 
     const clueQuery = encodeURIComponent((cur.en || cur.nl).replace(/[()]/g,' '))
-    const clueUrl = `https://source.unsplash.com/900x520/?${clueQuery}`
+    const clueUrl = cur.image || `https://source.unsplash.com/900x520/?${clueQuery}`
 
     return (
       <div className="row" style={{alignItems:'stretch'}}>
@@ -324,7 +370,7 @@ export default function App(){
           <div className="row" style={{justifyContent:'space-between', alignItems:'flex-end'}}>
             <div>
               <div className="h1">Daily SRS</div>
-              <div className="h2">{idx+1} / {queue.length} planned today</div>
+              <div className="h2">{currentPos} / {plannedTotal} planned today</div>
             </div>
             <div className="studyTopActions">
               <button onClick={()=>speak(cur.article?`${cur.article} ${cur.nl}`:cur.nl)}>🔊</button>
@@ -366,6 +412,18 @@ export default function App(){
 
           <div className="studyBottom">
             <div className="row" style={{justifyContent:'center'}}>
+              <button
+                onClick={toggleDifficult}
+                style={difficultMap[cur.id]
+                  ? {
+                    background:'rgba(245, 158, 11, 0.18)',
+                    borderColor:'rgba(245, 158, 11, 0.45)',
+                    color:'rgba(255, 244, 214, 0.96)',
+                  }
+                  : undefined}
+              >
+                Difficult
+              </button>
               <button onClick={()=>answer(false)}>Incorrect</button>
               <button onClick={()=>answer(true)}>Correct</button>
             </div>
@@ -384,14 +442,14 @@ export default function App(){
                   <button onClick={()=>setStudyTheme(t.id)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:active?'rgba(255,255,255,0.14)':'var(--panel)'}}>
                     {t.title}
                   </button>
-                  <div className="small" style={{marginTop:4}}>Planned {t.planned} • Due {t.dueReviews} • New {Math.min(t.unseen, Math.max(0, settings.newPerDay - stats.newToday))}</div>
+                  <div className="small" style={{marginTop:4}}>Planned {t.planned} • Due {t.dueReviews} • Difficult {t.difficultRepeat} • New {Math.min(t.unseen, Math.max(0, settings.newPerDay - stats.newToday))}</div>
                 </div>
               )
             })}
           </div>
           <div className="sep" />
           <div className="small" style={{maxHeight:'clamp(260px, 34vh, 420px)',overflow:'auto'}}>
-            {queue.slice(idx, idx+20).map(v=><div key={v.id} style={{padding:'6px 0',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>{v.nl}</div>)}
+            {queue.slice(0,20).map(v=><div key={v.id} style={{padding:'6px 0',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>{v.nl}</div>)}
           </div>
         </div>
       </div>
@@ -416,7 +474,9 @@ export default function App(){
         <button onClick={()=>{
           localStorage.removeItem(LS.reviews)
           localStorage.removeItem(LS.stats)
+          localStorage.removeItem(LS.difficult)
           setReviewsMap({})
+          setDifficultMap({})
           setStats(ensureStats())
         }}>Reset local progress</button>
       </div>
