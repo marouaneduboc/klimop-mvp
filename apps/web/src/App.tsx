@@ -785,10 +785,12 @@ export default function App(){
     )
   }
 
-  const DEHET_LS = 'klimop.deofhet.v1'
-  type DeHetStats = { correct:number; total:number; wrongIds:Record<string,number> }
-  function DeOfHet({ coursesByBookId, speak }:{ coursesByBookId:Record<string,Course>; speak:(t:string)=>Promise<void> }){
-    const pool = useMemo(()=>{
+  const DEHET_LS = 'klimop.deofhet.v2'
+  type DeHetStats = { correct:number; total:number; wrongIds:Record<string,number>; mastered:Record<string,boolean>; streak:Record<string,number> }
+  function DeOfHet({ coursesByBookId, reviewsMap, speak }:{ coursesByBookId:Record<string,Course>; reviewsMap:Record<string,Review>; speak:(t:string)=>Promise<void> }){
+    const wrongKey = (v:Vocab)=>v.nl.toLowerCase()
+
+    const fullPool = useMemo(()=>{
       const seen = new Set<string>()
       const out:Vocab[]=[]
       for(const c of Object.values(coursesByBookId)){
@@ -802,17 +804,48 @@ export default function App(){
       }
       return out
     },[coursesByBookId])
-    const [stats,setStats]=useState<DeHetStats>(()=>loadJSON<DeHetStats>(DEHET_LS,{correct:0,total:0,wrongIds:{}}))
+
+    const learnedNls = useMemo(()=>{
+      const set = new Set<string>()
+      for(const [bookId,c] of Object.entries(coursesByBookId)){
+        if(!c?.vocab) continue
+        for(const v of c.vocab){
+          if(reviewsMap[scopedKey(bookId,v.id)]) set.add(v.nl.toLowerCase())
+        }
+      }
+      return set
+    },[coursesByBookId,reviewsMap])
+
+    const [stats,setStats]=useState<DeHetStats>(()=>{
+      const raw=loadJSON<any>(DEHET_LS,{correct:0,total:0,wrongIds:{}})
+      return {
+        correct:raw.correct??0,
+        total:raw.total??0,
+        wrongIds:raw.wrongIds??{},
+        mastered:raw.mastered??{},
+        streak:raw.streak??{},
+      }
+    })
     const [cur,setCur]=useState<Vocab|null>(null)
     const [feedback,setFeedback]=useState<'correct'|'wrong'|null>(null)
     const [sessionWrong,setSessionWrong]=useState<string[]>([])
     const [picksSinceWrong,setPicksSinceWrong]=useState(0)
-    const wrongKey = (v:Vocab)=>v.nl.toLowerCase()
+    const [triggerPick,setTriggerPick]=useState(0)
 
     useEffect(()=>{ saveJSON(DEHET_LS,stats) },[stats])
 
+    const activePool = useMemo(()=>
+      fullPool.filter(v=>!stats.mastered[wrongKey(v)]),
+    [fullPool,stats.mastered])
+    const learnedPool = useMemo(()=>
+      activePool.filter(v=>learnedNls.has(wrongKey(v))),
+    [activePool,learnedNls])
+    const unlearnedPool = useMemo(()=>
+      activePool.filter(v=>!learnedNls.has(wrongKey(v))),
+    [activePool,learnedNls])
+
     const pickNext = useCallback(()=>{
-      if(pool.length===0) return null
+      if(activePool.length===0) return null
       const wrongReady = sessionWrong.filter(nl=>!cur?.nl||nl.toLowerCase()!==cur.nl.toLowerCase())
       const shouldRetry = wrongReady.length>0 && picksSinceWrong>=2
       if(shouldRetry && wrongReady.length>0){
@@ -820,58 +853,76 @@ export default function App(){
         const nl = wrongReady[idx]
         setSessionWrong(w=>w.filter(x=>x.toLowerCase()!==nl.toLowerCase()))
         setPicksSinceWrong(0)
-        return pool.find(v=>v.nl.toLowerCase()===nl.toLowerCase()) ?? pool[Math.floor(Math.random()*pool.length)]
+        return activePool.find(v=>wrongKey(v)===nl.toLowerCase()) ?? activePool[Math.floor(Math.random()*activePool.length)]
       }
-      const byWrong = [...pool].sort((a,b)=>{
+      const byWrong = [...activePool].sort((a,b)=>{
         const wa=stats.wrongIds[wrongKey(a)]??0
         const wb=stats.wrongIds[wrongKey(b)]??0
         return wb-wa
       })
       const topWrong = byWrong.filter(v=>(stats.wrongIds[wrongKey(v)]??0)>0)
       const useWrong = topWrong.length>0 && Math.random()<0.35
-      const cand = useWrong && topWrong.length>0
-        ? topWrong[Math.floor(Math.random()*Math.min(5,topWrong.length))]
-        : pool[Math.floor(Math.random()*pool.length)]
-      return cand
-    },[pool,stats.wrongIds,sessionWrong,picksSinceWrong,cur?.nl])
+      if(useWrong && topWrong.length>0){
+        return topWrong[Math.floor(Math.random()*Math.min(5,topWrong.length))]
+      }
+      const preferLearned = learnedPool.length>0 && (unlearnedPool.length===0 || Math.random()<0.85)
+      const pool = preferLearned ? learnedPool : unlearnedPool
+      return pool[Math.floor(Math.random()*pool.length)]
+    },[activePool,learnedPool,unlearnedPool,stats.wrongIds,sessionWrong,picksSinceWrong,cur?.nl])
 
     useEffect(()=>{
       const next = pickNext()
       setCur(next ?? null)
       setFeedback(null)
-    },[pool.length])
+    },[triggerPick,activePool.length,learnedPool.length,unlearnedPool.length])
 
     function answer(guess:'de'|'het'){
       if(!cur) return
       const correct = guess===cur.article
+      const k = wrongKey(cur)
       setStats(s=>{
         const next={...s,total:s.total+1,correct:s.correct+(correct?1:0)}
         if(!correct){
-          const k=wrongKey(cur)
           next.wrongIds={...next.wrongIds,[k]:(next.wrongIds[k]??0)+1}
+          next.streak={...next.streak,[k]:0}
+        } else {
+          const streak = (next.streak[k]??0)+1
+          next.streak={...next.streak,[k]:streak}
+          if(streak>=3) next.mastered={...next.mastered,[k]:true}
         }
         return next
       })
       setFeedback(correct?'correct':'wrong')
       if(!correct){
-        setSessionWrong(w=>w.some(x=>x.toLowerCase()===cur.nl.toLowerCase())?w:[...w,cur.nl])
+        setSessionWrong(w=>w.some(x=>x.toLowerCase()===k)?w:[...w,cur.nl])
       } else {
         setPicksSinceWrong(p=>p+1)
       }
-      setTimeout(()=>{
-        const next = pickNext()
-        setCur(next ?? null)
-        setFeedback(null)
-      },correct?800:1400)
+      setTimeout(()=>setTriggerPick(t=>t+1),correct?800:1400)
     }
 
     const pct = stats.total>0 ? Math.round(100*stats.correct/stats.total) : 0
 
-    if(pool.length===0){
+    if(fullPool.length===0){
       return (
         <div className="card">
           <div className="h1">De of Het</div>
           <div className="h2">No words with articles in your books yet.</div>
+        </div>
+      )
+    }
+    if(activePool.length===0){
+      return (
+        <div className="card">
+          <div className="h1">De of Het</div>
+          <div className="h2">All words mastered! You got 3 correct in a row for every word.</div>
+          <div className="sep" />
+          <div className="deofhetStats">
+            <span className="deofhetStatPill correct">{stats.correct} correct</span>
+            <span className="deofhetStatPill total">{stats.total} total</span>
+            <span className="deofhetStatPill pct">{pct}%</span>
+            <span className="deofhetStatPill total">{Object.keys(stats.mastered).length} mastered</span>
+          </div>
         </div>
       )
     }
@@ -886,6 +937,7 @@ export default function App(){
               <span className="deofhetStatPill correct">{stats.correct} correct</span>
               <span className="deofhetStatPill total">{stats.total} total</span>
               <span className="deofhetStatPill pct">{pct}%</span>
+              <span className="deofhetStatPill total">{Object.keys(stats.mastered).length} mastered</span>
             </div>
           </div>
           <div className="sep" />
@@ -952,7 +1004,7 @@ export default function App(){
         {route==='study' && <div className="pagePane"><Study /></div>}
         {route==='progress' && <div className="pagePane"><Progress /></div>}
         {route==='tts' && <div className="pagePane"><TTS /></div>}
-        {route==='deofhet' && <div className="pagePane"><DeOfHet coursesByBookId={coursesByBookId} speak={speak} /></div>}
+        {route==='deofhet' && <div className="pagePane"><DeOfHet coursesByBookId={coursesByBookId} reviewsMap={reviewsMap} speak={speak} /></div>}
       </div>
       <div className="sep appFooterSep" />
       <div className="small appFooterText">MVP • local-only • calm UI • private</div>
