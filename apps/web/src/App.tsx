@@ -1119,6 +1119,7 @@ export default function App(){
     const cur = card.cur
     const options = card.options
     const [feedback,setFeedback]=useState<'correct'|'wrong'|null>(null)
+    const [chosenOption,setChosenOption]=useState<string|null>(null)
     const [typedAnswer,setTypedAnswer]=useState('')
     const [sessionWrong,setSessionWrong]=useState<string[]>([])
     const [picksSinceWrong,setPicksSinceWrong]=useState(0)
@@ -1169,6 +1170,7 @@ export default function App(){
       const next = pickNext()
       setFeedback(null)
       setTypedAnswer('')
+      setChosenOption(null)
       if(!next){
         curKeyRef.current = null
         setCard({ cur:null, options:[] })
@@ -1206,6 +1208,7 @@ export default function App(){
 
     function answer(guess:string){
       if(!cur) return
+      if(stats.mode==='mc') setChosenOption(guess)
       const normalized = guess.toLowerCase().trim()
       const correct = normalized===cur.correct.toLowerCase()
       setStats(s=>{
@@ -1275,11 +1278,24 @@ export default function App(){
               )}
               {stats.mode==='mc' ? (
                 <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
-                  {options.map(opt=>(
-                    <button key={opt} className="deofhetBtn de" style={{width:'100%'}} onClick={()=>feedback===null&&answer(opt)} disabled={feedback!==null}>
-                      {opt}
-                    </button>
-                  ))}
+                  {options.map(opt=>{
+                    const norm = (s:string)=>s.toLowerCase().trim()
+                    const isCorrect = norm(opt)===norm(cur.correct)
+                    const isChosenWrong = feedback&&chosenOption!==null&&norm(chosenOption)===norm(opt)&&!isCorrect
+                    const showGreen = feedback&&isCorrect
+                    const showRed = feedback&&!!isChosenWrong
+                    return (
+                      <button
+                        key={opt}
+                        className={`grammarOptionBtn${showGreen ? ' grammarOptionBtn-correct' : ''}${showRed ? ' grammarOptionBtn-wrong' : ''}`}
+                        style={{width:'100%'}}
+                        onClick={()=>feedback===null&&answer(opt)}
+                        disabled={feedback!==null}
+                      >
+                        {opt}
+                      </button>
+                    )
+                  })}
                 </div>
               ) : (
                 <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
