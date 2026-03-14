@@ -9,7 +9,8 @@ from pathlib import Path
 ROOT = Path(__file__).parent.parent
 COURSE_PATHS = [
     ROOT / "content" / "course.json",
-    ROOT / "apps" / "web" / "public" / "content" / "course.json",
+    ROOT / "content" / "klimop.json",
+    ROOT / "apps" / "web" / "public" / "content" / "klimop.json",
 ]
 MIN_PER_THEME = 150
 

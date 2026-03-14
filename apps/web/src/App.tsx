@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 
 type Vocab = { id:string; theme:number; nl:string; en?:string|null; article?:'de'|'het'|null }
 type Review = { id:string; due:number; interval:number; ease:number; reps:number; lapses:number }
+type Book = { id:string; title:string; levels:string; url:string }
+type BooksManifest = { books:Book[]; placeholders?:number }
 type Stats = {
   streak:number
   lastDay:string|null
@@ -25,6 +27,20 @@ const LS = { reviews:'klimop.reviews.v1', stats:'klimop.stats.v1', settings:'kli
 const todayISO = ()=> new Date().toISOString().slice(0,10)
 const loadJSON = <T,>(k:string, f:T):T => { try{ const s=localStorage.getItem(k); return s? JSON.parse(s):f }catch{return f} }
 const saveJSON = (k:string,v:any)=> localStorage.setItem(k, JSON.stringify(v))
+
+const SCOPED_KEY_MIGRATED = 'klimop.reviews.scopedMigrated'
+function scopedKey(bookId:string, vocabId:string):string { return `${bookId}:${vocabId}` }
+function migrateToScopedKeys(reviews:Record<string,Review>, difficult:Record<string,boolean>):{reviews:Record<string,Review>;difficult:Record<string,boolean>}{
+  if(localStorage.getItem(SCOPED_KEY_MIGRATED)) return {reviews,difficult}
+  const migratedReviews:Record<string,Review>={}
+  const migratedDifficult:Record<string,boolean>={}
+  for(const [k,v] of Object.entries(reviews)) migratedReviews[k.includes(':')?k:`klimop:${k}`]=v
+  for(const [k,v] of Object.entries(difficult)) migratedDifficult[k.includes(':')?k:`klimop:${k}`]=v
+  localStorage.setItem(SCOPED_KEY_MIGRATED,'1')
+  saveJSON(LS.reviews,migratedReviews)
+  saveJSON(LS.difficult,migratedDifficult)
+  return {reviews:migratedReviews,difficult:migratedDifficult}
+}
 
 const DEFAULT_DAILY_TARGET = 20
 const DEFAULT_NEW_PER_DAY = 8
@@ -99,10 +115,15 @@ async function fetchJSON<T>(url:string):Promise<T>{
 }
 
 export default function App(){
-  const [course,setCourse]=useState<Course|null>(null)
+  const [books,setBooks]=useState<Book[]>([])
+  const [coursesByBookId,setCoursesByBookId]=useState<Record<string,Course>>({})
+  const [currentBookId,setCurrentBookId]=useState<string>('klimop')
   const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'>('home')
-  const [reviewsMap,setReviewsMap]=useState<Record<string,Review>>(()=>loadJSON(LS.reviews,{}))
-  const [difficultMap,setDifficultMap]=useState<Record<string,boolean>>(()=>loadJSON(LS.difficult,{}))
+  const rawReviews=useMemo(()=>loadJSON<Record<string,Review>>(LS.reviews,{}),[])
+  const rawDifficult=useMemo(()=>loadJSON<Record<string,boolean>>(LS.difficult,{}),[])
+  const {reviews:migratedReviews,difficult:migratedDifficult}=useMemo(()=>migrateToScopedKeys(rawReviews,rawDifficult),[rawReviews,rawDifficult])
+  const [reviewsMap,setReviewsMap]=useState<Record<string,Review>>(migratedReviews)
+  const [difficultMap,setDifficultMap]=useState<Record<string,boolean>>(migratedDifficult)
   const [stats,setStats]=useState<Stats>(()=>ensureStats())
   const [studyTheme,setStudyTheme]=useState<number>(0)
   const [studyContinueMode,setStudyContinueMode]=useState(false)
@@ -111,7 +132,26 @@ export default function App(){
   const [voices,setVoices]=useState<string[]>([])
   const [err,setErr]=useState('')
 
-  useEffect(()=>{ fetchJSON<Course>('/content/course.json').then(setCourse).catch(e=>setErr(String(e))) },[])
+  useEffect(()=>{
+    fetchJSON<BooksManifest>('/content/books.json')
+      .then(m=>{
+        setBooks(m.books)
+        return Promise.all(m.books.map(b=>fetchJSON<Course>(b.url).then(c=>[b.id,c] as const)))
+      })
+      .then(entries=>{
+        const map:Record<string,Course>={}
+        for(const [id,c] of entries) map[id]=c
+        setCoursesByBookId(map)
+      })
+      .catch(()=>{
+        fetchJSON<Course>('/content/course.json')
+          .then(c=>{
+            setBooks([{id:'klimop',title:'Klim Op',levels:'A0 naar A1',url:'/content/course.json'}])
+            setCoursesByBookId({klimop:c})
+          })
+          .catch(e=>setErr(String(e)))
+      })
+  },[])
   useEffect(()=>saveJSON(LS.reviews,reviewsMap),[reviewsMap])
   useEffect(()=>saveJSON(LS.difficult,difficultMap),[difficultMap])
   useEffect(()=>saveJSON(LS.settings,settings),[settings])
@@ -122,22 +162,32 @@ export default function App(){
     setStudySeenSession({})
   },[studyTheme])
 
+  const course = coursesByBookId[currentBookId] ?? null
+  const currentBook = books.find(b=>b.id===currentBookId)
+  useEffect(()=>{
+    if(!course && books.length>0 && Object.keys(coursesByBookId).length>0){
+      const firstLoaded = books.find(b=>coursesByBookId[b.id])
+      if(firstLoaded) setCurrentBookId(firstLoaded.id)
+    }
+  },[course,books,coursesByBookId])
+
   const dueCount = useMemo(()=>{
     if(!course) return 0
     const now=Date.now()
+    const sk=(id:string)=>scopedKey(currentBookId,id)
     const dueReviews = course.vocab.filter(v=>{
-      const r = reviewsMap[v.id]
+      const r = reviewsMap[sk(v.id)]
       return !!r && r.due<=now
     })
     const difficultRepeat = course.vocab.filter(v=>{
-      if(!difficultMap[v.id]) return false
-      const r = reviewsMap[v.id]
+      if(!difficultMap[sk(v.id)]) return false
+      const r = reviewsMap[sk(v.id)]
       return !r || r.due>now
     }).length
-    const unseen = course.vocab.filter(v=>!reviewsMap[v.id]).length
+    const unseen = course.vocab.filter(v=>!reviewsMap[sk(v.id)]).length
     const newSlots = Math.max(0, settings.newPerDay - stats.newToday)
     return Math.min(settings.dailyTarget, dueReviews.length + difficultRepeat + Math.min(unseen, newSlots))
-  },[course,reviewsMap,difficultMap,stats.newToday,settings.dailyTarget,settings.newPerDay])
+  },[course,currentBookId,reviewsMap,difficultMap,stats.newToday,settings.dailyTarget,settings.newPerDay])
 
   async function refreshVoices(){
     setErr('')
@@ -173,8 +223,25 @@ export default function App(){
   function Top(){
     return (
       <div className="row" style={{justifyContent:'space-between'}}>
-        <div className="row" style={{gap:10}}>
-          <div className="pill" style={{borderRadius:14,padding:'10px 12px',fontWeight:700}}>Klim op</div>
+        <div className="row" style={{gap:10,flexWrap:'wrap'}}>
+          <div className="row" style={{gap:4}}>
+            {books.map(b=>(
+              <button
+                key={b.id}
+                onClick={()=>setCurrentBookId(b.id)}
+                className="pill"
+                style={{
+                  borderRadius:14,
+                  padding:'10px 12px',
+                  fontWeight:currentBookId===b.id?700:400,
+                  background:currentBookId===b.id?'rgba(255,255,255,0.14)':'var(--panel)',
+                  border:'1px solid rgba(255,255,255,0.12)',
+                }}
+              >
+                {b.title}
+              </button>
+            ))}
+          </div>
           <div className="pill">Streak {stats.streak}🔥</div>
           <div className="pill">Today {dueCount}</div>
         </div>
@@ -191,10 +258,11 @@ export default function App(){
   function Home(){
     if(!course) return null
     const now = Date.now()
+    const sk=(id:string)=>scopedKey(currentBookId,id)
     const byTheme = course.themes.map(t=>{
       const cards = course.vocab.filter(v=>v.theme===t.id)
-      const dueReview = cards.filter(v=>{const r=reviewsMap[v.id]; return !!r && r.due<=now}).length
-      const unseen = cards.filter(v=>!reviewsMap[v.id]).length
+      const dueReview = cards.filter(v=>{const r=reviewsMap[sk(v.id)]; return !!r && r.due<=now}).length
+      const unseen = cards.filter(v=>!reviewsMap[sk(v.id)]).length
       return {id:t.id,title:t.title,dueReview,unseen,total:cards.length}
     })
 
@@ -241,6 +309,7 @@ export default function App(){
     const [idx,setIdx]=useState(0)
     const [showTranslation,setShowTranslation]=useState(false)
     const [showClue,setShowClue]=useState(false)
+    const sk=(id:string)=>scopedKey(currentBookId,id)
 
     const now = Date.now()
     const baseDeck = useMemo(()=> studyTheme===0 ? course.vocab : course.vocab.filter(v=>v.theme===studyTheme),[course,studyTheme])
@@ -249,21 +318,21 @@ export default function App(){
       const dueReviews = baseDeck
         .filter(v=>{
           if(studySeenSession[v.id]) return false
-          const r=reviewsMap[v.id]
+          const r=reviewsMap[sk(v.id)]
           return !!r && r.due<=now
         })
-        .sort((a,b)=>(reviewsMap[a.id]?.due||0)-(reviewsMap[b.id]?.due||0))
+        .sort((a,b)=>(reviewsMap[sk(a.id)]?.due||0)-(reviewsMap[sk(b.id)]?.due||0))
 
       const difficultPart = baseDeck
         .filter(v=>{
-          if(!difficultMap[v.id]) return false
+          if(!difficultMap[sk(v.id)]) return false
           if(studySeenSession[v.id]) return false
-          const r = reviewsMap[v.id]
+          const r = reviewsMap[sk(v.id)]
           return !r || r.due>now
         })
-        .sort((a,b)=>(reviewsMap[a.id]?.due||Number.MAX_SAFE_INTEGER)-(reviewsMap[b.id]?.due||Number.MAX_SAFE_INTEGER))
+        .sort((a,b)=>(reviewsMap[sk(a.id)]?.due||Number.MAX_SAFE_INTEGER)-(reviewsMap[sk(b.id)]?.due||Number.MAX_SAFE_INTEGER))
 
-      const unseen = baseDeck.filter(v=>!reviewsMap[v.id] && !studySeenSession[v.id])
+      const unseen = baseDeck.filter(v=>!reviewsMap[sk(v.id)] && !studySeenSession[v.id])
       const newSlots = Math.max(0, settings.newPerDay - stats.newToday)
       const newPart = studyContinueMode ? unseen : unseen.slice(0,newSlots)
 
@@ -275,7 +344,7 @@ export default function App(){
       })
 
       return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
-    },[baseDeck,reviewsMap,difficultMap,studySeenSession,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
+    },[baseDeck,currentBookId,reviewsMap,difficultMap,studySeenSession,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
 
     const cur=queue[0]
     const answeredSessionCount = Object.keys(studySeenSession).length
@@ -284,18 +353,18 @@ export default function App(){
 
     const themePlan = useMemo(()=>course.themes.map(t=>{
       const cards=course.vocab.filter(v=>v.theme===t.id)
-      const dueReviews = cards.filter(v=>{const r=reviewsMap[v.id]; return !!r && r.due<=now}).length
+      const dueReviews = cards.filter(v=>{const r=reviewsMap[sk(v.id)]; return !!r && r.due<=now}).length
       const difficultRepeat = cards.filter(v=>{
-        if(!difficultMap[v.id]) return false
-        const r = reviewsMap[v.id]
+        if(!difficultMap[sk(v.id)]) return false
+        const r = reviewsMap[sk(v.id)]
         return !r || r.due>now
       }).length
-      const unseen = cards.filter(v=>!reviewsMap[v.id]).length
+      const unseen = cards.filter(v=>!reviewsMap[sk(v.id)]).length
       const planned = studyContinueMode
         ? (dueReviews + difficultRepeat + unseen)
         : Math.min(settings.dailyTarget, dueReviews + difficultRepeat + Math.min(unseen, Math.max(0, settings.newPerDay - stats.newToday)))
       return {id:t.id,title:t.title,planned,dueReviews,difficultRepeat,unseen}
-    }),[course,reviewsMap,difficultMap,now,stats.newToday,studyContinueMode,settings.dailyTarget,settings.newPerDay])
+    }),[course,currentBookId,reviewsMap,difficultMap,now,stats.newToday,studyContinueMode,settings.dailyTarget,settings.newPerDay])
 
     useEffect(()=>{
       if(idx!==0) setIdx(0)
@@ -319,9 +388,10 @@ export default function App(){
 
     function answer(correct:boolean){
       if(!cur) return
+      const key=sk(cur.id)
       const map={...reviewsMap}
-      const wasNew = !map[cur.id]
-      const r=upsertReview(map,cur.id)
+      const wasNew = !map[key]
+      const r=upsertReview(map,key)
       gradeBinary(r,correct)
       setReviewsMap(map)
 
@@ -340,7 +410,8 @@ export default function App(){
 
     function toggleDifficult(){
       if(!cur) return
-      setDifficultMap(m=>({ ...m, [cur.id]: !m[cur.id] }))
+      const key=sk(cur.id)
+      setDifficultMap(m=>({ ...m, [key]: !m[key] }))
     }
 
     const generateClue = (word: string) => {
@@ -399,7 +470,7 @@ export default function App(){
             {!showClue && <div style={{textAlign:'center'}}>Tap to reveal clue</div>}
             {showClue && (
               <div style={{textAlign:'center', fontSize:'2rem', fontWeight:'bold'}}>
-                {generateClue(cur.en)}
+                {generateClue(cur.nl)}
               </div>
             )}
           </div>
@@ -408,7 +479,7 @@ export default function App(){
             <div className="row" style={{justifyContent:'center'}}>
               <button
                 onClick={toggleDifficult}
-                style={difficultMap[cur.id]
+                style={difficultMap[sk(cur.id)]
                   ? {
                     background:'rgba(245, 158, 11, 0.18)',
                     borderColor:'rgba(245, 158, 11, 0.45)',
@@ -451,50 +522,90 @@ export default function App(){
   }
 
   function Progress(){
-    if(!course) return null
-    const courseData = course
     const now = Date.now()
     const acc = stats.reviewsToday ? Math.round(100*stats.correctToday/stats.reviewsToday) : 0
-    const byTheme = courseData.themes.map(t=>{
-      const cards = courseData.vocab.filter(v=>v.theme===t.id)
-      const total = cards.length
-      const seen = cards.filter(v=>!!reviewsMap[v.id]).length
-      const due = cards.filter(v=>{ const r=reviewsMap[v.id]; return !!r && r.due<=now }).length
-      const difficult = cards.filter(v=>!!difficultMap[v.id]).length
-      const mastered = cards.filter(v=>{
-        const r=reviewsMap[v.id]
-        return !!r && r.interval>=7 && r.due>now
-      }).length
-      const unseen = total - seen
-      const seenPct = total ? Math.round((seen/total)*100) : 0
-      const masteredPct = total ? Math.round((mastered/total)*100) : 0
-      return {id:t.id,title:t.title,total,seen,unseen,due,difficult,mastered,seenPct,masteredPct}
-    })
+    const placeholdersCount = 2
 
-    function resetThemeProgress(themeId:number){
-      const ids = new Set(courseData.vocab.filter(v=>v.theme===themeId).map(v=>v.id))
-      setReviewsMap(prev=>{
-        const next={...prev}
-        for(const id of ids) delete next[id]
-        return next
+    function BookProgressSection({bookId,bookTitle,bookLevels,courseData}:{bookId:string;bookTitle:string;bookLevels:string;courseData:Course|null}){
+      if(!courseData){
+        return (
+          <div className="card progressThemeCard" style={{opacity:0.6}}>
+            <div className="h1" style={{fontSize:24}}>{bookTitle}</div>
+            <div className="small" style={{marginTop:8}}>Loading…</div>
+          </div>
+        )
+      }
+      const c = courseData
+      const sk=(id:string)=>scopedKey(bookId,id)
+      const byTheme = c.themes.map(t=>{
+        const cards = c.vocab.filter(v=>v.theme===t.id)
+        const total = cards.length
+        const seen = cards.filter(v=>!!reviewsMap[sk(v.id)]).length
+        const due = cards.filter(v=>{ const r=reviewsMap[sk(v.id)]; return !!r && r.due<=now }).length
+        const difficult = cards.filter(v=>!!difficultMap[sk(v.id)]).length
+        const mastered = cards.filter(v=>{
+          const r=reviewsMap[sk(v.id)]
+          return !!r && r.interval>=7 && r.due>now
+        }).length
+        const unseen = total - seen
+        const seenPct = total ? Math.round((seen/total)*100) : 0
+        const masteredPct = total ? Math.round((mastered/total)*100) : 0
+        return {id:t.id,title:t.title,total,seen,unseen,due,difficult,mastered,seenPct,masteredPct}
       })
-      setDifficultMap(prev=>{
-        const next={...prev}
-        for(const id of ids) delete next[id]
-        return next
-      })
-      setStudySeenSession(prev=>{
-        const next={...prev}
-        for(const id of ids) delete next[id]
-        return next
-      })
+
+      function resetThemeProgress(themeId:number){
+        const ids = new Set(c.vocab.filter(v=>v.theme===themeId).map(v=>sk(v.id)))
+        setReviewsMap(prev=>{ const next={...prev}; for(const id of ids) delete next[id]; return next })
+        setDifficultMap(prev=>{ const next={...prev}; for(const id of ids) delete next[id]; return next })
+        setStudySeenSession(prev=>{
+          const vocabIds = c.vocab.filter(v=>v.theme===themeId).map(v=>v.id)
+          const next={...prev}; for(const id of vocabIds) delete next[id]; return next
+        })
+      }
+
+      function resetBookProgress(){
+        const ids = new Set(c.vocab.map(v=>sk(v.id)))
+        const vocabIds = c.vocab.map(v=>v.id)
+        setReviewsMap(prev=>{ const next={...prev}; for(const id of ids) delete next[id]; return next })
+        setDifficultMap(prev=>{ const next={...prev}; for(const id of ids) delete next[id]; return next })
+        setStudySeenSession(prev=>{ const next={...prev}; for(const id of vocabIds) delete next[id]; return next })
+      }
+
+      return (
+        <div className="card progressThemeCard">
+          <div className="row" style={{justifyContent:'space-between',alignItems:'center'}}>
+            <div>
+              <div className="h1" style={{fontSize:24,marginBottom:4}}>{bookTitle}</div>
+              <div className="small" style={{color:'var(--muted)'}}>{bookLevels}</div>
+            </div>
+            <button onClick={resetBookProgress}>Reset book</button>
+          </div>
+          <div className="sep" />
+          <div className="themeGrid">
+            {byTheme.map(t=>(
+              <div key={t.id} className="themeStatCard">
+                <div className="row" style={{justifyContent:'space-between',alignItems:'center'}}>
+                  <div style={{fontWeight:700}}>{t.title}</div>
+                  <button onClick={()=>resetThemeProgress(t.id)}>Reset theme</button>
+                </div>
+                <div className="themeBarTrack" aria-label={`Progress for ${t.title}`}>
+                  <div className="themeBarSeen" style={{width:`${t.seenPct}%`}} />
+                  <div className="themeBarMastered" style={{width:`${t.masteredPct}%`}} />
+                </div>
+                <div className="small">Seen {t.seen}/{t.total} ({t.seenPct}%) • Mastered {t.mastered} ({t.masteredPct}%)</div>
+                <div className="small">Unseen {t.unseen} • Due {t.due} • Difficult {t.difficult}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )
     }
 
     return (
       <div className="progressLayout">
         <div className="card">
           <div className="h1">Progress Dashboard</div>
-          <div className="h2">Track progress by theme and tune your study targets.</div>
+          <div className="h2">Track progress by book and theme. Combined view.</div>
           <div className="sep" />
           <div className="row">
             <div className="pill">Streak {stats.streak}🔥</div>
@@ -531,40 +642,33 @@ export default function App(){
           <div className="small" style={{marginTop:8}}>Targets are saved immediately and apply to the next queue build.</div>
         </div>
 
-        <div className="card progressThemeCard">
-          <div className="row" style={{justifyContent:'space-between',alignItems:'center'}}>
-            <div>
-              <div className="h1" style={{fontSize:24,marginBottom:6}}>By Theme</div>
-              <div className="small">Seen and mastered coverage, due load and difficult load.</div>
-            </div>
-            <button onClick={()=>{
-              localStorage.removeItem(LS.reviews)
-              localStorage.removeItem(LS.stats)
-              localStorage.removeItem(LS.difficult)
-              setReviewsMap({})
-              setDifficultMap({})
-              setStats(ensureStats())
-              setStudySeenSession({})
-            }}>Reset all progress</button>
+        {books.map(b=>(
+          <BookProgressSection
+            key={b.id}
+            bookId={b.id}
+            bookTitle={b.title}
+            bookLevels={b.levels}
+            courseData={coursesByBookId[b.id] ?? null}
+          />
+        ))}
+        {Array.from({length:placeholdersCount},(_,i)=>(
+          <div key={`placeholder-${i}`} className="card progressThemeCard" style={{opacity:0.5,borderStyle:'dashed'}}>
+            <div className="h1" style={{fontSize:24}}>Book {books.length+i+1}</div>
+            <div className="small" style={{marginTop:8}}>Coming soon</div>
           </div>
-          <div className="sep" />
+        ))}
 
-          <div className="themeGrid">
-            {byTheme.map(t=>(
-              <div key={t.id} className="themeStatCard">
-                <div className="row" style={{justifyContent:'space-between',alignItems:'center'}}>
-                  <div style={{fontWeight:700}}>{t.title}</div>
-                  <button onClick={()=>resetThemeProgress(t.id)}>Reset theme</button>
-                </div>
-                <div className="themeBarTrack" aria-label={`Progress for ${t.title}`}>
-                  <div className="themeBarSeen" style={{width:`${t.seenPct}%`}} />
-                  <div className="themeBarMastered" style={{width:`${t.masteredPct}%`}} />
-                </div>
-                <div className="small">Seen {t.seen}/{t.total} ({t.seenPct}%) • Mastered {t.mastered} ({t.masteredPct}%)</div>
-                <div className="small">Unseen {t.unseen} • Due {t.due} • Difficult {t.difficult}</div>
-              </div>
-            ))}
-          </div>
+        <div className="card" style={{marginTop:12}}>
+          <button onClick={()=>{
+            localStorage.removeItem(LS.reviews)
+            localStorage.removeItem(LS.stats)
+            localStorage.removeItem(LS.difficult)
+            localStorage.removeItem(SCOPED_KEY_MIGRATED)
+            setReviewsMap({})
+            setDifficultMap({})
+            setStats(ensureStats())
+            setStudySeenSession({})
+          }}>Reset all progress (all books)</button>
         </div>
       </div>
     )
@@ -668,8 +772,15 @@ export default function App(){
     )
   }
 
+  const hasAnyCourse = Object.keys(coursesByBookId).length > 0
+  if(!hasAnyCourse && !err){
+    return <div className="container"><Top /><div className="sep" /><div className="card">Loading books…</div></div>
+  }
+  if(err && !hasAnyCourse){
+    return <div className="container"><Top /><div className="sep" /><div className="card">Error: {err}</div></div>
+  }
   if(!course){
-    return <div className="container"><Top /><div className="sep" /><div className="card">Loading course… (run tools/import_audio.py & tools/extract_content.py)</div></div>
+    return <div className="container"><Top /><div className="sep" /><div className="card">Loading course…</div></div>
   }
 
   return (
