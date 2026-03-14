@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 type Vocab = { id:string; theme:number; nl:string; en?:string|null; article?:'de'|'het'|null }
 type Review = { id:string; due:number; interval:number; ease:number; reps:number; lapses:number }
@@ -118,7 +118,7 @@ export default function App(){
   const [books,setBooks]=useState<Book[]>([])
   const [coursesByBookId,setCoursesByBookId]=useState<Record<string,Course>>({})
   const [currentBookId,setCurrentBookId]=useState<string>('klimop')
-  const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'>('home')
+  const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'|'deofhet'>('home')
   const rawReviews=useMemo(()=>loadJSON<Record<string,Review>>(LS.reviews,{}),[])
   const rawDifficult=useMemo(()=>loadJSON<Record<string,boolean>>(LS.difficult,{}),[])
   const {reviews:migratedReviews,difficult:migratedDifficult}=useMemo(()=>migrateToScopedKeys(rawReviews,rawDifficult),[rawReviews,rawDifficult])
@@ -241,6 +241,19 @@ export default function App(){
                 {b.title}
               </button>
             ))}
+            <button
+              onClick={()=>setRoute('deofhet')}
+              className="pill"
+              style={{
+                borderRadius:14,
+                padding:'10px 12px',
+                background:'var(--panel)',
+                border:'1px solid rgba(255,255,255,0.12)',
+                fontWeight:500,
+              }}
+            >
+              De of Het
+            </button>
           </div>
           <div className="pill">Streak {stats.streak}🔥</div>
           <div className="pill">Today {dueCount}</div>
@@ -772,6 +785,153 @@ export default function App(){
     )
   }
 
+  const DEHET_LS = 'klimop.deofhet.v1'
+  type DeHetStats = { correct:number; total:number; wrongIds:Record<string,number> }
+  function DeOfHet({ coursesByBookId, speak }:{ coursesByBookId:Record<string,Course>; speak:(t:string)=>Promise<void> }){
+    const pool = useMemo(()=>{
+      const seen = new Set<string>()
+      const out:Vocab[]=[]
+      for(const c of Object.values(coursesByBookId)){
+        if(!c?.vocab) continue
+        for(const v of c.vocab){
+          if((v.article==='de'||v.article==='het')&&!seen.has(v.nl.toLowerCase())){
+            seen.add(v.nl.toLowerCase())
+            out.push(v)
+          }
+        }
+      }
+      return out
+    },[coursesByBookId])
+    const [stats,setStats]=useState<DeHetStats>(()=>loadJSON<DeHetStats>(DEHET_LS,{correct:0,total:0,wrongIds:{}}))
+    const [cur,setCur]=useState<Vocab|null>(null)
+    const [feedback,setFeedback]=useState<'correct'|'wrong'|null>(null)
+    const [sessionWrong,setSessionWrong]=useState<string[]>([])
+    const [picksSinceWrong,setPicksSinceWrong]=useState(0)
+    const wrongKey = (v:Vocab)=>v.nl.toLowerCase()
+
+    useEffect(()=>{ saveJSON(DEHET_LS,stats) },[stats])
+
+    const pickNext = useCallback(()=>{
+      if(pool.length===0) return null
+      const wrongReady = sessionWrong.filter(nl=>!cur?.nl||nl.toLowerCase()!==cur.nl.toLowerCase())
+      const shouldRetry = wrongReady.length>0 && picksSinceWrong>=2
+      if(shouldRetry && wrongReady.length>0){
+        const idx = Math.floor(Math.random()*wrongReady.length)
+        const nl = wrongReady[idx]
+        setSessionWrong(w=>w.filter(x=>x.toLowerCase()!==nl.toLowerCase()))
+        setPicksSinceWrong(0)
+        return pool.find(v=>v.nl.toLowerCase()===nl.toLowerCase()) ?? pool[Math.floor(Math.random()*pool.length)]
+      }
+      const byWrong = [...pool].sort((a,b)=>{
+        const wa=stats.wrongIds[wrongKey(a)]??0
+        const wb=stats.wrongIds[wrongKey(b)]??0
+        return wb-wa
+      })
+      const topWrong = byWrong.filter(v=>(stats.wrongIds[wrongKey(v)]??0)>0)
+      const useWrong = topWrong.length>0 && Math.random()<0.35
+      const cand = useWrong && topWrong.length>0
+        ? topWrong[Math.floor(Math.random()*Math.min(5,topWrong.length))]
+        : pool[Math.floor(Math.random()*pool.length)]
+      return cand
+    },[pool,stats.wrongIds,sessionWrong,picksSinceWrong,cur?.nl])
+
+    useEffect(()=>{
+      const next = pickNext()
+      setCur(next ?? null)
+      setFeedback(null)
+    },[pool.length])
+
+    function answer(guess:'de'|'het'){
+      if(!cur) return
+      const correct = guess===cur.article
+      setStats(s=>{
+        const next={...s,total:s.total+1,correct:s.correct+(correct?1:0)}
+        if(!correct){
+          const k=wrongKey(cur)
+          next.wrongIds={...next.wrongIds,[k]:(next.wrongIds[k]??0)+1}
+        }
+        return next
+      })
+      setFeedback(correct?'correct':'wrong')
+      if(!correct){
+        setSessionWrong(w=>w.some(x=>x.toLowerCase()===cur.nl.toLowerCase())?w:[...w,cur.nl])
+      } else {
+        setPicksSinceWrong(p=>p+1)
+      }
+      setTimeout(()=>{
+        const next = pickNext()
+        setCur(next ?? null)
+        setFeedback(null)
+      },correct?800:1400)
+    }
+
+    const pct = stats.total>0 ? Math.round(100*stats.correct/stats.total) : 0
+
+    if(pool.length===0){
+      return (
+        <div className="card">
+          <div className="h1">De of Het</div>
+          <div className="h2">No words with articles in your books yet.</div>
+        </div>
+      )
+    }
+
+    return (
+      <div className="deofhetLayout">
+        <div className="card deofhetCard">
+          <div className="deofhetHeader">
+            <div className="h1">De of Het</div>
+            <div className="h2">Choose the correct article</div>
+            <div className="deofhetStats">
+              <span className="deofhetStatPill correct">{stats.correct} correct</span>
+              <span className="deofhetStatPill total">{stats.total} total</span>
+              <span className="deofhetStatPill pct">{pct}%</span>
+            </div>
+          </div>
+          <div className="sep" />
+          {cur && (
+            <>
+              <div className={`deofhetWord ${feedback?`feedback-${feedback}`:''}`}>
+                {cur.nl}
+              </div>
+              {feedback && (
+                <div className={`deofhetFeedback feedback-${feedback}`}>
+                  {feedback==='correct'?(
+                    <span>✓ Correct — {cur.article} {cur.nl}</span>
+                  ):(
+                    <span>✗ The answer is <strong>{cur.article}</strong> {cur.nl}</span>
+                  )}
+                </div>
+              )}
+              <div className="deofhetActions">
+                <button
+                  className="deofhetBtn de"
+                  onClick={()=>feedback===null&&answer('de')}
+                  disabled={feedback!==null}
+                >
+                  De
+                </button>
+                <button
+                  className="deofhetBtn het"
+                  onClick={()=>feedback===null&&answer('het')}
+                  disabled={feedback!==null}
+                >
+                  Het
+                </button>
+              </div>
+              <button
+                className="deofhetSpeak"
+                onClick={()=>speak(cur.nl)}
+              >
+                🔊 Hear it
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   const hasAnyCourse = Object.keys(coursesByBookId).length > 0
   if(!hasAnyCourse && !err){
     return <div className="container"><Top /><div className="sep" /><div className="card">Loading books…</div></div>
@@ -792,6 +952,7 @@ export default function App(){
         {route==='study' && <div className="pagePane"><Study /></div>}
         {route==='progress' && <div className="pagePane"><Progress /></div>}
         {route==='tts' && <div className="pagePane"><TTS /></div>}
+        {route==='deofhet' && <div className="pagePane"><DeOfHet coursesByBookId={coursesByBookId} speak={speak} /></div>}
       </div>
       <div className="sep appFooterSep" />
       <div className="small appFooterText">MVP • local-only • calm UI • private</div>
