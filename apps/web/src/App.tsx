@@ -460,7 +460,7 @@ export default function App(){
     },[cur?.id])
 
     useEffect(()=>{
-      if(cur && settings.autoSpeak) speak(cur.article ? `${cur.article} ${cur.nl}` : cur.nl)
+      if(cur && settings.autoSpeak) speak(cur.nl)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },[settings.autoSpeak,cur?.id])
 
@@ -1060,7 +1060,7 @@ export default function App(){
               </div>
               <button
                 className="deofhetSpeak"
-                onClick={()=>speak(cur.article ? `${cur.article} ${cur.nl}` : cur.nl)}
+                onClick={()=>speak(cur.nl)}
               >
                 🔊 Hear it
               </button>
