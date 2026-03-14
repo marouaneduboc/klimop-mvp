@@ -911,6 +911,7 @@ export default function App(){
     })
     const [cur,setCur]=useState<Vocab|null>(null)
     const [feedback,setFeedback]=useState<'correct'|'wrong'|null>(null)
+    const [chosenArticle,setChosenArticle]=useState<'de'|'het'|null>(null)
     const [sessionWrong,setSessionWrong]=useState<string[]>([])
     const [picksSinceWrong,setPicksSinceWrong]=useState(0)
     const [triggerPick,setTriggerPick]=useState(0)
@@ -959,10 +960,12 @@ export default function App(){
       const next = pickNext()
       setCur(next ?? null)
       setFeedback(null)
+      setChosenArticle(null)
     },[triggerPick,activePool.length,learnedPool.length,unlearnedPool.length])
 
     function answer(guess:'de'|'het'){
       if(!cur) return
+      setChosenArticle(guess)
       const correct = guess===cur.article
       const k = wrongKey(cur)
       setStats(s=>{
@@ -1044,14 +1047,14 @@ export default function App(){
               )}
               <div className="deofhetActions">
                 <button
-                  className="deofhetBtn de"
+                  className={`deofhetBtn de${feedback&&cur.article==='de' ? ' feedback-correct' : ''}${feedback&&chosenArticle==='de'&&cur.article==='het' ? ' feedback-wrong' : ''}`}
                   onClick={()=>feedback===null&&answer('de')}
                   disabled={feedback!==null}
                 >
                   De
                 </button>
                 <button
-                  className="deofhetBtn het"
+                  className={`deofhetBtn het${feedback&&cur.article==='het' ? ' feedback-correct' : ''}${feedback&&chosenArticle==='het'&&cur.article==='de' ? ' feedback-wrong' : ''}`}
                   onClick={()=>feedback===null&&answer('het')}
                   disabled={feedback!==null}
                 >
@@ -1204,11 +1207,12 @@ export default function App(){
       for(let i=all.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [all[i],all[j]]=[all[j],all[i]] }
       curKeyRef.current = next.key
       setCard({ cur:next, options:all })
-    },[triggerPick,pickNext,fullPool])
+      // triggerPick: advance after answer timeout. fullPool: run when data first loads.
+      // Do NOT depend on pickNext (it changes when stats changes and would wipe feedback).
+    },[triggerPick,fullPool])
 
     function answer(guess:string){
       if(!cur) return
-      if(stats.mode==='mc') setChosenOption(guess)
       const normalized = guess.toLowerCase().trim()
       const correct = normalized===cur.correct.toLowerCase()
       setStats(s=>{
@@ -1287,9 +1291,12 @@ export default function App(){
                     return (
                       <button
                         key={opt}
-                        className={`grammarOptionBtn${showGreen ? ' grammarOptionBtn-correct' : ''}${showRed ? ' grammarOptionBtn-wrong' : ''}`}
-                        style={{width:'100%'}}
-                        onClick={()=>feedback===null&&answer(opt)}
+                        className={`grammarOptionBtn${showGreen ? ' is-correct' : ''}${showRed ? ' is-wrong' : ''}`}
+                        onClick={()=>{
+                          if(feedback!==null) return
+                          setChosenOption(opt)
+                          answer(opt)
+                        }}
                         disabled={feedback!==null}
                       >
                         {opt}

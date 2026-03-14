@@ -1054,7 +1054,7 @@
     {
       "id": "w01_0126",
       "theme": 1,
-      "nl": "ramen zemen",
+      "nl": "ramen wassen",
       "article": null,
       "en": "to clean windows",
       "tags": []
@@ -2766,7 +2766,7 @@
     {
       "id": "w02_0141",
       "theme": 2,
-      "nl": "small talk",
+      "nl": "smalltalk",
       "article": "de",
       "en": "small talk",
       "tags": []
@@ -3198,7 +3198,7 @@
     {
       "id": "w02_0195",
       "theme": 2,
-      "nl": "housewarming party",
+      "nl": "housewarming",
       "article": "de",
       "en": "housewarming party",
       "tags": []
@@ -4678,7 +4678,7 @@
     {
       "id": "w03_0179",
       "theme": 3,
-      "nl": "peer review",
+      "nl": "collegiale beoordeling",
       "article": "de",
       "en": "peer review",
       "tags": []
@@ -5942,7 +5942,7 @@
     {
       "id": "w04_0142",
       "theme": 4,
-      "nl": "assessment center",
+      "nl": "assessmentcenter",
       "article": "het",
       "en": "assessment centre",
       "tags": []
@@ -7086,7 +7086,7 @@
     {
       "id": "w05_0096",
       "theme": 5,
-      "nl": "breakout room",
+      "nl": "breakoutroom",
       "article": "de",
       "en": "breakout room",
       "tags": []
@@ -7878,7 +7878,7 @@
     {
       "id": "w05_0198",
       "theme": 5,
-      "nl": "weekelijkse update",
+      "nl": "wekelijkse update",
       "article": "de",
       "en": "weekly update",
       "tags": []
@@ -9014,9 +9014,9 @@
     {
       "id": "w06_0131",
       "theme": 6,
-      "nl": "mijn overheid",
+      "nl": "aangifte",
       "article": "de",
-      "en": "MijnOverheid",
+      "en": "declaration / registration",
       "tags": []
     },
     {

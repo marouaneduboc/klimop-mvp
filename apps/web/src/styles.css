@@ -250,39 +250,50 @@ button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor
   border-color:rgba(255,255,255,0.3);
   transform:scale(1.03);
 }
-/* Grammar option buttons: neutral by default, no blue; clear green/red on feedback */
-.grammarOptionBtn{
+/* De of Het + Grammar: solid feedback so it’s visible for the whole delay */
+button.deofhetBtn.feedback-correct{
+  background:#15803d;
+  border-color:#16a34a;
+  color:#fff;
+}
+button.deofhetBtn.feedback-wrong{
+  background:#b91c1c;
+  border-color:#dc2626;
+  color:#fef2f2;
+}
+button.deofhetBtn.feedback-correct:disabled,
+button.deofhetBtn.feedback-wrong:disabled{
+  opacity:1;
+}
+/* Grammar MC options: same neutral base as De/Het, full-width in column */
+button.grammarOptionBtn{
   min-width:120px;
+  width:100%;
   padding:16px 28px;
   font-size:22px;
   font-weight:700;
   border-radius:16px;
-  transition:background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition:background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   background:rgba(255,255,255,0.08);
   border:2px solid rgba(255,255,255,0.2);
   color:rgba(255,255,255,0.92);
 }
-.grammarOptionBtn:hover:not(:disabled){
+button.grammarOptionBtn:hover:not(:disabled){
   background:rgba(255,255,255,0.12);
   border-color:rgba(255,255,255,0.3);
-  transform:scale(1.02);
 }
-.grammarOptionBtn:disabled{
-  cursor:not-allowed;
-}
-.grammarOptionBtn.grammarOptionBtn-correct{
+button.grammarOptionBtn.is-correct{
   background:#15803d;
-  border-color:#22c55e;
+  border-color:#16a34a;
   color:#fff;
-  transform:scale(1.02);
 }
-.grammarOptionBtn.grammarOptionBtn-wrong{
+button.grammarOptionBtn.is-wrong{
   background:#b91c1c;
-  border-color:#f87171;
-  color:#fecaca;
+  border-color:#dc2626;
+  color:#fef2f2;
 }
-.grammarOptionBtn.grammarOptionBtn-correct:disabled,
-.grammarOptionBtn.grammarOptionBtn-wrong:disabled{
+button.grammarOptionBtn.is-correct:disabled,
+button.grammarOptionBtn.is-wrong:disabled{
   opacity:1;
 }
 .deofhetSpeak{
