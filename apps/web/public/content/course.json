@@ -876,6 +876,374 @@
       "tags": []
     },
     {
+      "id": "t01_0104",
+      "theme": 1,
+      "nl": "achternaam",
+      "article": "de",
+      "en": "surname",
+      "tags": []
+    },
+    {
+      "id": "t01_0105",
+      "theme": 1,
+      "nl": "voornaam",
+      "article": "de",
+      "en": "first name",
+      "tags": []
+    },
+    {
+      "id": "t01_0106",
+      "theme": 1,
+      "nl": "beroep",
+      "article": "het",
+      "en": "profession",
+      "tags": []
+    },
+    {
+      "id": "t01_0107",
+      "theme": 1,
+      "nl": "leeftijd",
+      "article": "de",
+      "en": "age",
+      "tags": []
+    },
+    {
+      "id": "t01_0108",
+      "theme": 1,
+      "nl": "nationaliteit",
+      "article": "de",
+      "en": "nationality",
+      "tags": []
+    },
+    {
+      "id": "t01_0109",
+      "theme": 1,
+      "nl": "geboorteplaats",
+      "article": "de",
+      "en": "place of birth",
+      "tags": []
+    },
+    {
+      "id": "t01_0110",
+      "theme": 1,
+      "nl": "e-mailadres",
+      "article": "het",
+      "en": "email address",
+      "tags": []
+    },
+    {
+      "id": "t01_0111",
+      "theme": 1,
+      "nl": "leerkracht",
+      "article": "de",
+      "en": "teacher",
+      "tags": []
+    },
+    {
+      "id": "t01_0112",
+      "theme": 1,
+      "nl": "formulier",
+      "article": "het",
+      "en": "form",
+      "tags": []
+    },
+    {
+      "id": "t01_0113",
+      "theme": 1,
+      "nl": "identiteitskaart",
+      "article": "de",
+      "en": "ID card",
+      "tags": []
+    },
+    {
+      "id": "t01_0114",
+      "theme": 1,
+      "nl": "visum",
+      "article": "het",
+      "en": "visa",
+      "tags": []
+    },
+    {
+      "id": "t01_0115",
+      "theme": 1,
+      "nl": "verblijfsvergunning",
+      "article": "de",
+      "en": "residence permit",
+      "tags": []
+    },
+    {
+      "id": "t01_0116",
+      "theme": 1,
+      "nl": "geslacht",
+      "article": "het",
+      "en": "gender",
+      "tags": []
+    },
+    {
+      "id": "t01_0117",
+      "theme": 1,
+      "nl": "burgerlijke staat",
+      "article": "de",
+      "en": "marital status",
+      "tags": []
+    },
+    {
+      "id": "t01_0118",
+      "theme": 1,
+      "nl": "geboorteland",
+      "article": "het",
+      "en": "country of birth",
+      "tags": []
+    },
+    {
+      "id": "t01_0119",
+      "theme": 1,
+      "nl": "wijk",
+      "article": "de",
+      "en": "district",
+      "tags": []
+    },
+    {
+      "id": "t01_0120",
+      "theme": 1,
+      "nl": "provincie",
+      "article": "de",
+      "en": "province",
+      "tags": []
+    },
+    {
+      "id": "t01_0121",
+      "theme": 1,
+      "nl": "regio",
+      "article": "de",
+      "en": "region",
+      "tags": []
+    },
+    {
+      "id": "t01_0122",
+      "theme": 1,
+      "nl": "dialect",
+      "article": "het",
+      "en": "dialect",
+      "tags": []
+    },
+    {
+      "id": "t01_0123",
+      "theme": 1,
+      "nl": "accent",
+      "article": "het",
+      "en": "accent",
+      "tags": []
+    },
+    {
+      "id": "t01_0124",
+      "theme": 1,
+      "nl": "uitspraak",
+      "article": "de",
+      "en": "pronunciation",
+      "tags": []
+    },
+    {
+      "id": "t01_0125",
+      "theme": 1,
+      "nl": "grammatica",
+      "article": "de",
+      "en": "grammar",
+      "tags": []
+    },
+    {
+      "id": "t01_0126",
+      "theme": 1,
+      "nl": "spelling",
+      "article": "de",
+      "en": "spelling",
+      "tags": []
+    },
+    {
+      "id": "t01_0127",
+      "theme": 1,
+      "nl": "klasgenoot",
+      "article": "de",
+      "en": "classmate",
+      "tags": []
+    },
+    {
+      "id": "t01_0128",
+      "theme": 1,
+      "nl": "studie",
+      "article": "de",
+      "en": "study",
+      "tags": []
+    },
+    {
+      "id": "t01_0129",
+      "theme": 1,
+      "nl": "opleiding",
+      "article": "de",
+      "en": "education",
+      "tags": []
+    },
+    {
+      "id": "t01_0130",
+      "theme": 1,
+      "nl": "diploma",
+      "article": "het",
+      "en": "diploma",
+      "tags": []
+    },
+    {
+      "id": "t01_0131",
+      "theme": 1,
+      "nl": "certificaat",
+      "article": "het",
+      "en": "certificate",
+      "tags": []
+    },
+    {
+      "id": "t01_0132",
+      "theme": 1,
+      "nl": "examen",
+      "article": "het",
+      "en": "exam",
+      "tags": []
+    },
+    {
+      "id": "t01_0133",
+      "theme": 1,
+      "nl": "lesrooster",
+      "article": "het",
+      "en": "schedule",
+      "tags": []
+    },
+    {
+      "id": "t01_0134",
+      "theme": 1,
+      "nl": "schooljaar",
+      "article": "het",
+      "en": "school year",
+      "tags": []
+    },
+    {
+      "id": "t01_0135",
+      "theme": 1,
+      "nl": "semester",
+      "article": "het",
+      "en": "semester",
+      "tags": []
+    },
+    {
+      "id": "t01_0136",
+      "theme": 1,
+      "nl": "trimester",
+      "article": "het",
+      "en": "trimester",
+      "tags": []
+    },
+    {
+      "id": "t01_0137",
+      "theme": 1,
+      "nl": "introductie",
+      "article": "de",
+      "en": "introduction",
+      "tags": []
+    },
+    {
+      "id": "t01_0138",
+      "theme": 1,
+      "nl": "presentatie",
+      "article": "de",
+      "en": "presentation",
+      "tags": []
+    },
+    {
+      "id": "t01_0139",
+      "theme": 1,
+      "nl": "netwerken",
+      "article": null,
+      "en": "to network",
+      "tags": []
+    },
+    {
+      "id": "t01_0140",
+      "theme": 1,
+      "nl": "contactgegevens",
+      "article": "de",
+      "en": "contact details",
+      "tags": []
+    },
+    {
+      "id": "t01_0141",
+      "theme": 1,
+      "nl": "linkedin",
+      "article": null,
+      "en": "LinkedIn",
+      "tags": []
+    },
+    {
+      "id": "t01_0142",
+      "theme": 1,
+      "nl": "profiel",
+      "article": "het",
+      "en": "profile",
+      "tags": []
+    },
+    {
+      "id": "t01_0143",
+      "theme": 1,
+      "nl": "werkgever",
+      "article": "de",
+      "en": "employer",
+      "tags": []
+    },
+    {
+      "id": "t01_0144",
+      "theme": 1,
+      "nl": "werknemer",
+      "article": "de",
+      "en": "employee",
+      "tags": []
+    },
+    {
+      "id": "t01_0145",
+      "theme": 1,
+      "nl": "stage",
+      "article": "de",
+      "en": "internship",
+      "tags": []
+    },
+    {
+      "id": "t01_0146",
+      "theme": 1,
+      "nl": "sollicitatie",
+      "article": "de",
+      "en": "job application",
+      "tags": []
+    },
+    {
+      "id": "t01_0147",
+      "theme": 1,
+      "nl": "cv",
+      "article": "het",
+      "en": "CV",
+      "tags": []
+    },
+    {
+      "id": "t01_0148",
+      "theme": 1,
+      "nl": "sollicitatiebrief",
+      "article": "de",
+      "en": "cover letter",
+      "tags": []
+    },
+    {
+      "id": "t01_0149",
+      "theme": 1,
+      "nl": "vacature",
+      "article": "de",
+      "en": "vacancy",
+      "tags": []
+    },
+    {
       "id": "t02_0000",
       "theme": 2,
       "nl": "gaat",
@@ -1681,6 +2049,398 @@
       "nl": "verdrietig",
       "article": null,
       "en": "sad",
+      "tags": []
+    },
+    {
+      "id": "t02_0101",
+      "theme": 2,
+      "nl": "humor",
+      "article": "de",
+      "en": "mood",
+      "tags": []
+    },
+    {
+      "id": "t02_0102",
+      "theme": 2,
+      "nl": "gevoel",
+      "article": "het",
+      "en": "feeling",
+      "tags": []
+    },
+    {
+      "id": "t02_0103",
+      "theme": 2,
+      "nl": "emotie",
+      "article": "de",
+      "en": "emotion",
+      "tags": []
+    },
+    {
+      "id": "t02_0104",
+      "theme": 2,
+      "nl": "blij",
+      "article": null,
+      "en": "happy",
+      "tags": []
+    },
+    {
+      "id": "t02_0105",
+      "theme": 2,
+      "nl": "boos",
+      "article": null,
+      "en": "angry",
+      "tags": []
+    },
+    {
+      "id": "t02_0106",
+      "theme": 2,
+      "nl": "energiek",
+      "article": null,
+      "en": "energetic",
+      "tags": []
+    },
+    {
+      "id": "t02_0107",
+      "theme": 2,
+      "nl": "zenuwachtig",
+      "article": null,
+      "en": "nervous",
+      "tags": []
+    },
+    {
+      "id": "t02_0108",
+      "theme": 2,
+      "nl": "gestrest",
+      "article": null,
+      "en": "stressed",
+      "tags": []
+    },
+    {
+      "id": "t02_0109",
+      "theme": 2,
+      "nl": "optimistisch",
+      "article": null,
+      "en": "optimistic",
+      "tags": []
+    },
+    {
+      "id": "t02_0110",
+      "theme": 2,
+      "nl": "pessimistisch",
+      "article": null,
+      "en": "pessimistic",
+      "tags": []
+    },
+    {
+      "id": "t02_0111",
+      "theme": 2,
+      "nl": "enthousiast",
+      "article": null,
+      "en": "enthusiastic",
+      "tags": []
+    },
+    {
+      "id": "t02_0112",
+      "theme": 2,
+      "nl": "verrast",
+      "article": null,
+      "en": "surprised",
+      "tags": []
+    },
+    {
+      "id": "t02_0113",
+      "theme": 2,
+      "nl": "bezorgd",
+      "article": null,
+      "en": "worried",
+      "tags": []
+    },
+    {
+      "id": "t02_0114",
+      "theme": 2,
+      "nl": "tevreden",
+      "article": null,
+      "en": "satisfied",
+      "tags": []
+    },
+    {
+      "id": "t02_0115",
+      "theme": 2,
+      "nl": "ongelukkig",
+      "article": null,
+      "en": "unhappy",
+      "tags": []
+    },
+    {
+      "id": "t02_0116",
+      "theme": 2,
+      "nl": "kalm",
+      "article": null,
+      "en": "calm",
+      "tags": []
+    },
+    {
+      "id": "t02_0117",
+      "theme": 2,
+      "nl": "opgewonden",
+      "article": null,
+      "en": "excited",
+      "tags": []
+    },
+    {
+      "id": "t02_0118",
+      "theme": 2,
+      "nl": "verveeld",
+      "article": null,
+      "en": "bored",
+      "tags": []
+    },
+    {
+      "id": "t02_0119",
+      "theme": 2,
+      "nl": "nieuwsgierig",
+      "article": null,
+      "en": "curious",
+      "tags": []
+    },
+    {
+      "id": "t02_0120",
+      "theme": 2,
+      "nl": "trots",
+      "article": null,
+      "en": "proud",
+      "tags": []
+    },
+    {
+      "id": "t02_0121",
+      "theme": 2,
+      "nl": "verlegen",
+      "article": null,
+      "en": "shy",
+      "tags": []
+    },
+    {
+      "id": "t02_0122",
+      "theme": 2,
+      "nl": "zelfverzekerd",
+      "article": null,
+      "en": "confident",
+      "tags": []
+    },
+    {
+      "id": "t02_0123",
+      "theme": 2,
+      "nl": "onzeker",
+      "article": null,
+      "en": "uncertain",
+      "tags": []
+    },
+    {
+      "id": "t02_0124",
+      "theme": 2,
+      "nl": "teleurgesteld",
+      "article": null,
+      "en": "disappointed",
+      "tags": []
+    },
+    {
+      "id": "t02_0125",
+      "theme": 2,
+      "nl": "hoopvol",
+      "article": null,
+      "en": "hopeful",
+      "tags": []
+    },
+    {
+      "id": "t02_0126",
+      "theme": 2,
+      "nl": "wanhopig",
+      "article": null,
+      "en": "desperate",
+      "tags": []
+    },
+    {
+      "id": "t02_0127",
+      "theme": 2,
+      "nl": "gul",
+      "article": null,
+      "en": "generous",
+      "tags": []
+    },
+    {
+      "id": "t02_0128",
+      "theme": 2,
+      "nl": "vriendelijk",
+      "article": null,
+      "en": "friendly",
+      "tags": []
+    },
+    {
+      "id": "t02_0129",
+      "theme": 2,
+      "nl": "aardig",
+      "article": null,
+      "en": "nice",
+      "tags": []
+    },
+    {
+      "id": "t02_0130",
+      "theme": 2,
+      "nl": "ruw",
+      "article": null,
+      "en": "rough",
+      "tags": []
+    },
+    {
+      "id": "t02_0131",
+      "theme": 2,
+      "nl": "gezelligheid",
+      "article": "de",
+      "en": "coziness",
+      "tags": []
+    },
+    {
+      "id": "t02_0132",
+      "theme": 2,
+      "nl": "sfeer",
+      "article": "de",
+      "en": "atmosphere",
+      "tags": []
+    },
+    {
+      "id": "t02_0133",
+      "theme": 2,
+      "nl": "gesprek",
+      "article": "het",
+      "en": "conversation",
+      "tags": []
+    },
+    {
+      "id": "t02_0134",
+      "theme": 2,
+      "nl": "onderwerp",
+      "article": "het",
+      "en": "topic",
+      "tags": []
+    },
+    {
+      "id": "t02_0135",
+      "theme": 2,
+      "nl": "mening",
+      "article": "de",
+      "en": "opinion",
+      "tags": []
+    },
+    {
+      "id": "t02_0136",
+      "theme": 2,
+      "nl": "advies",
+      "article": "het",
+      "en": "advice",
+      "tags": []
+    },
+    {
+      "id": "t02_0137",
+      "theme": 2,
+      "nl": "steun",
+      "article": "de",
+      "en": "support",
+      "tags": []
+    },
+    {
+      "id": "t02_0138",
+      "theme": 2,
+      "nl": "troost",
+      "article": "de",
+      "en": "comfort",
+      "tags": []
+    },
+    {
+      "id": "t02_0139",
+      "theme": 2,
+      "nl": "aanmoediging",
+      "article": "de",
+      "en": "encouragement",
+      "tags": []
+    },
+    {
+      "id": "t02_0140",
+      "theme": 2,
+      "nl": "compliment",
+      "article": "het",
+      "en": "compliment",
+      "tags": []
+    },
+    {
+      "id": "t02_0141",
+      "theme": 2,
+      "nl": "glimlach",
+      "article": "de",
+      "en": "smile",
+      "tags": []
+    },
+    {
+      "id": "t02_0142",
+      "theme": 2,
+      "nl": "lach",
+      "article": "de",
+      "en": "laugh",
+      "tags": []
+    },
+    {
+      "id": "t02_0143",
+      "theme": 2,
+      "nl": "huilen",
+      "article": null,
+      "en": "to cry",
+      "tags": []
+    },
+    {
+      "id": "t02_0144",
+      "theme": 2,
+      "nl": "zuchten",
+      "article": null,
+      "en": "to sigh",
+      "tags": []
+    },
+    {
+      "id": "t02_0145",
+      "theme": 2,
+      "nl": "juichen",
+      "article": null,
+      "en": "to cheer",
+      "tags": []
+    },
+    {
+      "id": "t02_0146",
+      "theme": 2,
+      "nl": "klagen",
+      "article": null,
+      "en": "to complain",
+      "tags": []
+    },
+    {
+      "id": "t02_0147",
+      "theme": 2,
+      "nl": "roddelen",
+      "article": null,
+      "en": "to gossip",
+      "tags": []
+    },
+    {
+      "id": "t02_0148",
+      "theme": 2,
+      "nl": "flirten",
+      "article": null,
+      "en": "to flirt",
+      "tags": []
+    },
+    {
+      "id": "t02_0149",
+      "theme": 2,
+      "nl": "empathie",
+      "article": "de",
+      "en": "empathy",
       "tags": []
     },
     {
@@ -2612,6 +3372,278 @@
       "tags": []
     },
     {
+      "id": "t03_0116",
+      "theme": 3,
+      "nl": "schoonmoeder",
+      "article": "de",
+      "en": "mother-in-law",
+      "tags": []
+    },
+    {
+      "id": "t03_0117",
+      "theme": 3,
+      "nl": "schoonvader",
+      "article": "de",
+      "en": "father-in-law",
+      "tags": []
+    },
+    {
+      "id": "t03_0118",
+      "theme": 3,
+      "nl": "stiefmoeder",
+      "article": "de",
+      "en": "stepmother",
+      "tags": []
+    },
+    {
+      "id": "t03_0119",
+      "theme": 3,
+      "nl": "stiefvader",
+      "article": "de",
+      "en": "stepfather",
+      "tags": []
+    },
+    {
+      "id": "t03_0120",
+      "theme": 3,
+      "nl": "stiefbroer",
+      "article": "de",
+      "en": "stepbrother",
+      "tags": []
+    },
+    {
+      "id": "t03_0121",
+      "theme": 3,
+      "nl": "stiefzus",
+      "article": "de",
+      "en": "stepsister",
+      "tags": []
+    },
+    {
+      "id": "t03_0122",
+      "theme": 3,
+      "nl": "pleegkind",
+      "article": "het",
+      "en": "foster child",
+      "tags": []
+    },
+    {
+      "id": "t03_0123",
+      "theme": 3,
+      "nl": "adoptiekind",
+      "article": "het",
+      "en": "adopted child",
+      "tags": []
+    },
+    {
+      "id": "t03_0124",
+      "theme": 3,
+      "nl": "peetvader",
+      "article": "de",
+      "en": "godfather",
+      "tags": []
+    },
+    {
+      "id": "t03_0125",
+      "theme": 3,
+      "nl": "peetmoeder",
+      "article": "de",
+      "en": "godmother",
+      "tags": []
+    },
+    {
+      "id": "t03_0126",
+      "theme": 3,
+      "nl": "petekind",
+      "article": "het",
+      "en": "godchild",
+      "tags": []
+    },
+    {
+      "id": "t03_0127",
+      "theme": 3,
+      "nl": "achterneef",
+      "article": "de",
+      "en": "great-nephew",
+      "tags": []
+    },
+    {
+      "id": "t03_0128",
+      "theme": 3,
+      "nl": "achternicht",
+      "article": "de",
+      "en": "great-niece",
+      "tags": []
+    },
+    {
+      "id": "t03_0129",
+      "theme": 3,
+      "nl": "overgrootvader",
+      "article": "de",
+      "en": "great-grandfather",
+      "tags": []
+    },
+    {
+      "id": "t03_0130",
+      "theme": 3,
+      "nl": "overgrootmoeder",
+      "article": "de",
+      "en": "great-grandmother",
+      "tags": []
+    },
+    {
+      "id": "t03_0131",
+      "theme": 3,
+      "nl": "achterkleinkind",
+      "article": "het",
+      "en": "great-grandchild",
+      "tags": []
+    },
+    {
+      "id": "t03_0132",
+      "theme": 3,
+      "nl": "verwantschap",
+      "article": "de",
+      "en": "relationship",
+      "tags": []
+    },
+    {
+      "id": "t03_0133",
+      "theme": 3,
+      "nl": "bloedverwant",
+      "article": "de",
+      "en": "blood relative",
+      "tags": []
+    },
+    {
+      "id": "t03_0134",
+      "theme": 3,
+      "nl": "familielid",
+      "article": "het",
+      "en": "family member",
+      "tags": []
+    },
+    {
+      "id": "t03_0135",
+      "theme": 3,
+      "nl": "tweeling",
+      "article": "de",
+      "en": "twins",
+      "tags": []
+    },
+    {
+      "id": "t03_0136",
+      "theme": 3,
+      "nl": "eenling",
+      "article": "de",
+      "en": "only child",
+      "tags": []
+    },
+    {
+      "id": "t03_0137",
+      "theme": 3,
+      "nl": "huwelijk",
+      "article": "het",
+      "en": "marriage",
+      "tags": []
+    },
+    {
+      "id": "t03_0138",
+      "theme": 3,
+      "nl": "scheiding",
+      "article": "de",
+      "en": "divorce",
+      "tags": []
+    },
+    {
+      "id": "t03_0139",
+      "theme": 3,
+      "nl": "verloving",
+      "article": "de",
+      "en": "engagement",
+      "tags": []
+    },
+    {
+      "id": "t03_0140",
+      "theme": 3,
+      "nl": "scheiden",
+      "article": null,
+      "en": "to divorce",
+      "tags": []
+    },
+    {
+      "id": "t03_0141",
+      "theme": 3,
+      "nl": "opvoeden",
+      "article": null,
+      "en": "to raise",
+      "tags": []
+    },
+    {
+      "id": "t03_0142",
+      "theme": 3,
+      "nl": "opgroeien",
+      "article": null,
+      "en": "to grow up",
+      "tags": []
+    },
+    {
+      "id": "t03_0143",
+      "theme": 3,
+      "nl": "verzorgen",
+      "article": null,
+      "en": "to care for",
+      "tags": []
+    },
+    {
+      "id": "t03_0144",
+      "theme": 3,
+      "nl": "bezoeken",
+      "article": null,
+      "en": "to visit",
+      "tags": []
+    },
+    {
+      "id": "t03_0145",
+      "theme": 3,
+      "nl": "schrijven",
+      "article": null,
+      "en": "to write",
+      "tags": []
+    },
+    {
+      "id": "t03_0146",
+      "theme": 3,
+      "nl": "missen",
+      "article": null,
+      "en": "to miss",
+      "tags": []
+    },
+    {
+      "id": "t03_0147",
+      "theme": 3,
+      "nl": "erfenis",
+      "article": "de",
+      "en": "inheritance",
+      "tags": []
+    },
+    {
+      "id": "t03_0148",
+      "theme": 3,
+      "nl": "testament",
+      "article": "het",
+      "en": "will",
+      "tags": []
+    },
+    {
+      "id": "t03_0149",
+      "theme": 3,
+      "nl": "familienaam",
+      "article": "de",
+      "en": "family name",
+      "tags": []
+    },
+    {
       "id": "t04_0000",
       "theme": 4,
       "nl": "dagelijks",
@@ -3433,6 +4465,382 @@
       "nl": "vergadering",
       "article": "de",
       "en": "meeting",
+      "tags": []
+    },
+    {
+      "id": "t04_0103",
+      "theme": 4,
+      "nl": "wekker",
+      "article": "de",
+      "en": "alarm clock",
+      "tags": []
+    },
+    {
+      "id": "t04_0104",
+      "theme": 4,
+      "nl": "douche",
+      "article": "de",
+      "en": "shower",
+      "tags": []
+    },
+    {
+      "id": "t04_0105",
+      "theme": 4,
+      "nl": "bad",
+      "article": "het",
+      "en": "bath",
+      "tags": []
+    },
+    {
+      "id": "t04_0106",
+      "theme": 4,
+      "nl": "tandenborstel",
+      "article": "de",
+      "en": "toothbrush",
+      "tags": []
+    },
+    {
+      "id": "t04_0107",
+      "theme": 4,
+      "nl": "zeep",
+      "article": "de",
+      "en": "soap",
+      "tags": []
+    },
+    {
+      "id": "t04_0108",
+      "theme": 4,
+      "nl": "handdoek",
+      "article": "de",
+      "en": "towel",
+      "tags": []
+    },
+    {
+      "id": "t04_0109",
+      "theme": 4,
+      "nl": "scheren",
+      "article": null,
+      "en": "to shave",
+      "tags": []
+    },
+    {
+      "id": "t04_0110",
+      "theme": 4,
+      "nl": "uitkleden",
+      "article": null,
+      "en": "to undress",
+      "tags": []
+    },
+    {
+      "id": "t04_0111",
+      "theme": 4,
+      "nl": "opruimen",
+      "article": null,
+      "en": "to tidy up",
+      "tags": []
+    },
+    {
+      "id": "t04_0112",
+      "theme": 4,
+      "nl": "boodschappenlijst",
+      "article": "de",
+      "en": "shopping list",
+      "tags": []
+    },
+    {
+      "id": "t04_0113",
+      "theme": 4,
+      "nl": "oven",
+      "article": "de",
+      "en": "oven",
+      "tags": []
+    },
+    {
+      "id": "t04_0114",
+      "theme": 4,
+      "nl": "fornuis",
+      "article": "het",
+      "en": "stove",
+      "tags": []
+    },
+    {
+      "id": "t04_0115",
+      "theme": 4,
+      "nl": "koelkast",
+      "article": "de",
+      "en": "fridge",
+      "tags": []
+    },
+    {
+      "id": "t04_0116",
+      "theme": 4,
+      "nl": "vriezer",
+      "article": "de",
+      "en": "freezer",
+      "tags": []
+    },
+    {
+      "id": "t04_0117",
+      "theme": 4,
+      "nl": "afval",
+      "article": "het",
+      "en": "garbage",
+      "tags": []
+    },
+    {
+      "id": "t04_0118",
+      "theme": 4,
+      "nl": "recycling",
+      "article": "de",
+      "en": "recycling",
+      "tags": []
+    },
+    {
+      "id": "t04_0119",
+      "theme": 4,
+      "nl": "planten",
+      "article": null,
+      "en": "to water plants",
+      "tags": []
+    },
+    {
+      "id": "t04_0120",
+      "theme": 4,
+      "nl": "gymnastiek",
+      "article": "de",
+      "en": "gymnastics",
+      "tags": []
+    },
+    {
+      "id": "t04_0121",
+      "theme": 4,
+      "nl": "yoga",
+      "article": "de",
+      "en": "yoga",
+      "tags": []
+    },
+    {
+      "id": "t04_0122",
+      "theme": 4,
+      "nl": "wakker worden",
+      "article": null,
+      "en": "to wake up",
+      "tags": []
+    },
+    {
+      "id": "t04_0123",
+      "theme": 4,
+      "nl": "uitrusten",
+      "article": null,
+      "en": "to rest",
+      "tags": []
+    },
+    {
+      "id": "t04_0124",
+      "theme": 4,
+      "nl": "studeren",
+      "article": null,
+      "en": "to study",
+      "tags": []
+    },
+    {
+      "id": "t04_0125",
+      "theme": 4,
+      "nl": "wekkertje",
+      "article": "het",
+      "en": "alarm",
+      "tags": []
+    },
+    {
+      "id": "t04_0126",
+      "theme": 4,
+      "nl": "wasmachine",
+      "article": "de",
+      "en": "washing machine",
+      "tags": []
+    },
+    {
+      "id": "t04_0127",
+      "theme": 4,
+      "nl": "droger",
+      "article": "de",
+      "en": "dryer",
+      "tags": []
+    },
+    {
+      "id": "t04_0128",
+      "theme": 4,
+      "nl": "vaatwasser",
+      "article": "de",
+      "en": "dishwasher",
+      "tags": []
+    },
+    {
+      "id": "t04_0129",
+      "theme": 4,
+      "nl": "stofzuiger",
+      "article": "de",
+      "en": "vacuum cleaner",
+      "tags": []
+    },
+    {
+      "id": "t04_0130",
+      "theme": 4,
+      "nl": "strijkijzer",
+      "article": "het",
+      "en": "iron",
+      "tags": []
+    },
+    {
+      "id": "t04_0131",
+      "theme": 4,
+      "nl": "afwasborstel",
+      "article": "de",
+      "en": "dish brush",
+      "tags": []
+    },
+    {
+      "id": "t04_0132",
+      "theme": 4,
+      "nl": "schoonmaakmiddel",
+      "article": "het",
+      "en": "cleaning product",
+      "tags": []
+    },
+    {
+      "id": "t04_0133",
+      "theme": 4,
+      "nl": "wasmiddel",
+      "article": "het",
+      "en": "laundry detergent",
+      "tags": []
+    },
+    {
+      "id": "t04_0134",
+      "theme": 4,
+      "nl": "weekritme",
+      "article": "het",
+      "en": "weekly routine",
+      "tags": []
+    },
+    {
+      "id": "t04_0135",
+      "theme": 4,
+      "nl": "dagindeling",
+      "article": "de",
+      "en": "daily schedule",
+      "tags": []
+    },
+    {
+      "id": "t04_0136",
+      "theme": 4,
+      "nl": "ochtendritueel",
+      "article": "het",
+      "en": "morning routine",
+      "tags": []
+    },
+    {
+      "id": "t04_0137",
+      "theme": 4,
+      "nl": "avondritueel",
+      "article": "het",
+      "en": "evening routine",
+      "tags": []
+    },
+    {
+      "id": "t04_0138",
+      "theme": 4,
+      "nl": "haar wassen",
+      "article": null,
+      "en": "to wash hair",
+      "tags": []
+    },
+    {
+      "id": "t04_0139",
+      "theme": 4,
+      "nl": "gezicht wassen",
+      "article": null,
+      "en": "to wash face",
+      "tags": []
+    },
+    {
+      "id": "t04_0140",
+      "theme": 4,
+      "nl": "kleren aandoen",
+      "article": null,
+      "en": "to put on clothes",
+      "tags": []
+    },
+    {
+      "id": "t04_0141",
+      "theme": 4,
+      "nl": "bed opmaken",
+      "article": null,
+      "en": "to make bed",
+      "tags": []
+    },
+    {
+      "id": "t04_0142",
+      "theme": 4,
+      "nl": "vuilnis buiten zetten",
+      "article": null,
+      "en": "to take out trash",
+      "tags": []
+    },
+    {
+      "id": "t04_0143",
+      "theme": 4,
+      "nl": "post ophalen",
+      "article": null,
+      "en": "to get mail",
+      "tags": []
+    },
+    {
+      "id": "t04_0144",
+      "theme": 4,
+      "nl": "krant lezen",
+      "article": null,
+      "en": "to read newspaper",
+      "tags": []
+    },
+    {
+      "id": "t04_0145",
+      "theme": 4,
+      "nl": "hond uitlaten",
+      "article": null,
+      "en": "to walk dog",
+      "tags": []
+    },
+    {
+      "id": "t04_0146",
+      "theme": 4,
+      "nl": "thee drinken",
+      "article": null,
+      "en": "to drink tea",
+      "tags": []
+    },
+    {
+      "id": "t04_0147",
+      "theme": 4,
+      "nl": "lunch klaarmaken",
+      "article": null,
+      "en": "to prepare lunch",
+      "tags": []
+    },
+    {
+      "id": "t04_0148",
+      "theme": 4,
+      "nl": "dagelijkse routine",
+      "article": "de",
+      "en": "daily routine",
+      "tags": []
+    },
+    {
+      "id": "t04_0149",
+      "theme": 4,
+      "nl": "wekelijkse taken",
+      "article": "de",
+      "en": "weekly tasks",
       "tags": []
     },
     {
@@ -4265,6 +5673,374 @@
       "nl": "meteen",
       "article": null,
       "en": "immediately",
+      "tags": []
+    },
+    {
+      "id": "t05_0104",
+      "theme": 5,
+      "nl": "decennium",
+      "article": "het",
+      "en": "decade",
+      "tags": []
+    },
+    {
+      "id": "t05_0105",
+      "theme": 5,
+      "nl": "eeuw",
+      "article": "de",
+      "en": "century",
+      "tags": []
+    },
+    {
+      "id": "t05_0106",
+      "theme": 5,
+      "nl": "middernacht",
+      "article": "de",
+      "en": "midnight",
+      "tags": []
+    },
+    {
+      "id": "t05_0107",
+      "theme": 5,
+      "nl": "zonsopgang",
+      "article": "de",
+      "en": "sunrise",
+      "tags": []
+    },
+    {
+      "id": "t05_0108",
+      "theme": 5,
+      "nl": "zonsondergang",
+      "article": "de",
+      "en": "sunset",
+      "tags": []
+    },
+    {
+      "id": "t05_0109",
+      "theme": 5,
+      "nl": "feestdag",
+      "article": "de",
+      "en": "holiday",
+      "tags": []
+    },
+    {
+      "id": "t05_0110",
+      "theme": 5,
+      "nl": "deadline",
+      "article": "de",
+      "en": "deadline",
+      "tags": []
+    },
+    {
+      "id": "t05_0111",
+      "theme": 5,
+      "nl": "tijdschema",
+      "article": "het",
+      "en": "schedule",
+      "tags": []
+    },
+    {
+      "id": "t05_0112",
+      "theme": 5,
+      "nl": "kalender",
+      "article": "de",
+      "en": "calendar",
+      "tags": []
+    },
+    {
+      "id": "t05_0113",
+      "theme": 5,
+      "nl": "kwartier",
+      "article": "het",
+      "en": "quarter",
+      "tags": []
+    },
+    {
+      "id": "t05_0114",
+      "theme": 5,
+      "nl": "halfuur",
+      "article": "het",
+      "en": "half hour",
+      "tags": []
+    },
+    {
+      "id": "t05_0115",
+      "theme": 5,
+      "nl": "ochtendgloren",
+      "article": "het",
+      "en": "dawn",
+      "tags": []
+    },
+    {
+      "id": "t05_0116",
+      "theme": 5,
+      "nl": "schemering",
+      "article": "de",
+      "en": "dusk",
+      "tags": []
+    },
+    {
+      "id": "t05_0117",
+      "theme": 5,
+      "nl": "tijdstip",
+      "article": "het",
+      "en": "point in time",
+      "tags": []
+    },
+    {
+      "id": "t05_0118",
+      "theme": 5,
+      "nl": "tijdzone",
+      "article": "de",
+      "en": "time zone",
+      "tags": []
+    },
+    {
+      "id": "t05_0119",
+      "theme": 5,
+      "nl": "zomertijd",
+      "article": "de",
+      "en": "summer time",
+      "tags": []
+    },
+    {
+      "id": "t05_0120",
+      "theme": 5,
+      "nl": "wintertijd",
+      "article": "de",
+      "en": "winter time",
+      "tags": []
+    },
+    {
+      "id": "t05_0121",
+      "theme": 5,
+      "nl": "jaarwisseling",
+      "article": "de",
+      "en": "New Year",
+      "tags": []
+    },
+    {
+      "id": "t05_0122",
+      "theme": 5,
+      "nl": "oudjaar",
+      "article": "het",
+      "en": "New Year's Eve",
+      "tags": []
+    },
+    {
+      "id": "t05_0123",
+      "theme": 5,
+      "nl": "nieuwjaar",
+      "article": "het",
+      "en": "New Year's Day",
+      "tags": []
+    },
+    {
+      "id": "t05_0124",
+      "theme": 5,
+      "nl": "herdenkingsdag",
+      "article": "de",
+      "en": "memorial day",
+      "tags": []
+    },
+    {
+      "id": "t05_0125",
+      "theme": 5,
+      "nl": "vrije dag",
+      "article": "de",
+      "en": "day off",
+      "tags": []
+    },
+    {
+      "id": "t05_0126",
+      "theme": 5,
+      "nl": "werkdag",
+      "article": "de",
+      "en": "workday",
+      "tags": []
+    },
+    {
+      "id": "t05_0127",
+      "theme": 5,
+      "nl": "weekdag",
+      "article": "de",
+      "en": "weekday",
+      "tags": []
+    },
+    {
+      "id": "t05_0128",
+      "theme": 5,
+      "nl": "verlofdag",
+      "article": "de",
+      "en": "leave day",
+      "tags": []
+    },
+    {
+      "id": "t05_0129",
+      "theme": 5,
+      "nl": "ziekedag",
+      "article": "de",
+      "en": "sick day",
+      "tags": []
+    },
+    {
+      "id": "t05_0130",
+      "theme": 5,
+      "nl": "tijdsduur",
+      "article": "de",
+      "en": "duration",
+      "tags": []
+    },
+    {
+      "id": "t05_0131",
+      "theme": 5,
+      "nl": "tijdspanne",
+      "article": "de",
+      "en": "time span",
+      "tags": []
+    },
+    {
+      "id": "t05_0132",
+      "theme": 5,
+      "nl": "verleden",
+      "article": "het",
+      "en": "past",
+      "tags": []
+    },
+    {
+      "id": "t05_0133",
+      "theme": 5,
+      "nl": "heden",
+      "article": "het",
+      "en": "present",
+      "tags": []
+    },
+    {
+      "id": "t05_0134",
+      "theme": 5,
+      "nl": "toekomst",
+      "article": "de",
+      "en": "future",
+      "tags": []
+    },
+    {
+      "id": "t05_0135",
+      "theme": 5,
+      "nl": "voortgang",
+      "article": "de",
+      "en": "progress",
+      "tags": []
+    },
+    {
+      "id": "t05_0136",
+      "theme": 5,
+      "nl": "vertraging",
+      "article": "de",
+      "en": "delay",
+      "tags": []
+    },
+    {
+      "id": "t05_0137",
+      "theme": 5,
+      "nl": "versnelling",
+      "article": "de",
+      "en": "acceleration",
+      "tags": []
+    },
+    {
+      "id": "t05_0138",
+      "theme": 5,
+      "nl": "pauze",
+      "article": "de",
+      "en": "break",
+      "tags": []
+    },
+    {
+      "id": "t05_0139",
+      "theme": 5,
+      "nl": "onderbreking",
+      "article": "de",
+      "en": "interruption",
+      "tags": []
+    },
+    {
+      "id": "t05_0140",
+      "theme": 5,
+      "nl": "voortzetting",
+      "article": "de",
+      "en": "continuation",
+      "tags": []
+    },
+    {
+      "id": "t05_0141",
+      "theme": 5,
+      "nl": "einde",
+      "article": "het",
+      "en": "end",
+      "tags": []
+    },
+    {
+      "id": "t05_0142",
+      "theme": 5,
+      "nl": "begin",
+      "article": "het",
+      "en": "beginning",
+      "tags": []
+    },
+    {
+      "id": "t05_0143",
+      "theme": 5,
+      "nl": "start",
+      "article": "de",
+      "en": "start",
+      "tags": []
+    },
+    {
+      "id": "t05_0144",
+      "theme": 5,
+      "nl": "finish",
+      "article": "de",
+      "en": "finish",
+      "tags": []
+    },
+    {
+      "id": "t05_0145",
+      "theme": 5,
+      "nl": "tijdig",
+      "article": null,
+      "en": "timely",
+      "tags": []
+    },
+    {
+      "id": "t05_0146",
+      "theme": 5,
+      "nl": "tijdrekening",
+      "article": "de",
+      "en": "time reckoning",
+      "tags": []
+    },
+    {
+      "id": "t05_0147",
+      "theme": 5,
+      "nl": "tijdsaanduiding",
+      "article": "de",
+      "en": "time indication",
+      "tags": []
+    },
+    {
+      "id": "t05_0148",
+      "theme": 5,
+      "nl": "uurwerk",
+      "article": "het",
+      "en": "timepiece",
+      "tags": []
+    },
+    {
+      "id": "t05_0149",
+      "theme": 5,
+      "nl": "chronometer",
+      "article": "de",
+      "en": "chronometer",
       "tags": []
     },
     {
@@ -5185,6 +6961,286 @@
       "nl": "goed",
       "article": null,
       "en": "good",
+      "tags": []
+    },
+    {
+      "id": "t06_0115",
+      "theme": 6,
+      "nl": "beschikbaar",
+      "article": null,
+      "en": "available",
+      "tags": []
+    },
+    {
+      "id": "t06_0116",
+      "theme": 6,
+      "nl": "bezet",
+      "article": null,
+      "en": "busy",
+      "tags": []
+    },
+    {
+      "id": "t06_0117",
+      "theme": 6,
+      "nl": "plannen",
+      "article": null,
+      "en": "to plan",
+      "tags": []
+    },
+    {
+      "id": "t06_0118",
+      "theme": 6,
+      "nl": "annuleren",
+      "article": null,
+      "en": "to cancel",
+      "tags": []
+    },
+    {
+      "id": "t06_0119",
+      "theme": 6,
+      "nl": "uitstellen",
+      "article": null,
+      "en": "to postpone",
+      "tags": []
+    },
+    {
+      "id": "t06_0120",
+      "theme": 6,
+      "nl": "verzetten",
+      "article": null,
+      "en": "to reschedule",
+      "tags": []
+    },
+    {
+      "id": "t06_0121",
+      "theme": 6,
+      "nl": "bevestigen",
+      "article": null,
+      "en": "to confirm",
+      "tags": []
+    },
+    {
+      "id": "t06_0122",
+      "theme": 6,
+      "nl": "herinneren",
+      "article": null,
+      "en": "to remind",
+      "tags": []
+    },
+    {
+      "id": "t06_0123",
+      "theme": 6,
+      "nl": "herinnering",
+      "article": "de",
+      "en": "reminder",
+      "tags": []
+    },
+    {
+      "id": "t06_0124",
+      "theme": 6,
+      "nl": "notificatie",
+      "article": "de",
+      "en": "notification",
+      "tags": []
+    },
+    {
+      "id": "t06_0125",
+      "theme": 6,
+      "nl": "locatie",
+      "article": "de",
+      "en": "location",
+      "tags": []
+    },
+    {
+      "id": "t06_0126",
+      "theme": 6,
+      "nl": "route",
+      "article": "de",
+      "en": "route",
+      "tags": []
+    },
+    {
+      "id": "t06_0127",
+      "theme": 6,
+      "nl": "richting",
+      "article": "de",
+      "en": "direction",
+      "tags": []
+    },
+    {
+      "id": "t06_0128",
+      "theme": 6,
+      "nl": "navigatie",
+      "article": "de",
+      "en": "navigation",
+      "tags": []
+    },
+    {
+      "id": "t06_0129",
+      "theme": 6,
+      "nl": "parkeerplaats",
+      "article": "de",
+      "en": "parking",
+      "tags": []
+    },
+    {
+      "id": "t06_0130",
+      "theme": 6,
+      "nl": "ingang",
+      "article": "de",
+      "en": "entrance",
+      "tags": []
+    },
+    {
+      "id": "t06_0131",
+      "theme": 6,
+      "nl": "uitgang",
+      "article": "de",
+      "en": "exit",
+      "tags": []
+    },
+    {
+      "id": "t06_0132",
+      "theme": 6,
+      "nl": "receptie",
+      "article": "de",
+      "en": "reception",
+      "tags": []
+    },
+    {
+      "id": "t06_0133",
+      "theme": 6,
+      "nl": "wachtkamer",
+      "article": "de",
+      "en": "waiting room",
+      "tags": []
+    },
+    {
+      "id": "t06_0134",
+      "theme": 6,
+      "nl": "spreekkamer",
+      "article": "de",
+      "en": "consultation room",
+      "tags": []
+    },
+    {
+      "id": "t06_0135",
+      "theme": 6,
+      "nl": "conferentiezaal",
+      "article": "de",
+      "en": "conference room",
+      "tags": []
+    },
+    {
+      "id": "t06_0136",
+      "theme": 6,
+      "nl": "vergaderzaal",
+      "article": "de",
+      "en": "meeting room",
+      "tags": []
+    },
+    {
+      "id": "t06_0137",
+      "theme": 6,
+      "nl": "reserveren",
+      "article": null,
+      "en": "to reserve",
+      "tags": []
+    },
+    {
+      "id": "t06_0138",
+      "theme": 6,
+      "nl": "boeken",
+      "article": null,
+      "en": "to book",
+      "tags": []
+    },
+    {
+      "id": "t06_0139",
+      "theme": 6,
+      "nl": "inschrijven",
+      "article": null,
+      "en": "to register",
+      "tags": []
+    },
+    {
+      "id": "t06_0140",
+      "theme": 6,
+      "nl": "aanmelden",
+      "article": null,
+      "en": "to sign up",
+      "tags": []
+    },
+    {
+      "id": "t06_0141",
+      "theme": 6,
+      "nl": "afmelden",
+      "article": null,
+      "en": "to cancel",
+      "tags": []
+    },
+    {
+      "id": "t06_0142",
+      "theme": 6,
+      "nl": "deelnemen",
+      "article": null,
+      "en": "to participate",
+      "tags": []
+    },
+    {
+      "id": "t06_0143",
+      "theme": 6,
+      "nl": "aanwezig",
+      "article": null,
+      "en": "present",
+      "tags": []
+    },
+    {
+      "id": "t06_0144",
+      "theme": 6,
+      "nl": "afwezig",
+      "article": null,
+      "en": "absent",
+      "tags": []
+    },
+    {
+      "id": "t06_0145",
+      "theme": 6,
+      "nl": "afspraak maken",
+      "article": null,
+      "en": "to make an appointment",
+      "tags": []
+    },
+    {
+      "id": "t06_0146",
+      "theme": 6,
+      "nl": "afspraak afzeggen",
+      "article": null,
+      "en": "to cancel appointment",
+      "tags": []
+    },
+    {
+      "id": "t06_0147",
+      "theme": 6,
+      "nl": "beschikbaarheid",
+      "article": "de",
+      "en": "availability",
+      "tags": []
+    },
+    {
+      "id": "t06_0148",
+      "theme": 6,
+      "nl": "optijd",
+      "article": null,
+      "en": "on time",
+      "tags": []
+    },
+    {
+      "id": "t06_0149",
+      "theme": 6,
+      "nl": "te laat",
+      "article": null,
+      "en": "late",
       "tags": []
     },
     {
@@ -6169,6 +8225,222 @@
       "nl": "pot",
       "article": "de",
       "en": "pot",
+      "tags": []
+    },
+    {
+      "id": "t07_0123",
+      "theme": 7,
+      "nl": "voedsel",
+      "article": "het",
+      "en": "food",
+      "tags": []
+    },
+    {
+      "id": "t07_0124",
+      "theme": 7,
+      "nl": "drank",
+      "article": "de",
+      "en": "drink",
+      "tags": []
+    },
+    {
+      "id": "t07_0125",
+      "theme": 7,
+      "nl": "hapje",
+      "article": "het",
+      "en": "snack",
+      "tags": []
+    },
+    {
+      "id": "t07_0126",
+      "theme": 7,
+      "nl": "dessert",
+      "article": "het",
+      "en": "dessert",
+      "tags": []
+    },
+    {
+      "id": "t07_0127",
+      "theme": 7,
+      "nl": "voorgerecht",
+      "article": "het",
+      "en": "starter",
+      "tags": []
+    },
+    {
+      "id": "t07_0128",
+      "theme": 7,
+      "nl": "hoofdgerecht",
+      "article": "het",
+      "en": "main course",
+      "tags": []
+    },
+    {
+      "id": "t07_0129",
+      "theme": 7,
+      "nl": "nagerecht",
+      "article": "het",
+      "en": "dessert",
+      "tags": []
+    },
+    {
+      "id": "t07_0130",
+      "theme": 7,
+      "nl": "kruiden",
+      "article": "de",
+      "en": "herbs",
+      "tags": []
+    },
+    {
+      "id": "t07_0131",
+      "theme": 7,
+      "nl": "specerijen",
+      "article": "de",
+      "en": "spices",
+      "tags": []
+    },
+    {
+      "id": "t07_0132",
+      "theme": 7,
+      "nl": "saus",
+      "article": "de",
+      "en": "sauce",
+      "tags": []
+    },
+    {
+      "id": "t07_0133",
+      "theme": 7,
+      "nl": "marinade",
+      "article": "de",
+      "en": "marinade",
+      "tags": []
+    },
+    {
+      "id": "t07_0134",
+      "theme": 7,
+      "nl": "dressing",
+      "article": "de",
+      "en": "dressing",
+      "tags": []
+    },
+    {
+      "id": "t07_0135",
+      "theme": 7,
+      "nl": "margarine",
+      "article": "de",
+      "en": "margarine",
+      "tags": []
+    },
+    {
+      "id": "t07_0136",
+      "theme": 7,
+      "nl": "chocoladepasta",
+      "article": "de",
+      "en": "chocolate spread",
+      "tags": []
+    },
+    {
+      "id": "t07_0137",
+      "theme": 7,
+      "nl": "muesli",
+      "article": "de",
+      "en": "muesli",
+      "tags": []
+    },
+    {
+      "id": "t07_0138",
+      "theme": 7,
+      "nl": "cornflakes",
+      "article": "de",
+      "en": "cornflakes",
+      "tags": []
+    },
+    {
+      "id": "t07_0139",
+      "theme": 7,
+      "nl": "havermout",
+      "article": "de",
+      "en": "oatmeal",
+      "tags": []
+    },
+    {
+      "id": "t07_0140",
+      "theme": 7,
+      "nl": "mayonaise",
+      "article": "de",
+      "en": "mayonnaise",
+      "tags": []
+    },
+    {
+      "id": "t07_0141",
+      "theme": 7,
+      "nl": "mosterd",
+      "article": "de",
+      "en": "mustard",
+      "tags": []
+    },
+    {
+      "id": "t07_0142",
+      "theme": 7,
+      "nl": "ketchup",
+      "article": "de",
+      "en": "ketchup",
+      "tags": []
+    },
+    {
+      "id": "t07_0143",
+      "theme": 7,
+      "nl": "ketjap",
+      "article": "de",
+      "en": "soy sauce",
+      "tags": []
+    },
+    {
+      "id": "t07_0144",
+      "theme": 7,
+      "nl": "tahin",
+      "article": "de",
+      "en": "tahini",
+      "tags": []
+    },
+    {
+      "id": "t07_0145",
+      "theme": 7,
+      "nl": "hummus",
+      "article": "de",
+      "en": "hummus",
+      "tags": []
+    },
+    {
+      "id": "t07_0146",
+      "theme": 7,
+      "nl": "pesto",
+      "article": "de",
+      "en": "pesto",
+      "tags": []
+    },
+    {
+      "id": "t07_0147",
+      "theme": 7,
+      "nl": "kruidenmix",
+      "article": "de",
+      "en": "herb mix",
+      "tags": []
+    },
+    {
+      "id": "t07_0148",
+      "theme": 7,
+      "nl": "bouillon",
+      "article": "de",
+      "en": "stock",
+      "tags": []
+    },
+    {
+      "id": "t07_0149",
+      "theme": 7,
+      "nl": "bouillonblokje",
+      "article": "het",
+      "en": "stock cube",
       "tags": []
     },
     {
@@ -8609,6 +10881,150 @@
       "nl": "geldig",
       "article": null,
       "en": "valid",
+      "tags": []
+    },
+    {
+      "id": "t09_0132",
+      "theme": 9,
+      "nl": "winkelcentrum",
+      "article": "het",
+      "en": "shopping center",
+      "tags": []
+    },
+    {
+      "id": "t09_0133",
+      "theme": 9,
+      "nl": "winkelstraat",
+      "article": "de",
+      "en": "shopping street",
+      "tags": []
+    },
+    {
+      "id": "t09_0134",
+      "theme": 9,
+      "nl": "etalage",
+      "article": "de",
+      "en": "shop window",
+      "tags": []
+    },
+    {
+      "id": "t09_0135",
+      "theme": 9,
+      "nl": "pinautomaat",
+      "article": "de",
+      "en": "ATM",
+      "tags": []
+    },
+    {
+      "id": "t09_0136",
+      "theme": 9,
+      "nl": "betaalpas",
+      "article": "de",
+      "en": "debit card",
+      "tags": []
+    },
+    {
+      "id": "t09_0137",
+      "theme": 9,
+      "nl": "creditcard",
+      "article": "de",
+      "en": "credit card",
+      "tags": []
+    },
+    {
+      "id": "t09_0138",
+      "theme": 9,
+      "nl": "wisselgeld",
+      "article": "het",
+      "en": "change",
+      "tags": []
+    },
+    {
+      "id": "t09_0139",
+      "theme": 9,
+      "nl": "garantie",
+      "article": "de",
+      "en": "warranty",
+      "tags": []
+    },
+    {
+      "id": "t09_0140",
+      "theme": 9,
+      "nl": "retourneren",
+      "article": null,
+      "en": "to return",
+      "tags": []
+    },
+    {
+      "id": "t09_0141",
+      "theme": 9,
+      "nl": "ruilen",
+      "article": null,
+      "en": "to exchange",
+      "tags": []
+    },
+    {
+      "id": "t09_0142",
+      "theme": 9,
+      "nl": "uitverkoop",
+      "article": "de",
+      "en": "sale",
+      "tags": []
+    },
+    {
+      "id": "t09_0143",
+      "theme": 9,
+      "nl": "tweedehands",
+      "article": null,
+      "en": "second-hand",
+      "tags": []
+    },
+    {
+      "id": "t09_0144",
+      "theme": 9,
+      "nl": "voorraad",
+      "article": "de",
+      "en": "stock",
+      "tags": []
+    },
+    {
+      "id": "t09_0145",
+      "theme": 9,
+      "nl": "bestelling",
+      "article": "de",
+      "en": "order",
+      "tags": []
+    },
+    {
+      "id": "t09_0146",
+      "theme": 9,
+      "nl": "levering",
+      "article": "de",
+      "en": "delivery",
+      "tags": []
+    },
+    {
+      "id": "t09_0147",
+      "theme": 9,
+      "nl": "bezorging",
+      "article": "de",
+      "en": "delivery",
+      "tags": []
+    },
+    {
+      "id": "t09_0148",
+      "theme": 9,
+      "nl": "ophalen",
+      "article": null,
+      "en": "to pick up",
+      "tags": []
+    },
+    {
+      "id": "t09_0149",
+      "theme": 9,
+      "nl": "verpakking",
+      "article": "de",
+      "en": "packaging",
       "tags": []
     },
     {
