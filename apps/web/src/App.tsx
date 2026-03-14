@@ -25,22 +25,41 @@ type Course = { version:string; themes:{id:number;title:string}[]; vocab:Vocab[]
 type GrammarVerb = { id:string; infinitive:string; en:string; type:string; auxiliary:string; present:Record<string,string>; past:Record<string,string>; perfect:string }
 type GrammarData = { version:string; verbs:GrammarVerb[]; zullen?:{ present:Record<string,string>; past:Record<string,string> } }
 
-const LS = { reviews:'klimop.reviews.v1', stats:'klimop.stats.v1', settings:'klimop.settings.v1', difficult:'klimop.difficult.v1' }
+const LS = { reviews:'klimop.reviews.v1', stats:'klimop.stats.v1', settings:'klimop.settings.v1', difficult:'klimop.difficult.v1', deofhetHistory:'klimop.deofhet.history', grammarHistory:'klimop.grammar.history' }
+const USERS_LIST_KEY = 'klimop.users'
+const CURRENT_USER_KEY = 'klimop.currentUser'
+const DEHET_LS_BASE = 'klimop.deofhet.v2'
+const GRAMMAR_LS_BASE = 'klimop.grammar.v1'
+
+function userScopedKey(base:string, userId:string):string { return `${base}:u:${userId}` }
 const todayISO = ()=> new Date().toISOString().slice(0,10)
+type DaySnapshot = { date:string; correct:number; total:number }
+function updateDayHistory(key:string, correct:number, total:number):void{
+  const hist = loadJSON<DaySnapshot[]>(key, [])
+  const today = todayISO()
+  const idx = hist.findIndex(h=>h.date===today)
+  const entry:DaySnapshot = { date:today, correct, total }
+  const next = idx>=0 ? hist.map((h,i)=>i===idx ? entry : h) : [...hist, entry]
+  saveJSON(key, next.sort((a,b)=>a.date.localeCompare(b.date)).slice(-31))
+}
 const loadJSON = <T,>(k:string, f:T):T => { try{ const s=localStorage.getItem(k); return s? JSON.parse(s):f }catch{return f} }
 const saveJSON = (k:string,v:any)=> localStorage.setItem(k, JSON.stringify(v))
 
-const SCOPED_KEY_MIGRATED = 'klimop.reviews.scopedMigrated'
+const SCOPED_KEY_MIGRATED_BASE = 'klimop.reviews.scopedMigrated'
 function scopedKey(bookId:string, vocabId:string):string { return `${bookId}:${vocabId}` }
-function migrateToScopedKeys(reviews:Record<string,Review>, difficult:Record<string,boolean>):{reviews:Record<string,Review>;difficult:Record<string,boolean>}{
-  if(localStorage.getItem(SCOPED_KEY_MIGRATED)) return {reviews,difficult}
+function migrateToScopedKeys(
+  reviews:Record<string,Review>,
+  difficult:Record<string,boolean>,
+  keys:{reviewsKey:string;difficultKey:string;migratedKey:string}
+):{reviews:Record<string,Review>;difficult:Record<string,boolean>}{
+  if(localStorage.getItem(keys.migratedKey)) return {reviews,difficult}
   const migratedReviews:Record<string,Review>={}
   const migratedDifficult:Record<string,boolean>={}
   for(const [k,v] of Object.entries(reviews)) migratedReviews[k.includes(':')?k:`klimop:${k}`]=v
   for(const [k,v] of Object.entries(difficult)) migratedDifficult[k.includes(':')?k:`klimop:${k}`]=v
-  localStorage.setItem(SCOPED_KEY_MIGRATED,'1')
-  saveJSON(LS.reviews,migratedReviews)
-  saveJSON(LS.difficult,migratedDifficult)
+  localStorage.setItem(keys.migratedKey,'1')
+  saveJSON(keys.reviewsKey,migratedReviews)
+  saveJSON(keys.difficultKey,migratedDifficult)
   return {reviews:migratedReviews,difficult:migratedDifficult}
 }
 
@@ -72,8 +91,8 @@ function normalizeSettings(raw:any):Settings{
   }
 }
 
-function ensureStats():Stats{
-  const s = loadJSON<any>(LS.stats,{streak:0,lastDay:null,minutesToday:0,reviewsToday:0,correctToday:0,newToday:0,history:[]})
+function ensureStats(statsKey:string):Stats{
+  const s = loadJSON<any>(statsKey,{streak:0,lastDay:null,minutesToday:0,reviewsToday:0,correctToday:0,newToday:0,history:[]})
   if(typeof s.newToday !== 'number') s.newToday = 0
   if(!Array.isArray(s.history)) s.history = []
 
@@ -86,7 +105,7 @@ function ensureStats():Stats{
       s.streak = diff===1 ? s.streak+1 : 1
     }else s.streak=1
     s.lastDay=day; s.minutesToday=0; s.reviewsToday=0; s.correctToday=0; s.newToday=0
-    saveJSON(LS.stats,s)
+    saveJSON(statsKey,s)
   }
   return s as Stats
 }
@@ -265,7 +284,11 @@ export default function App(){
             {books.map(b=>(
               <button
                 key={b.id}
-                onClick={()=>setCurrentBookId(b.id)}
+                type="button"
+                onClick={()=>{
+                  setCurrentBookId(b.id)
+                  setRoute('home')
+                }}
                 className="pill"
                 style={{
                   borderRadius:14,
@@ -279,6 +302,7 @@ export default function App(){
               </button>
             ))}
             <button
+              type="button"
               onClick={()=>setRoute('deofhet')}
               className="pill"
               style={{
@@ -292,6 +316,7 @@ export default function App(){
               De of Het
             </button>
             <button
+              type="button"
               onClick={()=>setRoute('grammar')}
               className="pill"
               style={{
@@ -309,10 +334,10 @@ export default function App(){
           <div className="pill">Today {dueCount}</div>
         </div>
         <div className="row" style={{gap:4}}>
-          <button onClick={()=>setRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
-          <button onClick={()=>setRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
-          <button onClick={()=>setRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
-          <button onClick={()=>setRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
+          <button type="button" onClick={()=>setRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
+          <button type="button" onClick={()=>setRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
+          <button type="button" onClick={()=>setRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
+          <button type="button" onClick={()=>setRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
         </div>
       </div>
     )
@@ -609,6 +634,12 @@ export default function App(){
     const now = Date.now()
     const acc = stats.reviewsToday ? Math.round(100*stats.correctToday/stats.reviewsToday) : 0
     const placeholdersCount = 2
+    const [deofhetData] = useState(()=>({ stats: loadJSON<any>('klimop.deofhet.v2', {correct:0,total:0,mastered:{}}), history: loadJSON<DaySnapshot[]>(LS.deofhetHistory, []) }))
+    const [grammarData] = useState(()=>({ stats: loadJSON<any>('klimop.grammar.v1', {correct:0,total:0,mastered:{}}), history: loadJSON<DaySnapshot[]>(LS.grammarHistory, []) }))
+    const deofhetPct = deofhetData.stats.total ? Math.round(100*deofhetData.stats.correct/deofhetData.stats.total) : 0
+    const grammarPct = grammarData.stats.total ? Math.round(100*grammarData.stats.correct/grammarData.stats.total) : 0
+    const dailyHistory = stats.history || []
+    const last14 = dailyHistory.slice(-14)
 
     function BookProgressSection({bookId,bookTitle,bookLevels,courseData}:{bookId:string;bookTitle:string;bookLevels:string;courseData:Course|null}){
       if(!courseData){
@@ -632,9 +663,11 @@ export default function App(){
           return !!r && r.interval>=7 && r.due>now
         }).length
         const unseen = total - seen
-        const seenPct = total ? Math.round((seen/total)*100) : 0
+        const learning = seen - mastered
+        const unseenPct = total ? Math.round((unseen/total)*100) : 0
+        const learningPct = total ? Math.round((learning/total)*100) : 0
         const masteredPct = total ? Math.round((mastered/total)*100) : 0
-        return {id:t.id,title:t.title,total,seen,unseen,due,difficult,mastered,seenPct,masteredPct}
+        return {id:t.id,title:t.title,total,seen,unseen,learning,due,difficult,mastered,unseenPct,learningPct,masteredPct}
       })
 
       function resetThemeProgress(themeId:number){
@@ -673,11 +706,16 @@ export default function App(){
                   <button onClick={()=>resetThemeProgress(t.id)}>Reset theme</button>
                 </div>
                 <div className="themeBarTrack" aria-label={`Progress for ${t.title}`}>
-                  <div className="themeBarSeen" style={{width:`${t.seenPct}%`}} />
-                  <div className="themeBarMastered" style={{width:`${t.masteredPct}%`}} />
+                  <div className="themeBarSegment unseen" style={{width:`${t.unseenPct}%`}} />
+                  <div className="themeBarSegment learning" style={{width:`${t.learningPct}%`}} />
+                  <div className="themeBarSegment mastered" style={{width:`${t.masteredPct}%`}} />
                 </div>
-                <div className="small">Seen {t.seen}/{t.total} ({t.seenPct}%) • Mastered {t.mastered} ({t.masteredPct}%)</div>
-                <div className="small">Unseen {t.unseen} • Due {t.due} • Difficult {t.difficult}</div>
+                <div className="themeNumbers">
+                  <span><strong>{t.unseen}</strong> unseen ({t.unseenPct}%)</span>
+                  <span><strong>{t.learning}</strong> learning ({t.learningPct}%)</span>
+                  <span><strong>{t.mastered}</strong> mastered ({t.masteredPct}%)</span>
+                  <span>Due <strong>{t.due}</strong> · Difficult <strong>{t.difficult}</strong></span>
+                </div>
               </div>
             ))}
           </div>
@@ -687,43 +725,126 @@ export default function App(){
 
     return (
       <div className="progressLayout">
+        <header className="cockpitHeader">
+          <div className="cockpitTitle">Mission control</div>
+          <div className="cockpitSubtitle">All app metrics in one place</div>
+        </header>
+
+        <div className="cockpitMetrics">
+          <div className="cockpitMetric">
+            <span className="cockpitMetricValue">{stats.streak}</span>
+            <span className="cockpitMetricLabel">Day streak</span>
+          </div>
+          <div className="cockpitMetric">
+            <span className="cockpitMetricValue">{stats.reviewsToday}</span>
+            <span className="cockpitMetricLabel">Reviews today</span>
+          </div>
+          <div className="cockpitMetric">
+            <span className="cockpitMetricValue">{acc}%</span>
+            <span className="cockpitMetricLabel">Accuracy</span>
+          </div>
+          <div className="cockpitMetric">
+            <span className="cockpitMetricValue">{dueCount}</span>
+            <span className="cockpitMetricLabel">Due now</span>
+          </div>
+          <div className="cockpitMetric">
+            <span className="cockpitMetricValue">{stats.newToday}</span>
+            <span className="cockpitMetricLabel">New today</span>
+          </div>
+        </div>
+
+        <div className="cockpitGrid">
+          <div className="card cockpitCard">
+            <div className="cockpitCardTitle">Daily SRS</div>
+            <div className="cockpitCardSubtitle">Reviews & new cards</div>
+            <div className="themeBarTrack" style={{marginTop:12,marginBottom:8}}>
+              <div className="themeBarSegment mastered" style={{width:`${Math.min(100, Math.round(100*stats.reviewsToday/Math.max(1,settings.dailyTarget)))}%`}} />
+            </div>
+            <div className="small">Today: <strong>{stats.reviewsToday}</strong> reviews · <strong>{stats.newToday}</strong> new</div>
+            <div className="targetGrid" style={{marginTop:12}}>
+              <div>
+                <div className="small">Daily target</div>
+                <input type="number" min={MIN_DAILY_TARGET} max={MAX_DAILY_TARGET} value={settings.dailyTarget} onChange={e=>setSettings(s=>({...s,dailyTarget:Math.round(clamp(Number(e.target.value||DEFAULT_DAILY_TARGET), MIN_DAILY_TARGET, MAX_DAILY_TARGET))}))} style={{width:'100%'}} />
+              </div>
+              <div>
+                <div className="small">New/day</div>
+                <input type="number" min={MIN_NEW_PER_DAY} max={MAX_NEW_PER_DAY} value={settings.newPerDay} onChange={e=>setSettings(s=>({...s,newPerDay:Math.round(clamp(Number(e.target.value||DEFAULT_NEW_PER_DAY), MIN_NEW_PER_DAY, MAX_NEW_PER_DAY))}))} style={{width:'100%'}} />
+              </div>
+            </div>
+            {last14.length>0 && (
+              <div className="cockpitMiniChartWrap">
+                <div className="small" style={{marginBottom:6}}>Last 14 days</div>
+                <div className="cockpitMiniChart" aria-label="Reviews per day">
+                  {last14.map((h:any,i)=>(
+                    <div key={h.day||i} className="cockpitMiniBarWrap" title={`${h.day}: ${h.reviews||0} reviews`}>
+                      <div className="cockpitMiniBar daily" style={{height:`${Math.min(100, ((h.reviews||0)/Math.max(1,settings.dailyTarget))*100)}%`}} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="card cockpitCard">
+            <div className="cockpitCardTitle">De of Het</div>
+            <div className="cockpitCardSubtitle">Article practice</div>
+            <div className="cockpitStatRow">
+              <span className="cockpitStatBig">{deofhetPct}%</span>
+              <span className="small"><strong>{deofhetData.stats.correct}</strong> / {deofhetData.stats.total} correct · <strong>{Object.keys(deofhetData.stats.mastered||{}).length}</strong> mastered</span>
+            </div>
+            <div className="themeBarTrack" style={{marginTop:8,marginBottom:8}}>
+              <div className="themeBarSegment mastered" style={{width:`${deofhetPct}%`}} />
+              <div className="themeBarSegment learning" style={{width:`${100-deofhetPct}%`}} />
+            </div>
+            {deofhetData.history.length>0 && (
+              <div className="cockpitMiniChartWrap">
+                <div className="small" style={{marginBottom:6}}>Accuracy over time</div>
+                <div className="cockpitMiniChart" aria-label="De of Het accuracy by day">
+                  {deofhetData.history.slice(-14).map((h,i)=>(
+                    <div key={h.date+i} className="cockpitMiniBarWrap" title={`${h.date}: ${h.total ? Math.round(100*h.correct/h.total) : 0}%`}>
+                      <div className="cockpitMiniBar deofhet" style={{height:`${h.total ? (100*h.correct/h.total) : 0}%`}} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="card cockpitCard">
+            <div className="cockpitCardTitle">Grammar</div>
+            <div className="cockpitCardSubtitle">Verb conjugation</div>
+            <div className="cockpitStatRow">
+              <span className="cockpitStatBig">{grammarPct}%</span>
+              <span className="small"><strong>{grammarData.stats.correct}</strong> / {grammarData.stats.total} correct · <strong>{Object.keys(grammarData.stats.mastered||{}).length}</strong> mastered</span>
+            </div>
+            <div className="themeBarTrack" style={{marginTop:8,marginBottom:8}}>
+              <div className="themeBarSegment mastered" style={{width:`${grammarPct}%`}} />
+              <div className="themeBarSegment learning" style={{width:`${100-grammarPct}%`}} />
+            </div>
+            {grammarData.history.length>0 && (
+              <div className="cockpitMiniChartWrap">
+                <div className="small" style={{marginBottom:6}}>Accuracy over time</div>
+                <div className="cockpitMiniChart" aria-label="Grammar accuracy by day">
+                  {grammarData.history.slice(-14).map((h,i)=>(
+                    <div key={h.date+i} className="cockpitMiniBarWrap" title={`${h.date}: ${h.total ? Math.round(100*h.correct/h.total) : 0}%`}>
+                      <div className="cockpitMiniBar grammar" style={{height:`${h.total ? (100*h.correct/h.total) : 0}%`}} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="card">
-          <div className="h1">Progress Dashboard</div>
-          <div className="h2">Track progress by book and theme. Combined view.</div>
-          <div className="sep" />
-          <div className="row">
-            <div className="pill">Streak {stats.streak}🔥</div>
-            <div className="pill">Today target {dueCount}</div>
-            <div className="pill">Reviews today {stats.reviewsToday}</div>
-            <div className="pill">Accuracy {acc}%</div>
-            <div className="pill">New today {stats.newToday}</div>
+          <div className="h1">Vocabulary by book</div>
+          <div className="h2">Theme-level progress (Unseen → Learning → Mastered)</div>
+          <div className="progressLegend">
+            <span className="progressLegendItem"><span className="progressLegendSwatch unseen" /> Unseen</span>
+            <span className="progressLegendItem"><span className="progressLegendSwatch learning" /> Learning</span>
+            <span className="progressLegendItem"><span className="progressLegendSwatch mastered" /> Mastered</span>
           </div>
           <div className="sep" />
-          <div className="targetGrid">
-            <div>
-              <div className="small">Daily target</div>
-              <input
-                type="number"
-                min={MIN_DAILY_TARGET}
-                max={MAX_DAILY_TARGET}
-                value={settings.dailyTarget}
-                onChange={e=>setSettings(s=>({...s,dailyTarget:Math.round(clamp(Number(e.target.value||DEFAULT_DAILY_TARGET), MIN_DAILY_TARGET, MAX_DAILY_TARGET))}))}
-                style={{width:'100%'}}
-              />
-            </div>
-            <div>
-              <div className="small">New cards/day</div>
-              <input
-                type="number"
-                min={MIN_NEW_PER_DAY}
-                max={MAX_NEW_PER_DAY}
-                value={settings.newPerDay}
-                onChange={e=>setSettings(s=>({...s,newPerDay:Math.round(clamp(Number(e.target.value||DEFAULT_NEW_PER_DAY), MIN_NEW_PER_DAY, MAX_NEW_PER_DAY))}))}
-                style={{width:'100%'}}
-              />
-            </div>
-          </div>
-          <div className="small" style={{marginTop:8}}>Targets are saved immediately and apply to the next queue build.</div>
         </div>
 
         {books.map(b=>(
@@ -747,6 +868,10 @@ export default function App(){
             localStorage.removeItem(LS.reviews)
             localStorage.removeItem(LS.stats)
             localStorage.removeItem(LS.difficult)
+            localStorage.removeItem(LS.deofhetHistory)
+            localStorage.removeItem(LS.grammarHistory)
+            localStorage.removeItem('klimop.deofhet.v2')
+            localStorage.removeItem('klimop.grammar.v1')
             localStorage.removeItem(SCOPED_KEY_MIGRATED)
             setReviewsMap({})
             setDifficultMap({})
@@ -915,8 +1040,12 @@ export default function App(){
     const [sessionWrong,setSessionWrong]=useState<string[]>([])
     const [picksSinceWrong,setPicksSinceWrong]=useState(0)
     const [triggerPick,setTriggerPick]=useState(0)
+    const lastShownNlsRef = useRef<string[]>([])
 
-    useEffect(()=>{ saveJSON(DEHET_LS,stats) },[stats])
+    useEffect(()=>{
+      saveJSON(DEHET_LS,stats)
+      updateDayHistory(LS.deofhetHistory, stats.correct, stats.total)
+    },[stats])
 
     const activePool = useMemo(()=>
       fullPool.filter(v=>!stats.mastered[wrongKey(v)]),
@@ -930,34 +1059,45 @@ export default function App(){
 
     const pickNext = useCallback(()=>{
       if(activePool.length===0) return null
+      const recent = lastShownNlsRef.current.map(n=>n.toLowerCase())
+      let pool = activePool.filter(v=>!recent.includes(wrongKey(v)))
+      if(pool.length===0) pool = activePool.filter(v=>wrongKey(v)!==cur?.nl?.toLowerCase())
+      if(pool.length===0) pool = activePool
       const wrongReady = sessionWrong.filter(nl=>!cur?.nl||nl.toLowerCase()!==cur.nl.toLowerCase())
-      const shouldRetry = wrongReady.length>0 && picksSinceWrong>=1
+      const shouldRetry = wrongReady.length>0 && picksSinceWrong>=2
       if(shouldRetry && wrongReady.length>0){
         const idx = Math.floor(Math.random()*wrongReady.length)
         const nl = wrongReady[idx]
         setSessionWrong(w=>w.filter(x=>x.toLowerCase()!==nl.toLowerCase()))
         setPicksSinceWrong(0)
-        return activePool.find(v=>wrongKey(v)===nl.toLowerCase()) ?? activePool[Math.floor(Math.random()*activePool.length)]
+        return pool.find(v=>wrongKey(v)===nl.toLowerCase()) ?? pool[Math.floor(Math.random()*pool.length)]
       }
-      const byWrong = [...activePool].sort((a,b)=>{
+      const byWrong = [...pool].sort((a,b)=>{
         const wa=stats.wrongIds[wrongKey(a)]??0
         const wb=stats.wrongIds[wrongKey(b)]??0
         return wb-wa
       })
       const topWrong = byWrong.filter(v=>(stats.wrongIds[wrongKey(v)]??0)>0)
-      const useWrong = topWrong.length>0 && Math.random()<0.65
-      if(useWrong && topWrong.length>0){
-        return topWrong[Math.floor(Math.random()*Math.min(10,topWrong.length))]
+      if(topWrong.length>0 && Math.random()<0.6){
+        const weights = topWrong.slice(0,12).map(v=>(stats.wrongIds[wrongKey(v)]??0)+1)
+        const total = weights.reduce((s,w)=>s+w,0)
+        let r = Math.random()*total
+        for(let i=0;i<weights.length;i++){
+          r-=weights[i]
+          if(r<=0) return topWrong[i]
+        }
+        return topWrong[0]
       }
-      const pool = learnedPool.length > 0 ? learnedPool : unlearnedPool
       const difficultInPool = pool.filter(v=>difficultNls.has(wrongKey(v)))
-      const preferDifficult = difficultInPool.length>0 && Math.random()<0.6
-      const pickPool = preferDifficult ? difficultInPool : pool
-      return pickPool[Math.floor(Math.random()*pickPool.length)]
+      if(difficultInPool.length>0 && Math.random()<0.6) return difficultInPool[Math.floor(Math.random()*difficultInPool.length)]
+      return pool[Math.floor(Math.random()*pool.length)]
     },[activePool,learnedPool,unlearnedPool,stats.wrongIds,sessionWrong,picksSinceWrong,cur?.nl,difficultNls])
 
     useEffect(()=>{
       const next = pickNext()
+      if(next){
+        lastShownNlsRef.current = [next.nl.toLowerCase(), cur?.nl?.toLowerCase()].filter(Boolean).slice(0,2)
+      }
       setCur(next ?? null)
       setFeedback(null)
       setChosenArticle(null)
@@ -1130,8 +1270,12 @@ export default function App(){
     const [lastPickedVerbIds,setLastPickedVerbIds]=useState<string[]>([])
     const curKeyRef = useRef<string|null>(null)
     const lastPickedVerbIdsRef = useRef<string[]>([])
+    const lastShownKeysRef = useRef<string[]>([])
 
-    useEffect(()=>{ saveJSON(GRAMMAR_LS,stats) },[stats])
+    useEffect(()=>{
+      saveJSON(GRAMMAR_LS,stats)
+      updateDayHistory(LS.grammarHistory, stats.correct, stats.total)
+    },[stats])
 
     const activePool = useMemo(()=>fullPool.filter(i=>!stats.mastered[i.key]),[fullPool,stats.mastered])
 
@@ -1139,19 +1283,35 @@ export default function App(){
       if(activePool.length===0) return null
       const avoid = lastPickedVerbIdsRef.current
       const avoidSameVerb = activePool.filter(i=>!avoid.includes(i.verb.id))
-      const pool = avoidSameVerb.length>0 ? avoidSameVerb : activePool
+      let pool = avoidSameVerb.length>0 ? avoidSameVerb : activePool
+      // Avoid showing the same item in the last 2 positions (reduces boring repetition)
+      const recent = lastShownKeysRef.current
+      let freshPool = pool.filter(i=>!recent.includes(i.key))
+      if(freshPool.length===0) freshPool = pool.filter(i=>i.key!==curKeyRef.current)
+      if(freshPool.length===0) freshPool = pool
+      pool = freshPool
+      // Retry a wrong item only after at least 2 other cards (more variety)
       const wrongReady = sessionWrong.filter(k=>!curKeyRef.current||k!==curKeyRef.current)
-      const shouldRetry = wrongReady.length>0 && picksSinceWrong>=1
+      const shouldRetry = wrongReady.length>0 && picksSinceWrong>=2
       if(shouldRetry && wrongReady.length>0){
         const k = wrongReady[Math.floor(Math.random()*wrongReady.length)]
         setSessionWrong(w=>w.filter(x=>x!==k))
         setPicksSinceWrong(0)
         return pool.find(i=>i.key===k) ?? pool[Math.floor(Math.random()*pool.length)]
       }
+      // Prefer items with more wrongs (optimize memorization) but weighted so not always same one
       const byWrong = [...pool].sort((a,b)=>(stats.wrongIds[b.key]??0)-(stats.wrongIds[a.key]??0))
       const topWrong = byWrong.filter(i=>(stats.wrongIds[i.key]??0)>0)
-      const useWrong = topWrong.length>0 && Math.random()<0.65
-      if(useWrong && topWrong.length>0) return topWrong[Math.floor(Math.random()*Math.min(10,topWrong.length))]
+      if(topWrong.length>0 && Math.random()<0.6){
+        const weights = topWrong.slice(0,12).map(i=>(stats.wrongIds[i.key]??0)+1)
+        const total = weights.reduce((s,w)=>s+w,0)
+        let r = Math.random()*total
+        for(let i=0;i<weights.length;i++){
+          r-=weights[i]
+          if(r<=0) return topWrong[i]
+        }
+        return topWrong[0]
+      }
       return pool[Math.floor(Math.random()*pool.length)]
     },[activePool,stats.wrongIds,sessionWrong,picksSinceWrong])
 
@@ -1205,7 +1365,9 @@ export default function App(){
       }
       const all = [next.correct,...distractors.slice(0,2)]
       for(let i=all.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [all[i],all[j]]=[all[j],all[i]] }
+      const oldKey = curKeyRef.current
       curKeyRef.current = next.key
+      lastShownKeysRef.current = [next.key, oldKey].filter(Boolean).slice(0,2)
       setCard({ cur:next, options:all })
       // triggerPick: advance after answer timeout. fullPool: run when data first loads.
       // Do NOT depend on pickNext (it changes when stats changes and would wipe feedback).

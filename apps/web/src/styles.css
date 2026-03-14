@@ -306,3 +306,194 @@ button.grammarOptionBtn.is-wrong:disabled{
 .deofhetSpeak:hover{
   color:var(--text);
 }
+
+/* ---- Progress dashboard (cockpit) ---- */
+.progressLayout{
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+}
+.cockpitHeader{
+  text-align:center;
+  padding:20px 0 8px 0;
+  border-bottom:1px solid var(--border);
+}
+.cockpitTitle{
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  color:var(--text);
+  margin:0;
+}
+.cockpitSubtitle{
+  font-size:14px;
+  color:var(--muted);
+  margin-top:6px;
+}
+.cockpitMetrics{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  justify-content:center;
+  padding:20px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:16px;
+}
+.cockpitMetric{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-width:80px;
+  padding:12px 16px;
+  background:var(--panel);
+  border-radius:12px;
+  border:1px solid var(--border);
+}
+.cockpitMetricValue{
+  font-size:26px;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.2;
+}
+.cockpitMetricLabel{
+  font-size:11px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  margin-top:4px;
+}
+.cockpitGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+.cockpitCard{
+  display:flex;
+  flex-direction:column;
+}
+.cockpitCardTitle{
+  font-size:18px;
+  font-weight:700;
+  color:var(--text);
+  margin:0;
+}
+.cockpitCardSubtitle{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:2px;
+}
+.cockpitStatRow{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.cockpitStatBig{
+  font-size:32px;
+  font-weight:800;
+  color:var(--accent);
+  line-height:1;
+}
+.cockpitMiniChartWrap{
+  margin-top:16px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
+}
+.cockpitMiniChart{
+  display:flex;
+  align-items:flex-end;
+  gap:4px;
+  height:56px;
+}
+.cockpitMiniBarWrap{
+  flex:1;
+  min-width:6px;
+  height:100%;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.cockpitMiniBar{
+  width:100%;
+  min-height:2px;
+  border-radius:4px 4px 0 0;
+  transition:height 0.2s ease;
+}
+.cockpitMiniBar.daily{ background:#22c55e; }
+.cockpitMiniBar.deofhet{ background:#a78bfa; }
+.cockpitMiniBar.grammar{ background:#38bdf8; }
+
+.progressLayout .targetGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:16px;
+}
+.progressThemeCard{
+  margin:0;
+}
+.progressLegend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  align-items:center;
+  margin-bottom:12px;
+  padding:10px 12px;
+  background:rgba(255,255,255,0.03);
+  border-radius:12px;
+  border:1px solid var(--border);
+}
+.progressLegendItem{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  color:var(--muted);
+}
+.progressLegendSwatch{
+  width:12px;
+  height:12px;
+  border-radius:4px;
+  flex-shrink:0;
+}
+.progressLegendSwatch.unseen{ background:#64748b; }
+.progressLegendSwatch.learning{ background:#f59e0b; }
+.progressLegendSwatch.mastered{ background:#22c55e; }
+
+.themeGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;
+  margin-top:12px;
+}
+.themeStatCard{
+  padding:14px;
+  background:rgba(255,255,255,0.03);
+  border-radius:14px;
+  border:1px solid var(--border);
+}
+.themeStatCard .themeBarTrack{
+  display:flex;
+  height:12px;
+  border-radius:8px;
+  overflow:hidden;
+  background:var(--border);
+  margin:10px 0 8px 0;
+}
+.themeStatCard .themeBarSegment{
+  height:100%;
+  min-width:0;
+  transition:width 0.25s ease;
+}
+.themeStatCard .themeBarSegment.unseen{ background:#64748b; }
+.themeStatCard .themeBarSegment.learning{ background:#f59e0b; }
+.themeStatCard .themeBarSegment.mastered{ background:#22c55e; }
+.themeStatCard .themeNumbers{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 16px;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px;
+}
+.themeStatCard .themeNumbers span strong{ color:var(--text); font-weight:600; }
