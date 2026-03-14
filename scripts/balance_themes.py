@@ -6,7 +6,11 @@ Uses thematic Dutch A1/A2 vocabulary.
 import json
 from pathlib import Path
 
-COURSE_PATH = Path(__file__).parent.parent / "content" / "course.json"
+ROOT = Path(__file__).parent.parent
+COURSE_PATHS = [
+    ROOT / "content" / "course.json",
+    ROOT / "apps" / "web" / "public" / "content" / "course.json",
+]
 MIN_PER_THEME = 150
 
 # Thematic vocabulary: (nl, en, article). Article: "de", "het", or None.
@@ -537,7 +541,7 @@ def get_existing_nl(course: dict) -> set:
 
 
 def main():
-    with open(COURSE_PATH, "r", encoding="utf-8") as f:
+    with open(COURSE_PATHS[0], "r", encoding="utf-8") as f:
         course = json.load(f)
 
     existing = get_existing_nl(course)
@@ -581,8 +585,9 @@ def main():
     # Sort vocab: keep themes together, by id within theme
     course["vocab"].sort(key=lambda v: (v["theme"], v["id"]))
 
-    with open(COURSE_PATH, "w", encoding="utf-8") as f:
-        json.dump(course, f, ensure_ascii=False, indent=2)
+    for path in COURSE_PATHS:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(course, f, ensure_ascii=False, indent=2)
 
     print(f"\nTotal added: {added_total}")
 
