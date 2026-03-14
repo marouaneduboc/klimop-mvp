@@ -137,6 +137,13 @@ button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor
 }
 
 /* ---- De of Het ---- */
+.grammarCardContent{
+  animation: grammarFadeIn 0.2s ease;
+}
+@keyframes grammarFadeIn{
+  from{ opacity:0 }
+  to{ opacity:1 }
+}
 .deofhetLayout{
   display:flex;
   justify-content:center;

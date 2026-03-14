@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 type Vocab = { id:string; theme:number; nl:string; en?:string|null; article?:'de'|'het'|null }
-type Review = { id:string; due:number; interval:number; ease:number; reps:number; lapses:number }
+type Review = { id:string; due:number; interval:number; ease:number; reps:number; lapses:number; learningStep?:number }
 type Book = { id:string; title:string; levels:string; url:string }
 type BooksManifest = { books:Book[]; placeholders?:number }
 type Stats = {
@@ -22,6 +22,8 @@ type Settings = {
   newPerDay:number
 }
 type Course = { version:string; themes:{id:number;title:string}[]; vocab:Vocab[]; audio:{groups:Record<string, any>} }
+type GrammarVerb = { id:string; infinitive:string; en:string; type:string; auxiliary:string; present:Record<string,string>; past:Record<string,string>; perfect:string }
+type GrammarData = { version:string; verbs:GrammarVerb[]; zullen?:{ present:Record<string,string>; past:Record<string,string> } }
 
 const LS = { reviews:'klimop.reviews.v1', stats:'klimop.stats.v1', settings:'klimop.settings.v1', difficult:'klimop.difficult.v1' }
 const todayISO = ()=> new Date().toISOString().slice(0,10)
@@ -94,20 +96,55 @@ function upsertReview(map:Record<string,Review>, id:string):Review{
   return map[id]
 }
 
-function gradeBinary(r:Review, correct:boolean){
+const LEARNING_STEP_1_MS = 60*1000
+const LEARNING_STEP_2_MS = 10*60*1000
+
+function interleaveAfter<T>(main:T[], wrong:T[], everyN:number):T[]{
+  if(wrong.length===0) return main
+  const out:T[]=[]
+  let wi=0
+  for(let i=0;i<main.length;i++){
+    out.push(main[i])
+    if((i+1)%everyN===0 && wi<wrong.length) out.push(wrong[wi++])
+  }
+  while(wi<wrong.length) out.push(wrong[wi++])
+  return out
+}
+
+function gradeBinary(r:Review, correct:boolean, isDifficult?:boolean){
   r.reps += 1
+  const now = Date.now()
   if(!correct){
     r.lapses += 1
     r.interval = 0
+    r.learningStep = 1
     r.ease = Math.max(1.3, r.ease - 0.2)
-    r.due = Date.now() + 10*60*1000
+    r.due = now + LEARNING_STEP_2_MS
     return
   }
   r.ease = Math.min(2.8, r.ease + 0.05)
-  if(r.interval===0) r.interval=1
-  else if(r.interval===1) r.interval=3
+  const step = r.learningStep ?? 0
+  if(step===1){
+    r.learningStep = 2
+    r.due = now + LEARNING_STEP_2_MS
+    return
+  }
+  if(step===2){
+    r.learningStep = 0
+    r.interval = 1
+    r.due = now + 86400000
+    if(isDifficult) r.interval = 1
+    return
+  }
+  if(r.interval===0){
+    r.learningStep = 1
+    r.due = now + LEARNING_STEP_1_MS
+    return
+  }
+  if(r.interval===1) r.interval=3
   else r.interval=Math.round(r.interval*r.ease)
-  r.due=Date.now()+r.interval*86400000
+  if(isDifficult) r.interval=Math.min(r.interval,1)
+  r.due=now+r.interval*86400000
 }
 
 async function fetchJSON<T>(url:string):Promise<T>{
@@ -118,7 +155,7 @@ export default function App(){
   const [books,setBooks]=useState<Book[]>([])
   const [coursesByBookId,setCoursesByBookId]=useState<Record<string,Course>>({})
   const [currentBookId,setCurrentBookId]=useState<string>('klimop')
-  const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'|'deofhet'>('home')
+  const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'|'deofhet'|'grammar'>('home')
   const rawReviews=useMemo(()=>loadJSON<Record<string,Review>>(LS.reviews,{}),[])
   const rawDifficult=useMemo(()=>loadJSON<Record<string,boolean>>(LS.difficult,{}),[])
   const {reviews:migratedReviews,difficult:migratedDifficult}=useMemo(()=>migrateToScopedKeys(rawReviews,rawDifficult),[rawReviews,rawDifficult])
@@ -247,22 +284,35 @@ export default function App(){
               style={{
                 borderRadius:14,
                 padding:'10px 12px',
-                background:'var(--panel)',
+                fontWeight:route==='deofhet'?700:500,
+                background:route==='deofhet'?'rgba(255,255,255,0.14)':'var(--panel)',
                 border:'1px solid rgba(255,255,255,0.12)',
-                fontWeight:500,
               }}
             >
               De of Het
+            </button>
+            <button
+              onClick={()=>setRoute('grammar')}
+              className="pill"
+              style={{
+                borderRadius:14,
+                padding:'10px 12px',
+                fontWeight:route==='grammar'?700:500,
+                background:route==='grammar'?'rgba(255,255,255,0.14)':'var(--panel)',
+                border:'1px solid rgba(255,255,255,0.12)',
+              }}
+            >
+              Grammar
             </button>
           </div>
           <div className="pill">Streak {stats.streak}🔥</div>
           <div className="pill">Today {dueCount}</div>
         </div>
-        <div className="row">
-          <button onClick={()=>setRoute('home')}>Home</button>
-          <button onClick={()=>setRoute('study')}>Daily</button>
-          <button onClick={()=>setRoute('progress')}>Progress</button>
-          <button onClick={()=>setRoute('tts')}>TTS</button>
+        <div className="row" style={{gap:4}}>
+          <button onClick={()=>setRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
+          <button onClick={()=>setRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
+          <button onClick={()=>setRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
+          <button onClick={()=>setRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
         </div>
       </div>
     )
@@ -322,22 +372,34 @@ export default function App(){
     const [idx,setIdx]=useState(0)
     const [showTranslation,setShowTranslation]=useState(false)
     const [showClue,setShowClue]=useState(false)
+    const [sessionWrongIds,setSessionWrongIds]=useState<Set<string>>(new Set())
     const sk=(id:string)=>scopedKey(currentBookId,id)
 
     const now = Date.now()
     const baseDeck = useMemo(()=> studyTheme===0 ? course.vocab : course.vocab.filter(v=>v.theme===studyTheme),[course,studyTheme])
 
     const queue = useMemo(()=>{
+      const sessionWrongRetry = baseDeck.filter(v=>sessionWrongIds.has(v.id))
+
       const dueReviews = baseDeck
         .filter(v=>{
-          if(studySeenSession[v.id]) return false
+          if(sessionWrongIds.has(v.id)) return false
           const r=reviewsMap[sk(v.id)]
-          return !!r && r.due<=now
+          if(!r || r.due>now) return false
+          const step = r.learningStep ?? 0
+          if(step>0) return true
+          return !studySeenSession[v.id]
         })
-        .sort((a,b)=>(reviewsMap[sk(a.id)]?.due||0)-(reviewsMap[sk(b.id)]?.due||0))
+        .sort((a,b)=>{
+          const ra=reviewsMap[sk(a.id)], rb=reviewsMap[sk(b.id)]
+          const sa=ra?.learningStep??0, sb=rb?.learningStep??0
+          if((sa>0)!==(sb>0)) return sa>0?-1:1
+          return (ra?.due??0)-(rb?.due??0)
+        })
 
       const difficultPart = baseDeck
         .filter(v=>{
+          if(sessionWrongIds.has(v.id)) return false
           if(!difficultMap[sk(v.id)]) return false
           if(studySeenSession[v.id]) return false
           const r = reviewsMap[sk(v.id)]
@@ -345,19 +407,21 @@ export default function App(){
         })
         .sort((a,b)=>(reviewsMap[sk(a.id)]?.due||Number.MAX_SAFE_INTEGER)-(reviewsMap[sk(b.id)]?.due||Number.MAX_SAFE_INTEGER))
 
-      const unseen = baseDeck.filter(v=>!reviewsMap[sk(v.id)] && !studySeenSession[v.id])
+      const unseen = baseDeck.filter(v=>!reviewsMap[sk(v.id)] && !studySeenSession[v.id] && !sessionWrongIds.has(v.id))
       const newSlots = Math.max(0, settings.newPerDay - stats.newToday)
       const newPart = studyContinueMode ? unseen : unseen.slice(0,newSlots)
 
       const seen = new Set<string>()
-      const merged = [...difficultPart, ...dueReviews, ...newPart].filter(v=>{
+      const main = [...difficultPart, ...dueReviews, ...newPart].filter(v=>{
         if(seen.has(v.id)) return false
         seen.add(v.id)
         return true
       })
+      const wrongList = sessionWrongRetry.filter(v=>!seen.has(v.id))
+      const merged = interleaveAfter(main,wrongList,3)
 
       return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
-    },[baseDeck,currentBookId,reviewsMap,difficultMap,studySeenSession,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
+    },[baseDeck,currentBookId,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
 
     const cur=queue[0]
     const answeredSessionCount = Object.keys(studySeenSession).length
@@ -387,6 +451,7 @@ export default function App(){
       setIdx(0)
       setShowTranslation(false)
       setShowClue(false)
+      setSessionWrongIds(new Set())
     },[studyTheme])
 
     useEffect(()=>{
@@ -395,7 +460,7 @@ export default function App(){
     },[cur?.id])
 
     useEffect(()=>{
-      if(cur && settings.autoSpeak) speak(cur.article? `${cur.article} ${cur.nl}`:cur.nl)
+      if(cur && settings.autoSpeak) speak(cur.article ? `${cur.article} ${cur.nl}` : cur.nl)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },[settings.autoSpeak,cur?.id])
 
@@ -405,7 +470,7 @@ export default function App(){
       const map={...reviewsMap}
       const wasNew = !map[key]
       const r=upsertReview(map,key)
-      gradeBinary(r,correct)
+      gradeBinary(r,correct,difficultMap[key])
       setReviewsMap(map)
 
       const s={...stats}
@@ -415,7 +480,13 @@ export default function App(){
       setStats(s)
       saveJSON(LS.stats,s)
 
-      setStudySeenSession(s=>({ ...s, [cur.id]: true }))
+      const graduated = (r.learningStep ?? 0) === 0
+      if(correct){
+        if(graduated) setStudySeenSession(s=>({ ...s, [cur.id]: true }))
+        setSessionWrongIds(prev=>{ const n=new Set(prev); n.delete(cur.id); return n })
+      } else {
+        setSessionWrongIds(prev=>new Set(prev).add(cur.id))
+      }
       setIdx(0)
       setShowTranslation(false)
       setShowClue(false)
@@ -457,7 +528,7 @@ export default function App(){
               <div className="h2">{currentPos} / {plannedTotal} planned today</div>
             </div>
             <div className="studyTopActions">
-              <button onClick={()=>speak(cur.article?`${cur.article} ${cur.nl}`:cur.nl)}>🔊</button>
+              <button onClick={()=>speak(cur.article ? `${cur.article} ${cur.nl}` : cur.nl)} title="Hear the Dutch word">🔊</button>
               <div>
                 <div className="small">Theme</div>
                 <select value={studyTheme} onChange={e=>setStudyTheme(Number(e.target.value))}>
@@ -470,12 +541,12 @@ export default function App(){
           </div>
 
           <div className="sep" />
-          <div className="bigword">{cur.article? `${cur.article} `:''}{cur.nl}</div>
+          <div className="bigword">{cur.en ?? '—'}</div>
 
           <div className="flipCard" onClick={()=>setShowTranslation(v=>!v)}>
             <div className="small">Flip card</div>
             <div style={{marginTop:6, textAlign:'center'}}>
-              {showTranslation ? (cur.en ?? '—') : 'Tap to reveal translation'}
+              {showTranslation ? (cur.article ? `${cur.article} ` : '') + cur.nl : 'Tap to reveal Dutch'}
             </div>
           </div>
 
@@ -527,7 +598,7 @@ export default function App(){
           </div>
           <div className="sep" />
           <div className="small" style={{maxHeight:'clamp(260px, 34vh, 420px)',overflow:'auto'}}>
-            {queue.slice(0,20).map(v=><div key={v.id} style={{padding:'6px 0',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>{v.nl}</div>)}
+            {queue.slice(0,20).map(v=><div key={v.id} style={{padding:'6px 0',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>{v.en ?? v.nl}</div>)}
           </div>
         </div>
       </div>
@@ -787,8 +858,19 @@ export default function App(){
 
   const DEHET_LS = 'klimop.deofhet.v2'
   type DeHetStats = { correct:number; total:number; wrongIds:Record<string,number>; mastered:Record<string,boolean>; streak:Record<string,number> }
-  function DeOfHet({ coursesByBookId, reviewsMap, speak }:{ coursesByBookId:Record<string,Course>; reviewsMap:Record<string,Review>; speak:(t:string)=>Promise<void> }){
+  function DeOfHet({ coursesByBookId, reviewsMap, difficultMap, speak }:{ coursesByBookId:Record<string,Course>; reviewsMap:Record<string,Review>; difficultMap:Record<string,boolean>; speak:(t:string)=>Promise<void> }){
     const wrongKey = (v:Vocab)=>v.nl.toLowerCase()
+
+    const difficultNls = useMemo(()=>{
+      const set = new Set<string>()
+      for(const [bookId,c] of Object.entries(coursesByBookId)){
+        if(!c?.vocab) continue
+        for(const v of c.vocab){
+          if(difficultMap[scopedKey(bookId,v.id)]) set.add(v.nl.toLowerCase())
+        }
+      }
+      return set
+    },[coursesByBookId,difficultMap])
 
     const fullPool = useMemo(()=>{
       const seen = new Set<string>()
@@ -810,7 +892,8 @@ export default function App(){
       for(const [bookId,c] of Object.entries(coursesByBookId)){
         if(!c?.vocab) continue
         for(const v of c.vocab){
-          if(reviewsMap[scopedKey(bookId,v.id)]) set.add(v.nl.toLowerCase())
+          const r = reviewsMap[scopedKey(bookId,v.id)]
+          if(r && r.interval >= 1) set.add(v.nl.toLowerCase())
         }
       }
       return set
@@ -847,7 +930,7 @@ export default function App(){
     const pickNext = useCallback(()=>{
       if(activePool.length===0) return null
       const wrongReady = sessionWrong.filter(nl=>!cur?.nl||nl.toLowerCase()!==cur.nl.toLowerCase())
-      const shouldRetry = wrongReady.length>0 && picksSinceWrong>=2
+      const shouldRetry = wrongReady.length>0 && picksSinceWrong>=1
       if(shouldRetry && wrongReady.length>0){
         const idx = Math.floor(Math.random()*wrongReady.length)
         const nl = wrongReady[idx]
@@ -861,14 +944,16 @@ export default function App(){
         return wb-wa
       })
       const topWrong = byWrong.filter(v=>(stats.wrongIds[wrongKey(v)]??0)>0)
-      const useWrong = topWrong.length>0 && Math.random()<0.35
+      const useWrong = topWrong.length>0 && Math.random()<0.65
       if(useWrong && topWrong.length>0){
-        return topWrong[Math.floor(Math.random()*Math.min(5,topWrong.length))]
+        return topWrong[Math.floor(Math.random()*Math.min(10,topWrong.length))]
       }
-      const preferLearned = learnedPool.length>0 && (unlearnedPool.length===0 || Math.random()<0.85)
-      const pool = preferLearned ? learnedPool : unlearnedPool
-      return pool[Math.floor(Math.random()*pool.length)]
-    },[activePool,learnedPool,unlearnedPool,stats.wrongIds,sessionWrong,picksSinceWrong,cur?.nl])
+      const pool = learnedPool.length > 0 ? learnedPool : unlearnedPool
+      const difficultInPool = pool.filter(v=>difficultNls.has(wrongKey(v)))
+      const preferDifficult = difficultInPool.length>0 && Math.random()<0.6
+      const pickPool = preferDifficult ? difficultInPool : pool
+      return pickPool[Math.floor(Math.random()*pickPool.length)]
+    },[activePool,learnedPool,unlearnedPool,stats.wrongIds,sessionWrong,picksSinceWrong,cur?.nl,difficultNls])
 
     useEffect(()=>{
       const next = pickNext()
@@ -923,6 +1008,8 @@ export default function App(){
             <span className="deofhetStatPill pct">{pct}%</span>
             <span className="deofhetStatPill total">{Object.keys(stats.mastered).length} mastered</span>
           </div>
+          <div className="sep" />
+          <button className="pill" onClick={()=>setStats(s=>({...s,mastered:{}}))}>Practice again (reset mastered)</button>
         </div>
       )
     }
@@ -973,7 +1060,7 @@ export default function App(){
               </div>
               <button
                 className="deofhetSpeak"
-                onClick={()=>speak(cur.nl)}
+                onClick={()=>speak(cur.article ? `${cur.article} ${cur.nl}` : cur.nl)}
               >
                 🔊 Hear it
               </button>
@@ -984,14 +1071,249 @@ export default function App(){
     )
   }
 
+  const GRAMMAR_LS = 'klimop.grammar.v1'
+  type GrammarStats = { correct:number; total:number; wrongIds:Record<string,number>; mastered:Record<string,boolean>; streak:Record<string,number>; mode?:'mc'|'typing' }
+  type GrammarItem = { verb:GrammarVerb; tense:'present'|'past'|'perfect'|'future'|'conditional'; person?:string; correct:string; key:string }
+  function Grammar({ speak }:{ speak:(t:string)=>Promise<void> }){
+    const [grammarData,setGrammarData]=useState<GrammarData|null>(null)
+    useEffect(()=>{ fetchJSON<GrammarData>('/content/grammar.json').then(setGrammarData).catch(()=>{}) },[])
+
+    const fullPool = useMemo(()=>{
+      if(!grammarData?.verbs) return []
+      const out:GrammarItem[]=[]
+      const persons = ['ik','jij','hij','wij','jullie','zij'] as const
+      const singular = ['ik','jij','hij']
+      const plural = ['wij','jullie','zij']
+      const zullen = grammarData.zullen
+      for(const v of grammarData.verbs){
+        for(const p of persons){
+          const form = v.present[p]
+          if(form) out.push({ verb:v, tense:'present', person:p, correct:form, key:`${v.id}:present:${p}` })
+        }
+        for(const p of persons){
+          const form = v.past[singular.includes(p)?'singular':'plural']
+          if(form) out.push({ verb:v, tense:'past', person:p, correct:form, key:`${v.id}:past:${p}` })
+        }
+        out.push({ verb:v, tense:'perfect', correct:v.perfect, key:`${v.id}:perfect` })
+        if(zullen?.present){
+          for(const p of persons){
+            const aux = zullen.present[p]
+            if(aux) out.push({ verb:v, tense:'future', person:p, correct:`${aux} ${v.infinitive}`, key:`${v.id}:future:${p}` })
+          }
+        }
+        if(zullen?.past){
+          for(const p of persons){
+            const aux = zullen.past[plural.includes(p)?'plural':'singular']
+            if(aux) out.push({ verb:v, tense:'conditional', person:p, correct:`${aux} ${v.infinitive}`, key:`${v.id}:conditional:${p}` })
+          }
+        }
+      }
+      return out
+    },[grammarData])
+
+    const [stats,setStats]=useState<GrammarStats>(()=>{
+      const raw=loadJSON<any>(GRAMMAR_LS,{correct:0,total:0,wrongIds:{},mastered:{},streak:{},mode:'mc'})
+      return { correct:raw.correct??0, total:raw.total??0, wrongIds:raw.wrongIds??{}, mastered:raw.mastered??{}, streak:raw.streak??{}, mode:raw.mode??'mc' }
+    })
+    const [card,setCard]=useState<{ cur:GrammarItem|null; options:string[] }>({ cur:null, options:[] })
+    const cur = card.cur
+    const options = card.options
+    const [feedback,setFeedback]=useState<'correct'|'wrong'|null>(null)
+    const [typedAnswer,setTypedAnswer]=useState('')
+    const [sessionWrong,setSessionWrong]=useState<string[]>([])
+    const [picksSinceWrong,setPicksSinceWrong]=useState(0)
+    const [triggerPick,setTriggerPick]=useState(0)
+    const [lastPickedVerbIds,setLastPickedVerbIds]=useState<string[]>([])
+    const curKeyRef = useRef<string|null>(null)
+    const lastPickedVerbIdsRef = useRef<string[]>([])
+
+    useEffect(()=>{ saveJSON(GRAMMAR_LS,stats) },[stats])
+
+    const activePool = useMemo(()=>fullPool.filter(i=>!stats.mastered[i.key]),[fullPool,stats.mastered])
+
+    const pickNext = useCallback(()=>{
+      if(activePool.length===0) return null
+      const avoid = lastPickedVerbIdsRef.current
+      const avoidSameVerb = activePool.filter(i=>!avoid.includes(i.verb.id))
+      const pool = avoidSameVerb.length>0 ? avoidSameVerb : activePool
+      const wrongReady = sessionWrong.filter(k=>!curKeyRef.current||k!==curKeyRef.current)
+      const shouldRetry = wrongReady.length>0 && picksSinceWrong>=1
+      if(shouldRetry && wrongReady.length>0){
+        const k = wrongReady[Math.floor(Math.random()*wrongReady.length)]
+        setSessionWrong(w=>w.filter(x=>x!==k))
+        setPicksSinceWrong(0)
+        return pool.find(i=>i.key===k) ?? pool[Math.floor(Math.random()*pool.length)]
+      }
+      const byWrong = [...pool].sort((a,b)=>(stats.wrongIds[b.key]??0)-(stats.wrongIds[a.key]??0))
+      const topWrong = byWrong.filter(i=>(stats.wrongIds[i.key]??0)>0)
+      const useWrong = topWrong.length>0 && Math.random()<0.65
+      if(useWrong && topWrong.length>0) return topWrong[Math.floor(Math.random()*Math.min(10,topWrong.length))]
+      return pool[Math.floor(Math.random()*pool.length)]
+    },[activePool,stats.wrongIds,sessionWrong,picksSinceWrong])
+
+    function orthoFoils(correct:string):string[]{
+      const out:string[]=[]
+      if(correct.length<3) return out
+      if(correct.endsWith('t')){
+        out.push(correct.slice(0,-1)+'d')
+        out.push(correct.slice(0,-1))
+      } else if(correct.endsWith('d')){
+        out.push(correct.slice(0,-1)+'t')
+        out.push(correct.slice(0,-1))
+      }
+      if(correct.endsWith('en') && correct.length>4) out.push(correct.slice(0,-2)+'e')
+      return [...new Set(out)].filter(x=>x!==correct && x.length>0)
+    }
+
+    useEffect(()=>{
+      const next = pickNext()
+      setFeedback(null)
+      setTypedAnswer('')
+      if(!next){
+        curKeyRef.current = null
+        setCard({ cur:null, options:[] })
+        return
+      }
+      const nextIds = [next.verb.id,...lastPickedVerbIdsRef.current].slice(0,2)
+      lastPickedVerbIdsRef.current = nextIds
+      setLastPickedVerbIds(nextIds)
+      const distractors:string[]=[]
+      const sameVerbOther = fullPool.filter(i=>i.verb.id===next.verb.id && i.correct!==next.correct).map(i=>i.correct)
+      const sameTenseOther = fullPool.filter(i=>i.verb.id===next.verb.id && i.tense===next.tense && i.correct!==next.correct).map(i=>i.correct)
+      const otherTenseSameVerb = sameVerbOther.filter(c=>!sameTenseOther.includes(c))
+      const candidatesSameTense = [...new Set(sameTenseOther)]
+      const candidatesOtherTense = [...new Set(otherTenseSameVerb)]
+      while(distractors.length<2 && candidatesSameTense.length>0){
+        const idx = Math.floor(Math.random()*candidatesSameTense.length)
+        const v = candidatesSameTense.splice(idx,1)[0]
+        if(!distractors.includes(v)) distractors.push(v)
+      }
+      while(distractors.length<2 && candidatesOtherTense.length>0){
+        const idx = Math.floor(Math.random()*candidatesOtherTense.length)
+        const v = candidatesOtherTense.splice(idx,1)[0]
+        if(!distractors.includes(v)) distractors.push(v)
+      }
+      const foils = orthoFoils(next.correct).filter(f=>!distractors.includes(f))
+      while(distractors.length<2 && foils.length>0){
+        const v = foils.splice(Math.floor(Math.random()*foils.length),1)[0]
+        if(!distractors.includes(v)) distractors.push(v)
+      }
+      const all = [next.correct,...distractors.slice(0,2)]
+      for(let i=all.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [all[i],all[j]]=[all[j],all[i]] }
+      curKeyRef.current = next.key
+      setCard({ cur:next, options:all })
+    },[triggerPick,pickNext,fullPool])
+
+    function answer(guess:string){
+      if(!cur) return
+      const normalized = guess.toLowerCase().trim()
+      const correct = normalized===cur.correct.toLowerCase()
+      setStats(s=>{
+        const next={...s,total:s.total+1,correct:s.correct+(correct?1:0)}
+        if(!correct){ next.wrongIds={...next.wrongIds,[cur.key]:(next.wrongIds[cur.key]??0)+1}; next.streak={...next.streak,[cur.key]:0} }
+        else { const streak=(next.streak[cur.key]??0)+1; next.streak={...next.streak,[cur.key]:streak}; if(streak>=3) next.mastered={...next.mastered,[cur.key]:true} }
+        return next
+      })
+      setFeedback(correct?'correct':'wrong')
+      if(!correct) setSessionWrong(w=>w.includes(cur.key)?w:[...w,cur.key])
+      else setPicksSinceWrong(p=>p+1)
+      setTimeout(()=>setTriggerPick(t=>t+1),correct?800:1400)
+    }
+
+    const pct = stats.total>0 ? Math.round(100*stats.correct/stats.total) : 0
+
+    if(!grammarData) return <div className="card"><div className="h1">Grammar</div><div className="h2">Loading…</div></div>
+    if(fullPool.length===0) return <div className="card"><div className="h1">Grammar</div><div className="h2">No verb data.</div></div>
+    if(activePool.length===0) return (
+      <div className="card">
+        <div className="h1">Grammar</div>
+        <div className="h2">All conjugated forms mastered!</div>
+        <div className="sep" />
+        <div className="deofhetStats">
+          <span className="deofhetStatPill correct">{stats.correct} correct</span>
+          <span className="deofhetStatPill total">{stats.total} total</span>
+          <span className="deofhetStatPill pct">{pct}%</span>
+        </div>
+      </div>
+    )
+
+    return (
+      <div className="deofhetLayout">
+        <div className="card deofhetCard">
+          <div className="deofhetHeader">
+            <div className="h1">Grammar</div>
+            <div className="h2">Verb conjugation</div>
+            <div className="row" style={{flexWrap:'wrap',gap:8,alignItems:'center'}}>
+            <div className="deofhetStats">
+              <span className="deofhetStatPill correct">{stats.correct} correct</span>
+              <span className="deofhetStatPill total">{stats.total} total</span>
+              <span className="deofhetStatPill pct">{pct}%</span>
+            </div>
+            <button
+              className="pill"
+              onClick={()=>setStats(s=>({...s,mode:s.mode==='mc'?'typing':'mc'}))}
+            >
+              {stats.mode==='mc' ? 'Switch to typing' : 'Switch to multiple choice'}
+            </button>
+          </div>
+          </div>
+          <div className="sep" />
+          {cur && (
+            <div key={triggerPick} className="grammarCardContent">
+              <div className="h2" style={{marginBottom:8}}>
+                {cur.verb.en} — {cur.tense}{cur.person ? ` — ${cur.person}` : ''}
+              </div>
+              {feedback && (
+                <div className={`deofhetWord feedback-${feedback}`} style={{fontSize:28}}>
+                  {cur.correct}
+                </div>
+              )}
+              {feedback && (
+                <div className={`deofhetFeedback feedback-${feedback}`}>
+                  {feedback==='correct' ? <span>✓ Correct — {cur.correct}</span> : <span>✗ The answer is <strong>{cur.correct}</strong></span>}
+                </div>
+              )}
+              {stats.mode==='mc' ? (
+                <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
+                  {options.map(opt=>(
+                    <button key={opt} className="deofhetBtn de" style={{width:'100%'}} onClick={()=>feedback===null&&answer(opt)} disabled={feedback!==null}>
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
+                  <input
+                    type="text"
+                    value={typedAnswer}
+                    onChange={e=>setTypedAnswer(e.target.value)}
+                    onKeyDown={e=>{ if(e.key==='Enter' && feedback===null) answer(typedAnswer) }}
+                    placeholder="Type the conjugated form"
+                    disabled={feedback!==null}
+                    style={{width:'100%',maxWidth:320,padding:14,fontSize:18}}
+                    autoFocus
+                  />
+                  <button className="deofhetBtn de" onClick={()=>feedback===null&&answer(typedAnswer)} disabled={feedback!==null || !typedAnswer.trim()}>
+                    Check
+                  </button>
+                </div>
+              )}
+              <button className="deofhetSpeak" onClick={()=>speak(cur.person ? `${cur.person} ${cur.correct}` : cur.correct)}>🔊 Hear it</button>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   const hasAnyCourse = Object.keys(coursesByBookId).length > 0
-  if(!hasAnyCourse && !err){
+  if(!hasAnyCourse && !err && route!=='grammar'){
     return <div className="container"><Top /><div className="sep" /><div className="card">Loading books…</div></div>
   }
-  if(err && !hasAnyCourse){
+  if(err && !hasAnyCourse && route!=='grammar'){
     return <div className="container"><Top /><div className="sep" /><div className="card">Error: {err}</div></div>
   }
-  if(!course){
+  if(!course && route!=='grammar'){
     return <div className="container"><Top /><div className="sep" /><div className="card">Loading course…</div></div>
   }
 
@@ -1004,7 +1326,8 @@ export default function App(){
         {route==='study' && <div className="pagePane"><Study /></div>}
         {route==='progress' && <div className="pagePane"><Progress /></div>}
         {route==='tts' && <div className="pagePane"><TTS /></div>}
-        {route==='deofhet' && <div className="pagePane"><DeOfHet coursesByBookId={coursesByBookId} reviewsMap={reviewsMap} speak={speak} /></div>}
+        {route==='deofhet' && <div className="pagePane"><DeOfHet coursesByBookId={coursesByBookId} reviewsMap={reviewsMap} difficultMap={difficultMap} speak={speak} /></div>}
+        {route==='grammar' && <div className="pagePane"><Grammar speak={speak} /></div>}
       </div>
       <div className="sep appFooterSep" />
       <div className="small appFooterText">MVP • local-only • calm UI • private</div>

@@ -1,0 +1,4659 @@
+{
+  "version": "grammar-0.1",
+  "verbs": [
+    {
+      "id": "v_werken",
+      "infinitive": "werken",
+      "en": "to work",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "werk",
+        "jij": "werkt",
+        "hij": "werkt",
+        "wij": "werken",
+        "jullie": "werken",
+        "zij": "werken"
+      },
+      "past": {
+        "singular": "werkte",
+        "plural": "werkten"
+      },
+      "perfect": "gewerkt"
+    },
+    {
+      "id": "v_maken",
+      "infinitive": "maken",
+      "en": "to make",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "maak",
+        "jij": "maakt",
+        "hij": "maakt",
+        "wij": "maken",
+        "jullie": "maken",
+        "zij": "maken"
+      },
+      "past": {
+        "singular": "maakte",
+        "plural": "maakten"
+      },
+      "perfect": "gemaakt"
+    },
+    {
+      "id": "v_gaan",
+      "infinitive": "gaan",
+      "en": "to go",
+      "type": "irregular",
+      "auxiliary": "zijn",
+      "present": {
+        "ik": "ga",
+        "jij": "gaat",
+        "hij": "gaat",
+        "wij": "gaan",
+        "jullie": "gaan",
+        "zij": "gaan"
+      },
+      "past": {
+        "singular": "ging",
+        "plural": "gingen"
+      },
+      "perfect": "gegaan"
+    },
+    {
+      "id": "v_komen",
+      "infinitive": "komen",
+      "en": "to come",
+      "type": "irregular",
+      "auxiliary": "zijn",
+      "present": {
+        "ik": "kom",
+        "jij": "komt",
+        "hij": "komt",
+        "wij": "komen",
+        "jullie": "komen",
+        "zij": "komen"
+      },
+      "past": {
+        "singular": "kwam",
+        "plural": "kwamen"
+      },
+      "perfect": "gekomen"
+    },
+    {
+      "id": "v_zijn",
+      "infinitive": "zijn",
+      "en": "to be",
+      "type": "irregular",
+      "auxiliary": "zijn",
+      "present": {
+        "ik": "ben",
+        "jij": "bent",
+        "hij": "is",
+        "wij": "zijn",
+        "jullie": "zijn",
+        "zij": "zijn"
+      },
+      "past": {
+        "singular": "was",
+        "plural": "waren"
+      },
+      "perfect": "geweest"
+    },
+    {
+      "id": "v_hebben",
+      "infinitive": "hebben",
+      "en": "to have",
+      "type": "irregular",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "heb",
+        "jij": "hebt",
+        "hij": "heeft",
+        "wij": "hebben",
+        "jullie": "hebben",
+        "zij": "hebben"
+      },
+      "past": {
+        "singular": "had",
+        "plural": "hadden"
+      },
+      "perfect": "gehad"
+    },
+    {
+      "id": "v_doen",
+      "infinitive": "doen",
+      "en": "to do",
+      "type": "irregular",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "doe",
+        "jij": "doet",
+        "hij": "doet",
+        "wij": "doen",
+        "jullie": "doen",
+        "zij": "doen"
+      },
+      "past": {
+        "singular": "deed",
+        "plural": "deden"
+      },
+      "perfect": "gedaan"
+    },
+    {
+      "id": "v_zien",
+      "infinitive": "zien",
+      "en": "to see",
+      "type": "irregular",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "zie",
+        "jij": "ziet",
+        "hij": "ziet",
+        "wij": "zien",
+        "jullie": "zien",
+        "zij": "zien"
+      },
+      "past": {
+        "singular": "zag",
+        "plural": "zagen"
+      },
+      "perfect": "gezien"
+    },
+    {
+      "id": "v_eten",
+      "infinitive": "eten",
+      "en": "to eat",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "eet",
+        "jij": "eet",
+        "hij": "eet",
+        "wij": "eten",
+        "jullie": "eten",
+        "zij": "eten"
+      },
+      "past": {
+        "singular": "at",
+        "plural": "aten"
+      },
+      "perfect": "gegeten"
+    },
+    {
+      "id": "v_drinken",
+      "infinitive": "drinken",
+      "en": "to drink",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "drink",
+        "jij": "drinkt",
+        "hij": "drinkt",
+        "wij": "drinken",
+        "jullie": "drinken",
+        "zij": "drinken"
+      },
+      "past": {
+        "singular": "dronk",
+        "plural": "dronken"
+      },
+      "perfect": "gedronken"
+    },
+    {
+      "id": "v_slapen",
+      "infinitive": "slapen",
+      "en": "to sleep",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "slaap",
+        "jij": "slaapt",
+        "hij": "slaapt",
+        "wij": "slapen",
+        "jullie": "slapen",
+        "zij": "slapen"
+      },
+      "past": {
+        "singular": "sliep",
+        "plural": "sliepen"
+      },
+      "perfect": "geslapen"
+    },
+    {
+      "id": "v_lezen",
+      "infinitive": "lezen",
+      "en": "to read",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "lees",
+        "jij": "leest",
+        "hij": "leest",
+        "wij": "lezen",
+        "jullie": "lezen",
+        "zij": "lezen"
+      },
+      "past": {
+        "singular": "las",
+        "plural": "lazen"
+      },
+      "perfect": "gelezen"
+    },
+    {
+      "id": "v_schrijven",
+      "infinitive": "schrijven",
+      "en": "to write",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "schrijf",
+        "jij": "schrijft",
+        "hij": "schrijft",
+        "wij": "schrijven",
+        "jullie": "schrijven",
+        "zij": "schrijven"
+      },
+      "past": {
+        "singular": "schreef",
+        "plural": "schreven"
+      },
+      "perfect": "geschreven"
+    },
+    {
+      "id": "v_spreken",
+      "infinitive": "spreken",
+      "en": "to speak",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "spreek",
+        "jij": "spreekt",
+        "hij": "spreekt",
+        "wij": "spreken",
+        "jullie": "spreken",
+        "zij": "spreken"
+      },
+      "past": {
+        "singular": "sprak",
+        "plural": "spraken"
+      },
+      "perfect": "gesproken"
+    },
+    {
+      "id": "v_denken",
+      "infinitive": "denken",
+      "en": "to think",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "denk",
+        "jij": "denkt",
+        "hij": "denkt",
+        "wij": "denken",
+        "jullie": "denken",
+        "zij": "denken"
+      },
+      "past": {
+        "singular": "dacht",
+        "plural": "dachten"
+      },
+      "perfect": "gedacht"
+    },
+    {
+      "id": "v_kopen",
+      "infinitive": "kopen",
+      "en": "to buy",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "koop",
+        "jij": "koopt",
+        "hij": "koopt",
+        "wij": "kopen",
+        "jullie": "kopen",
+        "zij": "kopen"
+      },
+      "past": {
+        "singular": "kocht",
+        "plural": "kochten"
+      },
+      "perfect": "gekocht"
+    },
+    {
+      "id": "v_leren",
+      "infinitive": "leren",
+      "en": "to learn",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "leer",
+        "jij": "leert",
+        "hij": "leert",
+        "wij": "leren",
+        "jullie": "leren",
+        "zij": "leren"
+      },
+      "past": {
+        "singular": "leerde",
+        "plural": "leerden"
+      },
+      "perfect": "geleerd"
+    },
+    {
+      "id": "v_wonen",
+      "infinitive": "wonen",
+      "en": "to live",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "woon",
+        "jij": "woont",
+        "hij": "woont",
+        "wij": "wonen",
+        "jullie": "wonen",
+        "zij": "wonen"
+      },
+      "past": {
+        "singular": "woonde",
+        "plural": "woonden"
+      },
+      "perfect": "gewoond"
+    },
+    {
+      "id": "v_praten",
+      "infinitive": "praten",
+      "en": "to talk",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "praat",
+        "jij": "praat",
+        "hij": "praat",
+        "wij": "praten",
+        "jullie": "praten",
+        "zij": "praten"
+      },
+      "past": {
+        "singular": "praatte",
+        "plural": "praatten"
+      },
+      "perfect": "gepraat"
+    },
+    {
+      "id": "v_beginnen",
+      "infinitive": "beginnen",
+      "en": "to begin",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "begin",
+        "jij": "begint",
+        "hij": "begint",
+        "wij": "beginnen",
+        "jullie": "beginnen",
+        "zij": "beginnen"
+      },
+      "past": {
+        "singular": "begon",
+        "plural": "begonnen"
+      },
+      "perfect": "begonnen"
+    },
+    {
+      "id": "v_staan",
+      "infinitive": "staan",
+      "en": "to stand",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "sta",
+        "jij": "staat",
+        "hij": "staat",
+        "wij": "staan",
+        "jullie": "staan",
+        "zij": "staan"
+      },
+      "past": {
+        "singular": "stond",
+        "plural": "stonden"
+      },
+      "perfect": "gestaan"
+    },
+    {
+      "id": "v_zitten",
+      "infinitive": "zitten",
+      "en": "to sit",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "zit",
+        "jij": "zit",
+        "hij": "zit",
+        "wij": "zitten",
+        "jullie": "zitten",
+        "zij": "zitten"
+      },
+      "past": {
+        "singular": "zat",
+        "plural": "zaten"
+      },
+      "perfect": "gezeten"
+    },
+    {
+      "id": "v_lopen",
+      "infinitive": "lopen",
+      "en": "to walk",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "loop",
+        "jij": "loopt",
+        "hij": "loopt",
+        "wij": "lopen",
+        "jullie": "lopen",
+        "zij": "lopen"
+      },
+      "past": {
+        "singular": "liep",
+        "plural": "liepen"
+      },
+      "perfect": "gelopen"
+    },
+    {
+      "id": "v_rennen",
+      "infinitive": "rennen",
+      "en": "to run",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "ren",
+        "jij": "rent",
+        "hij": "rent",
+        "wij": "rennen",
+        "jullie": "rennen",
+        "zij": "rennen"
+      },
+      "past": {
+        "singular": "rende",
+        "plural": "renden"
+      },
+      "perfect": "gerend"
+    },
+    {
+      "id": "v_zwemmen",
+      "infinitive": "zwemmen",
+      "en": "to swim",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "zwem",
+        "jij": "zwemt",
+        "hij": "zwemt",
+        "wij": "zwemmen",
+        "jullie": "zwemmen",
+        "zij": "zwemmen"
+      },
+      "past": {
+        "singular": "zwom",
+        "plural": "zwommen"
+      },
+      "perfect": "gezwommen"
+    },
+    {
+      "id": "v_fietsen",
+      "infinitive": "fietsen",
+      "en": "to cycle",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "fiets",
+        "jij": "fietst",
+        "hij": "fietst",
+        "wij": "fietsen",
+        "jullie": "fietsen",
+        "zij": "fietsen"
+      },
+      "past": {
+        "singular": "fietste",
+        "plural": "fietsten"
+      },
+      "perfect": "gefietst"
+    },
+    {
+      "id": "v_rijden",
+      "infinitive": "rijden",
+      "en": "to drive",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "rijd",
+        "jij": "rijdt",
+        "hij": "rijdt",
+        "wij": "rijden",
+        "jullie": "rijden",
+        "zij": "rijden"
+      },
+      "past": {
+        "singular": "reed",
+        "plural": "reden"
+      },
+      "perfect": "gereden"
+    },
+    {
+      "id": "v_vragen",
+      "infinitive": "vragen",
+      "en": "to ask",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "vraag",
+        "jij": "vraagt",
+        "hij": "vraagt",
+        "wij": "vragen",
+        "jullie": "vragen",
+        "zij": "vragen"
+      },
+      "past": {
+        "singular": "vroeg",
+        "plural": "vroegen"
+      },
+      "perfect": "gevraagd"
+    },
+    {
+      "id": "v_antwoorden",
+      "infinitive": "antwoorden",
+      "en": "to answer",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "antwoord",
+        "jij": "antwoordt",
+        "hij": "antwoordt",
+        "wij": "antwoorden",
+        "jullie": "antwoorden",
+        "zij": "antwoorden"
+      },
+      "past": {
+        "singular": "antwoordde",
+        "plural": "antwoordden"
+      },
+      "perfect": "geantwoord"
+    },
+    {
+      "id": "v_geven",
+      "infinitive": "geven",
+      "en": "to give",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "geef",
+        "jij": "geeft",
+        "hij": "geeft",
+        "wij": "geven",
+        "jullie": "geven",
+        "zij": "geven"
+      },
+      "past": {
+        "singular": "gaf",
+        "plural": "gaven"
+      },
+      "perfect": "gegeven"
+    },
+    {
+      "id": "v_nemen",
+      "infinitive": "nemen",
+      "en": "to take",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "neem",
+        "jij": "neemt",
+        "hij": "neemt",
+        "wij": "nemen",
+        "jullie": "nemen",
+        "zij": "nemen"
+      },
+      "past": {
+        "singular": "nam",
+        "plural": "namen"
+      },
+      "perfect": "genomen"
+    },
+    {
+      "id": "v_krijgen",
+      "infinitive": "krijgen",
+      "en": "to get",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "krijg",
+        "jij": "krijgt",
+        "hij": "krijgt",
+        "wij": "krijgen",
+        "jullie": "krijgen",
+        "zij": "krijgen"
+      },
+      "past": {
+        "singular": "kreeg",
+        "plural": "kregen"
+      },
+      "perfect": "gekregen"
+    },
+    {
+      "id": "v_vinden",
+      "infinitive": "vinden",
+      "en": "to find",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "vind",
+        "jij": "vindt",
+        "hij": "vindt",
+        "wij": "vinden",
+        "jullie": "vinden",
+        "zij": "vinden"
+      },
+      "past": {
+        "singular": "vond",
+        "plural": "vonden"
+      },
+      "perfect": "gevonden"
+    },
+    {
+      "id": "v_helpen",
+      "infinitive": "helpen",
+      "en": "to help",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "help",
+        "jij": "helpt",
+        "hij": "helpt",
+        "wij": "helpen",
+        "jullie": "helpen",
+        "zij": "helpen"
+      },
+      "past": {
+        "singular": "hielp",
+        "plural": "hielpen"
+      },
+      "perfect": "geholpen"
+    },
+    {
+      "id": "v_wachten",
+      "infinitive": "wachten",
+      "en": "to wait",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "wacht",
+        "jij": "wacht",
+        "hij": "wacht",
+        "wij": "wachten",
+        "jullie": "wachten",
+        "zij": "wachten"
+      },
+      "past": {
+        "singular": "wachtte",
+        "plural": "wachtten"
+      },
+      "perfect": "gewacht"
+    },
+    {
+      "id": "v_studeren",
+      "infinitive": "studeren",
+      "en": "to study",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "studeer",
+        "jij": "studeert",
+        "hij": "studeert",
+        "wij": "studeren",
+        "jullie": "studeren",
+        "zij": "studeren"
+      },
+      "past": {
+        "singular": "studeerde",
+        "plural": "studeerden"
+      },
+      "perfect": "gestudeerd"
+    },
+    {
+      "id": "v_bellen",
+      "infinitive": "bellen",
+      "en": "to call",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "bel",
+        "jij": "belt",
+        "hij": "belt",
+        "wij": "bellen",
+        "jullie": "bellen",
+        "zij": "bellen"
+      },
+      "past": {
+        "singular": "belde",
+        "plural": "belden"
+      },
+      "perfect": "gebeld"
+    },
+    {
+      "id": "v_zeggen",
+      "infinitive": "zeggen",
+      "en": "to say",
+      "type": "irregular",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "zeg",
+        "jij": "zegt",
+        "hij": "zegt",
+        "wij": "zeggen",
+        "jullie": "zeggen",
+        "zij": "zeggen"
+      },
+      "past": {
+        "singular": "zei",
+        "plural": "zeiden"
+      },
+      "perfect": "gezegd"
+    },
+    {
+      "id": "v_vertellen",
+      "infinitive": "vertellen",
+      "en": "to tell",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "vertel",
+        "jij": "vertelt",
+        "hij": "vertelt",
+        "wij": "vertellen",
+        "jullie": "vertellen",
+        "zij": "vertellen"
+      },
+      "past": {
+        "singular": "vertelde",
+        "plural": "vertelden"
+      },
+      "perfect": "verteld"
+    },
+    {
+      "id": "v_houden",
+      "infinitive": "houden",
+      "en": "to hold",
+      "type": "irregular",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "houd",
+        "jij": "houdt",
+        "hij": "houdt",
+        "wij": "houden",
+        "jullie": "houden",
+        "zij": "houden"
+      },
+      "past": {
+        "singular": "hield",
+        "plural": "hielden"
+      },
+      "perfect": "gehouden"
+    },
+    {
+      "id": "v_koken",
+      "infinitive": "koken",
+      "en": "to cook",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "kook",
+        "jij": "kookt",
+        "hij": "kookt",
+        "wij": "koken",
+        "jullie": "koken",
+        "zij": "koken"
+      },
+      "past": {
+        "singular": "kookte",
+        "plural": "kookten"
+      },
+      "perfect": "gekookt"
+    },
+    {
+      "id": "v_wassen",
+      "infinitive": "wassen",
+      "en": "to wash",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "was",
+        "jij": "wast",
+        "hij": "wast",
+        "wij": "wassen",
+        "jullie": "wassen",
+        "zij": "wassen"
+      },
+      "past": {
+        "singular": "waste",
+        "plural": "wasten"
+      },
+      "perfect": "gewassen"
+    },
+    {
+      "id": "v_missen",
+      "infinitive": "missen",
+      "en": "to miss",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "mis",
+        "jij": "mist",
+        "hij": "mist",
+        "wij": "missen",
+        "jullie": "missen",
+        "zij": "missen"
+      },
+      "past": {
+        "singular": "miste",
+        "plural": "misten"
+      },
+      "perfect": "gemist"
+    },
+    {
+      "id": "v_bezoeken",
+      "infinitive": "bezoeken",
+      "en": "to visit",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "bezoek",
+        "jij": "bezoekt",
+        "hij": "bezoekt",
+        "wij": "bezoeken",
+        "jullie": "bezoeken",
+        "zij": "bezoeken"
+      },
+      "past": {
+        "singular": "bezocht",
+        "plural": "bezochten"
+      },
+      "perfect": "bezocht"
+    },
+    {
+      "id": "v_groeten",
+      "infinitive": "groeten",
+      "en": "to greet",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "groet",
+        "jij": "groet",
+        "hij": "groet",
+        "wij": "groeten",
+        "jullie": "groeten",
+        "zij": "groeten"
+      },
+      "past": {
+        "singular": "groette",
+        "plural": "groetten"
+      },
+      "perfect": "gegroet"
+    },
+    {
+      "id": "v_ontmoeten",
+      "infinitive": "ontmoeten",
+      "en": "to meet",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "ontmoet",
+        "jij": "ontmoet",
+        "hij": "ontmoet",
+        "wij": "ontmoeten",
+        "jullie": "ontmoeten",
+        "zij": "ontmoeten"
+      },
+      "past": {
+        "singular": "ontmoette",
+        "plural": "ontmoetten"
+      },
+      "perfect": "ontmoet"
+    },
+    {
+      "id": "v_spelen",
+      "infinitive": "spelen",
+      "en": "to play",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "speel",
+        "jij": "speelt",
+        "hij": "speelt",
+        "wij": "spelen",
+        "jullie": "spelen",
+        "zij": "spelen"
+      },
+      "past": {
+        "singular": "speelde",
+        "plural": "speelden"
+      },
+      "perfect": "gespeeld"
+    },
+    {
+      "id": "v_reizen",
+      "infinitive": "reizen",
+      "en": "to travel",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "reis",
+        "jij": "reist",
+        "hij": "reist",
+        "wij": "reizen",
+        "jullie": "reizen",
+        "zij": "reizen"
+      },
+      "past": {
+        "singular": "reisde",
+        "plural": "reisden"
+      },
+      "perfect": "gereisd"
+    },
+    {
+      "id": "v_zingen",
+      "infinitive": "zingen",
+      "en": "to sing",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "zing",
+        "jij": "zingt",
+        "hij": "zingt",
+        "wij": "zingen",
+        "jullie": "zingen",
+        "zij": "zingen"
+      },
+      "past": {
+        "singular": "zong",
+        "plural": "zongen"
+      },
+      "perfect": "gezongen"
+    },
+    {
+      "id": "v_dansen",
+      "infinitive": "dansen",
+      "en": "to dance",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "dans",
+        "jij": "danst",
+        "hij": "danst",
+        "wij": "dansen",
+        "jullie": "dansen",
+        "zij": "dansen"
+      },
+      "past": {
+        "singular": "danste",
+        "plural": "dansten"
+      },
+      "perfect": "gedanst"
+    },
+    {
+      "id": "v_tekenen",
+      "infinitive": "tekenen",
+      "en": "to draw",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "teken",
+        "jij": "tekent",
+        "hij": "tekent",
+        "wij": "tekenen",
+        "jullie": "tekenen",
+        "zij": "tekenen"
+      },
+      "past": {
+        "singular": "tekende",
+        "plural": "tekenden"
+      },
+      "perfect": "getekend"
+    },
+    {
+      "id": "v_douchen",
+      "infinitive": "douchen",
+      "en": "to shower",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "douche",
+        "jij": "doucht",
+        "hij": "doucht",
+        "wij": "douchen",
+        "jullie": "douchen",
+        "zij": "douchen"
+      },
+      "past": {
+        "singular": "douchte",
+        "plural": "douchten"
+      },
+      "perfect": "gedoucht"
+    },
+    {
+      "id": "v_betalen",
+      "infinitive": "betalen",
+      "en": "to pay",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "betaal",
+        "jij": "betaalt",
+        "hij": "betaalt",
+        "wij": "betalen",
+        "jullie": "betalen",
+        "zij": "betalen"
+      },
+      "past": {
+        "singular": "betaalde",
+        "plural": "betaalden"
+      },
+      "perfect": "betaald"
+    },
+    {
+      "id": "v_parkeren",
+      "infinitive": "parkeren",
+      "en": "to park",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "parkeer",
+        "jij": "parkeert",
+        "hij": "parkeert",
+        "wij": "parkeren",
+        "jullie": "parkeren",
+        "zij": "parkeren"
+      },
+      "past": {
+        "singular": "parkeerde",
+        "plural": "parkeerden"
+      },
+      "perfect": "geparkeerd"
+    },
+    {
+      "id": "v_winkelen",
+      "infinitive": "winkelen",
+      "en": "to shop",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "winkel",
+        "jij": "winkelt",
+        "hij": "winkelt",
+        "wij": "winkelen",
+        "jullie": "winkelen",
+        "zij": "winkelen"
+      },
+      "past": {
+        "singular": "winkelde",
+        "plural": "winkelden"
+      },
+      "perfect": "gewinkeld"
+    },
+    {
+      "id": "v_strijken",
+      "infinitive": "strijken",
+      "en": "to iron",
+      "type": "strong",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "strijk",
+        "jij": "strijkt",
+        "hij": "strijkt",
+        "wij": "strijken",
+        "jullie": "strijken",
+        "zij": "strijken"
+      },
+      "past": {
+        "singular": "streek",
+        "plural": "streken"
+      },
+      "perfect": "gestreken"
+    },
+    {
+      "id": "v_wandelen",
+      "infinitive": "wandelen",
+      "en": "to walk",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "wandel",
+        "jij": "wandelt",
+        "hij": "wandelt",
+        "wij": "wandelen",
+        "jullie": "wandelen",
+        "zij": "wandelen"
+      },
+      "past": {
+        "singular": "wandelde",
+        "plural": "wandelden"
+      },
+      "perfect": "gewandeld"
+    },
+    {
+      "id": "v_verzorgen",
+      "infinitive": "verzorgen",
+      "en": "to care for",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "verzorg",
+        "jij": "verzorgt",
+        "hij": "verzorgt",
+        "wij": "verzorgen",
+        "jullie": "verzorgen",
+        "zij": "verzorgen"
+      },
+      "past": {
+        "singular": "verzorgde",
+        "plural": "verzorgden"
+      },
+      "perfect": "verzorgd"
+    },
+    {
+      "id": "v_opruimen",
+      "infinitive": "opruimen",
+      "en": "to tidy up",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "ruim op",
+        "jij": "ruimt op",
+        "hij": "ruimt op",
+        "wij": "ruimen op",
+        "jullie": "ruimen op",
+        "zij": "ruimen op"
+      },
+      "past": {
+        "singular": "ruimde op",
+        "plural": "ruimden op"
+      },
+      "perfect": "opgeruimd"
+    },
+    {
+      "id": "v_uitnodigen",
+      "infinitive": "uitnodigen",
+      "en": "to invite",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "nodig uit",
+        "jij": "nodigt uit",
+        "hij": "nodigt uit",
+        "wij": "nodigen uit",
+        "jullie": "nodigen uit",
+        "zij": "nodigen uit"
+      },
+      "past": {
+        "singular": "nodigde uit",
+        "plural": "nodigden uit"
+      },
+      "perfect": "uitgenodigd"
+    },
+    {
+      "id": "v_spellen",
+      "infinitive": "spellen",
+      "en": "to spell",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "spell",
+        "jij": "spellt",
+        "hij": "spellt",
+        "wij": "spellen",
+        "jullie": "spellen",
+        "zij": "spellen"
+      },
+      "past": {
+        "singular": "spellde",
+        "plural": "spellden"
+      },
+      "perfect": "gespellden"
+    },
+    {
+      "id": "v_begroeten",
+      "infinitive": "begroeten",
+      "en": "to greet",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "begroet",
+        "jij": "begroet",
+        "hij": "begroet",
+        "wij": "begroeten",
+        "jullie": "begroeten",
+        "zij": "begroeten"
+      },
+      "past": {
+        "singular": "begroette",
+        "plural": "begroetten"
+      },
+      "perfect": "gebegroetten"
+    },
+    {
+      "id": "v_huilen",
+      "infinitive": "huilen",
+      "en": "to cry",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "huill",
+        "jij": "huillt",
+        "hij": "huillt",
+        "wij": "huilen",
+        "jullie": "huilen",
+        "zij": "huilen"
+      },
+      "past": {
+        "singular": "huillde",
+        "plural": "huillden"
+      },
+      "perfect": "gehuillden"
+    },
+    {
+      "id": "v_zuchten",
+      "infinitive": "zuchten",
+      "en": "to sigh",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "zucht",
+        "jij": "zucht",
+        "hij": "zucht",
+        "wij": "zuchten",
+        "jullie": "zuchten",
+        "zij": "zuchten"
+      },
+      "past": {
+        "singular": "zuchtte",
+        "plural": "zuchtten"
+      },
+      "perfect": "gezuchtten"
+    },
+    {
+      "id": "v_juichen",
+      "infinitive": "juichen",
+      "en": "to cheer",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "juich",
+        "jij": "juicht",
+        "hij": "juicht",
+        "wij": "juichen",
+        "jullie": "juichen",
+        "zij": "juichen"
+      },
+      "past": {
+        "singular": "juichte",
+        "plural": "juichten"
+      },
+      "perfect": "gejuichten"
+    },
+    {
+      "id": "v_klagen",
+      "infinitive": "klagen",
+      "en": "to complain",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "klagg",
+        "jij": "klaggt",
+        "hij": "klaggt",
+        "wij": "klagen",
+        "jullie": "klagen",
+        "zij": "klagen"
+      },
+      "past": {
+        "singular": "klaggde",
+        "plural": "klaggden"
+      },
+      "perfect": "geklaggden"
+    },
+    {
+      "id": "v_roddelen",
+      "infinitive": "roddelen",
+      "en": "to gossip",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "roddel",
+        "jij": "roddelt",
+        "hij": "roddelt",
+        "wij": "roddelen",
+        "jullie": "roddelen",
+        "zij": "roddelen"
+      },
+      "past": {
+        "singular": "roddelde",
+        "plural": "roddelden"
+      },
+      "perfect": "geroddelden"
+    },
+    {
+      "id": "v_flirten",
+      "infinitive": "flirten",
+      "en": "to flirt",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "flirt",
+        "jij": "flirt",
+        "hij": "flirt",
+        "wij": "flirten",
+        "jullie": "flirten",
+        "zij": "flirten"
+      },
+      "past": {
+        "singular": "flirtte",
+        "plural": "flirtten"
+      },
+      "perfect": "geflirtten"
+    },
+    {
+      "id": "v_sporten",
+      "infinitive": "sporten",
+      "en": "to play sports",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "sport",
+        "jij": "sport",
+        "hij": "sport",
+        "wij": "sporten",
+        "jullie": "sporten",
+        "zij": "sporten"
+      },
+      "past": {
+        "singular": "sportte",
+        "plural": "sportten"
+      },
+      "perfect": "gesportten"
+    },
+    {
+      "id": "v_scheiden",
+      "infinitive": "scheiden",
+      "en": "to divorce",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "scheid",
+        "jij": "scheid",
+        "hij": "scheid",
+        "wij": "scheiden",
+        "jullie": "scheiden",
+        "zij": "scheiden"
+      },
+      "past": {
+        "singular": "scheidte",
+        "plural": "scheidten"
+      },
+      "perfect": "gescheidten"
+    },
+    {
+      "id": "v_opvoeden",
+      "infinitive": "opvoeden",
+      "en": "to raise",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "voed op",
+        "jij": "voedt op",
+        "hij": "voedt op",
+        "wij": "voeden op",
+        "jullie": "voeden op",
+        "zij": "voeden op"
+      },
+      "past": {
+        "singular": "voeddte op",
+        "plural": "voeddten op"
+      },
+      "perfect": "opgevoedden"
+    },
+    {
+      "id": "v_opgroeien",
+      "infinitive": "opgroeien",
+      "en": "to grow up",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "groei op",
+        "jij": "groeit op",
+        "hij": "groeit op",
+        "wij": "groeien op",
+        "jullie": "groeien op",
+        "zij": "groeien op"
+      },
+      "past": {
+        "singular": "groeide op",
+        "plural": "groeiden op"
+      },
+      "perfect": "opgegroeiden"
+    },
+    {
+      "id": "v_voetballen",
+      "infinitive": "voetballen",
+      "en": "to play football",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "voetball",
+        "jij": "voetballt",
+        "hij": "voetballt",
+        "wij": "voetballen",
+        "jullie": "voetballen",
+        "zij": "voetballen"
+      },
+      "past": {
+        "singular": "voetballde",
+        "plural": "voetballden"
+      },
+      "perfect": "gevoetballden"
+    },
+    {
+      "id": "v_relaxen",
+      "infinitive": "relaxen",
+      "en": "to relax",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "relax",
+        "jij": "relaxt",
+        "hij": "relaxt",
+        "wij": "relaxen",
+        "jullie": "relaxen",
+        "zij": "relaxen"
+      },
+      "past": {
+        "singular": "relaxde",
+        "plural": "relaxden"
+      },
+      "perfect": "gerelaxden"
+    },
+    {
+      "id": "v_tennissen",
+      "infinitive": "tennissen",
+      "en": "to play tennis",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "tenniss",
+        "jij": "tennisst",
+        "hij": "tennisst",
+        "wij": "tennissen",
+        "jullie": "tennissen",
+        "zij": "tennissen"
+      },
+      "past": {
+        "singular": "tennisste",
+        "plural": "tennissten"
+      },
+      "perfect": "getennissten"
+    },
+    {
+      "id": "v_lunchen",
+      "infinitive": "lunchen",
+      "en": "to have lunch",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "lunch",
+        "jij": "luncht",
+        "hij": "luncht",
+        "wij": "lunchen",
+        "jullie": "lunchen",
+        "zij": "lunchen"
+      },
+      "past": {
+        "singular": "lunchte",
+        "plural": "lunchten"
+      },
+      "perfect": "gelunchten"
+    },
+    {
+      "id": "v_ontbijten",
+      "infinitive": "ontbijten",
+      "en": "to have breakfast",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "ontbijt",
+        "jij": "ontbijt",
+        "hij": "ontbijt",
+        "wij": "ontbijten",
+        "jullie": "ontbijten",
+        "zij": "ontbijten"
+      },
+      "past": {
+        "singular": "ontbijtte",
+        "plural": "ontbijtten"
+      },
+      "perfect": "geontbijtten"
+    },
+    {
+      "id": "v_afdrogen",
+      "infinitive": "afdrogen",
+      "en": "to dry",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "drog af",
+        "jij": "drogt af",
+        "hij": "drogt af",
+        "wij": "drogen af",
+        "jullie": "drogen af",
+        "zij": "drogen af"
+      },
+      "past": {
+        "singular": "droggde af",
+        "plural": "droggden af"
+      },
+      "perfect": "afgedrogden"
+    },
+    {
+      "id": "v_mailen",
+      "infinitive": "mailen",
+      "en": "to e-mail",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "maill",
+        "jij": "maillt",
+        "hij": "maillt",
+        "wij": "mailen",
+        "jullie": "mailen",
+        "zij": "mailen"
+      },
+      "past": {
+        "singular": "maillde",
+        "plural": "maillden"
+      },
+      "perfect": "gemaillden"
+    },
+    {
+      "id": "v_scheren",
+      "infinitive": "scheren",
+      "en": "to shave",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "scher",
+        "jij": "schert",
+        "hij": "schert",
+        "wij": "scheren",
+        "jullie": "scheren",
+        "zij": "scheren"
+      },
+      "past": {
+        "singular": "scherde",
+        "plural": "scherden"
+      },
+      "perfect": "gescherden"
+    },
+    {
+      "id": "v_uitkleden",
+      "infinitive": "uitkleden",
+      "en": "to undress",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "kled uit",
+        "jij": "kledt uit",
+        "hij": "kledt uit",
+        "wij": "kleden uit",
+        "jullie": "kleden uit",
+        "zij": "kleden uit"
+      },
+      "past": {
+        "singular": "kleddte uit",
+        "plural": "kleddten uit"
+      },
+      "perfect": "uitgekledden"
+    },
+    {
+      "id": "v_schilderen",
+      "infinitive": "schilderen",
+      "en": "to paint",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "schilder",
+        "jij": "schildert",
+        "hij": "schildert",
+        "wij": "schilderen",
+        "jullie": "schilderen",
+        "zij": "schilderen"
+      },
+      "past": {
+        "singular": "schilderde",
+        "plural": "schilderden"
+      },
+      "perfect": "geschilderden"
+    },
+    {
+      "id": "v_aankleden",
+      "infinitive": "aankleden",
+      "en": "to get dressed",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "kled aan",
+        "jij": "kledt aan",
+        "hij": "kledt aan",
+        "wij": "kleden aan",
+        "jullie": "kleden aan",
+        "zij": "kleden aan"
+      },
+      "past": {
+        "singular": "kleddte aan",
+        "plural": "kleddten aan"
+      },
+      "perfect": "aangekledden"
+    },
+    {
+      "id": "v_hockeyen",
+      "infinitive": "hockeyen",
+      "en": "to play (field) hockey",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "hockey",
+        "jij": "hockeyt",
+        "hij": "hockeyt",
+        "wij": "hockeyen",
+        "jullie": "hockeyen",
+        "zij": "hockeyen"
+      },
+      "past": {
+        "singular": "hockeyde",
+        "plural": "hockeyden"
+      },
+      "perfect": "gehockeyden"
+    },
+    {
+      "id": "v_gamen",
+      "infinitive": "gamen",
+      "en": "to game",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "gamm",
+        "jij": "gammt",
+        "hij": "gammt",
+        "wij": "gamen",
+        "jullie": "gamen",
+        "zij": "gamen"
+      },
+      "past": {
+        "singular": "gammde",
+        "plural": "gammden"
+      },
+      "perfect": "gegammden"
+    },
+    {
+      "id": "v_tuinieren",
+      "infinitive": "tuinieren",
+      "en": "to do gardening",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "tuinier",
+        "jij": "tuiniert",
+        "hij": "tuiniert",
+        "wij": "tuinieren",
+        "jullie": "tuinieren",
+        "zij": "tuinieren"
+      },
+      "past": {
+        "singular": "tuinierde",
+        "plural": "tuinierden"
+      },
+      "perfect": "getuinierden"
+    },
+    {
+      "id": "v_eindigen",
+      "infinitive": "eindigen",
+      "en": "to end",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "eindig",
+        "jij": "eindigt",
+        "hij": "eindigt",
+        "wij": "eindigen",
+        "jullie": "eindigen",
+        "zij": "eindigen"
+      },
+      "past": {
+        "singular": "eindigde",
+        "plural": "eindigden"
+      },
+      "perfect": "geeindigden"
+    },
+    {
+      "id": "v_duren",
+      "infinitive": "duren",
+      "en": "to last",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "durr",
+        "jij": "durrt",
+        "hij": "durrt",
+        "wij": "duren",
+        "jullie": "duren",
+        "zij": "duren"
+      },
+      "past": {
+        "singular": "durrde",
+        "plural": "durrden"
+      },
+      "perfect": "gedurrden"
+    },
+    {
+      "id": "v_afspreken",
+      "infinitive": "afspreken",
+      "en": "to get together",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "sprek af",
+        "jij": "sprekt af",
+        "hij": "sprekt af",
+        "wij": "spreken af",
+        "jullie": "spreken af",
+        "zij": "spreken af"
+      },
+      "past": {
+        "singular": "sprekte af",
+        "plural": "sprekten af"
+      },
+      "perfect": "afgesprekden"
+    },
+    {
+      "id": "v_barbecuen",
+      "infinitive": "barbecuen",
+      "en": "to barbecue",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "barbecu",
+        "jij": "barbecut",
+        "hij": "barbecut",
+        "wij": "barbecuen",
+        "jullie": "barbecuen",
+        "zij": "barbecuen"
+      },
+      "past": {
+        "singular": "barbecude",
+        "plural": "barbecuden"
+      },
+      "perfect": "gebarbecuden"
+    },
+    {
+      "id": "v_kletsen",
+      "infinitive": "kletsen",
+      "en": "to chat",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "klets",
+        "jij": "kletst",
+        "hij": "kletst",
+        "wij": "kletsen",
+        "jullie": "kletsen",
+        "zij": "kletsen"
+      },
+      "past": {
+        "singular": "kletste",
+        "plural": "kletsten"
+      },
+      "perfect": "gekletsten"
+    },
+    {
+      "id": "v_picknicken",
+      "infinitive": "picknicken",
+      "en": "to have a picnic",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "picknick",
+        "jij": "picknickt",
+        "hij": "picknickt",
+        "wij": "picknicken",
+        "jullie": "picknicken",
+        "zij": "picknicken"
+      },
+      "past": {
+        "singular": "picknickte",
+        "plural": "picknickten"
+      },
+      "perfect": "gepicknickten"
+    },
+    {
+      "id": "v_zonnen",
+      "infinitive": "zonnen",
+      "en": "to sunbathe",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "zonn",
+        "jij": "zonnt",
+        "hij": "zonnt",
+        "wij": "zonnen",
+        "jullie": "zonnen",
+        "zij": "zonnen"
+      },
+      "past": {
+        "singular": "zonnde",
+        "plural": "zonnden"
+      },
+      "perfect": "gezonnden"
+    },
+    {
+      "id": "v_surfen",
+      "infinitive": "surfen",
+      "en": "to surf",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "surf",
+        "jij": "surft",
+        "hij": "surft",
+        "wij": "surfen",
+        "jullie": "surfen",
+        "zij": "surfen"
+      },
+      "past": {
+        "singular": "surfte",
+        "plural": "surften"
+      },
+      "perfect": "gesurften"
+    },
+    {
+      "id": "v_schaatsen",
+      "infinitive": "schaatsen",
+      "en": "to ice skate",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "schaats",
+        "jij": "schaatst",
+        "hij": "schaatst",
+        "wij": "schaatsen",
+        "jullie": "schaatsen",
+        "zij": "schaatsen"
+      },
+      "past": {
+        "singular": "schaatste",
+        "plural": "schaatsten"
+      },
+      "perfect": "geschaatsten"
+    },
+    {
+      "id": "v_gooien",
+      "infinitive": "gooien",
+      "en": "to throw",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "gooi",
+        "jij": "gooit",
+        "hij": "gooit",
+        "wij": "gooien",
+        "jullie": "gooien",
+        "zij": "gooien"
+      },
+      "past": {
+        "singular": "gooide",
+        "plural": "gooiden"
+      },
+      "perfect": "gegooiden"
+    },
+    {
+      "id": "v_vieren",
+      "infinitive": "vieren",
+      "en": "to celebrate",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "vierr",
+        "jij": "vierrt",
+        "hij": "vierrt",
+        "wij": "vieren",
+        "jullie": "vieren",
+        "zij": "vieren"
+      },
+      "past": {
+        "singular": "vierrde",
+        "plural": "vierrden"
+      },
+      "perfect": "gevierrden"
+    },
+    {
+      "id": "v_varen",
+      "infinitive": "varen",
+      "en": "to sail",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "varr",
+        "jij": "varrt",
+        "hij": "varrt",
+        "wij": "varen",
+        "jullie": "varen",
+        "zij": "varen"
+      },
+      "past": {
+        "singular": "varrde",
+        "plural": "varrden"
+      },
+      "perfect": "gevarrden"
+    },
+    {
+      "id": "v_zoeken",
+      "infinitive": "zoeken",
+      "en": "to search",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "zoekk",
+        "jij": "zoekkt",
+        "hij": "zoekkt",
+        "wij": "zoeken",
+        "jullie": "zoeken",
+        "zij": "zoeken"
+      },
+      "past": {
+        "singular": "zoekkte",
+        "plural": "zoekkten"
+      },
+      "perfect": "gezoekkten"
+    },
+    {
+      "id": "v_plannen",
+      "infinitive": "plannen",
+      "en": "to plan",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "plann",
+        "jij": "plannt",
+        "hij": "plannt",
+        "wij": "plannen",
+        "jullie": "plannen",
+        "zij": "plannen"
+      },
+      "past": {
+        "singular": "plannde",
+        "plural": "plannden"
+      },
+      "perfect": "geplannden"
+    },
+    {
+      "id": "v_annuleren",
+      "infinitive": "annuleren",
+      "en": "to cancel",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "annuler",
+        "jij": "annulert",
+        "hij": "annulert",
+        "wij": "annuleren",
+        "jullie": "annuleren",
+        "zij": "annuleren"
+      },
+      "past": {
+        "singular": "annulerde",
+        "plural": "annulerden"
+      },
+      "perfect": "geannulerden"
+    },
+    {
+      "id": "v_uitstellen",
+      "infinitive": "uitstellen",
+      "en": "to postpone",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "stell uit",
+        "jij": "stellt uit",
+        "hij": "stellt uit",
+        "wij": "stellen uit",
+        "jullie": "stellen uit",
+        "zij": "stellen uit"
+      },
+      "past": {
+        "singular": "stellde uit",
+        "plural": "stellden uit"
+      },
+      "perfect": "uitgestellden"
+    },
+    {
+      "id": "v_verzetten",
+      "infinitive": "verzetten",
+      "en": "to reschedule",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "verzett",
+        "jij": "verzett",
+        "hij": "verzett",
+        "wij": "verzetten",
+        "jullie": "verzetten",
+        "zij": "verzetten"
+      },
+      "past": {
+        "singular": "verzettte",
+        "plural": "verzettten"
+      },
+      "perfect": "geverzettten"
+    },
+    {
+      "id": "v_bevestigen",
+      "infinitive": "bevestigen",
+      "en": "to confirm",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "bevestig",
+        "jij": "bevestigt",
+        "hij": "bevestigt",
+        "wij": "bevestigen",
+        "jullie": "bevestigen",
+        "zij": "bevestigen"
+      },
+      "past": {
+        "singular": "bevestigde",
+        "plural": "bevestigden"
+      },
+      "perfect": "gebevestigden"
+    },
+    {
+      "id": "v_herinneren",
+      "infinitive": "herinneren",
+      "en": "to remind",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "herinner",
+        "jij": "herinnert",
+        "hij": "herinnert",
+        "wij": "herinneren",
+        "jullie": "herinneren",
+        "zij": "herinneren"
+      },
+      "past": {
+        "singular": "herinnerde",
+        "plural": "herinnerden"
+      },
+      "perfect": "geherinnerden"
+    },
+    {
+      "id": "v_reserveren",
+      "infinitive": "reserveren",
+      "en": "to reserve",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "reserver",
+        "jij": "reservert",
+        "hij": "reservert",
+        "wij": "reserveren",
+        "jullie": "reserveren",
+        "zij": "reserveren"
+      },
+      "past": {
+        "singular": "reserverde",
+        "plural": "reserverden"
+      },
+      "perfect": "gereserverden"
+    },
+    {
+      "id": "v_boeken",
+      "infinitive": "boeken",
+      "en": "to book",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "boekk",
+        "jij": "boekkt",
+        "hij": "boekkt",
+        "wij": "boeken",
+        "jullie": "boeken",
+        "zij": "boeken"
+      },
+      "past": {
+        "singular": "boekkte",
+        "plural": "boekkten"
+      },
+      "perfect": "geboekkten"
+    },
+    {
+      "id": "v_inschrijven",
+      "infinitive": "inschrijven",
+      "en": "to register",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "schrijv in",
+        "jij": "schrijvt in",
+        "hij": "schrijvt in",
+        "wij": "schrijven in",
+        "jullie": "schrijven in",
+        "zij": "schrijven in"
+      },
+      "past": {
+        "singular": "schrijvde in",
+        "plural": "schrijvden in"
+      },
+      "perfect": "ingeschrijvden"
+    },
+    {
+      "id": "v_aanmelden",
+      "infinitive": "aanmelden",
+      "en": "to sign up",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "meld aan",
+        "jij": "meldt aan",
+        "hij": "meldt aan",
+        "wij": "melden aan",
+        "jullie": "melden aan",
+        "zij": "melden aan"
+      },
+      "past": {
+        "singular": "meldte aan",
+        "plural": "meldten aan"
+      },
+      "perfect": "aangemeldden"
+    },
+    {
+      "id": "v_afmelden",
+      "infinitive": "afmelden",
+      "en": "to cancel",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "meld af",
+        "jij": "meldt af",
+        "hij": "meldt af",
+        "wij": "melden af",
+        "jullie": "melden af",
+        "zij": "melden af"
+      },
+      "past": {
+        "singular": "meldte af",
+        "plural": "meldten af"
+      },
+      "perfect": "afgemeldden"
+    },
+    {
+      "id": "v_deelnemen",
+      "infinitive": "deelnemen",
+      "en": "to participate",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "deelnem",
+        "jij": "deelnemt",
+        "hij": "deelnemt",
+        "wij": "deelnemen",
+        "jullie": "deelnemen",
+        "zij": "deelnemen"
+      },
+      "past": {
+        "singular": "deelnemde",
+        "plural": "deelnemden"
+      },
+      "perfect": "gedeelnemden"
+    },
+    {
+      "id": "v_bestellen",
+      "infinitive": "bestellen",
+      "en": "to order",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "bestell",
+        "jij": "bestellt",
+        "hij": "bestellt",
+        "wij": "bestellen",
+        "jullie": "bestellen",
+        "zij": "bestellen"
+      },
+      "past": {
+        "singular": "bestellde",
+        "plural": "bestellden"
+      },
+      "perfect": "gebestellden"
+    },
+    {
+      "id": "v_afrekenen",
+      "infinitive": "afrekenen",
+      "en": "to pay the bill",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "reken af",
+        "jij": "rekent af",
+        "hij": "rekent af",
+        "wij": "rekenen af",
+        "jullie": "rekenen af",
+        "zij": "rekenen af"
+      },
+      "past": {
+        "singular": "rekende af",
+        "plural": "rekenden af"
+      },
+      "perfect": "afgerekenden"
+    },
+    {
+      "id": "v_grillen",
+      "infinitive": "grillen",
+      "en": "to grill",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "grill",
+        "jij": "grillt",
+        "hij": "grillt",
+        "wij": "grillen",
+        "jullie": "grillen",
+        "zij": "grillen"
+      },
+      "past": {
+        "singular": "grillde",
+        "plural": "grillden"
+      },
+      "perfect": "gegrillden"
+    },
+    {
+      "id": "v_pinnen",
+      "infinitive": "pinnen",
+      "en": "to pay by debit card",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "pinn",
+        "jij": "pinnt",
+        "hij": "pinnt",
+        "wij": "pinnen",
+        "jullie": "pinnen",
+        "zij": "pinnen"
+      },
+      "past": {
+        "singular": "pinnde",
+        "plural": "pinnden"
+      },
+      "perfect": "gepinnden"
+    },
+    {
+      "id": "v_klikken",
+      "infinitive": "klikken",
+      "en": "to click",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "klikk",
+        "jij": "klikkt",
+        "hij": "klikkt",
+        "wij": "klikken",
+        "jullie": "klikken",
+        "zij": "klikken"
+      },
+      "past": {
+        "singular": "klikkte",
+        "plural": "klikkten"
+      },
+      "perfect": "geklikkten"
+    },
+    {
+      "id": "v_bezorgen",
+      "infinitive": "bezorgen",
+      "en": "to deliver",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "bezorg",
+        "jij": "bezorgt",
+        "hij": "bezorgt",
+        "wij": "bezorgen",
+        "jullie": "bezorgen",
+        "zij": "bezorgen"
+      },
+      "past": {
+        "singular": "bezorgde",
+        "plural": "bezorgden"
+      },
+      "perfect": "gebezorgden"
+    },
+    {
+      "id": "v_trouwen",
+      "infinitive": "trouwen",
+      "en": "to marry",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "trouw",
+        "jij": "trouwt",
+        "hij": "trouwt",
+        "wij": "trouwen",
+        "jullie": "trouwen",
+        "zij": "trouwen"
+      },
+      "past": {
+        "singular": "trouwde",
+        "plural": "trouwden"
+      },
+      "perfect": "getrouwden"
+    },
+    {
+      "id": "v_aantrekken",
+      "infinitive": "aantrekken",
+      "en": "to put on",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "trekk aan",
+        "jij": "trekkt aan",
+        "hij": "trekkt aan",
+        "wij": "trekken aan",
+        "jullie": "trekken aan",
+        "zij": "trekken aan"
+      },
+      "past": {
+        "singular": "trekkte aan",
+        "plural": "trekkten aan"
+      },
+      "perfect": "aangetrekkden"
+    },
+    {
+      "id": "v_verkopen",
+      "infinitive": "verkopen",
+      "en": "to sell",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "verkop",
+        "jij": "verkopt",
+        "hij": "verkopt",
+        "wij": "verkopen",
+        "jullie": "verkopen",
+        "zij": "verkopen"
+      },
+      "past": {
+        "singular": "verkopte",
+        "plural": "verkopten"
+      },
+      "perfect": "geverkopten"
+    },
+    {
+      "id": "v_passen",
+      "infinitive": "passen",
+      "en": "to try on",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "pass",
+        "jij": "passt",
+        "hij": "passt",
+        "wij": "passen",
+        "jullie": "passen",
+        "zij": "passen"
+      },
+      "past": {
+        "singular": "passte",
+        "plural": "passten"
+      },
+      "perfect": "gepassten"
+    },
+    {
+      "id": "v_laten",
+      "infinitive": "laten",
+      "en": "to have",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "latt",
+        "jij": "latt",
+        "hij": "latt",
+        "wij": "laten",
+        "jullie": "laten",
+        "zij": "laten"
+      },
+      "past": {
+        "singular": "lattte",
+        "plural": "lattten"
+      },
+      "perfect": "gelattten"
+    },
+    {
+      "id": "v_raden",
+      "infinitive": "raden",
+      "en": "to guess",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "radd",
+        "jij": "radd",
+        "hij": "radd",
+        "wij": "raden",
+        "jullie": "raden",
+        "zij": "raden"
+      },
+      "past": {
+        "singular": "raddte",
+        "plural": "raddten"
+      },
+      "perfect": "geraddten"
+    },
+    {
+      "id": "v_vergelijken",
+      "infinitive": "vergelijken",
+      "en": "to compare",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "vergelijk",
+        "jij": "vergelijkt",
+        "hij": "vergelijkt",
+        "wij": "vergelijken",
+        "jullie": "vergelijken",
+        "zij": "vergelijken"
+      },
+      "past": {
+        "singular": "vergelijkte",
+        "plural": "vergelijkten"
+      },
+      "perfect": "gevergelijkten"
+    },
+    {
+      "id": "v_controleren",
+      "infinitive": "controleren",
+      "en": "to check",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "controler",
+        "jij": "controlert",
+        "hij": "controlert",
+        "wij": "controleren",
+        "jullie": "controleren",
+        "zij": "controleren"
+      },
+      "past": {
+        "singular": "controlerde",
+        "plural": "controlerden"
+      },
+      "perfect": "gecontrolerden"
+    },
+    {
+      "id": "v_retourneren",
+      "infinitive": "retourneren",
+      "en": "to return",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "retourner",
+        "jij": "retournert",
+        "hij": "retournert",
+        "wij": "retourneren",
+        "jullie": "retourneren",
+        "zij": "retourneren"
+      },
+      "past": {
+        "singular": "retournerde",
+        "plural": "retournerden"
+      },
+      "perfect": "geretournerden"
+    },
+    {
+      "id": "v_ruilen",
+      "infinitive": "ruilen",
+      "en": "to exchange",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "ruill",
+        "jij": "ruillt",
+        "hij": "ruillt",
+        "wij": "ruilen",
+        "jullie": "ruilen",
+        "zij": "ruilen"
+      },
+      "past": {
+        "singular": "ruillde",
+        "plural": "ruillden"
+      },
+      "perfect": "geruillden"
+    },
+    {
+      "id": "v_ophalen",
+      "infinitive": "ophalen",
+      "en": "to pick up",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "hal op",
+        "jij": "halt op",
+        "hij": "halt op",
+        "wij": "halen op",
+        "jullie": "halen op",
+        "zij": "halen op"
+      },
+      "past": {
+        "singular": "hallde op",
+        "plural": "hallden op"
+      },
+      "perfect": "opgehalden"
+    },
+    {
+      "id": "v_gebruiken",
+      "infinitive": "gebruiken",
+      "en": "to use",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "gebruik",
+        "jij": "gebruikt",
+        "hij": "gebruikt",
+        "wij": "gebruiken",
+        "jullie": "gebruiken",
+        "zij": "gebruiken"
+      },
+      "past": {
+        "singular": "gebruikte",
+        "plural": "gebruikten"
+      },
+      "perfect": "gegebruikten"
+    },
+    {
+      "id": "v_innemen",
+      "infinitive": "innemen",
+      "en": "to take",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "nem in",
+        "jij": "nemt in",
+        "hij": "nemt in",
+        "wij": "nemen in",
+        "jullie": "nemen in",
+        "zij": "nemen in"
+      },
+      "past": {
+        "singular": "nemmde in",
+        "plural": "nemmden in"
+      },
+      "perfect": "ingenemden"
+    },
+    {
+      "id": "v_ademen",
+      "infinitive": "ademen",
+      "en": "to breathe",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "ademm",
+        "jij": "ademmt",
+        "hij": "ademmt",
+        "wij": "ademen",
+        "jullie": "ademen",
+        "zij": "ademen"
+      },
+      "past": {
+        "singular": "ademmde",
+        "plural": "ademmden"
+      },
+      "perfect": "geademmden"
+    },
+    {
+      "id": "v_hoesten",
+      "infinitive": "hoesten",
+      "en": "to cough",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "hoest",
+        "jij": "hoest",
+        "hij": "hoest",
+        "wij": "hoesten",
+        "jullie": "hoesten",
+        "zij": "hoesten"
+      },
+      "past": {
+        "singular": "hoestte",
+        "plural": "hoestten"
+      },
+      "perfect": "gehoestten"
+    },
+    {
+      "id": "v_horen",
+      "infinitive": "horen",
+      "en": "to hear",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "horr",
+        "jij": "horrt",
+        "hij": "horrt",
+        "wij": "horen",
+        "jullie": "horen",
+        "zij": "horen"
+      },
+      "past": {
+        "singular": "horrde",
+        "plural": "horrden"
+      },
+      "perfect": "gehorrden"
+    },
+    {
+      "id": "v_kauwen",
+      "infinitive": "kauwen",
+      "en": "to chew",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "kauww",
+        "jij": "kauwwt",
+        "hij": "kauwwt",
+        "wij": "kauwen",
+        "jullie": "kauwen",
+        "zij": "kauwen"
+      },
+      "past": {
+        "singular": "kauwwde",
+        "plural": "kauwwden"
+      },
+      "perfect": "gekauwwden"
+    },
+    {
+      "id": "v_proeven",
+      "infinitive": "proeven",
+      "en": "to taste",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "proev",
+        "jij": "proeft",
+        "hij": "proeft",
+        "wij": "proeven",
+        "jullie": "proeven",
+        "zij": "proeven"
+      },
+      "past": {
+        "singular": "proevde",
+        "plural": "proevden"
+      },
+      "perfect": "geproevden"
+    },
+    {
+      "id": "v_ruiken",
+      "infinitive": "ruiken",
+      "en": "to smell",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "ruikk",
+        "jij": "ruikkt",
+        "hij": "ruikkt",
+        "wij": "ruiken",
+        "jullie": "ruiken",
+        "zij": "ruiken"
+      },
+      "past": {
+        "singular": "ruikkte",
+        "plural": "ruikkten"
+      },
+      "perfect": "geruikkten"
+    },
+    {
+      "id": "v_overgeven",
+      "infinitive": "overgeven",
+      "en": "to throw up",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "overgev",
+        "jij": "overgeft",
+        "hij": "overgeft",
+        "wij": "overgeven",
+        "jullie": "overgeven",
+        "zij": "overgeven"
+      },
+      "past": {
+        "singular": "overgevde",
+        "plural": "overgevden"
+      },
+      "perfect": "geovergevden"
+    },
+    {
+      "id": "v_slikken",
+      "infinitive": "slikken",
+      "en": "to swallow",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "slikk",
+        "jij": "slikkt",
+        "hij": "slikkt",
+        "wij": "slikken",
+        "jullie": "slikken",
+        "zij": "slikken"
+      },
+      "past": {
+        "singular": "slikkte",
+        "plural": "slikkten"
+      },
+      "perfect": "geslikkten"
+    },
+    {
+      "id": "v_smeren",
+      "infinitive": "smeren",
+      "en": "to apply",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "smerr",
+        "jij": "smerrt",
+        "hij": "smerrt",
+        "wij": "smeren",
+        "jullie": "smeren",
+        "zij": "smeren"
+      },
+      "past": {
+        "singular": "smerrde",
+        "plural": "smerrden"
+      },
+      "perfect": "gesmerrden"
+    },
+    {
+      "id": "v_plakken",
+      "infinitive": "plakken",
+      "en": "to stick",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "plakk",
+        "jij": "plakkt",
+        "hij": "plakkt",
+        "wij": "plakken",
+        "jullie": "plakken",
+        "zij": "plakken"
+      },
+      "past": {
+        "singular": "plakkte",
+        "plural": "plakkten"
+      },
+      "perfect": "geplakkten"
+    },
+    {
+      "id": "v_druppelen",
+      "infinitive": "druppelen",
+      "en": "to drip",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "druppel",
+        "jij": "druppelt",
+        "hij": "druppelt",
+        "wij": "druppelen",
+        "jullie": "druppelen",
+        "zij": "druppelen"
+      },
+      "past": {
+        "singular": "druppelde",
+        "plural": "druppelden"
+      },
+      "perfect": "gedruppelden"
+    },
+    {
+      "id": "v_verbinden",
+      "infinitive": "verbinden",
+      "en": "to bandage",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "verbind",
+        "jij": "verbind",
+        "hij": "verbind",
+        "wij": "verbinden",
+        "jullie": "verbinden",
+        "zij": "verbinden"
+      },
+      "past": {
+        "singular": "verbindte",
+        "plural": "verbindten"
+      },
+      "perfect": "geverbindten"
+    },
+    {
+      "id": "v_doorverwijzen",
+      "infinitive": "doorverwijzen",
+      "en": "to refer",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "verwijz door",
+        "jij": "verwijzt door",
+        "hij": "verwijzt door",
+        "wij": "verwijzen door",
+        "jullie": "verwijzen door",
+        "zij": "verwijzen door"
+      },
+      "past": {
+        "singular": "verwijzde door",
+        "plural": "verwijzden door"
+      },
+      "perfect": "doorgeverwijzden"
+    },
+    {
+      "id": "v_stoppen",
+      "infinitive": "stoppen",
+      "en": "to stop",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "stopp",
+        "jij": "stoppt",
+        "hij": "stoppt",
+        "wij": "stoppen",
+        "jullie": "stoppen",
+        "zij": "stoppen"
+      },
+      "past": {
+        "singular": "stoppte",
+        "plural": "stoppten"
+      },
+      "perfect": "gestoppten"
+    },
+    {
+      "id": "v_roken",
+      "infinitive": "roken",
+      "en": "to smoke",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "rokk",
+        "jij": "rokkt",
+        "hij": "rokkt",
+        "wij": "roken",
+        "jullie": "roken",
+        "zij": "roken"
+      },
+      "past": {
+        "singular": "rokkte",
+        "plural": "rokkten"
+      },
+      "perfect": "gerokkten"
+    },
+    {
+      "id": "v_ontspannen",
+      "infinitive": "ontspannen",
+      "en": "to relax",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "ontspann",
+        "jij": "ontspannt",
+        "hij": "ontspannt",
+        "wij": "ontspannen",
+        "jullie": "ontspannen",
+        "zij": "ontspannen"
+      },
+      "past": {
+        "singular": "ontspannde",
+        "plural": "ontspannden"
+      },
+      "perfect": "geontspannden"
+    },
+    {
+      "id": "v_herstellen",
+      "infinitive": "herstellen",
+      "en": "to recover",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "herstell",
+        "jij": "herstellt",
+        "hij": "herstellt",
+        "wij": "herstellen",
+        "jullie": "herstellen",
+        "zij": "herstellen"
+      },
+      "past": {
+        "singular": "herstellde",
+        "plural": "herstellden"
+      },
+      "perfect": "geherstellden"
+    },
+    {
+      "id": "v_blijven",
+      "infinitive": "blijven",
+      "en": "to stay",
+      "type": "irregular",
+      "auxiliary": "zijn",
+      "present": {
+        "ik": "blijf",
+        "jij": "blijft",
+        "hij": "blijft",
+        "wij": "blijven",
+        "jullie": "blijven",
+        "zij": "blijven"
+      },
+      "past": {
+        "singular": "bleef",
+        "plural": "bleven"
+      },
+      "perfect": "gebleven"
+    },
+    {
+      "id": "v_mediteren",
+      "infinitive": "mediteren",
+      "en": "to meditate",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "mediter",
+        "jij": "meditert",
+        "hij": "meditert",
+        "wij": "mediteren",
+        "jullie": "mediteren",
+        "zij": "mediteren"
+      },
+      "past": {
+        "singular": "mediterde",
+        "plural": "mediterden"
+      },
+      "perfect": "gemediterden"
+    },
+    {
+      "id": "v_genezen",
+      "infinitive": "genezen",
+      "en": "to cure",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "genez",
+        "jij": "genezt",
+        "hij": "genezt",
+        "wij": "genezen",
+        "jullie": "genezen",
+        "zij": "genezen"
+      },
+      "past": {
+        "singular": "genezde",
+        "plural": "genezden"
+      },
+      "perfect": "gegenezden"
+    },
+    {
+      "id": "v_printen",
+      "infinitive": "printen",
+      "en": "to print",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "print",
+        "jij": "print",
+        "hij": "print",
+        "wij": "printen",
+        "jullie": "printen",
+        "zij": "printen"
+      },
+      "past": {
+        "singular": "printte",
+        "plural": "printten"
+      },
+      "perfect": "geprintten"
+    },
+    {
+      "id": "v_schoonmaken",
+      "infinitive": "schoonmaken",
+      "en": "to clean",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "schoonmak",
+        "jij": "schoonmakt",
+        "hij": "schoonmakt",
+        "wij": "schoonmaken",
+        "jullie": "schoonmaken",
+        "zij": "schoonmaken"
+      },
+      "past": {
+        "singular": "schoonmakte",
+        "plural": "schoonmakten"
+      },
+      "perfect": "geschoonmakten"
+    },
+    {
+      "id": "v_recyclen",
+      "infinitive": "recyclen",
+      "en": "to recycle",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "recycl",
+        "jij": "recyclt",
+        "hij": "recyclt",
+        "wij": "recyclen",
+        "jullie": "recyclen",
+        "zij": "recyclen"
+      },
+      "past": {
+        "singular": "recyclde",
+        "plural": "recyclden"
+      },
+      "perfect": "gerecyclden"
+    },
+    {
+      "id": "v_composteren",
+      "infinitive": "composteren",
+      "en": "to compost",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "composter",
+        "jij": "compostert",
+        "hij": "compostert",
+        "wij": "composteren",
+        "jullie": "composteren",
+        "zij": "composteren"
+      },
+      "past": {
+        "singular": "composterde",
+        "plural": "composterden"
+      },
+      "perfect": "gecomposterden"
+    },
+    {
+      "id": "v_condoleren",
+      "infinitive": "condoleren",
+      "en": "to condole",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "condoler",
+        "jij": "condolert",
+        "hij": "condolert",
+        "wij": "condoleren",
+        "jullie": "condoleren",
+        "zij": "condoleren"
+      },
+      "past": {
+        "singular": "condolerde",
+        "plural": "condolerden"
+      },
+      "perfect": "gecondolerden"
+    },
+    {
+      "id": "v_feliciteren",
+      "infinitive": "feliciteren",
+      "en": "to congratulate",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "feliciter",
+        "jij": "felicitert",
+        "hij": "felicitert",
+        "wij": "feliciteren",
+        "jullie": "feliciteren",
+        "zij": "feliciteren"
+      },
+      "past": {
+        "singular": "feliciterde",
+        "plural": "feliciterden"
+      },
+      "perfect": "gefeliciterden"
+    },
+    {
+      "id": "v_reageren",
+      "infinitive": "reageren",
+      "en": "to react",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "reager",
+        "jij": "reagert",
+        "hij": "reagert",
+        "wij": "reageren",
+        "jullie": "reageren",
+        "zij": "reageren"
+      },
+      "past": {
+        "singular": "reagerde",
+        "plural": "reagerden"
+      },
+      "perfect": "gereagerden"
+    },
+    {
+      "id": "v_telefoneren",
+      "infinitive": "telefoneren",
+      "en": "to phone",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "telefoner",
+        "jij": "telefonert",
+        "hij": "telefonert",
+        "wij": "telefoneren",
+        "jullie": "telefoneren",
+        "zij": "telefoneren"
+      },
+      "past": {
+        "singular": "telefonerde",
+        "plural": "telefonerden"
+      },
+      "perfect": "getelefonerden"
+    },
+    {
+      "id": "v_afzeggen",
+      "infinitive": "afzeggen",
+      "en": "to cancel",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "zegg af",
+        "jij": "zeggt af",
+        "hij": "zeggt af",
+        "wij": "zeggen af",
+        "jullie": "zeggen af",
+        "zij": "zeggen af"
+      },
+      "past": {
+        "singular": "zeggde af",
+        "plural": "zeggden af"
+      },
+      "perfect": "afgezeggden"
+    },
+    {
+      "id": "v_appen",
+      "infinitive": "appen",
+      "en": "to message",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "app",
+        "jij": "appt",
+        "hij": "appt",
+        "wij": "appen",
+        "jullie": "appen",
+        "zij": "appen"
+      },
+      "past": {
+        "singular": "appte",
+        "plural": "appten"
+      },
+      "perfect": "geappten"
+    },
+    {
+      "id": "v_liken",
+      "infinitive": "liken",
+      "en": "to like",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "likk",
+        "jij": "likkt",
+        "hij": "likkt",
+        "wij": "liken",
+        "jullie": "liken",
+        "zij": "liken"
+      },
+      "past": {
+        "singular": "likkte",
+        "plural": "likkten"
+      },
+      "perfect": "gelikkten"
+    },
+    {
+      "id": "v_delen",
+      "infinitive": "delen",
+      "en": "to share",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "dell",
+        "jij": "dellt",
+        "hij": "dellt",
+        "wij": "delen",
+        "jullie": "delen",
+        "zij": "delen"
+      },
+      "past": {
+        "singular": "dellde",
+        "plural": "dellden"
+      },
+      "perfect": "gedellden"
+    },
+    {
+      "id": "v_posten",
+      "infinitive": "posten",
+      "en": "to post",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "post",
+        "jij": "post",
+        "hij": "post",
+        "wij": "posten",
+        "jullie": "posten",
+        "zij": "posten"
+      },
+      "past": {
+        "singular": "postte",
+        "plural": "postten"
+      },
+      "perfect": "gepostten"
+    },
+    {
+      "id": "v_chatten",
+      "infinitive": "chatten",
+      "en": "to chat",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "chatt",
+        "jij": "chatt",
+        "hij": "chatt",
+        "wij": "chatten",
+        "jullie": "chatten",
+        "zij": "chatten"
+      },
+      "past": {
+        "singular": "chattte",
+        "plural": "chattten"
+      },
+      "perfect": "gechattten"
+    },
+    {
+      "id": "v_oproepen",
+      "infinitive": "oproepen",
+      "en": "to call",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "roep op",
+        "jij": "roept op",
+        "hij": "roept op",
+        "wij": "roepen op",
+        "jullie": "roepen op",
+        "zij": "roepen op"
+      },
+      "past": {
+        "singular": "roeppte op",
+        "plural": "roeppten op"
+      },
+      "perfect": "opgeroepden"
+    },
+    {
+      "id": "v_langskomen",
+      "infinitive": "langskomen",
+      "en": "to drop by",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "langskom",
+        "jij": "langskomt",
+        "hij": "langskomt",
+        "wij": "langskomen",
+        "jullie": "langskomen",
+        "zij": "langskomen"
+      },
+      "past": {
+        "singular": "langskomde",
+        "plural": "langskomden"
+      },
+      "perfect": "gelangskomden"
+    },
+    {
+      "id": "v_bedanken",
+      "infinitive": "bedanken",
+      "en": "to thank",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "bedank",
+        "jij": "bedankt",
+        "hij": "bedankt",
+        "wij": "bedanken",
+        "jullie": "bedanken",
+        "zij": "bedanken"
+      },
+      "past": {
+        "singular": "bedankte",
+        "plural": "bedankten"
+      },
+      "perfect": "gebedankten"
+    },
+    {
+      "id": "v_troosten",
+      "infinitive": "troosten",
+      "en": "to comfort",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "troost",
+        "jij": "troost",
+        "hij": "troost",
+        "wij": "troosten",
+        "jullie": "troosten",
+        "zij": "troosten"
+      },
+      "past": {
+        "singular": "troostte",
+        "plural": "troostten"
+      },
+      "perfect": "getroostten"
+    },
+    {
+      "id": "v_aanmoedigen",
+      "infinitive": "aanmoedigen",
+      "en": "to encourage",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "moedig aan",
+        "jij": "moedigt aan",
+        "hij": "moedigt aan",
+        "wij": "moedigen aan",
+        "jullie": "moedigen aan",
+        "zij": "moedigen aan"
+      },
+      "past": {
+        "singular": "moedigde aan",
+        "plural": "moedigden aan"
+      },
+      "perfect": "aangemoedigden"
+    },
+    {
+      "id": "v_oppassen",
+      "infinitive": "oppassen",
+      "en": "to babysit",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "pass op",
+        "jij": "passt op",
+        "hij": "passt op",
+        "wij": "passen op",
+        "jullie": "passen op",
+        "zij": "passen op"
+      },
+      "past": {
+        "singular": "passte op",
+        "plural": "passten op"
+      },
+      "perfect": "opgepassden"
+    },
+    {
+      "id": "v_voeden",
+      "infinitive": "voeden",
+      "en": "to feed",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "voedd",
+        "jij": "voedd",
+        "hij": "voedd",
+        "wij": "voeden",
+        "jullie": "voeden",
+        "zij": "voeden"
+      },
+      "past": {
+        "singular": "voeddte",
+        "plural": "voeddten"
+      },
+      "perfect": "gevoeddten"
+    },
+    {
+      "id": "v_verschonen",
+      "infinitive": "verschonen",
+      "en": "to change",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "verschon",
+        "jij": "verschont",
+        "hij": "verschont",
+        "wij": "verschonen",
+        "jullie": "verschonen",
+        "zij": "verschonen"
+      },
+      "past": {
+        "singular": "verschonde",
+        "plural": "verschonden"
+      },
+      "perfect": "geverschonden"
+    },
+    {
+      "id": "v_onderwijzen",
+      "infinitive": "onderwijzen",
+      "en": "to teach",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "onderwijz",
+        "jij": "onderwijzt",
+        "hij": "onderwijzt",
+        "wij": "onderwijzen",
+        "jullie": "onderwijzen",
+        "zij": "onderwijzen"
+      },
+      "past": {
+        "singular": "onderwijzde",
+        "plural": "onderwijzden"
+      },
+      "perfect": "geonderwijzden"
+    },
+    {
+      "id": "v_opleiden",
+      "infinitive": "opleiden",
+      "en": "to train",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "leid op",
+        "jij": "leidt op",
+        "hij": "leidt op",
+        "wij": "leiden op",
+        "jullie": "leiden op",
+        "zij": "leiden op"
+      },
+      "past": {
+        "singular": "leiddte op",
+        "plural": "leiddten op"
+      },
+      "perfect": "opgeleidden"
+    },
+    {
+      "id": "v_afstuderen",
+      "infinitive": "afstuderen",
+      "en": "to graduate",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "studer af",
+        "jij": "studert af",
+        "hij": "studert af",
+        "wij": "studeren af",
+        "jullie": "studeren af",
+        "zij": "studeren af"
+      },
+      "past": {
+        "singular": "studerde af",
+        "plural": "studerden af"
+      },
+      "perfect": "afgestuderden"
+    },
+    {
+      "id": "v_slagen",
+      "infinitive": "slagen",
+      "en": "to pass",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "slagg",
+        "jij": "slaggt",
+        "hij": "slaggt",
+        "wij": "slagen",
+        "jullie": "slagen",
+        "zij": "slagen"
+      },
+      "past": {
+        "singular": "slaggde",
+        "plural": "slaggden"
+      },
+      "perfect": "geslaggden"
+    },
+    {
+      "id": "v_zakken",
+      "infinitive": "zakken",
+      "en": "to fail",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "zakk",
+        "jij": "zakkt",
+        "hij": "zakkt",
+        "wij": "zakken",
+        "jullie": "zakken",
+        "zij": "zakken"
+      },
+      "past": {
+        "singular": "zakkte",
+        "plural": "zakkten"
+      },
+      "perfect": "gezakkten"
+    },
+    {
+      "id": "v_uitschrijven",
+      "infinitive": "uitschrijven",
+      "en": "to deregister",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "schrijv uit",
+        "jij": "schrijvt uit",
+        "hij": "schrijvt uit",
+        "wij": "schrijven uit",
+        "jullie": "schrijven uit",
+        "zij": "schrijven uit"
+      },
+      "past": {
+        "singular": "schrijvde uit",
+        "plural": "schrijvden uit"
+      },
+      "perfect": "uitgeschrijvden"
+    },
+    {
+      "id": "v_spieken",
+      "infinitive": "spieken",
+      "en": "to cheat",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "spiek",
+        "jij": "spiekt",
+        "hij": "spiekt",
+        "wij": "spieken",
+        "jullie": "spieken",
+        "zij": "spieken"
+      },
+      "past": {
+        "singular": "spiekte",
+        "plural": "spiekten"
+      },
+      "perfect": "gespiekten"
+    },
+    {
+      "id": "v_nakijken",
+      "infinitive": "nakijken",
+      "en": "to mark",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "kijk na",
+        "jij": "kijkt na",
+        "hij": "kijkt na",
+        "wij": "kijken na",
+        "jullie": "kijken na",
+        "zij": "kijken na"
+      },
+      "past": {
+        "singular": "kijkte na",
+        "plural": "kijkten na"
+      },
+      "perfect": "nagekijkden"
+    },
+    {
+      "id": "v_solliciteren",
+      "infinitive": "solliciteren",
+      "en": "to apply",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "solliciter",
+        "jij": "sollicitert",
+        "hij": "sollicitert",
+        "wij": "solliciteren",
+        "jullie": "solliciteren",
+        "zij": "solliciteren"
+      },
+      "past": {
+        "singular": "solliciterde",
+        "plural": "solliciterden"
+      },
+      "perfect": "gesolliciterden"
+    },
+    {
+      "id": "v_afwijzen",
+      "infinitive": "afwijzen",
+      "en": "to reject",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "wijz af",
+        "jij": "wijzt af",
+        "hij": "wijzt af",
+        "wij": "wijzen af",
+        "jullie": "wijzen af",
+        "zij": "wijzen af"
+      },
+      "past": {
+        "singular": "wijzde af",
+        "plural": "wijzden af"
+      },
+      "perfect": "afgewijzden"
+    },
+    {
+      "id": "v_aannemen",
+      "infinitive": "aannemen",
+      "en": "to hire",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "nem aan",
+        "jij": "nemt aan",
+        "hij": "nemt aan",
+        "wij": "nemen aan",
+        "jullie": "nemen aan",
+        "zij": "nemen aan"
+      },
+      "past": {
+        "singular": "nemmde aan",
+        "plural": "nemmden aan"
+      },
+      "perfect": "aangenemden"
+    },
+    {
+      "id": "v_thuiswerken",
+      "infinitive": "thuiswerken",
+      "en": "to work from home",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "thuiswerk",
+        "jij": "thuiswerkt",
+        "hij": "thuiswerkt",
+        "wij": "thuiswerken",
+        "jullie": "thuiswerken",
+        "zij": "thuiswerken"
+      },
+      "past": {
+        "singular": "thuiswerkte",
+        "plural": "thuiswerkten"
+      },
+      "perfect": "gethuiswerkten"
+    },
+    {
+      "id": "v_onderhandelen",
+      "infinitive": "onderhandelen",
+      "en": "to negotiate",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "onderhandel",
+        "jij": "onderhandelt",
+        "hij": "onderhandelt",
+        "wij": "onderhandelen",
+        "jullie": "onderhandelen",
+        "zij": "onderhandelen"
+      },
+      "past": {
+        "singular": "onderhandelde",
+        "plural": "onderhandelden"
+      },
+      "perfect": "geonderhandelden"
+    },
+    {
+      "id": "v_multitasken",
+      "infinitive": "multitasken",
+      "en": "to multitask",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "multitask",
+        "jij": "multitaskt",
+        "hij": "multitaskt",
+        "wij": "multitasken",
+        "jullie": "multitasken",
+        "zij": "multitasken"
+      },
+      "past": {
+        "singular": "multitaskte",
+        "plural": "multitaskten"
+      },
+      "perfect": "gemultitaskten"
+    },
+    {
+      "id": "v_prioriteren",
+      "infinitive": "prioriteren",
+      "en": "to prioritize",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "prioriter",
+        "jij": "prioritert",
+        "hij": "prioritert",
+        "wij": "prioriteren",
+        "jullie": "prioriteren",
+        "zij": "prioriteren"
+      },
+      "past": {
+        "singular": "prioriterde",
+        "plural": "prioriterden"
+      },
+      "perfect": "geprioriterden"
+    },
+    {
+      "id": "v_ziekmelden",
+      "infinitive": "ziekmelden",
+      "en": "to report sick",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "ziekmeld",
+        "jij": "ziekmeld",
+        "hij": "ziekmeld",
+        "wij": "ziekmelden",
+        "jullie": "ziekmelden",
+        "zij": "ziekmelden"
+      },
+      "past": {
+        "singular": "ziekmeldte",
+        "plural": "ziekmeldten"
+      },
+      "perfect": "geziekmeldten"
+    },
+    {
+      "id": "v_inloggen",
+      "infinitive": "inloggen",
+      "en": "to log in",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "logg in",
+        "jij": "loggt in",
+        "hij": "loggt in",
+        "wij": "loggen in",
+        "jullie": "loggen in",
+        "zij": "loggen in"
+      },
+      "past": {
+        "singular": "loggde in",
+        "plural": "loggden in"
+      },
+      "perfect": "ingeloggden"
+    },
+    {
+      "id": "v_uitloggen",
+      "infinitive": "uitloggen",
+      "en": "to log out",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "logg uit",
+        "jij": "loggt uit",
+        "hij": "loggt uit",
+        "wij": "loggen uit",
+        "jullie": "loggen uit",
+        "zij": "loggen uit"
+      },
+      "past": {
+        "singular": "loggde uit",
+        "plural": "loggden uit"
+      },
+      "perfect": "uitgeloggden"
+    },
+    {
+      "id": "v_faxen",
+      "infinitive": "faxen",
+      "en": "to fax",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "faxx",
+        "jij": "faxxt",
+        "hij": "faxxt",
+        "wij": "faxen",
+        "jullie": "faxen",
+        "zij": "faxen"
+      },
+      "past": {
+        "singular": "faxxde",
+        "plural": "faxxden"
+      },
+      "perfect": "gefaxxden"
+    },
+    {
+      "id": "v_archiveren",
+      "infinitive": "archiveren",
+      "en": "to archive",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "archiver",
+        "jij": "archivert",
+        "hij": "archivert",
+        "wij": "archiveren",
+        "jullie": "archiveren",
+        "zij": "archiveren"
+      },
+      "past": {
+        "singular": "archiverde",
+        "plural": "archiverden"
+      },
+      "perfect": "gearchiverden"
+    },
+    {
+      "id": "v_kopiëren",
+      "infinitive": "kopiëren",
+      "en": "to copy",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "kopiër",
+        "jij": "kopiërt",
+        "hij": "kopiërt",
+        "wij": "kopiëren",
+        "jullie": "kopiëren",
+        "zij": "kopiëren"
+      },
+      "past": {
+        "singular": "kopiërde",
+        "plural": "kopiërden"
+      },
+      "perfect": "gekopiërden"
+    },
+    {
+      "id": "v_scannen",
+      "infinitive": "scannen",
+      "en": "to scan",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "scann",
+        "jij": "scannt",
+        "hij": "scannt",
+        "wij": "scannen",
+        "jullie": "scannen",
+        "zij": "scannen"
+      },
+      "past": {
+        "singular": "scannde",
+        "plural": "scannden"
+      },
+      "perfect": "gescannden"
+    },
+    {
+      "id": "v_opsturen",
+      "infinitive": "opsturen",
+      "en": "to send",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "stur op",
+        "jij": "sturt op",
+        "hij": "sturt op",
+        "wij": "sturen op",
+        "jullie": "sturen op",
+        "zij": "sturen op"
+      },
+      "past": {
+        "singular": "sturrde op",
+        "plural": "sturrden op"
+      },
+      "perfect": "opgesturden"
+    },
+    {
+      "id": "v_doorsturen",
+      "infinitive": "doorsturen",
+      "en": "to forward",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "stur door",
+        "jij": "sturt door",
+        "hij": "sturt door",
+        "wij": "sturen door",
+        "jullie": "sturen door",
+        "zij": "sturen door"
+      },
+      "past": {
+        "singular": "sturrde door",
+        "plural": "sturrden door"
+      },
+      "perfect": "doorgesturden"
+    },
+    {
+      "id": "v_afdrukken",
+      "infinitive": "afdrukken",
+      "en": "to print",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "drukk af",
+        "jij": "drukkt af",
+        "hij": "drukkt af",
+        "wij": "drukken af",
+        "jullie": "drukken af",
+        "zij": "drukken af"
+      },
+      "past": {
+        "singular": "drukkte af",
+        "plural": "drukkten af"
+      },
+      "perfect": "afgedrukkden"
+    },
+    {
+      "id": "v_opbergen",
+      "infinitive": "opbergen",
+      "en": "to file",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "berg op",
+        "jij": "bergt op",
+        "hij": "bergt op",
+        "wij": "bergen op",
+        "jullie": "bergen op",
+        "zij": "bergen op"
+      },
+      "past": {
+        "singular": "bergde op",
+        "plural": "bergden op"
+      },
+      "perfect": "opgebergden"
+    },
+    {
+      "id": "v_overleggen",
+      "infinitive": "overleggen",
+      "en": "to consult",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "overlegg",
+        "jij": "overleggt",
+        "hij": "overleggt",
+        "wij": "overleggen",
+        "jullie": "overleggen",
+        "zij": "overleggen"
+      },
+      "past": {
+        "singular": "overleggde",
+        "plural": "overleggden"
+      },
+      "perfect": "geoverleggden"
+    },
+    {
+      "id": "v_rapporteren",
+      "infinitive": "rapporteren",
+      "en": "to report",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "rapporter",
+        "jij": "rapportert",
+        "hij": "rapportert",
+        "wij": "rapporteren",
+        "jullie": "rapporteren",
+        "zij": "rapporteren"
+      },
+      "past": {
+        "singular": "rapporterde",
+        "plural": "rapporterden"
+      },
+      "perfect": "gerapporterden"
+    },
+    {
+      "id": "v_presenteren",
+      "infinitive": "presenteren",
+      "en": "to present",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "presenter",
+        "jij": "presentert",
+        "hij": "presentert",
+        "wij": "presenteren",
+        "jullie": "presenteren",
+        "zij": "presenteren"
+      },
+      "past": {
+        "singular": "presenterde",
+        "plural": "presenterden"
+      },
+      "perfect": "gepresenterden"
+    },
+    {
+      "id": "v_organiseren",
+      "infinitive": "organiseren",
+      "en": "to organize",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "organiser",
+        "jij": "organisert",
+        "hij": "organisert",
+        "wij": "organiseren",
+        "jullie": "organiseren",
+        "zij": "organiseren"
+      },
+      "past": {
+        "singular": "organiserde",
+        "plural": "organiserden"
+      },
+      "perfect": "georganiserden"
+    },
+    {
+      "id": "v_delegeeren",
+      "infinitive": "delegeeren",
+      "en": "to delegate",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "delegeer",
+        "jij": "delegeert",
+        "hij": "delegeert",
+        "wij": "delegeeren",
+        "jullie": "delegeeren",
+        "zij": "delegeeren"
+      },
+      "past": {
+        "singular": "delegeerde",
+        "plural": "delegeerden"
+      },
+      "perfect": "gedelegeerden"
+    },
+    {
+      "id": "v_goedkeuren",
+      "infinitive": "goedkeuren",
+      "en": "to approve",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "goedkeur",
+        "jij": "goedkeurt",
+        "hij": "goedkeurt",
+        "wij": "goedkeuren",
+        "jullie": "goedkeuren",
+        "zij": "goedkeuren"
+      },
+      "past": {
+        "singular": "goedkeurde",
+        "plural": "goedkeurden"
+      },
+      "perfect": "gegoedkeurden"
+    },
+    {
+      "id": "v_afkeuren",
+      "infinitive": "afkeuren",
+      "en": "to reject",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "keur af",
+        "jij": "keurt af",
+        "hij": "keurt af",
+        "wij": "keuren af",
+        "jullie": "keuren af",
+        "zij": "keuren af"
+      },
+      "past": {
+        "singular": "keurrde af",
+        "plural": "keurrden af"
+      },
+      "perfect": "afgekeurden"
+    },
+    {
+      "id": "v_verlengen",
+      "infinitive": "verlengen",
+      "en": "to renew",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "verleng",
+        "jij": "verlengt",
+        "hij": "verlengt",
+        "wij": "verlengen",
+        "jullie": "verlengen",
+        "zij": "verlengen"
+      },
+      "past": {
+        "singular": "verlengde",
+        "plural": "verlengden"
+      },
+      "perfect": "geverlengden"
+    },
+    {
+      "id": "v_vervangen",
+      "infinitive": "vervangen",
+      "en": "to replace",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "vervang",
+        "jij": "vervangt",
+        "hij": "vervangt",
+        "wij": "vervangen",
+        "jullie": "vervangen",
+        "zij": "vervangen"
+      },
+      "past": {
+        "singular": "vervangde",
+        "plural": "vervangden"
+      },
+      "perfect": "gevervangden"
+    },
+    {
+      "id": "v_legaliseren",
+      "infinitive": "legaliseren",
+      "en": "to legalize",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "legaliser",
+        "jij": "legalisert",
+        "hij": "legalisert",
+        "wij": "legaliseren",
+        "jullie": "legaliseren",
+        "zij": "legaliseren"
+      },
+      "past": {
+        "singular": "legaliserde",
+        "plural": "legaliserden"
+      },
+      "perfect": "gelegaliserden"
+    },
+    {
+      "id": "v_terugbetalen",
+      "infinitive": "terugbetalen",
+      "en": "to repay",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "betal terug",
+        "jij": "betalt terug",
+        "hij": "betalt terug",
+        "wij": "betalen terug",
+        "jullie": "betalen terug",
+        "zij": "betalen terug"
+      },
+      "past": {
+        "singular": "betalde terug",
+        "plural": "betalden terug"
+      },
+      "perfect": "teruggebetalden"
+    },
+    {
+      "id": "v_indienen",
+      "infinitive": "indienen",
+      "en": "to submit",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "dien in",
+        "jij": "dient in",
+        "hij": "dient in",
+        "wij": "dienen in",
+        "jullie": "dienen in",
+        "zij": "dienen in"
+      },
+      "past": {
+        "singular": "diennde in",
+        "plural": "diennden in"
+      },
+      "perfect": "ingedienden"
+    },
+    {
+      "id": "v_inchecken",
+      "infinitive": "inchecken",
+      "en": "to check in",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "check in",
+        "jij": "checkt in",
+        "hij": "checkt in",
+        "wij": "checken in",
+        "jullie": "checken in",
+        "zij": "checken in"
+      },
+      "past": {
+        "singular": "checkte in",
+        "plural": "checkten in"
+      },
+      "perfect": "ingecheckden"
+    },
+    {
+      "id": "v_uitchecken",
+      "infinitive": "uitchecken",
+      "en": "to check out",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "check uit",
+        "jij": "checkt uit",
+        "hij": "checkt uit",
+        "wij": "checken uit",
+        "jullie": "checken uit",
+        "zij": "checken uit"
+      },
+      "past": {
+        "singular": "checkte uit",
+        "plural": "checkten uit"
+      },
+      "perfect": "uitgecheckden"
+    },
+    {
+      "id": "v_overstappen",
+      "infinitive": "overstappen",
+      "en": "to transfer",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "overstapp",
+        "jij": "overstappt",
+        "hij": "overstappt",
+        "wij": "overstappen",
+        "jullie": "overstappen",
+        "zij": "overstappen"
+      },
+      "past": {
+        "singular": "overstappte",
+        "plural": "overstappten"
+      },
+      "perfect": "geoverstappten"
+    },
+    {
+      "id": "v_vliegen",
+      "infinitive": "vliegen",
+      "en": "to fly",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "vlieg",
+        "jij": "vliegt",
+        "hij": "vliegt",
+        "wij": "vliegen",
+        "jullie": "vliegen",
+        "zij": "vliegen"
+      },
+      "past": {
+        "singular": "vliegde",
+        "plural": "vliegden"
+      },
+      "perfect": "gevliegden"
+    },
+    {
+      "id": "v_meerijden",
+      "infinitive": "meerijden",
+      "en": "to ride along",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "rijd mee",
+        "jij": "rijdt mee",
+        "hij": "rijdt mee",
+        "wij": "rijden mee",
+        "jullie": "rijden mee",
+        "zij": "rijden mee"
+      },
+      "past": {
+        "singular": "rijdte mee",
+        "plural": "rijdten mee"
+      },
+      "perfect": "meegerijdden"
+    },
+    {
+      "id": "v_carpoolen",
+      "infinitive": "carpoolen",
+      "en": "to carpool",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "carpool",
+        "jij": "carpoolt",
+        "hij": "carpoolt",
+        "wij": "carpoolen",
+        "jullie": "carpoolen",
+        "zij": "carpoolen"
+      },
+      "past": {
+        "singular": "carpoolde",
+        "plural": "carpoolden"
+      },
+      "perfect": "gecarpoolden"
+    },
+    {
+      "id": "v_opwaarderen",
+      "infinitive": "opwaarderen",
+      "en": "to top up",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "waarder op",
+        "jij": "waardert op",
+        "hij": "waardert op",
+        "wij": "waarderen op",
+        "jullie": "waarderen op",
+        "zij": "waarderen op"
+      },
+      "past": {
+        "singular": "waarderde op",
+        "plural": "waarderden op"
+      },
+      "perfect": "opgewaarderden"
+    },
+    {
+      "id": "v_overschrijven",
+      "infinitive": "overschrijven",
+      "en": "to transfer",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "overschrijv",
+        "jij": "overschrijft",
+        "hij": "overschrijft",
+        "wij": "overschrijven",
+        "jullie": "overschrijven",
+        "zij": "overschrijven"
+      },
+      "past": {
+        "singular": "overschrijvde",
+        "plural": "overschrijvden"
+      },
+      "perfect": "geoverschrijvden"
+    },
+    {
+      "id": "v_sparen",
+      "infinitive": "sparen",
+      "en": "to save",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "sparr",
+        "jij": "sparrt",
+        "hij": "sparrt",
+        "wij": "sparen",
+        "jullie": "sparen",
+        "zij": "sparen"
+      },
+      "past": {
+        "singular": "sparrde",
+        "plural": "sparrden"
+      },
+      "perfect": "gesparrden"
+    },
+    {
+      "id": "v_uitgeven",
+      "infinitive": "uitgeven",
+      "en": "to spend",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "gev uit",
+        "jij": "gevt uit",
+        "hij": "gevt uit",
+        "wij": "geven uit",
+        "jullie": "geven uit",
+        "zij": "geven uit"
+      },
+      "past": {
+        "singular": "gevvde uit",
+        "plural": "gevvden uit"
+      },
+      "perfect": "uitgegevden"
+    },
+    {
+      "id": "v_besteden",
+      "infinitive": "besteden",
+      "en": "to spend",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "bested",
+        "jij": "bested",
+        "hij": "bested",
+        "wij": "besteden",
+        "jullie": "besteden",
+        "zij": "besteden"
+      },
+      "past": {
+        "singular": "bestedte",
+        "plural": "bestedten"
+      },
+      "perfect": "gebestedten"
+    },
+    {
+      "id": "v_besparen",
+      "infinitive": "besparen",
+      "en": "to save",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "bespar",
+        "jij": "bespart",
+        "hij": "bespart",
+        "wij": "besparen",
+        "jullie": "besparen",
+        "zij": "besparen"
+      },
+      "past": {
+        "singular": "besparde",
+        "plural": "besparden"
+      },
+      "perfect": "gebesparden"
+    },
+    {
+      "id": "v_declareren",
+      "infinitive": "declareren",
+      "en": "to claim",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "declarer",
+        "jij": "declarert",
+        "hij": "declarert",
+        "wij": "declareren",
+        "jullie": "declareren",
+        "zij": "declareren"
+      },
+      "past": {
+        "singular": "declarerde",
+        "plural": "declarerden"
+      },
+      "perfect": "gedeclarerden"
+    },
+    {
+      "id": "v_opnemen",
+      "infinitive": "opnemen",
+      "en": "to withdraw",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "nem op",
+        "jij": "nemt op",
+        "hij": "nemt op",
+        "wij": "nemen op",
+        "jullie": "nemen op",
+        "zij": "nemen op"
+      },
+      "past": {
+        "singular": "nemmde op",
+        "plural": "nemmden op"
+      },
+      "perfect": "opgenemden"
+    },
+    {
+      "id": "v_storten",
+      "infinitive": "storten",
+      "en": "to deposit",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "stort",
+        "jij": "stort",
+        "hij": "stort",
+        "wij": "storten",
+        "jullie": "storten",
+        "zij": "storten"
+      },
+      "past": {
+        "singular": "stortte",
+        "plural": "stortten"
+      },
+      "perfect": "gestortten"
+    },
+    {
+      "id": "v_budgetteren",
+      "infinitive": "budgetteren",
+      "en": "to budget",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "budgetter",
+        "jij": "budgettert",
+        "hij": "budgettert",
+        "wij": "budgetteren",
+        "jullie": "budgetteren",
+        "zij": "budgetteren"
+      },
+      "past": {
+        "singular": "budgetterde",
+        "plural": "budgetterden"
+      },
+      "perfect": "gebudgetterden"
+    },
+    {
+      "id": "v_excuseren",
+      "infinitive": "excuseren",
+      "en": "to excuse",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "excuser",
+        "jij": "excusert",
+        "hij": "excusert",
+        "wij": "excuseren",
+        "jullie": "excuseren",
+        "zij": "excuseren"
+      },
+      "past": {
+        "singular": "excuserde",
+        "plural": "excuserden"
+      },
+      "perfect": "geexcuserden"
+    },
+    {
+      "id": "v_verontschuldigen",
+      "infinitive": "verontschuldigen",
+      "en": "to apologize",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "verontschuldig",
+        "jij": "verontschuldigt",
+        "hij": "verontschuldigt",
+        "wij": "verontschuldigen",
+        "jullie": "verontschuldigen",
+        "zij": "verontschuldigen"
+      },
+      "past": {
+        "singular": "verontschuldigde",
+        "plural": "verontschuldigden"
+      },
+      "perfect": "geverontschuldigden"
+    },
+    {
+      "id": "v_uitpraten",
+      "infinitive": "uitpraten",
+      "en": "to talk out",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "prat uit",
+        "jij": "pratt uit",
+        "hij": "pratt uit",
+        "wij": "praten uit",
+        "jullie": "praten uit",
+        "zij": "praten uit"
+      },
+      "past": {
+        "singular": "prattte uit",
+        "plural": "prattten uit"
+      },
+      "perfect": "uitgepratden"
+    },
+    {
+      "id": "v_oplossen",
+      "infinitive": "oplossen",
+      "en": "to resolve",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "loss op",
+        "jij": "losst op",
+        "hij": "losst op",
+        "wij": "lossen op",
+        "jullie": "lossen op",
+        "zij": "lossen op"
+      },
+      "past": {
+        "singular": "losste op",
+        "plural": "lossten op"
+      },
+      "perfect": "opgelossden"
+    },
+    {
+      "id": "v_stemmen",
+      "infinitive": "stemmen",
+      "en": "to vote",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "stemm",
+        "jij": "stemmt",
+        "hij": "stemmt",
+        "wij": "stemmen",
+        "jullie": "stemmen",
+        "zij": "stemmen"
+      },
+      "past": {
+        "singular": "stemmde",
+        "plural": "stemmden"
+      },
+      "perfect": "gestemmden"
+    },
+    {
+      "id": "v_doneren",
+      "infinitive": "doneren",
+      "en": "to donate",
+      "type": "weak",
+      "auxiliary": "hebben",
+      "present": {
+        "ik": "doner",
+        "jij": "donert",
+        "hij": "donert",
+        "wij": "doneren",
+        "jullie": "doneren",
+        "zij": "doneren"
+      },
+      "past": {
+        "singular": "donerde",
+        "plural": "donerden"
+      },
+      "perfect": "gedonerden"
+    }
+  ],
+  "zullen": {
+    "present": {
+      "ik": "zal",
+      "jij": "zult",
+      "hij": "zal",
+      "wij": "zullen",
+      "jullie": "zullen",
+      "zij": "zullen"
+    },
+    "past": {
+      "singular": "zou",
+      "plural": "zouden"
+    }
+  }
+}
