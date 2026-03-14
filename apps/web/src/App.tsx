@@ -111,7 +111,7 @@ export default function App(){
   const [voices,setVoices]=useState<string[]>([])
   const [err,setErr]=useState('')
 
-  useEffect(()=>{ fetchJSON<Course>('/content/course.json').then(setCourse).catch(e=>setErr(String(e))) },[])
+  useEffect(()=>{ fetchJSON<Course>(`${import.meta.env.BASE_URL}content/course.json`).then(setCourse).catch(e=>setErr(String(e))) },[])
   useEffect(()=>saveJSON(LS.reviews,reviewsMap),[reviewsMap])
   useEffect(()=>saveJSON(LS.difficult,difficultMap),[difficultMap])
   useEffect(()=>saveJSON(LS.settings,settings),[settings])
@@ -508,22 +508,22 @@ export default function App(){
             <div>
               <div className="small">Daily target</div>
               <input
-                type="number"
-                min={MIN_DAILY_TARGET}
-                max={MAX_DAILY_TARGET}
-                value={settings.dailyTarget}
-                onChange={e=>setSettings(s=>({...s,dailyTarget:Math.round(clamp(Number(e.target.value||DEFAULT_DAILY_TARGET), MIN_DAILY_TARGET, MAX_DAILY_TARGET))}))}
+                type="tel"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                defaultValue={settings.dailyTarget}
+                onBlur={e=>{ const val = Math.round(clamp(Number((e.target as HTMLInputElement).value||DEFAULT_DAILY_TARGET), MIN_DAILY_TARGET, MAX_DAILY_TARGET)); setSettings(s=>({...s,dailyTarget:val})); (e.target as HTMLInputElement).value = val.toString(); }}
                 style={{width:'100%'}}
               />
             </div>
             <div>
               <div className="small">New cards/day</div>
               <input
-                type="number"
-                min={MIN_NEW_PER_DAY}
-                max={MAX_NEW_PER_DAY}
-                value={settings.newPerDay}
-                onChange={e=>setSettings(s=>({...s,newPerDay:Math.round(clamp(Number(e.target.value||DEFAULT_NEW_PER_DAY), MIN_NEW_PER_DAY, MAX_NEW_PER_DAY))}))}
+                type="tel"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                defaultValue={settings.newPerDay}
+                onBlur={e=>{ const val = Math.round(clamp(Number((e.target as HTMLInputElement).value||DEFAULT_NEW_PER_DAY), MIN_NEW_PER_DAY, MAX_NEW_PER_DAY)); setSettings(s=>({...s,newPerDay:val})); (e.target as HTMLInputElement).value = val.toString(); }}
                 style={{width:'100%'}}
               />
             </div>
@@ -580,10 +580,13 @@ export default function App(){
           <div>
             <div className="small">API base URL</div>
             <input
-              value={settings.ttsBaseUrl}
-              onChange={e=>setSettings(s=>({...s,ttsBaseUrl:e.target.value}))}
+              defaultValue={settings.ttsBaseUrl}
+              onBlur={e=>{ const url = (e.target as HTMLInputElement).value.trim(); setSettings(s=>({...s,ttsBaseUrl:url})); }}
               style={{width:'100%'}}
             />
+            <div className="small" style={{marginTop:6, color:'var(--muted)'}}>
+              For phone access: Set to your laptop's local IP (e.g., http://192.168.1.42:8000). Find IP with 'ifconfig | grep inet' on Mac.
+            </div>
             <div className="row" style={{justifyContent:'flex-end', marginTop:10}}>
               <button onClick={refreshVoices}>Refresh</button>
             </div>
@@ -604,13 +607,12 @@ export default function App(){
             <div>
               <div className="small">Speed</div>
               <input
-                type="number"
-                min="0.6"
-                max="1.4"
-                step="0.05"
-                value={settings.speed}
-                onChange={e=>setSettings(s=>({...s,speed:Number(e.target.value)}))}
-                style={{width:'100%'}}
+                  type="tel"
+                  inputMode="decimal"
+                  pattern="[0-9]*[.,]?[0-9]*"
+                  defaultValue={settings.speed}
+                  onBlur={e=>{ const val = clamp(Number((e.target as HTMLInputElement).value || 1), 0.6, 1.4); setSettings(s=>({...s,speed:val})); (e.target as HTMLInputElement).value = val.toString(); }}
+                  style={{width:'100%'}}
               />
             </div>
 
@@ -632,22 +634,22 @@ export default function App(){
               <div>
                 <div className="small">Daily target</div>
                 <input
-                  type="number"
-                  min={MIN_DAILY_TARGET}
-                  max={MAX_DAILY_TARGET}
-                  value={settings.dailyTarget}
-                  onChange={e=>setSettings(s=>({...s,dailyTarget:Math.round(clamp(Number(e.target.value||DEFAULT_DAILY_TARGET), MIN_DAILY_TARGET, MAX_DAILY_TARGET))}))}
+                  type="tel"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  defaultValue={settings.dailyTarget}
+                  onBlur={e=>{ const val = Math.round(clamp(Number((e.target as HTMLInputElement).value || DEFAULT_DAILY_TARGET), MIN_DAILY_TARGET, MAX_DAILY_TARGET)); setSettings(s=>({...s,dailyTarget:val})); (e.target as HTMLInputElement).value = val.toString(); }}
                   style={{width:'100%'}}
                 />
               </div>
               <div>
                 <div className="small">New cards/day</div>
                 <input
-                  type="number"
-                  min={MIN_NEW_PER_DAY}
-                  max={MAX_NEW_PER_DAY}
-                  value={settings.newPerDay}
-                  onChange={e=>setSettings(s=>({...s,newPerDay:Math.round(clamp(Number(e.target.value||DEFAULT_NEW_PER_DAY), MIN_NEW_PER_DAY, MAX_NEW_PER_DAY))}))}
+                  type="tel"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  defaultValue={settings.newPerDay}
+                  onBlur={e=>{ const val = Math.round(clamp(Number((e.target as HTMLInputElement).value || DEFAULT_NEW_PER_DAY), MIN_NEW_PER_DAY, MAX_NEW_PER_DAY)); setSettings(s=>({...s,newPerDay:val})); (e.target as HTMLInputElement).value = val.toString(); }}
                   style={{width:'100%'}}
                 />
               </div>

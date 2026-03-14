@@ -16,6 +16,11 @@ apps/web/dist/
 .env
 .env.*
 
+# Local artifacts
+__api.log
+klimop-mvp/
+apps/web/public/images/
+
 # Audio assets (do not push)
 apps/web/public/audio/
 assets_raw/audio/
