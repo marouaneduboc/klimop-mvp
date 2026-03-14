@@ -804,6 +804,446 @@
       "tags": []
     },
     {
+      "id": "w01_0095",
+      "theme": 1,
+      "nl": "raam",
+      "article": "het",
+      "en": "window",
+      "tags": []
+    },
+    {
+      "id": "w01_0096",
+      "theme": 1,
+      "nl": "vloer",
+      "article": "de",
+      "en": "floor",
+      "tags": []
+    },
+    {
+      "id": "w01_0097",
+      "theme": 1,
+      "nl": "plafond",
+      "article": "het",
+      "en": "ceiling",
+      "tags": []
+    },
+    {
+      "id": "w01_0098",
+      "theme": 1,
+      "nl": "muur",
+      "article": "de",
+      "en": "wall",
+      "tags": []
+    },
+    {
+      "id": "w01_0099",
+      "theme": 1,
+      "nl": "licht",
+      "article": "het",
+      "en": "light",
+      "tags": []
+    },
+    {
+      "id": "w01_0100",
+      "theme": 1,
+      "nl": "stopcontact",
+      "article": "het",
+      "en": "socket",
+      "tags": []
+    },
+    {
+      "id": "w01_0101",
+      "theme": 1,
+      "nl": "schakelaar",
+      "article": "de",
+      "en": "switch",
+      "tags": []
+    },
+    {
+      "id": "w01_0102",
+      "theme": 1,
+      "nl": "radiator",
+      "article": "de",
+      "en": "radiator",
+      "tags": []
+    },
+    {
+      "id": "w01_0103",
+      "theme": 1,
+      "nl": "afvoer",
+      "article": "de",
+      "en": "drain",
+      "tags": []
+    },
+    {
+      "id": "w01_0104",
+      "theme": 1,
+      "nl": "douchekop",
+      "article": "de",
+      "en": "shower head",
+      "tags": []
+    },
+    {
+      "id": "w01_0105",
+      "theme": 1,
+      "nl": "handzeep",
+      "article": "de",
+      "en": "hand soap",
+      "tags": []
+    },
+    {
+      "id": "w01_0106",
+      "theme": 1,
+      "nl": "wastafelkastje",
+      "article": "het",
+      "en": "bathroom cabinet",
+      "tags": []
+    },
+    {
+      "id": "w01_0107",
+      "theme": 1,
+      "nl": "badmat",
+      "article": "de",
+      "en": "bath mat",
+      "tags": []
+    },
+    {
+      "id": "w01_0108",
+      "theme": 1,
+      "nl": "handdoekrek",
+      "article": "het",
+      "en": "towel rack",
+      "tags": []
+    },
+    {
+      "id": "w01_0109",
+      "theme": 1,
+      "nl": "afvalbak",
+      "article": "de",
+      "en": "waste bin",
+      "tags": []
+    },
+    {
+      "id": "w01_0110",
+      "theme": 1,
+      "nl": "plant",
+      "article": "de",
+      "en": "plant",
+      "tags": []
+    },
+    {
+      "id": "w01_0111",
+      "theme": 1,
+      "nl": "boekenkast",
+      "article": "de",
+      "en": "bookshelf",
+      "tags": []
+    },
+    {
+      "id": "w01_0112",
+      "theme": 1,
+      "nl": "tv-meubel",
+      "article": "het",
+      "en": "TV stand",
+      "tags": []
+    },
+    {
+      "id": "w01_0113",
+      "theme": 1,
+      "nl": "bankstel",
+      "article": "het",
+      "en": "sofa set",
+      "tags": []
+    },
+    {
+      "id": "w01_0114",
+      "theme": 1,
+      "nl": "eetkamer",
+      "article": "de",
+      "en": "dining room",
+      "tags": []
+    },
+    {
+      "id": "w01_0115",
+      "theme": 1,
+      "nl": "berging",
+      "article": "de",
+      "en": "storage",
+      "tags": []
+    },
+    {
+      "id": "w01_0116",
+      "theme": 1,
+      "nl": "wasplaats",
+      "article": "de",
+      "en": "utility room",
+      "tags": []
+    },
+    {
+      "id": "w01_0117",
+      "theme": 1,
+      "nl": "droogrek",
+      "article": "het",
+      "en": "drying rack",
+      "tags": []
+    },
+    {
+      "id": "w01_0118",
+      "theme": 1,
+      "nl": "waslijn",
+      "article": "de",
+      "en": "clothes line",
+      "tags": []
+    },
+    {
+      "id": "w01_0119",
+      "theme": 1,
+      "nl": "stofzuiger",
+      "article": "de",
+      "en": "vacuum cleaner",
+      "tags": []
+    },
+    {
+      "id": "w01_0120",
+      "theme": 1,
+      "nl": "emmer",
+      "article": "de",
+      "en": "bucket",
+      "tags": []
+    },
+    {
+      "id": "w01_0121",
+      "theme": 1,
+      "nl": "dweil",
+      "article": "de",
+      "en": "mop",
+      "tags": []
+    },
+    {
+      "id": "w01_0122",
+      "theme": 1,
+      "nl": "bezem",
+      "article": "de",
+      "en": "broom",
+      "tags": []
+    },
+    {
+      "id": "w01_0123",
+      "theme": 1,
+      "nl": "schoonmaken",
+      "article": null,
+      "en": "to clean",
+      "tags": []
+    },
+    {
+      "id": "w01_0124",
+      "theme": 1,
+      "nl": "opruimen",
+      "article": null,
+      "en": "to tidy",
+      "tags": []
+    },
+    {
+      "id": "w01_0125",
+      "theme": 1,
+      "nl": "stof afnemen",
+      "article": null,
+      "en": "to dust",
+      "tags": []
+    },
+    {
+      "id": "w01_0126",
+      "theme": 1,
+      "nl": "ramen zemen",
+      "article": null,
+      "en": "to clean windows",
+      "tags": []
+    },
+    {
+      "id": "w01_0127",
+      "theme": 1,
+      "nl": "vuilnis",
+      "article": "het",
+      "en": "garbage",
+      "tags": []
+    },
+    {
+      "id": "w01_0128",
+      "theme": 1,
+      "nl": "recyclen",
+      "article": null,
+      "en": "to recycle",
+      "tags": []
+    },
+    {
+      "id": "w01_0129",
+      "theme": 1,
+      "nl": "composteren",
+      "article": null,
+      "en": "to compost",
+      "tags": []
+    },
+    {
+      "id": "w01_0130",
+      "theme": 1,
+      "nl": "tuinmeubel",
+      "article": "het",
+      "en": "garden furniture",
+      "tags": []
+    },
+    {
+      "id": "w01_0131",
+      "theme": 1,
+      "nl": "parasol",
+      "article": "de",
+      "en": "parasol",
+      "tags": []
+    },
+    {
+      "id": "w01_0132",
+      "theme": 1,
+      "nl": "ligstoel",
+      "article": "de",
+      "en": "sun lounger",
+      "tags": []
+    },
+    {
+      "id": "w01_0133",
+      "theme": 1,
+      "nl": "barbecue",
+      "article": "de",
+      "en": "barbecue",
+      "tags": []
+    },
+    {
+      "id": "w01_0134",
+      "theme": 1,
+      "nl": "schutting",
+      "article": "de",
+      "en": "fence",
+      "tags": []
+    },
+    {
+      "id": "w01_0135",
+      "theme": 1,
+      "nl": "hek",
+      "article": "het",
+      "en": "gate",
+      "tags": []
+    },
+    {
+      "id": "w01_0136",
+      "theme": 1,
+      "nl": "oprit",
+      "article": "de",
+      "en": "driveway",
+      "tags": []
+    },
+    {
+      "id": "w01_0137",
+      "theme": 1,
+      "nl": "voordeur",
+      "article": "de",
+      "en": "front door",
+      "tags": []
+    },
+    {
+      "id": "w01_0138",
+      "theme": 1,
+      "nl": "achterdeur",
+      "article": "de",
+      "en": "back door",
+      "tags": []
+    },
+    {
+      "id": "w01_0139",
+      "theme": 1,
+      "nl": "deurbel",
+      "article": "de",
+      "en": "doorbell",
+      "tags": []
+    },
+    {
+      "id": "w01_0140",
+      "theme": 1,
+      "nl": "sleutel",
+      "article": "de",
+      "en": "key",
+      "tags": []
+    },
+    {
+      "id": "w01_0141",
+      "theme": 1,
+      "nl": "slot",
+      "article": "het",
+      "en": "lock",
+      "tags": []
+    },
+    {
+      "id": "w01_0142",
+      "theme": 1,
+      "nl": "intercom",
+      "article": "de",
+      "en": "intercom",
+      "tags": []
+    },
+    {
+      "id": "w01_0143",
+      "theme": 1,
+      "nl": "deurmat",
+      "article": "de",
+      "en": "doormat",
+      "tags": []
+    },
+    {
+      "id": "w01_0144",
+      "theme": 1,
+      "nl": "schoenenkast",
+      "article": "de",
+      "en": "shoe cabinet",
+      "tags": []
+    },
+    {
+      "id": "w01_0145",
+      "theme": 1,
+      "nl": "gang",
+      "article": "de",
+      "en": "hallway",
+      "tags": []
+    },
+    {
+      "id": "w01_0146",
+      "theme": 1,
+      "nl": "overloop",
+      "article": "de",
+      "en": "landing",
+      "tags": []
+    },
+    {
+      "id": "w01_0147",
+      "theme": 1,
+      "nl": "traploper",
+      "article": "de",
+      "en": "stair runner",
+      "tags": []
+    },
+    {
+      "id": "w01_0148",
+      "theme": 1,
+      "nl": "vensterbank",
+      "article": "de",
+      "en": "windowsill",
+      "tags": []
+    },
+    {
+      "id": "w01_0149",
+      "theme": 1,
+      "nl": "lampenkap",
+      "article": "de",
+      "en": "lampshade",
+      "tags": []
+    },
+    {
       "id": "w02_0000",
       "theme": 2,
       "nl": "bellen",
@@ -1329,6 +1769,678 @@
       "nl": "informeel",
       "article": null,
       "en": "informal",
+      "tags": []
+    },
+    {
+      "id": "w02_0066",
+      "theme": 2,
+      "nl": "contact",
+      "article": "het",
+      "en": "contact",
+      "tags": []
+    },
+    {
+      "id": "w02_0067",
+      "theme": 2,
+      "nl": "netwerk",
+      "article": "het",
+      "en": "network",
+      "tags": []
+    },
+    {
+      "id": "w02_0068",
+      "theme": 2,
+      "nl": "relatie",
+      "article": "de",
+      "en": "relationship",
+      "tags": []
+    },
+    {
+      "id": "w02_0069",
+      "theme": 2,
+      "nl": "vriendschap",
+      "article": "de",
+      "en": "friendship",
+      "tags": []
+    },
+    {
+      "id": "w02_0070",
+      "theme": 2,
+      "nl": "kennismaking",
+      "article": "de",
+      "en": "introduction",
+      "tags": []
+    },
+    {
+      "id": "w02_0071",
+      "theme": 2,
+      "nl": "ontmoeting",
+      "article": "de",
+      "en": "meeting",
+      "tags": []
+    },
+    {
+      "id": "w02_0072",
+      "theme": 2,
+      "nl": "afspraakje",
+      "article": "het",
+      "en": "date",
+      "tags": []
+    },
+    {
+      "id": "w02_0073",
+      "theme": 2,
+      "nl": "verjaardag",
+      "article": "de",
+      "en": "birthday",
+      "tags": []
+    },
+    {
+      "id": "w02_0074",
+      "theme": 2,
+      "nl": "jubileum",
+      "article": "het",
+      "en": "anniversary",
+      "tags": []
+    },
+    {
+      "id": "w02_0075",
+      "theme": 2,
+      "nl": "babyborrel",
+      "article": "de",
+      "en": "baby shower",
+      "tags": []
+    },
+    {
+      "id": "w02_0076",
+      "theme": 2,
+      "nl": "housewarming",
+      "article": "de",
+      "en": "housewarming",
+      "tags": []
+    },
+    {
+      "id": "w02_0077",
+      "theme": 2,
+      "nl": "reünie",
+      "article": "de",
+      "en": "reunion",
+      "tags": []
+    },
+    {
+      "id": "w02_0078",
+      "theme": 2,
+      "nl": "borrel",
+      "article": "de",
+      "en": "drinks",
+      "tags": []
+    },
+    {
+      "id": "w02_0079",
+      "theme": 2,
+      "nl": "etentje",
+      "article": "het",
+      "en": "dinner",
+      "tags": []
+    },
+    {
+      "id": "w02_0080",
+      "theme": 2,
+      "nl": "lunchafspraak",
+      "article": "de",
+      "en": "lunch date",
+      "tags": []
+    },
+    {
+      "id": "w02_0081",
+      "theme": 2,
+      "nl": "koffiedate",
+      "article": "de",
+      "en": "coffee date",
+      "tags": []
+    },
+    {
+      "id": "w02_0082",
+      "theme": 2,
+      "nl": "videobellen",
+      "article": null,
+      "en": "to video call",
+      "tags": []
+    },
+    {
+      "id": "w02_0083",
+      "theme": 2,
+      "nl": "appen",
+      "article": null,
+      "en": "to message",
+      "tags": []
+    },
+    {
+      "id": "w02_0084",
+      "theme": 2,
+      "nl": "liken",
+      "article": null,
+      "en": "to like",
+      "tags": []
+    },
+    {
+      "id": "w02_0085",
+      "theme": 2,
+      "nl": "delen",
+      "article": null,
+      "en": "to share",
+      "tags": []
+    },
+    {
+      "id": "w02_0086",
+      "theme": 2,
+      "nl": "posten",
+      "article": null,
+      "en": "to post",
+      "tags": []
+    },
+    {
+      "id": "w02_0087",
+      "theme": 2,
+      "nl": "chatten",
+      "article": null,
+      "en": "to chat",
+      "tags": []
+    },
+    {
+      "id": "w02_0089",
+      "theme": 2,
+      "nl": "een bericht sturen",
+      "article": null,
+      "en": "to send a message",
+      "tags": []
+    },
+    {
+      "id": "w02_0090",
+      "theme": 2,
+      "nl": "oproepen",
+      "article": null,
+      "en": "to call",
+      "tags": []
+    },
+    {
+      "id": "w02_0091",
+      "theme": 2,
+      "nl": "bereikbaar",
+      "article": null,
+      "en": "reachable",
+      "tags": []
+    },
+    {
+      "id": "w02_0092",
+      "theme": 2,
+      "nl": "onbereikbaar",
+      "article": null,
+      "en": "unreachable",
+      "tags": []
+    },
+    {
+      "id": "w02_0093",
+      "theme": 2,
+      "nl": "druk",
+      "article": null,
+      "en": "busy",
+      "tags": []
+    },
+    {
+      "id": "w02_0094",
+      "theme": 2,
+      "nl": "beschikbaar",
+      "article": null,
+      "en": "available",
+      "tags": []
+    },
+    {
+      "id": "w02_0095",
+      "theme": 2,
+      "nl": "vrij",
+      "article": null,
+      "en": "free",
+      "tags": []
+    },
+    {
+      "id": "w02_0096",
+      "theme": 2,
+      "nl": "gepland",
+      "article": null,
+      "en": "planned",
+      "tags": []
+    },
+    {
+      "id": "w02_0097",
+      "theme": 2,
+      "nl": "spontaan",
+      "article": null,
+      "en": "spontaneous",
+      "tags": []
+    },
+    {
+      "id": "w02_0098",
+      "theme": 2,
+      "nl": "formeel",
+      "article": null,
+      "en": "formal",
+      "tags": []
+    },
+    {
+      "id": "w02_0099",
+      "theme": 2,
+      "nl": "hartelijk",
+      "article": null,
+      "en": "warm",
+      "tags": []
+    },
+    {
+      "id": "w02_0100",
+      "theme": 2,
+      "nl": "vriendelijk",
+      "article": null,
+      "en": "friendly",
+      "tags": []
+    },
+    {
+      "id": "w02_0101",
+      "theme": 2,
+      "nl": "attent",
+      "article": null,
+      "en": "thoughtful",
+      "tags": []
+    },
+    {
+      "id": "w02_0102",
+      "theme": 2,
+      "nl": "gastvrij",
+      "article": null,
+      "en": "hospitable",
+      "tags": []
+    },
+    {
+      "id": "w02_0103",
+      "theme": 2,
+      "nl": "gezelschap",
+      "article": "het",
+      "en": "company",
+      "tags": []
+    },
+    {
+      "id": "w02_0104",
+      "theme": 2,
+      "nl": "samen zijn",
+      "article": null,
+      "en": "to be together",
+      "tags": []
+    },
+    {
+      "id": "w02_0105",
+      "theme": 2,
+      "nl": "afspreken met",
+      "article": null,
+      "en": "to meet with",
+      "tags": []
+    },
+    {
+      "id": "w02_0106",
+      "theme": 2,
+      "nl": "langskomen",
+      "article": null,
+      "en": "to drop by",
+      "tags": []
+    },
+    {
+      "id": "w02_0107",
+      "theme": 2,
+      "nl": "uitnodigen voor",
+      "article": null,
+      "en": "to invite for",
+      "tags": []
+    },
+    {
+      "id": "w02_0108",
+      "theme": 2,
+      "nl": "bedanken",
+      "article": null,
+      "en": "to thank",
+      "tags": []
+    },
+    {
+      "id": "w02_0109",
+      "theme": 2,
+      "nl": "troosten",
+      "article": null,
+      "en": "to comfort",
+      "tags": []
+    },
+    {
+      "id": "w02_0110",
+      "theme": 2,
+      "nl": "aanmoedigen",
+      "article": null,
+      "en": "to encourage",
+      "tags": []
+    },
+    {
+      "id": "w02_0111",
+      "theme": 2,
+      "nl": "liefde",
+      "article": "de",
+      "en": "love",
+      "tags": []
+    },
+    {
+      "id": "w02_0112",
+      "theme": 2,
+      "nl": "vertrouwen",
+      "article": "het",
+      "en": "trust",
+      "tags": []
+    },
+    {
+      "id": "w02_0113",
+      "theme": 2,
+      "nl": "verbondenheid",
+      "article": "de",
+      "en": "connection",
+      "tags": []
+    },
+    {
+      "id": "w02_0114",
+      "theme": 2,
+      "nl": "solidariteit",
+      "article": "de",
+      "en": "solidarity",
+      "tags": []
+    },
+    {
+      "id": "w02_0115",
+      "theme": 2,
+      "nl": "empatisch",
+      "article": null,
+      "en": "empathetic",
+      "tags": []
+    },
+    {
+      "id": "w02_0116",
+      "theme": 2,
+      "nl": "begripvol",
+      "article": null,
+      "en": "understanding",
+      "tags": []
+    },
+    {
+      "id": "w02_0117",
+      "theme": 2,
+      "nl": "respectvol",
+      "article": null,
+      "en": "respectful",
+      "tags": []
+    },
+    {
+      "id": "w02_0118",
+      "theme": 2,
+      "nl": "open",
+      "article": null,
+      "en": "open",
+      "tags": []
+    },
+    {
+      "id": "w02_0119",
+      "theme": 2,
+      "nl": "eerlijk",
+      "article": null,
+      "en": "honest",
+      "tags": []
+    },
+    {
+      "id": "w02_0120",
+      "theme": 2,
+      "nl": "oprecht",
+      "article": null,
+      "en": "sincere",
+      "tags": []
+    },
+    {
+      "id": "w02_0121",
+      "theme": 2,
+      "nl": "warm",
+      "article": null,
+      "en": "warm",
+      "tags": []
+    },
+    {
+      "id": "w02_0122",
+      "theme": 2,
+      "nl": "koel",
+      "article": null,
+      "en": "cool",
+      "tags": []
+    },
+    {
+      "id": "w02_0123",
+      "theme": 2,
+      "nl": "afstandelijk",
+      "article": null,
+      "en": "distant",
+      "tags": []
+    },
+    {
+      "id": "w02_0124",
+      "theme": 2,
+      "nl": "geïrriteerd",
+      "article": null,
+      "en": "irritated",
+      "tags": []
+    },
+    {
+      "id": "w02_0125",
+      "theme": 2,
+      "nl": "boos",
+      "article": null,
+      "en": "angry",
+      "tags": []
+    },
+    {
+      "id": "w02_0126",
+      "theme": 2,
+      "nl": "blijdschap",
+      "article": "de",
+      "en": "joy",
+      "tags": []
+    },
+    {
+      "id": "w02_0127",
+      "theme": 2,
+      "nl": "teleurstelling",
+      "article": "de",
+      "en": "disappointment",
+      "tags": []
+    },
+    {
+      "id": "w02_0128",
+      "theme": 2,
+      "nl": "verwachting",
+      "article": "de",
+      "en": "expectation",
+      "tags": []
+    },
+    {
+      "id": "w02_0129",
+      "theme": 2,
+      "nl": "spanning",
+      "article": "de",
+      "en": "tension",
+      "tags": []
+    },
+    {
+      "id": "w02_0130",
+      "theme": 2,
+      "nl": "ontspanning",
+      "article": "de",
+      "en": "relaxation",
+      "tags": []
+    },
+    {
+      "id": "w02_0131",
+      "theme": 2,
+      "nl": "gezelligheid",
+      "article": "de",
+      "en": "coziness",
+      "tags": []
+    },
+    {
+      "id": "w02_0132",
+      "theme": 2,
+      "nl": "sfeer",
+      "article": "de",
+      "en": "atmosphere",
+      "tags": []
+    },
+    {
+      "id": "w02_0133",
+      "theme": 2,
+      "nl": "moment",
+      "article": "het",
+      "en": "moment",
+      "tags": []
+    },
+    {
+      "id": "w02_0134",
+      "theme": 2,
+      "nl": "herinnering",
+      "article": "de",
+      "en": "memory",
+      "tags": []
+    },
+    {
+      "id": "w02_0135",
+      "theme": 2,
+      "nl": "foto",
+      "article": "de",
+      "en": "photo",
+      "tags": []
+    },
+    {
+      "id": "w02_0136",
+      "theme": 2,
+      "nl": "selfie",
+      "article": "de",
+      "en": "selfie",
+      "tags": []
+    },
+    {
+      "id": "w02_0137",
+      "theme": 2,
+      "nl": "groepsfoto",
+      "article": "de",
+      "en": "group photo",
+      "tags": []
+    },
+    {
+      "id": "w02_0138",
+      "theme": 2,
+      "nl": "verjaardagskaart",
+      "article": "de",
+      "en": "birthday card",
+      "tags": []
+    },
+    {
+      "id": "w02_0139",
+      "theme": 2,
+      "nl": "condoleancekaart",
+      "article": "de",
+      "en": "condolence card",
+      "tags": []
+    },
+    {
+      "id": "w02_0140",
+      "theme": 2,
+      "nl": "dialoog",
+      "article": "de",
+      "en": "dialogue",
+      "tags": []
+    },
+    {
+      "id": "w02_0141",
+      "theme": 2,
+      "nl": "small talk",
+      "article": "de",
+      "en": "small talk",
+      "tags": []
+    },
+    {
+      "id": "w02_0142",
+      "theme": 2,
+      "nl": "onderwerp",
+      "article": "het",
+      "en": "topic",
+      "tags": []
+    },
+    {
+      "id": "w02_0143",
+      "theme": 2,
+      "nl": "gespreksstof",
+      "article": "de",
+      "en": "conversation topic",
+      "tags": []
+    },
+    {
+      "id": "w02_0144",
+      "theme": 2,
+      "nl": "kennismaken",
+      "article": null,
+      "en": "to get to know",
+      "tags": []
+    },
+    {
+      "id": "w02_0145",
+      "theme": 2,
+      "nl": "weerzien",
+      "article": "het",
+      "en": "reunion",
+      "tags": []
+    },
+    {
+      "id": "w02_0146",
+      "theme": 2,
+      "nl": "afscheid",
+      "article": "het",
+      "en": "farewell",
+      "tags": []
+    },
+    {
+      "id": "w02_0147",
+      "theme": 2,
+      "nl": "tot ziens",
+      "article": null,
+      "en": "goodbye",
+      "tags": []
+    },
+    {
+      "id": "w02_0148",
+      "theme": 2,
+      "nl": "tot later",
+      "article": null,
+      "en": "see you later",
+      "tags": []
+    },
+    {
+      "id": "w02_0149",
+      "theme": 2,
+      "nl": "praatje",
+      "article": "het",
+      "en": "chat",
+      "tags": []
+    },
+    {
+      "id": "w02_0150",
+      "theme": 2,
+      "nl": "kennismakingsgesprek",
+      "article": "het",
+      "en": "introductory chat",
       "tags": []
     },
     {
@@ -1972,6 +3084,566 @@
       "tags": []
     },
     {
+      "id": "w03_0080",
+      "theme": 3,
+      "nl": "peuterspeelzaal",
+      "article": "de",
+      "en": "playgroup",
+      "tags": []
+    },
+    {
+      "id": "w03_0081",
+      "theme": 3,
+      "nl": "kleuterschool",
+      "article": "de",
+      "en": "kindergarten",
+      "tags": []
+    },
+    {
+      "id": "w03_0082",
+      "theme": 3,
+      "nl": "groep",
+      "article": "de",
+      "en": "group",
+      "tags": []
+    },
+    {
+      "id": "w03_0083",
+      "theme": 3,
+      "nl": "leerjaar",
+      "article": "het",
+      "en": "school year",
+      "tags": []
+    },
+    {
+      "id": "w03_0084",
+      "theme": 3,
+      "nl": "semester",
+      "article": "het",
+      "en": "semester",
+      "tags": []
+    },
+    {
+      "id": "w03_0085",
+      "theme": 3,
+      "nl": "trimester",
+      "article": "het",
+      "en": "trimester",
+      "tags": []
+    },
+    {
+      "id": "w03_0086",
+      "theme": 3,
+      "nl": "vakantie",
+      "article": "de",
+      "en": "holiday",
+      "tags": []
+    },
+    {
+      "id": "w03_0087",
+      "theme": 3,
+      "nl": "herfstvakantie",
+      "article": "de",
+      "en": "autumn break",
+      "tags": []
+    },
+    {
+      "id": "w03_0088",
+      "theme": 3,
+      "nl": "kerstvakantie",
+      "article": "de",
+      "en": "Christmas break",
+      "tags": []
+    },
+    {
+      "id": "w03_0089",
+      "theme": 3,
+      "nl": "voorjaarsvakantie",
+      "article": "de",
+      "en": "spring break",
+      "tags": []
+    },
+    {
+      "id": "w03_0090",
+      "theme": 3,
+      "nl": "zomervakantie",
+      "article": "de",
+      "en": "summer holiday",
+      "tags": []
+    },
+    {
+      "id": "w03_0091",
+      "theme": 3,
+      "nl": "studiedag",
+      "article": "de",
+      "en": "study day",
+      "tags": []
+    },
+    {
+      "id": "w03_0092",
+      "theme": 3,
+      "nl": "vrije dag",
+      "article": "de",
+      "en": "day off",
+      "tags": []
+    },
+    {
+      "id": "w03_0093",
+      "theme": 3,
+      "nl": "lesuur",
+      "article": "het",
+      "en": "lesson",
+      "tags": []
+    },
+    {
+      "id": "w03_0094",
+      "theme": 3,
+      "nl": "pauze",
+      "article": "de",
+      "en": "break",
+      "tags": []
+    },
+    {
+      "id": "w03_0095",
+      "theme": 3,
+      "nl": "speelkwartier",
+      "article": "het",
+      "en": "playtime",
+      "tags": []
+    },
+    {
+      "id": "w03_0096",
+      "theme": 3,
+      "nl": "schoolbel",
+      "article": "de",
+      "en": "school bell",
+      "tags": []
+    },
+    {
+      "id": "w03_0097",
+      "theme": 3,
+      "nl": "schoolplein",
+      "article": "het",
+      "en": "schoolyard",
+      "tags": []
+    },
+    {
+      "id": "w03_0098",
+      "theme": 3,
+      "nl": "klaslokaal",
+      "article": "het",
+      "en": "classroom",
+      "tags": []
+    },
+    {
+      "id": "w03_0099",
+      "theme": 3,
+      "nl": "directeur",
+      "article": "de",
+      "en": "headteacher",
+      "tags": []
+    },
+    {
+      "id": "w03_0100",
+      "theme": 3,
+      "nl": "conciërge",
+      "article": "de",
+      "en": "caretaker",
+      "tags": []
+    },
+    {
+      "id": "w03_0101",
+      "theme": 3,
+      "nl": "secretariaat",
+      "article": "het",
+      "en": "office",
+      "tags": []
+    },
+    {
+      "id": "w03_0102",
+      "theme": 3,
+      "nl": "kantine",
+      "article": "de",
+      "en": "canteen",
+      "tags": []
+    },
+    {
+      "id": "w03_0103",
+      "theme": 3,
+      "nl": "gymzaal",
+      "article": "de",
+      "en": "gym",
+      "tags": []
+    },
+    {
+      "id": "w03_0104",
+      "theme": 3,
+      "nl": "laboratorium",
+      "article": "het",
+      "en": "laboratory",
+      "tags": []
+    },
+    {
+      "id": "w03_0105",
+      "theme": 3,
+      "nl": "computerlokaal",
+      "article": "het",
+      "en": "computer room",
+      "tags": []
+    },
+    {
+      "id": "w03_0106",
+      "theme": 3,
+      "nl": "mediatheek",
+      "article": "de",
+      "en": "media library",
+      "tags": []
+    },
+    {
+      "id": "w03_0107",
+      "theme": 3,
+      "nl": "studieplek",
+      "article": "de",
+      "en": "study space",
+      "tags": []
+    },
+    {
+      "id": "w03_0108",
+      "theme": 3,
+      "nl": "werkstuk",
+      "article": "het",
+      "en": "assignment",
+      "tags": []
+    },
+    {
+      "id": "w03_0109",
+      "theme": 3,
+      "nl": "opdracht",
+      "article": "de",
+      "en": "assignment",
+      "tags": []
+    },
+    {
+      "id": "w03_0110",
+      "theme": 3,
+      "nl": "samenwerking",
+      "article": "de",
+      "en": "collaboration",
+      "tags": []
+    },
+    {
+      "id": "w03_0111",
+      "theme": 3,
+      "nl": "groepswerk",
+      "article": "het",
+      "en": "group work",
+      "tags": []
+    },
+    {
+      "id": "w03_0112",
+      "theme": 3,
+      "nl": "individueel",
+      "article": null,
+      "en": "individual",
+      "tags": []
+    },
+    {
+      "id": "w03_0113",
+      "theme": 3,
+      "nl": "mondeling",
+      "article": null,
+      "en": "oral",
+      "tags": []
+    },
+    {
+      "id": "w03_0114",
+      "theme": 3,
+      "nl": "schriftelijk",
+      "article": null,
+      "en": "written",
+      "tags": []
+    },
+    {
+      "id": "w03_0115",
+      "theme": 3,
+      "nl": "multiple choice",
+      "article": null,
+      "en": "multiple choice",
+      "tags": []
+    },
+    {
+      "id": "w03_0116",
+      "theme": 3,
+      "nl": "open vraag",
+      "article": "de",
+      "en": "open question",
+      "tags": []
+    },
+    {
+      "id": "w03_0117",
+      "theme": 3,
+      "nl": "herkansing",
+      "article": "de",
+      "en": "retake",
+      "tags": []
+    },
+    {
+      "id": "w03_0118",
+      "theme": 3,
+      "nl": "tussentijdse toets",
+      "article": "de",
+      "en": "midterm",
+      "tags": []
+    },
+    {
+      "id": "w03_0119",
+      "theme": 3,
+      "nl": "eindcijfer",
+      "article": "het",
+      "en": "final grade",
+      "tags": []
+    },
+    {
+      "id": "w03_0120",
+      "theme": 3,
+      "nl": "gemiddelde",
+      "article": "het",
+      "en": "average",
+      "tags": []
+    },
+    {
+      "id": "w03_0121",
+      "theme": 3,
+      "nl": "slagen",
+      "article": null,
+      "en": "to pass",
+      "tags": []
+    },
+    {
+      "id": "w03_0122",
+      "theme": 3,
+      "nl": "zakken",
+      "article": null,
+      "en": "to fail",
+      "tags": []
+    },
+    {
+      "id": "w03_0123",
+      "theme": 3,
+      "nl": "cum laude",
+      "article": null,
+      "en": "with honours",
+      "tags": []
+    },
+    {
+      "id": "w03_0124",
+      "theme": 3,
+      "nl": "propedeuse",
+      "article": "de",
+      "en": "first year",
+      "tags": []
+    },
+    {
+      "id": "w03_0125",
+      "theme": 3,
+      "nl": "doctoraal",
+      "article": null,
+      "en": "doctoral",
+      "tags": []
+    },
+    {
+      "id": "w03_0126",
+      "theme": 3,
+      "nl": "promotie",
+      "article": "de",
+      "en": "PhD",
+      "tags": []
+    },
+    {
+      "id": "w03_0127",
+      "theme": 3,
+      "nl": "wetenschapper",
+      "article": "de",
+      "en": "scientist",
+      "tags": []
+    },
+    {
+      "id": "w03_0128",
+      "theme": 3,
+      "nl": "onderzoek",
+      "article": "het",
+      "en": "research",
+      "tags": []
+    },
+    {
+      "id": "w03_0129",
+      "theme": 3,
+      "nl": "dissertatie",
+      "article": "de",
+      "en": "dissertation",
+      "tags": []
+    },
+    {
+      "id": "w03_0130",
+      "theme": 3,
+      "nl": "begeleider",
+      "article": "de",
+      "en": "supervisor",
+      "tags": []
+    },
+    {
+      "id": "w03_0131",
+      "theme": 3,
+      "nl": "examinator",
+      "article": "de",
+      "en": "examiner",
+      "tags": []
+    },
+    {
+      "id": "w03_0132",
+      "theme": 3,
+      "nl": "commissie",
+      "article": "de",
+      "en": "committee",
+      "tags": []
+    },
+    {
+      "id": "w03_0133",
+      "theme": 3,
+      "nl": "studiepunten",
+      "article": "de",
+      "en": "credits",
+      "tags": []
+    },
+    {
+      "id": "w03_0134",
+      "theme": 3,
+      "nl": "ects",
+      "article": "de",
+      "en": "ECTS",
+      "tags": []
+    },
+    {
+      "id": "w03_0135",
+      "theme": 3,
+      "nl": "inschrijven",
+      "article": null,
+      "en": "to enroll",
+      "tags": []
+    },
+    {
+      "id": "w03_0136",
+      "theme": 3,
+      "nl": "uitschrijven",
+      "article": null,
+      "en": "to deregister",
+      "tags": []
+    },
+    {
+      "id": "w03_0137",
+      "theme": 3,
+      "nl": "collegegeld",
+      "article": "het",
+      "en": "tuition fee",
+      "tags": []
+    },
+    {
+      "id": "w03_0138",
+      "theme": 3,
+      "nl": "studiefinanciering",
+      "article": "de",
+      "en": "student finance",
+      "tags": []
+    },
+    {
+      "id": "w03_0139",
+      "theme": 3,
+      "nl": "studielening",
+      "article": "de",
+      "en": "student loan",
+      "tags": []
+    },
+    {
+      "id": "w03_0140",
+      "theme": 3,
+      "nl": "studentenov",
+      "article": "de",
+      "en": "student travel",
+      "tags": []
+    },
+    {
+      "id": "w03_0141",
+      "theme": 3,
+      "nl": "studentenvereniging",
+      "article": "de",
+      "en": "student association",
+      "tags": []
+    },
+    {
+      "id": "w03_0142",
+      "theme": 3,
+      "nl": "sorority",
+      "article": "de",
+      "en": "sorority",
+      "tags": []
+    },
+    {
+      "id": "w03_0143",
+      "theme": 3,
+      "nl": "studentenhuis",
+      "article": "het",
+      "en": "student house",
+      "tags": []
+    },
+    {
+      "id": "w03_0144",
+      "theme": 3,
+      "nl": "kamernet",
+      "article": "het",
+      "en": "Kamernet",
+      "tags": []
+    },
+    {
+      "id": "w03_0145",
+      "theme": 3,
+      "nl": "studiebeurs",
+      "article": "de",
+      "en": "study grant",
+      "tags": []
+    },
+    {
+      "id": "w03_0146",
+      "theme": 3,
+      "nl": "honours",
+      "article": "het",
+      "en": "honours",
+      "tags": []
+    },
+    {
+      "id": "w03_0147",
+      "theme": 3,
+      "nl": "minor",
+      "article": "de",
+      "en": "minor",
+      "tags": []
+    },
+    {
+      "id": "w03_0148",
+      "theme": 3,
+      "nl": "major",
+      "article": "de",
+      "en": "major",
+      "tags": []
+    },
+    {
+      "id": "w03_0149",
+      "theme": 3,
+      "nl": "keuzevak",
+      "article": "het",
+      "en": "elective",
+      "tags": []
+    },
+    {
       "id": "w04_0000",
       "theme": 4,
       "nl": "vacature",
@@ -2292,14 +3964,6 @@
       "tags": []
     },
     {
-      "id": "w04_0040",
-      "theme": 4,
-      "nl": "uitnodigen voor",
-      "article": null,
-      "en": "to invite for",
-      "tags": []
-    },
-    {
       "id": "w04_0041",
       "theme": 4,
       "nl": "afwijzen",
@@ -2396,14 +4060,6 @@
       "tags": []
     },
     {
-      "id": "w04_0053",
-      "theme": 4,
-      "nl": "netwerk",
-      "article": "het",
-      "en": "network",
-      "tags": []
-    },
-    {
       "id": "w04_0054",
       "theme": 4,
       "nl": "linkedin",
@@ -2476,6 +4132,718 @@
       "tags": []
     },
     {
+      "id": "w04_0063",
+      "theme": 4,
+      "nl": "arbeidsmarkt",
+      "article": "de",
+      "en": "job market",
+      "tags": []
+    },
+    {
+      "id": "w04_0064",
+      "theme": 4,
+      "nl": "vacaturebank",
+      "article": "de",
+      "en": "job board",
+      "tags": []
+    },
+    {
+      "id": "w04_0065",
+      "theme": 4,
+      "nl": "indeed",
+      "article": "de",
+      "en": "Indeed",
+      "tags": []
+    },
+    {
+      "id": "w04_0066",
+      "theme": 4,
+      "nl": "monsterboard",
+      "article": "het",
+      "en": "Monsterboard",
+      "tags": []
+    },
+    {
+      "id": "w04_0067",
+      "theme": 4,
+      "nl": "loopbaan",
+      "article": "de",
+      "en": "career",
+      "tags": []
+    },
+    {
+      "id": "w04_0068",
+      "theme": 4,
+      "nl": "carrièrestap",
+      "article": "de",
+      "en": "career step",
+      "tags": []
+    },
+    {
+      "id": "w04_0069",
+      "theme": 4,
+      "nl": "carrièreswitch",
+      "article": "de",
+      "en": "career change",
+      "tags": []
+    },
+    {
+      "id": "w04_0070",
+      "theme": 4,
+      "nl": "doorgroeimogelijkheid",
+      "article": "de",
+      "en": "growth opportunity",
+      "tags": []
+    },
+    {
+      "id": "w04_0071",
+      "theme": 4,
+      "nl": "doorgroei",
+      "article": "de",
+      "en": "advancement",
+      "tags": []
+    },
+    {
+      "id": "w04_0073",
+      "theme": 4,
+      "nl": "salarisverhoging",
+      "article": "de",
+      "en": "salary increase",
+      "tags": []
+    },
+    {
+      "id": "w04_0074",
+      "theme": 4,
+      "nl": "bonus",
+      "article": "de",
+      "en": "bonus",
+      "tags": []
+    },
+    {
+      "id": "w04_0076",
+      "theme": 4,
+      "nl": "reiskostenvergoeding",
+      "article": "de",
+      "en": "travel allowance",
+      "tags": []
+    },
+    {
+      "id": "w04_0077",
+      "theme": 4,
+      "nl": "onkostenvergoeding",
+      "article": "de",
+      "en": "expense allowance",
+      "tags": []
+    },
+    {
+      "id": "w04_0078",
+      "theme": 4,
+      "nl": "pensioenopbouw",
+      "article": "de",
+      "en": "pension build-up",
+      "tags": []
+    },
+    {
+      "id": "w04_0079",
+      "theme": 4,
+      "nl": "vakantiedagen",
+      "article": "de",
+      "en": "holiday days",
+      "tags": []
+    },
+    {
+      "id": "w04_0080",
+      "theme": 4,
+      "nl": "adv-dagen",
+      "article": "de",
+      "en": "days in lieu",
+      "tags": []
+    },
+    {
+      "id": "w04_0081",
+      "theme": 4,
+      "nl": "ziektedagen",
+      "article": "de",
+      "en": "sick days",
+      "tags": []
+    },
+    {
+      "id": "w04_0082",
+      "theme": 4,
+      "nl": "ouderverlof",
+      "article": "het",
+      "en": "parental leave",
+      "tags": []
+    },
+    {
+      "id": "w04_0083",
+      "theme": 4,
+      "nl": "zwangerschapsverlof",
+      "article": "het",
+      "en": "maternity leave",
+      "tags": []
+    },
+    {
+      "id": "w04_0084",
+      "theme": 4,
+      "nl": "papaverlof",
+      "article": "het",
+      "en": "paternity leave",
+      "tags": []
+    },
+    {
+      "id": "w04_0085",
+      "theme": 4,
+      "nl": "sabbatical",
+      "article": "de",
+      "en": "sabbatical",
+      "tags": []
+    },
+    {
+      "id": "w04_0086",
+      "theme": 4,
+      "nl": "detachering",
+      "article": "de",
+      "en": "secondment",
+      "tags": []
+    },
+    {
+      "id": "w04_0087",
+      "theme": 4,
+      "nl": "zzp",
+      "article": "de",
+      "en": "self-employed",
+      "tags": []
+    },
+    {
+      "id": "w04_0088",
+      "theme": 4,
+      "nl": "freelancer",
+      "article": "de",
+      "en": "freelancer",
+      "tags": []
+    },
+    {
+      "id": "w04_0089",
+      "theme": 4,
+      "nl": "opdrachtgever",
+      "article": "de",
+      "en": "client",
+      "tags": []
+    },
+    {
+      "id": "w04_0090",
+      "theme": 4,
+      "nl": "opdrachtnemer",
+      "article": "de",
+      "en": "contractor",
+      "tags": []
+    },
+    {
+      "id": "w04_0091",
+      "theme": 4,
+      "nl": "uitzendbureau",
+      "article": "het",
+      "en": "temp agency",
+      "tags": []
+    },
+    {
+      "id": "w04_0092",
+      "theme": 4,
+      "nl": "uitzendkracht",
+      "article": "de",
+      "en": "temp worker",
+      "tags": []
+    },
+    {
+      "id": "w04_0093",
+      "theme": 4,
+      "nl": "vast contract",
+      "article": "het",
+      "en": "permanent contract",
+      "tags": []
+    },
+    {
+      "id": "w04_0094",
+      "theme": 4,
+      "nl": "tijdelijk contract",
+      "article": "het",
+      "en": "temporary contract",
+      "tags": []
+    },
+    {
+      "id": "w04_0095",
+      "theme": 4,
+      "nl": "nulurencontract",
+      "article": "het",
+      "en": "zero-hours contract",
+      "tags": []
+    },
+    {
+      "id": "w04_0096",
+      "theme": 4,
+      "nl": "stageplek",
+      "article": "de",
+      "en": "internship place",
+      "tags": []
+    },
+    {
+      "id": "w04_0097",
+      "theme": 4,
+      "nl": "meeloopdag",
+      "article": "de",
+      "en": "shadow day",
+      "tags": []
+    },
+    {
+      "id": "w04_0098",
+      "theme": 4,
+      "nl": "proefdag",
+      "article": "de",
+      "en": "trial day",
+      "tags": []
+    },
+    {
+      "id": "w04_0099",
+      "theme": 4,
+      "nl": "assessment",
+      "article": "het",
+      "en": "assessment",
+      "tags": []
+    },
+    {
+      "id": "w04_0100",
+      "theme": 4,
+      "nl": "assessmentdag",
+      "article": "de",
+      "en": "assessment day",
+      "tags": []
+    },
+    {
+      "id": "w04_0101",
+      "theme": 4,
+      "nl": "casus",
+      "article": "de",
+      "en": "case",
+      "tags": []
+    },
+    {
+      "id": "w04_0102",
+      "theme": 4,
+      "nl": "rollenspel",
+      "article": "het",
+      "en": "role play",
+      "tags": []
+    },
+    {
+      "id": "w04_0103",
+      "theme": 4,
+      "nl": "competentiegericht",
+      "article": null,
+      "en": "competency-based",
+      "tags": []
+    },
+    {
+      "id": "w04_0104",
+      "theme": 4,
+      "nl": "gedragsgericht",
+      "article": null,
+      "en": "behavioral",
+      "tags": []
+    },
+    {
+      "id": "w04_0105",
+      "theme": 4,
+      "nl": "sterke punten",
+      "article": "de",
+      "en": "strengths",
+      "tags": []
+    },
+    {
+      "id": "w04_0106",
+      "theme": 4,
+      "nl": "zwakke punten",
+      "article": "de",
+      "en": "weaknesses",
+      "tags": []
+    },
+    {
+      "id": "w04_0107",
+      "theme": 4,
+      "nl": "ontwikkelpunten",
+      "article": "de",
+      "en": "development points",
+      "tags": []
+    },
+    {
+      "id": "w04_0108",
+      "theme": 4,
+      "nl": "leiderschap",
+      "article": "het",
+      "en": "leadership",
+      "tags": []
+    },
+    {
+      "id": "w04_0109",
+      "theme": 4,
+      "nl": "communicatie",
+      "article": "de",
+      "en": "communication",
+      "tags": []
+    },
+    {
+      "id": "w04_0110",
+      "theme": 4,
+      "nl": "probleemoplossend",
+      "article": null,
+      "en": "problem-solving",
+      "tags": []
+    },
+    {
+      "id": "w04_0111",
+      "theme": 4,
+      "nl": "analytisch",
+      "article": null,
+      "en": "analytical",
+      "tags": []
+    },
+    {
+      "id": "w04_0112",
+      "theme": 4,
+      "nl": "resultaatgericht",
+      "article": null,
+      "en": "result-oriented",
+      "tags": []
+    },
+    {
+      "id": "w04_0113",
+      "theme": 4,
+      "nl": "klantgericht",
+      "article": null,
+      "en": "customer-oriented",
+      "tags": []
+    },
+    {
+      "id": "w04_0114",
+      "theme": 4,
+      "nl": "teamspeler",
+      "article": "de",
+      "en": "team player",
+      "tags": []
+    },
+    {
+      "id": "w04_0115",
+      "theme": 4,
+      "nl": "zelfstandigheid",
+      "article": "de",
+      "en": "independence",
+      "tags": []
+    },
+    {
+      "id": "w04_0116",
+      "theme": 4,
+      "nl": "flexibiliteit",
+      "article": "de",
+      "en": "flexibility",
+      "tags": []
+    },
+    {
+      "id": "w04_0117",
+      "theme": 4,
+      "nl": "stressbestendigheid",
+      "article": "de",
+      "en": "stress resistance",
+      "tags": []
+    },
+    {
+      "id": "w04_0118",
+      "theme": 4,
+      "nl": "multitasken",
+      "article": null,
+      "en": "to multitask",
+      "tags": []
+    },
+    {
+      "id": "w04_0119",
+      "theme": 4,
+      "nl": "prioriteren",
+      "article": null,
+      "en": "to prioritize",
+      "tags": []
+    },
+    {
+      "id": "w04_0120",
+      "theme": 4,
+      "nl": "deadlines halen",
+      "article": null,
+      "en": "to meet deadlines",
+      "tags": []
+    },
+    {
+      "id": "w04_0121",
+      "theme": 4,
+      "nl": "kwaliteit leveren",
+      "article": null,
+      "en": "to deliver quality",
+      "tags": []
+    },
+    {
+      "id": "w04_0122",
+      "theme": 4,
+      "nl": "feedback geven",
+      "article": null,
+      "en": "to give feedback",
+      "tags": []
+    },
+    {
+      "id": "w04_0123",
+      "theme": 4,
+      "nl": "feedback ontvangen",
+      "article": null,
+      "en": "to receive feedback",
+      "tags": []
+    },
+    {
+      "id": "w04_0124",
+      "theme": 4,
+      "nl": "evaluatie",
+      "article": "de",
+      "en": "evaluation",
+      "tags": []
+    },
+    {
+      "id": "w04_0125",
+      "theme": 4,
+      "nl": "functioneringsgesprek",
+      "article": "het",
+      "en": "performance review",
+      "tags": []
+    },
+    {
+      "id": "w04_0126",
+      "theme": 4,
+      "nl": "beoordelingsgesprek",
+      "article": "het",
+      "en": "appraisal",
+      "tags": []
+    },
+    {
+      "id": "w04_0127",
+      "theme": 4,
+      "nl": "ontslag",
+      "article": "het",
+      "en": "dismissal",
+      "tags": []
+    },
+    {
+      "id": "w04_0128",
+      "theme": 4,
+      "nl": "ontslag nemen",
+      "article": null,
+      "en": "to resign",
+      "tags": []
+    },
+    {
+      "id": "w04_0129",
+      "theme": 4,
+      "nl": "ontslagen worden",
+      "article": null,
+      "en": "to be fired",
+      "tags": []
+    },
+    {
+      "id": "w04_0130",
+      "theme": 4,
+      "nl": "opzegtermijn",
+      "article": "de",
+      "en": "notice period",
+      "tags": []
+    },
+    {
+      "id": "w04_0131",
+      "theme": 4,
+      "nl": "vrijwillig",
+      "article": null,
+      "en": "voluntary",
+      "tags": []
+    },
+    {
+      "id": "w04_0132",
+      "theme": 4,
+      "nl": "gedwongen",
+      "article": null,
+      "en": "forced",
+      "tags": []
+    },
+    {
+      "id": "w04_0133",
+      "theme": 4,
+      "nl": "reorganisatie",
+      "article": "de",
+      "en": "reorganization",
+      "tags": []
+    },
+    {
+      "id": "w04_0134",
+      "theme": 4,
+      "nl": "fusie",
+      "article": "de",
+      "en": "merge",
+      "tags": []
+    },
+    {
+      "id": "w04_0135",
+      "theme": 4,
+      "nl": "overname",
+      "article": "de",
+      "en": "takeover",
+      "tags": []
+    },
+    {
+      "id": "w04_0136",
+      "theme": 4,
+      "nl": "faillissement",
+      "article": "het",
+      "en": "bankruptcy",
+      "tags": []
+    },
+    {
+      "id": "w04_0137",
+      "theme": 4,
+      "nl": "functie-eisen",
+      "article": "de",
+      "en": "job requirements",
+      "tags": []
+    },
+    {
+      "id": "w04_0138",
+      "theme": 4,
+      "nl": "profiel",
+      "article": "het",
+      "en": "profile",
+      "tags": []
+    },
+    {
+      "id": "w04_0139",
+      "theme": 4,
+      "nl": "aanbevelingsbrief",
+      "article": "de",
+      "en": "reference letter",
+      "tags": []
+    },
+    {
+      "id": "w04_0140",
+      "theme": 4,
+      "nl": "netwerken",
+      "article": null,
+      "en": "to network",
+      "tags": []
+    },
+    {
+      "id": "w04_0141",
+      "theme": 4,
+      "nl": "informatiengesprek",
+      "article": "het",
+      "en": "informational interview",
+      "tags": []
+    },
+    {
+      "id": "w04_0142",
+      "theme": 4,
+      "nl": "assessment center",
+      "article": "het",
+      "en": "assessment centre",
+      "tags": []
+    },
+    {
+      "id": "w04_0143",
+      "theme": 4,
+      "nl": "sollicitatieprocedure",
+      "article": "de",
+      "en": "application procedure",
+      "tags": []
+    },
+    {
+      "id": "w04_0144",
+      "theme": 4,
+      "nl": "aanstellingsgesprek",
+      "article": "het",
+      "en": "offer meeting",
+      "tags": []
+    },
+    {
+      "id": "w04_0145",
+      "theme": 4,
+      "nl": "contractvoorstel",
+      "article": "het",
+      "en": "contract proposal",
+      "tags": []
+    },
+    {
+      "id": "w04_0146",
+      "theme": 4,
+      "nl": "onderhandelingspositie",
+      "article": "de",
+      "en": "negotiating position",
+      "tags": []
+    },
+    {
+      "id": "w04_0147",
+      "theme": 4,
+      "nl": "aanbod",
+      "article": "het",
+      "en": "offer",
+      "tags": []
+    },
+    {
+      "id": "w04_0148",
+      "theme": 4,
+      "nl": "arbeidsvoorwaarden",
+      "article": "de",
+      "en": "terms of employment",
+      "tags": []
+    },
+    {
+      "id": "w04_0149",
+      "theme": 4,
+      "nl": "startdatum",
+      "article": "de",
+      "en": "start date",
+      "tags": []
+    },
+    {
+      "id": "w04_0150",
+      "theme": 4,
+      "nl": "functieomschrijving",
+      "article": "de",
+      "en": "job description",
+      "tags": []
+    },
+    {
+      "id": "w04_0151",
+      "theme": 4,
+      "nl": "salarisindicatie",
+      "article": "de",
+      "en": "salary indication",
+      "tags": []
+    },
+    {
+      "id": "w04_0152",
+      "theme": 4,
+      "nl": "vacatureadvertentie",
+      "article": "de",
+      "en": "job advertisement",
+      "tags": []
+    },
+    {
+      "id": "w04_0153",
+      "theme": 4,
+      "nl": "sollicitatiedeadline",
+      "article": "de",
+      "en": "application deadline",
+      "tags": []
+    },
+    {
       "id": "w05_0000",
       "theme": 5,
       "nl": "werkrooster",
@@ -2484,27 +4852,11 @@
       "tags": []
     },
     {
-      "id": "w05_0001",
-      "theme": 5,
-      "nl": "verlof",
-      "article": "het",
-      "en": "leave",
-      "tags": []
-    },
-    {
       "id": "w05_0002",
       "theme": 5,
       "nl": "ziekmelden",
       "article": null,
       "en": "to report sick",
-      "tags": []
-    },
-    {
-      "id": "w05_0003",
-      "theme": 5,
-      "nl": "salaris",
-      "article": "het",
-      "en": "salary",
       "tags": []
     },
     {
@@ -2524,14 +4876,6 @@
       "tags": []
     },
     {
-      "id": "w05_0006",
-      "theme": 5,
-      "nl": "pauze",
-      "article": "de",
-      "en": "break",
-      "tags": []
-    },
-    {
       "id": "w05_0007",
       "theme": 5,
       "nl": "vergadering",
@@ -2540,27 +4884,11 @@
       "tags": []
     },
     {
-      "id": "w05_0008",
-      "theme": 5,
-      "nl": "opdracht",
-      "article": "de",
-      "en": "task",
-      "tags": []
-    },
-    {
       "id": "w05_0009",
       "theme": 5,
       "nl": "deadline",
       "article": "de",
       "en": "deadline",
-      "tags": []
-    },
-    {
-      "id": "w05_0010",
-      "theme": 5,
-      "nl": "kantoor",
-      "article": "het",
-      "en": "office",
       "tags": []
     },
     {
@@ -2876,14 +5204,6 @@
       "tags": []
     },
     {
-      "id": "w05_0050",
-      "theme": 5,
-      "nl": "functioneringsgesprek",
-      "article": "het",
-      "en": "performance review",
-      "tags": []
-    },
-    {
       "id": "w05_0051",
       "theme": 5,
       "nl": "beoordeling",
@@ -2964,11 +5284,763 @@
       "tags": []
     },
     {
-      "id": "w05_0061",
+      "id": "w05_0062",
       "theme": 5,
-      "nl": "agenda",
+      "nl": "werkdag",
       "article": "de",
-      "en": "agenda",
+      "en": "workday",
+      "tags": []
+    },
+    {
+      "id": "w05_0063",
+      "theme": 5,
+      "nl": "kantoordag",
+      "article": "de",
+      "en": "office day",
+      "tags": []
+    },
+    {
+      "id": "w05_0064",
+      "theme": 5,
+      "nl": "thuiswerkdag",
+      "article": "de",
+      "en": "work from home day",
+      "tags": []
+    },
+    {
+      "id": "w05_0065",
+      "theme": 5,
+      "nl": "starttijd",
+      "article": "de",
+      "en": "start time",
+      "tags": []
+    },
+    {
+      "id": "w05_0066",
+      "theme": 5,
+      "nl": "eindtijd",
+      "article": "de",
+      "en": "end time",
+      "tags": []
+    },
+    {
+      "id": "w05_0067",
+      "theme": 5,
+      "nl": "pauzetijd",
+      "article": "de",
+      "en": "break time",
+      "tags": []
+    },
+    {
+      "id": "w05_0068",
+      "theme": 5,
+      "nl": "lunchpauze",
+      "article": "de",
+      "en": "lunch break",
+      "tags": []
+    },
+    {
+      "id": "w05_0069",
+      "theme": 5,
+      "nl": "koffiepauze",
+      "article": "de",
+      "en": "coffee break",
+      "tags": []
+    },
+    {
+      "id": "w05_0070",
+      "theme": 5,
+      "nl": "rooster",
+      "article": "het",
+      "en": "schedule",
+      "tags": []
+    },
+    {
+      "id": "w05_0071",
+      "theme": 5,
+      "nl": "dienstrooster",
+      "article": "het",
+      "en": "shift schedule",
+      "tags": []
+    },
+    {
+      "id": "w05_0072",
+      "theme": 5,
+      "nl": "wisseldienst",
+      "article": "de",
+      "en": "rotating shift",
+      "tags": []
+    },
+    {
+      "id": "w05_0073",
+      "theme": 5,
+      "nl": "vroege dienst",
+      "article": "de",
+      "en": "early shift",
+      "tags": []
+    },
+    {
+      "id": "w05_0074",
+      "theme": 5,
+      "nl": "late dienst",
+      "article": "de",
+      "en": "late shift",
+      "tags": []
+    },
+    {
+      "id": "w05_0075",
+      "theme": 5,
+      "nl": "weekenddienst",
+      "article": "de",
+      "en": "weekend shift",
+      "tags": []
+    },
+    {
+      "id": "w05_0076",
+      "theme": 5,
+      "nl": "feestdagen",
+      "article": "de",
+      "en": "public holidays",
+      "tags": []
+    },
+    {
+      "id": "w05_0077",
+      "theme": 5,
+      "nl": "kantoorruimte",
+      "article": "de",
+      "en": "office space",
+      "tags": []
+    },
+    {
+      "id": "w05_0081",
+      "theme": 5,
+      "nl": "beeldscherm",
+      "article": "het",
+      "en": "screen",
+      "tags": []
+    },
+    {
+      "id": "w05_0082",
+      "theme": 5,
+      "nl": "toetsenbord",
+      "article": "het",
+      "en": "keyboard",
+      "tags": []
+    },
+    {
+      "id": "w05_0083",
+      "theme": 5,
+      "nl": "muis",
+      "article": "de",
+      "en": "mouse",
+      "tags": []
+    },
+    {
+      "id": "w05_0084",
+      "theme": 5,
+      "nl": "headset",
+      "article": "de",
+      "en": "headset",
+      "tags": []
+    },
+    {
+      "id": "w05_0085",
+      "theme": 5,
+      "nl": "webcam",
+      "article": "de",
+      "en": "webcam",
+      "tags": []
+    },
+    {
+      "id": "w05_0089",
+      "theme": 5,
+      "nl": "scanner",
+      "article": "de",
+      "en": "scanner",
+      "tags": []
+    },
+    {
+      "id": "w05_0090",
+      "theme": 5,
+      "nl": "archiefkast",
+      "article": "de",
+      "en": "filing cabinet",
+      "tags": []
+    },
+    {
+      "id": "w05_0091",
+      "theme": 5,
+      "nl": "whiteboard",
+      "article": "het",
+      "en": "whiteboard",
+      "tags": []
+    },
+    {
+      "id": "w05_0092",
+      "theme": 5,
+      "nl": "flipover",
+      "article": "de",
+      "en": "flip chart",
+      "tags": []
+    },
+    {
+      "id": "w05_0093",
+      "theme": 5,
+      "nl": "beamer",
+      "article": "de",
+      "en": "projector",
+      "tags": []
+    },
+    {
+      "id": "w05_0094",
+      "theme": 5,
+      "nl": "vergaderruimte",
+      "article": "de",
+      "en": "meeting room",
+      "tags": []
+    },
+    {
+      "id": "w05_0095",
+      "theme": 5,
+      "nl": "conferentiezaal",
+      "article": "de",
+      "en": "conference room",
+      "tags": []
+    },
+    {
+      "id": "w05_0096",
+      "theme": 5,
+      "nl": "breakout room",
+      "article": "de",
+      "en": "breakout room",
+      "tags": []
+    },
+    {
+      "id": "w05_0098",
+      "theme": 5,
+      "nl": "koffiehoek",
+      "article": "de",
+      "en": "coffee corner",
+      "tags": []
+    },
+    {
+      "id": "w05_0099",
+      "theme": 5,
+      "nl": "rookruimte",
+      "article": "de",
+      "en": "smoking area",
+      "tags": []
+    },
+    {
+      "id": "w05_0100",
+      "theme": 5,
+      "nl": "parkeerplaats",
+      "article": "de",
+      "en": "parking",
+      "tags": []
+    },
+    {
+      "id": "w05_0101",
+      "theme": 5,
+      "nl": "fietsenstalling",
+      "article": "de",
+      "en": "bike shed",
+      "tags": []
+    },
+    {
+      "id": "w05_0102",
+      "theme": 5,
+      "nl": "informatie",
+      "article": "de",
+      "en": "information",
+      "tags": []
+    },
+    {
+      "id": "w05_0103",
+      "theme": 5,
+      "nl": "documentatie",
+      "article": "de",
+      "en": "documentation",
+      "tags": []
+    },
+    {
+      "id": "w05_0104",
+      "theme": 5,
+      "nl": "handleiding",
+      "article": "de",
+      "en": "manual",
+      "tags": []
+    },
+    {
+      "id": "w05_0105",
+      "theme": 5,
+      "nl": "protocol",
+      "article": "het",
+      "en": "protocol",
+      "tags": []
+    },
+    {
+      "id": "w05_0106",
+      "theme": 5,
+      "nl": "procedure",
+      "article": "de",
+      "en": "procedure",
+      "tags": []
+    },
+    {
+      "id": "w05_0107",
+      "theme": 5,
+      "nl": "werkproces",
+      "article": "het",
+      "en": "work process",
+      "tags": []
+    },
+    {
+      "id": "w05_0108",
+      "theme": 5,
+      "nl": "workflow",
+      "article": "de",
+      "en": "workflow",
+      "tags": []
+    },
+    {
+      "id": "w05_0109",
+      "theme": 5,
+      "nl": "prioriteit",
+      "article": "de",
+      "en": "priority",
+      "tags": []
+    },
+    {
+      "id": "w05_0110",
+      "theme": 5,
+      "nl": "urgent",
+      "article": null,
+      "en": "urgent",
+      "tags": []
+    },
+    {
+      "id": "w05_0111",
+      "theme": 5,
+      "nl": "belangrijk",
+      "article": null,
+      "en": "important",
+      "tags": []
+    },
+    {
+      "id": "w05_0112",
+      "theme": 5,
+      "nl": "routine",
+      "article": "de",
+      "en": "routine",
+      "tags": []
+    },
+    {
+      "id": "w05_0113",
+      "theme": 5,
+      "nl": "ad-hoc",
+      "article": null,
+      "en": "ad hoc",
+      "tags": []
+    },
+    {
+      "id": "w05_0114",
+      "theme": 5,
+      "nl": "structureel",
+      "article": null,
+      "en": "structural",
+      "tags": []
+    },
+    {
+      "id": "w05_0115",
+      "theme": 5,
+      "nl": "incident",
+      "article": "het",
+      "en": "incident",
+      "tags": []
+    },
+    {
+      "id": "w05_0116",
+      "theme": 5,
+      "nl": "crisis",
+      "article": "de",
+      "en": "crisis",
+      "tags": []
+    },
+    {
+      "id": "w05_0117",
+      "theme": 5,
+      "nl": "noodgeval",
+      "article": "het",
+      "en": "emergency",
+      "tags": []
+    },
+    {
+      "id": "w05_0118",
+      "theme": 5,
+      "nl": "back-up",
+      "article": "de",
+      "en": "backup",
+      "tags": []
+    },
+    {
+      "id": "w05_0119",
+      "theme": 5,
+      "nl": "vervanger",
+      "article": "de",
+      "en": "replacement",
+      "tags": []
+    },
+    {
+      "id": "w05_0120",
+      "theme": 5,
+      "nl": "waarneming",
+      "article": "de",
+      "en": "acting",
+      "tags": []
+    },
+    {
+      "id": "w05_0121",
+      "theme": 5,
+      "nl": "delegatie",
+      "article": "de",
+      "en": "delegation",
+      "tags": []
+    },
+    {
+      "id": "w05_0122",
+      "theme": 5,
+      "nl": "verantwoordelijkheid",
+      "article": "de",
+      "en": "responsibility",
+      "tags": []
+    },
+    {
+      "id": "w05_0123",
+      "theme": 5,
+      "nl": "bevoegdheid",
+      "article": "de",
+      "en": "authority",
+      "tags": []
+    },
+    {
+      "id": "w05_0124",
+      "theme": 5,
+      "nl": "hiërarchie",
+      "article": "de",
+      "en": "hierarchy",
+      "tags": []
+    },
+    {
+      "id": "w05_0125",
+      "theme": 5,
+      "nl": "leidinggevende",
+      "article": "de",
+      "en": "manager",
+      "tags": []
+    },
+    {
+      "id": "w05_0127",
+      "theme": 5,
+      "nl": "ceo",
+      "article": "de",
+      "en": "CEO",
+      "tags": []
+    },
+    {
+      "id": "w05_0128",
+      "theme": 5,
+      "nl": "afdelingshoofd",
+      "article": "de",
+      "en": "department head",
+      "tags": []
+    },
+    {
+      "id": "w05_0129",
+      "theme": 5,
+      "nl": "teamleider",
+      "article": "de",
+      "en": "team leader",
+      "tags": []
+    },
+    {
+      "id": "w05_0130",
+      "theme": 5,
+      "nl": "projectleider",
+      "article": "de",
+      "en": "project manager",
+      "tags": []
+    },
+    {
+      "id": "w05_0131",
+      "theme": 5,
+      "nl": "stakeholder",
+      "article": "de",
+      "en": "stakeholder",
+      "tags": []
+    },
+    {
+      "id": "w05_0132",
+      "theme": 5,
+      "nl": "klant",
+      "article": "de",
+      "en": "customer",
+      "tags": []
+    },
+    {
+      "id": "w05_0133",
+      "theme": 5,
+      "nl": "leverancier",
+      "article": "de",
+      "en": "supplier",
+      "tags": []
+    },
+    {
+      "id": "w05_0134",
+      "theme": 5,
+      "nl": "partner",
+      "article": "de",
+      "en": "partner",
+      "tags": []
+    },
+    {
+      "id": "w05_0135",
+      "theme": 5,
+      "nl": "concurrent",
+      "article": "de",
+      "en": "competitor",
+      "tags": []
+    },
+    {
+      "id": "w05_0136",
+      "theme": 5,
+      "nl": "branche",
+      "article": "de",
+      "en": "sector",
+      "tags": []
+    },
+    {
+      "id": "w05_0137",
+      "theme": 5,
+      "nl": "markt",
+      "article": "de",
+      "en": "market",
+      "tags": []
+    },
+    {
+      "id": "w05_0138",
+      "theme": 5,
+      "nl": "bedrijf",
+      "article": "het",
+      "en": "company",
+      "tags": []
+    },
+    {
+      "id": "w05_0139",
+      "theme": 5,
+      "nl": "organisatie",
+      "article": "de",
+      "en": "organization",
+      "tags": []
+    },
+    {
+      "id": "w05_0140",
+      "theme": 5,
+      "nl": "vestiging",
+      "article": "de",
+      "en": "branch",
+      "tags": []
+    },
+    {
+      "id": "w05_0141",
+      "theme": 5,
+      "nl": "hoofdkantoor",
+      "article": "het",
+      "en": "headquarters",
+      "tags": []
+    },
+    {
+      "id": "w05_0142",
+      "theme": 5,
+      "nl": "werkoverleg",
+      "article": "het",
+      "en": "work meeting",
+      "tags": []
+    },
+    {
+      "id": "w05_0143",
+      "theme": 5,
+      "nl": "stand-up",
+      "article": "de",
+      "en": "stand-up",
+      "tags": []
+    },
+    {
+      "id": "w05_0144",
+      "theme": 5,
+      "nl": "retrospective",
+      "article": "de",
+      "en": "retrospective",
+      "tags": []
+    },
+    {
+      "id": "w05_0145",
+      "theme": 5,
+      "nl": "brainstorm",
+      "article": "de",
+      "en": "brainstorm",
+      "tags": []
+    },
+    {
+      "id": "w05_0146",
+      "theme": 5,
+      "nl": "idee",
+      "article": "het",
+      "en": "idea",
+      "tags": []
+    },
+    {
+      "id": "w05_0147",
+      "theme": 5,
+      "nl": "voorstel",
+      "article": "het",
+      "en": "proposal",
+      "tags": []
+    },
+    {
+      "id": "w05_0148",
+      "theme": 5,
+      "nl": "besluit",
+      "article": "het",
+      "en": "decision",
+      "tags": []
+    },
+    {
+      "id": "w05_0149",
+      "theme": 5,
+      "nl": "akkoord",
+      "article": "het",
+      "en": "agreement",
+      "tags": []
+    },
+    {
+      "id": "w05_0150",
+      "theme": 5,
+      "nl": "vergaderagenda",
+      "article": "de",
+      "en": "meeting agenda",
+      "tags": []
+    },
+    {
+      "id": "w05_0151",
+      "theme": 5,
+      "nl": "vergaderruimte reserveren",
+      "article": null,
+      "en": "to book meeting room",
+      "tags": []
+    },
+    {
+      "id": "w05_0152",
+      "theme": 5,
+      "nl": "notities maken",
+      "article": null,
+      "en": "to take notes",
+      "tags": []
+    },
+    {
+      "id": "w05_0153",
+      "theme": 5,
+      "nl": "actielijst",
+      "article": "de",
+      "en": "action list",
+      "tags": []
+    },
+    {
+      "id": "w05_0154",
+      "theme": 5,
+      "nl": "follow-up",
+      "article": "de",
+      "en": "follow-up",
+      "tags": []
+    },
+    {
+      "id": "w05_0155",
+      "theme": 5,
+      "nl": "projectoverleg",
+      "article": "het",
+      "en": "project meeting",
+      "tags": []
+    },
+    {
+      "id": "w05_0156",
+      "theme": 5,
+      "nl": "kwartaaloverleg",
+      "article": "het",
+      "en": "quarterly meeting",
+      "tags": []
+    },
+    {
+      "id": "w05_0157",
+      "theme": 5,
+      "nl": "jaaroverzicht",
+      "article": "het",
+      "en": "annual overview",
+      "tags": []
+    },
+    {
+      "id": "w05_0158",
+      "theme": 5,
+      "nl": "werkplekinrichting",
+      "article": "de",
+      "en": "workplace design",
+      "tags": []
+    },
+    {
+      "id": "w05_0159",
+      "theme": 5,
+      "nl": "ergonomie",
+      "article": "de",
+      "en": "ergonomics",
+      "tags": []
+    },
+    {
+      "id": "w05_0160",
+      "theme": 5,
+      "nl": "bureausetup",
+      "article": "de",
+      "en": "desk setup",
+      "tags": []
+    },
+    {
+      "id": "w05_0161",
+      "theme": 5,
+      "nl": "thuiswerkplek",
+      "article": "de",
+      "en": "home workspace",
+      "tags": []
+    },
+    {
+      "id": "w05_0162",
+      "theme": 5,
+      "nl": "kantoorbenodigdheden",
+      "article": "de",
+      "en": "office supplies",
+      "tags": []
+    },
+    {
+      "id": "w05_0163",
+      "theme": 5,
+      "nl": "kantoorpand",
+      "article": "het",
+      "en": "office building",
+      "tags": []
+    },
+    {
+      "id": "w05_0164",
+      "theme": 5,
+      "nl": "kantoorcultuur",
+      "article": "de",
+      "en": "office culture",
       "tags": []
     },
     {
@@ -3033,14 +6105,6 @@
       "nl": "dienst",
       "article": "de",
       "en": "service",
-      "tags": []
-    },
-    {
-      "id": "w06_0008",
-      "theme": 6,
-      "nl": "afspraak",
-      "article": "de",
-      "en": "appointment",
       "tags": []
     },
     {
@@ -3164,22 +6228,6 @@
       "tags": []
     },
     {
-      "id": "w06_0024",
-      "theme": 6,
-      "nl": "slagen",
-      "article": null,
-      "en": "to pass",
-      "tags": []
-    },
-    {
-      "id": "w06_0025",
-      "theme": 6,
-      "nl": "zakken",
-      "article": null,
-      "en": "to fail",
-      "tags": []
-    },
-    {
       "id": "w06_0026",
       "theme": 6,
       "nl": "verlengen",
@@ -3209,22 +6257,6 @@
       "nl": "legitimatie",
       "article": "de",
       "en": "identification",
-      "tags": []
-    },
-    {
-      "id": "w06_0030",
-      "theme": 6,
-      "nl": "inschrijven",
-      "article": null,
-      "en": "to register",
-      "tags": []
-    },
-    {
-      "id": "w06_0031",
-      "theme": 6,
-      "nl": "uitschrijven",
-      "article": null,
-      "en": "to deregister",
       "tags": []
     },
     {
@@ -3404,6 +6436,814 @@
       "tags": []
     },
     {
+      "id": "w06_0054",
+      "theme": 6,
+      "nl": "overheid",
+      "article": "de",
+      "en": "government",
+      "tags": []
+    },
+    {
+      "id": "w06_0055",
+      "theme": 6,
+      "nl": "instantie",
+      "article": "de",
+      "en": "agency",
+      "tags": []
+    },
+    {
+      "id": "w06_0057",
+      "theme": 6,
+      "nl": "openingstijden",
+      "article": "de",
+      "en": "opening hours",
+      "tags": []
+    },
+    {
+      "id": "w06_0058",
+      "theme": 6,
+      "nl": "wachtlijst",
+      "article": "de",
+      "en": "waiting list",
+      "tags": []
+    },
+    {
+      "id": "w06_0059",
+      "theme": 6,
+      "nl": "wachtijd",
+      "article": "de",
+      "en": "waiting time",
+      "tags": []
+    },
+    {
+      "id": "w06_0060",
+      "theme": 6,
+      "nl": "walk-in",
+      "article": "de",
+      "en": "walk-in",
+      "tags": []
+    },
+    {
+      "id": "w06_0061",
+      "theme": 6,
+      "nl": "online",
+      "article": null,
+      "en": "online",
+      "tags": []
+    },
+    {
+      "id": "w06_0062",
+      "theme": 6,
+      "nl": "digitaal",
+      "article": null,
+      "en": "digital",
+      "tags": []
+    },
+    {
+      "id": "w06_0063",
+      "theme": 6,
+      "nl": "papier",
+      "article": "het",
+      "en": "paper",
+      "tags": []
+    },
+    {
+      "id": "w06_0064",
+      "theme": 6,
+      "nl": "origineel",
+      "article": null,
+      "en": "original",
+      "tags": []
+    },
+    {
+      "id": "w06_0065",
+      "theme": 6,
+      "nl": "kopie",
+      "article": "de",
+      "en": "copy",
+      "tags": []
+    },
+    {
+      "id": "w06_0066",
+      "theme": 6,
+      "nl": "gelegaliseerd",
+      "article": null,
+      "en": "legalized",
+      "tags": []
+    },
+    {
+      "id": "w06_0067",
+      "theme": 6,
+      "nl": "vertaald",
+      "article": null,
+      "en": "translated",
+      "tags": []
+    },
+    {
+      "id": "w06_0068",
+      "theme": 6,
+      "nl": "gewettigd",
+      "article": null,
+      "en": "certified",
+      "tags": []
+    },
+    {
+      "id": "w06_0069",
+      "theme": 6,
+      "nl": "notaris",
+      "article": "de",
+      "en": "notary",
+      "tags": []
+    },
+    {
+      "id": "w06_0070",
+      "theme": 6,
+      "nl": "ambassade",
+      "article": "de",
+      "en": "embassy",
+      "tags": []
+    },
+    {
+      "id": "w06_0071",
+      "theme": 6,
+      "nl": "consulaat",
+      "article": "het",
+      "en": "consulate",
+      "tags": []
+    },
+    {
+      "id": "w06_0072",
+      "theme": 6,
+      "nl": "visum",
+      "article": "het",
+      "en": "visa",
+      "tags": []
+    },
+    {
+      "id": "w06_0073",
+      "theme": 6,
+      "nl": "arbeidsvergunning",
+      "article": "de",
+      "en": "work permit",
+      "tags": []
+    },
+    {
+      "id": "w06_0074",
+      "theme": 6,
+      "nl": "gezinshereniging",
+      "article": "de",
+      "en": "family reunification",
+      "tags": []
+    },
+    {
+      "id": "w06_0075",
+      "theme": 6,
+      "nl": "asiel",
+      "article": "het",
+      "en": "asylum",
+      "tags": []
+    },
+    {
+      "id": "w06_0076",
+      "theme": 6,
+      "nl": "vluchteling",
+      "article": "de",
+      "en": "refugee",
+      "tags": []
+    },
+    {
+      "id": "w06_0077",
+      "theme": 6,
+      "nl": "statushouder",
+      "article": "de",
+      "en": "status holder",
+      "tags": []
+    },
+    {
+      "id": "w06_0078",
+      "theme": 6,
+      "nl": "inburgeringsplicht",
+      "article": "de",
+      "en": "integration requirement",
+      "tags": []
+    },
+    {
+      "id": "w06_0079",
+      "theme": 6,
+      "nl": "inburgeringscursus",
+      "article": "de",
+      "en": "integration course",
+      "tags": []
+    },
+    {
+      "id": "w06_0080",
+      "theme": 6,
+      "nl": "taalcursus",
+      "article": "de",
+      "en": "language course",
+      "tags": []
+    },
+    {
+      "id": "w06_0082",
+      "theme": 6,
+      "nl": "examen",
+      "article": "het",
+      "en": "exam",
+      "tags": []
+    },
+    {
+      "id": "w06_0085",
+      "theme": 6,
+      "nl": "rijvaardigheid",
+      "article": "de",
+      "en": "driving ability",
+      "tags": []
+    },
+    {
+      "id": "w06_0086",
+      "theme": 6,
+      "nl": "theorie",
+      "article": "de",
+      "en": "theory",
+      "tags": []
+    },
+    {
+      "id": "w06_0087",
+      "theme": 6,
+      "nl": "praktijk",
+      "article": "de",
+      "en": "practice",
+      "tags": []
+    },
+    {
+      "id": "w06_0088",
+      "theme": 6,
+      "nl": "rijschool",
+      "article": "de",
+      "en": "driving school",
+      "tags": []
+    },
+    {
+      "id": "w06_0089",
+      "theme": 6,
+      "nl": "examencentrum",
+      "article": "het",
+      "en": "exam centre",
+      "tags": []
+    },
+    {
+      "id": "w06_0090",
+      "theme": 6,
+      "nl": "cbr",
+      "article": "het",
+      "en": "CBR",
+      "tags": []
+    },
+    {
+      "id": "w06_0091",
+      "theme": 6,
+      "nl": "gezondheidsverklaring",
+      "article": "de",
+      "en": "health declaration",
+      "tags": []
+    },
+    {
+      "id": "w06_0092",
+      "theme": 6,
+      "nl": "gezichtsvermogen",
+      "article": "het",
+      "en": "eyesight",
+      "tags": []
+    },
+    {
+      "id": "w06_0093",
+      "theme": 6,
+      "nl": "bril",
+      "article": "de",
+      "en": "glasses",
+      "tags": []
+    },
+    {
+      "id": "w06_0094",
+      "theme": 6,
+      "nl": "contactlenzen",
+      "article": "de",
+      "en": "contact lenses",
+      "tags": []
+    },
+    {
+      "id": "w06_0095",
+      "theme": 6,
+      "nl": "adres",
+      "article": "het",
+      "en": "address",
+      "tags": []
+    },
+    {
+      "id": "w06_0096",
+      "theme": 6,
+      "nl": "postcode",
+      "article": "de",
+      "en": "postcode",
+      "tags": []
+    },
+    {
+      "id": "w06_0097",
+      "theme": 6,
+      "nl": "woonplaats",
+      "article": "de",
+      "en": "place of residence",
+      "tags": []
+    },
+    {
+      "id": "w06_0098",
+      "theme": 6,
+      "nl": "nationaliteit",
+      "article": "de",
+      "en": "nationality",
+      "tags": []
+    },
+    {
+      "id": "w06_0099",
+      "theme": 6,
+      "nl": "geboorteland",
+      "article": "het",
+      "en": "country of birth",
+      "tags": []
+    },
+    {
+      "id": "w06_0100",
+      "theme": 6,
+      "nl": "burgerschap",
+      "article": "het",
+      "en": "citizenship",
+      "tags": []
+    },
+    {
+      "id": "w06_0101",
+      "theme": 6,
+      "nl": "dubbele nationaliteit",
+      "article": "de",
+      "en": "dual nationality",
+      "tags": []
+    },
+    {
+      "id": "w06_0102",
+      "theme": 6,
+      "nl": "optie",
+      "article": "de",
+      "en": "option",
+      "tags": []
+    },
+    {
+      "id": "w06_0103",
+      "theme": 6,
+      "nl": "eerste verblijfsvergunning",
+      "article": "de",
+      "en": "first residence permit",
+      "tags": []
+    },
+    {
+      "id": "w06_0104",
+      "theme": 6,
+      "nl": "verlenging",
+      "article": "de",
+      "en": "extension",
+      "tags": []
+    },
+    {
+      "id": "w06_0105",
+      "theme": 6,
+      "nl": "verblijfsrecht",
+      "article": "het",
+      "en": "right of residence",
+      "tags": []
+    },
+    {
+      "id": "w06_0106",
+      "theme": 6,
+      "nl": "arbeidsrecht",
+      "article": "het",
+      "en": "right to work",
+      "tags": []
+    },
+    {
+      "id": "w06_0107",
+      "theme": 6,
+      "nl": "studievoucher",
+      "article": "de",
+      "en": "study voucher",
+      "tags": []
+    },
+    {
+      "id": "w06_0108",
+      "theme": 6,
+      "nl": "inburgeringslening",
+      "article": "de",
+      "en": "integration loan",
+      "tags": []
+    },
+    {
+      "id": "w06_0109",
+      "theme": 6,
+      "nl": "lening",
+      "article": "de",
+      "en": "loan",
+      "tags": []
+    },
+    {
+      "id": "w06_0110",
+      "theme": 6,
+      "nl": "terugbetalen",
+      "article": null,
+      "en": "to repay",
+      "tags": []
+    },
+    {
+      "id": "w06_0111",
+      "theme": 6,
+      "nl": "vrijstelling",
+      "article": "de",
+      "en": "exemption",
+      "tags": []
+    },
+    {
+      "id": "w06_0112",
+      "theme": 6,
+      "nl": "kwijtschelding",
+      "article": "de",
+      "en": "waiver",
+      "tags": []
+    },
+    {
+      "id": "w06_0113",
+      "theme": 6,
+      "nl": "indienen",
+      "article": null,
+      "en": "to submit",
+      "tags": []
+    },
+    {
+      "id": "w06_0114",
+      "theme": 6,
+      "nl": "bevestiging",
+      "article": "de",
+      "en": "confirmation",
+      "tags": []
+    },
+    {
+      "id": "w06_0115",
+      "theme": 6,
+      "nl": "afwijzing",
+      "article": "de",
+      "en": "rejection",
+      "tags": []
+    },
+    {
+      "id": "w06_0116",
+      "theme": 6,
+      "nl": "bezwaar",
+      "article": "het",
+      "en": "objection",
+      "tags": []
+    },
+    {
+      "id": "w06_0118",
+      "theme": 6,
+      "nl": "rechter",
+      "article": "de",
+      "en": "judge",
+      "tags": []
+    },
+    {
+      "id": "w06_0119",
+      "theme": 6,
+      "nl": "rechtbank",
+      "article": "de",
+      "en": "court",
+      "tags": []
+    },
+    {
+      "id": "w06_0120",
+      "theme": 6,
+      "nl": "advocaat",
+      "article": "de",
+      "en": "lawyer",
+      "tags": []
+    },
+    {
+      "id": "w06_0121",
+      "theme": 6,
+      "nl": "juridisch",
+      "article": null,
+      "en": "legal",
+      "tags": []
+    },
+    {
+      "id": "w06_0122",
+      "theme": 6,
+      "nl": "migrant",
+      "article": "de",
+      "en": "migrant",
+      "tags": []
+    },
+    {
+      "id": "w06_0123",
+      "theme": 6,
+      "nl": "immigrant",
+      "article": "de",
+      "en": "immigrant",
+      "tags": []
+    },
+    {
+      "id": "w06_0124",
+      "theme": 6,
+      "nl": "emigrant",
+      "article": "de",
+      "en": "emigrant",
+      "tags": []
+    },
+    {
+      "id": "w06_0125",
+      "theme": 6,
+      "nl": "expat",
+      "article": "de",
+      "en": "expat",
+      "tags": []
+    },
+    {
+      "id": "w06_0126",
+      "theme": 6,
+      "nl": "pasfoto",
+      "article": "de",
+      "en": "passport photo",
+      "tags": []
+    },
+    {
+      "id": "w06_0127",
+      "theme": 6,
+      "nl": "vingerafdruk",
+      "article": "de",
+      "en": "fingerprint",
+      "tags": []
+    },
+    {
+      "id": "w06_0128",
+      "theme": 6,
+      "nl": "biometrie",
+      "article": "de",
+      "en": "biometrics",
+      "tags": []
+    },
+    {
+      "id": "w06_0129",
+      "theme": 6,
+      "nl": "chipkaart",
+      "article": "de",
+      "en": "chip card",
+      "tags": []
+    },
+    {
+      "id": "w06_0130",
+      "theme": 6,
+      "nl": "digid-activeren",
+      "article": null,
+      "en": "to activate DigiD",
+      "tags": []
+    },
+    {
+      "id": "w06_0131",
+      "theme": 6,
+      "nl": "mijn overheid",
+      "article": "de",
+      "en": "MijnOverheid",
+      "tags": []
+    },
+    {
+      "id": "w06_0132",
+      "theme": 6,
+      "nl": "belastingaangifte",
+      "article": "de",
+      "en": "tax return",
+      "tags": []
+    },
+    {
+      "id": "w06_0133",
+      "theme": 6,
+      "nl": "toeslagen",
+      "article": "de",
+      "en": "allowances",
+      "tags": []
+    },
+    {
+      "id": "w06_0134",
+      "theme": 6,
+      "nl": "kinderbijslag",
+      "article": "de",
+      "en": "child benefit",
+      "tags": []
+    },
+    {
+      "id": "w06_0135",
+      "theme": 6,
+      "nl": "huurtoeslag",
+      "article": "de",
+      "en": "rent allowance",
+      "tags": []
+    },
+    {
+      "id": "w06_0136",
+      "theme": 6,
+      "nl": "zorgtoeslag",
+      "article": "de",
+      "en": "healthcare allowance",
+      "tags": []
+    },
+    {
+      "id": "w06_0137",
+      "theme": 6,
+      "nl": "geboorteaangifte",
+      "article": "de",
+      "en": "birth registration",
+      "tags": []
+    },
+    {
+      "id": "w06_0138",
+      "theme": 6,
+      "nl": "huwelijksaangifte",
+      "article": "de",
+      "en": "marriage registration",
+      "tags": []
+    },
+    {
+      "id": "w06_0139",
+      "theme": 6,
+      "nl": "overlijdensaangifte",
+      "article": "de",
+      "en": "death registration",
+      "tags": []
+    },
+    {
+      "id": "w06_0140",
+      "theme": 6,
+      "nl": "naamsvermelding",
+      "article": "de",
+      "en": "name mention",
+      "tags": []
+    },
+    {
+      "id": "w06_0141",
+      "theme": 6,
+      "nl": "achternaam",
+      "article": "de",
+      "en": "surname",
+      "tags": []
+    },
+    {
+      "id": "w06_0142",
+      "theme": 6,
+      "nl": "voornaam",
+      "article": "de",
+      "en": "first name",
+      "tags": []
+    },
+    {
+      "id": "w06_0143",
+      "theme": 6,
+      "nl": "tussenvoegsel",
+      "article": "het",
+      "en": "middle name",
+      "tags": []
+    },
+    {
+      "id": "w06_0144",
+      "theme": 6,
+      "nl": "identiteitskaart",
+      "article": "de",
+      "en": "identity card",
+      "tags": []
+    },
+    {
+      "id": "w06_0145",
+      "theme": 6,
+      "nl": "rijbewijsnr",
+      "article": "het",
+      "en": "driving licence number",
+      "tags": []
+    },
+    {
+      "id": "w06_0146",
+      "theme": 6,
+      "nl": "paspoortnummer",
+      "article": "het",
+      "en": "passport number",
+      "tags": []
+    },
+    {
+      "id": "w06_0147",
+      "theme": 6,
+      "nl": "vervaldatum",
+      "article": "de",
+      "en": "expiry date",
+      "tags": []
+    },
+    {
+      "id": "w06_0148",
+      "theme": 6,
+      "nl": "geldigheidsduur",
+      "article": "de",
+      "en": "validity period",
+      "tags": []
+    },
+    {
+      "id": "w06_0149",
+      "theme": 6,
+      "nl": "aanvraagprocedure",
+      "article": "de",
+      "en": "application procedure",
+      "tags": []
+    },
+    {
+      "id": "w06_0150",
+      "theme": 6,
+      "nl": "paspoortaanvraag",
+      "article": "de",
+      "en": "passport application",
+      "tags": []
+    },
+    {
+      "id": "w06_0151",
+      "theme": 6,
+      "nl": "rijbewijsaanvraag",
+      "article": "de",
+      "en": "driving licence application",
+      "tags": []
+    },
+    {
+      "id": "w06_0152",
+      "theme": 6,
+      "nl": "verblijfsdocument",
+      "article": "het",
+      "en": "residence document",
+      "tags": []
+    },
+    {
+      "id": "w06_0153",
+      "theme": 6,
+      "nl": "vreemdelingenpolitie",
+      "article": "de",
+      "en": "immigration police",
+      "tags": []
+    },
+    {
+      "id": "w06_0154",
+      "theme": 6,
+      "nl": "ind",
+      "article": "de",
+      "en": "IND",
+      "tags": []
+    },
+    {
+      "id": "w06_0155",
+      "theme": 6,
+      "nl": "gezagsverklaring",
+      "article": "de",
+      "en": "authority declaration",
+      "tags": []
+    },
+    {
+      "id": "w06_0156",
+      "theme": 6,
+      "nl": "gezag",
+      "article": "het",
+      "en": "custody",
+      "tags": []
+    },
+    {
+      "id": "w06_0157",
+      "theme": 6,
+      "nl": "geboorteaangifte doen",
+      "article": null,
+      "en": "to register birth",
+      "tags": []
+    },
+    {
+      "id": "w06_0158",
+      "theme": 6,
+      "nl": "naturalisatieceremonie",
+      "article": "de",
+      "en": "naturalization ceremony",
+      "tags": []
+    },
+    {
+      "id": "w06_0159",
+      "theme": 6,
+      "nl": "eed afleggen",
+      "article": null,
+      "en": "to take an oath",
+      "tags": []
+    },
+    {
       "id": "w07_0000",
       "theme": 7,
       "nl": "reizen",
@@ -3556,14 +7396,6 @@
       "tags": []
     },
     {
-      "id": "w07_0019",
-      "theme": 7,
-      "nl": "kaartje",
-      "article": "het",
-      "en": "ticket",
-      "tags": []
-    },
-    {
       "id": "w07_0020",
       "theme": 7,
       "nl": "ov-chipkaart",
@@ -3633,14 +7465,6 @@
       "nl": "rotonde",
       "article": "de",
       "en": "roundabout",
-      "tags": []
-    },
-    {
-      "id": "w07_0029",
-      "theme": 7,
-      "nl": "parkeerplaats",
-      "article": "de",
-      "en": "parking",
       "tags": []
     },
     {
@@ -3780,14 +7604,6 @@
       "tags": []
     },
     {
-      "id": "w07_0047",
-      "theme": 7,
-      "nl": "vakantie",
-      "article": "de",
-      "en": "holiday",
-      "tags": []
-    },
-    {
       "id": "w07_0048",
       "theme": 7,
       "nl": "navigatie",
@@ -3852,14 +7668,6 @@
       "tags": []
     },
     {
-      "id": "w07_0056",
-      "theme": 7,
-      "nl": "fietsenstalling",
-      "article": "de",
-      "en": "bicycle parking",
-      "tags": []
-    },
-    {
       "id": "w07_0057",
       "theme": 7,
       "nl": "bagage",
@@ -3900,6 +7708,742 @@
       "tags": []
     },
     {
+      "id": "w07_0062",
+      "theme": 7,
+      "nl": "treinreizen",
+      "article": "het",
+      "en": "train travel",
+      "tags": []
+    },
+    {
+      "id": "w07_0063",
+      "theme": 7,
+      "nl": "busreizen",
+      "article": "het",
+      "en": "bus travel",
+      "tags": []
+    },
+    {
+      "id": "w07_0064",
+      "theme": 7,
+      "nl": "vliegen",
+      "article": null,
+      "en": "to fly",
+      "tags": []
+    },
+    {
+      "id": "w07_0065",
+      "theme": 7,
+      "nl": "varen",
+      "article": null,
+      "en": "to sail",
+      "tags": []
+    },
+    {
+      "id": "w07_0066",
+      "theme": 7,
+      "nl": "fietsen",
+      "article": null,
+      "en": "to cycle",
+      "tags": []
+    },
+    {
+      "id": "w07_0067",
+      "theme": 7,
+      "nl": "lopen",
+      "article": null,
+      "en": "to walk",
+      "tags": []
+    },
+    {
+      "id": "w07_0068",
+      "theme": 7,
+      "nl": "rijden",
+      "article": null,
+      "en": "to drive",
+      "tags": []
+    },
+    {
+      "id": "w07_0069",
+      "theme": 7,
+      "nl": "meerijden",
+      "article": null,
+      "en": "to ride along",
+      "tags": []
+    },
+    {
+      "id": "w07_0070",
+      "theme": 7,
+      "nl": "lift",
+      "article": "de",
+      "en": "lift",
+      "tags": []
+    },
+    {
+      "id": "w07_0071",
+      "theme": 7,
+      "nl": "carpoolen",
+      "article": null,
+      "en": "to carpool",
+      "tags": []
+    },
+    {
+      "id": "w07_0072",
+      "theme": 7,
+      "nl": "arriva",
+      "article": "de",
+      "en": "Arriva",
+      "tags": []
+    },
+    {
+      "id": "w07_0073",
+      "theme": 7,
+      "nl": "connexxion",
+      "article": "de",
+      "en": "Connexxion",
+      "tags": []
+    },
+    {
+      "id": "w07_0074",
+      "theme": 7,
+      "nl": "gvb",
+      "article": "het",
+      "en": "GVB",
+      "tags": []
+    },
+    {
+      "id": "w07_0075",
+      "theme": 7,
+      "nl": "ret",
+      "article": "de",
+      "en": "RET",
+      "tags": []
+    },
+    {
+      "id": "w07_0076",
+      "theme": 7,
+      "nl": "htm",
+      "article": "de",
+      "en": "HTM",
+      "tags": []
+    },
+    {
+      "id": "w07_0077",
+      "theme": 7,
+      "nl": "anonieme ov-chipkaart",
+      "article": "de",
+      "en": "anonymous card",
+      "tags": []
+    },
+    {
+      "id": "w07_0078",
+      "theme": 7,
+      "nl": "persoonlijke ov-chipkaart",
+      "article": "de",
+      "en": "personal card",
+      "tags": []
+    },
+    {
+      "id": "w07_0079",
+      "theme": 7,
+      "nl": "saldo",
+      "article": "het",
+      "en": "balance",
+      "tags": []
+    },
+    {
+      "id": "w07_0080",
+      "theme": 7,
+      "nl": "opwaarderen",
+      "article": null,
+      "en": "to top up",
+      "tags": []
+    },
+    {
+      "id": "w07_0081",
+      "theme": 7,
+      "nl": "overstap",
+      "article": "de",
+      "en": "transfer",
+      "tags": []
+    },
+    {
+      "id": "w07_0082",
+      "theme": 7,
+      "nl": "overstaptijd",
+      "article": "de",
+      "en": "transfer time",
+      "tags": []
+    },
+    {
+      "id": "w07_0083",
+      "theme": 7,
+      "nl": "rechtstreeks",
+      "article": null,
+      "en": "direct",
+      "tags": []
+    },
+    {
+      "id": "w07_0084",
+      "theme": 7,
+      "nl": "via",
+      "article": null,
+      "en": "via",
+      "tags": []
+    },
+    {
+      "id": "w07_0085",
+      "theme": 7,
+      "nl": "vertrek",
+      "article": "het",
+      "en": "departure",
+      "tags": []
+    },
+    {
+      "id": "w07_0086",
+      "theme": 7,
+      "nl": "aankomst",
+      "article": "de",
+      "en": "arrival",
+      "tags": []
+    },
+    {
+      "id": "w07_0087",
+      "theme": 7,
+      "nl": "vertrektijd",
+      "article": "de",
+      "en": "departure time",
+      "tags": []
+    },
+    {
+      "id": "w07_0088",
+      "theme": 7,
+      "nl": "aankomsttijd",
+      "article": "de",
+      "en": "arrival time",
+      "tags": []
+    },
+    {
+      "id": "w07_0089",
+      "theme": 7,
+      "nl": "eindhalte",
+      "article": "de",
+      "en": "terminal",
+      "tags": []
+    },
+    {
+      "id": "w07_0090",
+      "theme": 7,
+      "nl": "tussenstop",
+      "article": "de",
+      "en": "stopover",
+      "tags": []
+    },
+    {
+      "id": "w07_0091",
+      "theme": 7,
+      "nl": "geen dienst",
+      "article": null,
+      "en": "no service",
+      "tags": []
+    },
+    {
+      "id": "w07_0092",
+      "theme": 7,
+      "nl": "storing",
+      "article": "de",
+      "en": "disruption",
+      "tags": []
+    },
+    {
+      "id": "w07_0093",
+      "theme": 7,
+      "nl": "vervangend vervoer",
+      "article": "het",
+      "en": "replacement transport",
+      "tags": []
+    },
+    {
+      "id": "w07_0094",
+      "theme": 7,
+      "nl": "busvervangend vervoer",
+      "article": "het",
+      "en": "replacement bus",
+      "tags": []
+    },
+    {
+      "id": "w07_0095",
+      "theme": 7,
+      "nl": "fietsverhuur",
+      "article": "de",
+      "en": "bike rental",
+      "tags": []
+    },
+    {
+      "id": "w07_0096",
+      "theme": 7,
+      "nl": "ov-fiets",
+      "article": "de",
+      "en": "OV bike",
+      "tags": []
+    },
+    {
+      "id": "w07_0097",
+      "theme": 7,
+      "nl": "deelfiets",
+      "article": "de",
+      "en": "shared bike",
+      "tags": []
+    },
+    {
+      "id": "w07_0098",
+      "theme": 7,
+      "nl": "scooter",
+      "article": "de",
+      "en": "scooter",
+      "tags": []
+    },
+    {
+      "id": "w07_0099",
+      "theme": 7,
+      "nl": "taxi",
+      "article": "de",
+      "en": "taxi",
+      "tags": []
+    },
+    {
+      "id": "w07_0100",
+      "theme": 7,
+      "nl": "uber",
+      "article": "de",
+      "en": "Uber",
+      "tags": []
+    },
+    {
+      "id": "w07_0101",
+      "theme": 7,
+      "nl": "blablacar",
+      "article": "de",
+      "en": "BlaBlaCar",
+      "tags": []
+    },
+    {
+      "id": "w07_0102",
+      "theme": 7,
+      "nl": "rit",
+      "article": "de",
+      "en": "ride",
+      "tags": []
+    },
+    {
+      "id": "w07_0103",
+      "theme": 7,
+      "nl": "reis",
+      "article": "de",
+      "en": "journey",
+      "tags": []
+    },
+    {
+      "id": "w07_0104",
+      "theme": 7,
+      "nl": "reisduur",
+      "article": "de",
+      "en": "travel time",
+      "tags": []
+    },
+    {
+      "id": "w07_0105",
+      "theme": 7,
+      "nl": "afstand",
+      "article": "de",
+      "en": "distance",
+      "tags": []
+    },
+    {
+      "id": "w07_0106",
+      "theme": 7,
+      "nl": "kilometer",
+      "article": "de",
+      "en": "kilometre",
+      "tags": []
+    },
+    {
+      "id": "w07_0107",
+      "theme": 7,
+      "nl": "reisschema",
+      "article": "het",
+      "en": "travel schedule",
+      "tags": []
+    },
+    {
+      "id": "w07_0108",
+      "theme": 7,
+      "nl": "reisplanner",
+      "article": "de",
+      "en": "journey planner",
+      "tags": []
+    },
+    {
+      "id": "w07_0109",
+      "theme": 7,
+      "nl": "9292",
+      "article": "de",
+      "en": "9292",
+      "tags": []
+    },
+    {
+      "id": "w07_0110",
+      "theme": 7,
+      "nl": "google maps",
+      "article": "de",
+      "en": "Google Maps",
+      "tags": []
+    },
+    {
+      "id": "w07_0111",
+      "theme": 7,
+      "nl": "gps",
+      "article": "de",
+      "en": "GPS",
+      "tags": []
+    },
+    {
+      "id": "w07_0112",
+      "theme": 7,
+      "nl": "drukte",
+      "article": "de",
+      "en": "crowding",
+      "tags": []
+    },
+    {
+      "id": "w07_0113",
+      "theme": 7,
+      "nl": "spits",
+      "article": "de",
+      "en": "rush hour",
+      "tags": []
+    },
+    {
+      "id": "w07_0114",
+      "theme": 7,
+      "nl": "spitsuur",
+      "article": "het",
+      "en": "peak hour",
+      "tags": []
+    },
+    {
+      "id": "w07_0116",
+      "theme": 7,
+      "nl": "rustig",
+      "article": null,
+      "en": "quiet",
+      "tags": []
+    },
+    {
+      "id": "w07_0117",
+      "theme": 7,
+      "nl": "comfortabel",
+      "article": null,
+      "en": "comfortable",
+      "tags": []
+    },
+    {
+      "id": "w07_0118",
+      "theme": 7,
+      "nl": "vol",
+      "article": null,
+      "en": "full",
+      "tags": []
+    },
+    {
+      "id": "w07_0119",
+      "theme": 7,
+      "nl": "leeg",
+      "article": null,
+      "en": "empty",
+      "tags": []
+    },
+    {
+      "id": "w07_0120",
+      "theme": 7,
+      "nl": "schoon",
+      "article": null,
+      "en": "clean",
+      "tags": []
+    },
+    {
+      "id": "w07_0121",
+      "theme": 7,
+      "nl": "vies",
+      "article": null,
+      "en": "dirty",
+      "tags": []
+    },
+    {
+      "id": "w07_0122",
+      "theme": 7,
+      "nl": "toegankelijk",
+      "article": null,
+      "en": "accessible",
+      "tags": []
+    },
+    {
+      "id": "w07_0123",
+      "theme": 7,
+      "nl": "rolstoeltoegankelijk",
+      "article": null,
+      "en": "wheelchair accessible",
+      "tags": []
+    },
+    {
+      "id": "w07_0124",
+      "theme": 7,
+      "nl": "toegankelijkheid",
+      "article": "de",
+      "en": "accessibility",
+      "tags": []
+    },
+    {
+      "id": "w07_0125",
+      "theme": 7,
+      "nl": "reistijd",
+      "article": "de",
+      "en": "travel time",
+      "tags": []
+    },
+    {
+      "id": "w07_0126",
+      "theme": 7,
+      "nl": "vertrekhal",
+      "article": "de",
+      "en": "departure hall",
+      "tags": []
+    },
+    {
+      "id": "w07_0127",
+      "theme": 7,
+      "nl": "aankomsthal",
+      "article": "de",
+      "en": "arrival hall",
+      "tags": []
+    },
+    {
+      "id": "w07_0128",
+      "theme": 7,
+      "nl": "bagageband",
+      "article": "de",
+      "en": "baggage carousel",
+      "tags": []
+    },
+    {
+      "id": "w07_0129",
+      "theme": 7,
+      "nl": "incheckbalie",
+      "article": "de",
+      "en": "check-in desk",
+      "tags": []
+    },
+    {
+      "id": "w07_0130",
+      "theme": 7,
+      "nl": "boardingpas",
+      "article": "de",
+      "en": "boarding pass",
+      "tags": []
+    },
+    {
+      "id": "w07_0131",
+      "theme": 7,
+      "nl": "gate",
+      "article": "de",
+      "en": "gate",
+      "tags": []
+    },
+    {
+      "id": "w07_0132",
+      "theme": 7,
+      "nl": "vlucht",
+      "article": "de",
+      "en": "flight",
+      "tags": []
+    },
+    {
+      "id": "w07_0133",
+      "theme": 7,
+      "nl": "treinverbinding",
+      "article": "de",
+      "en": "train connection",
+      "tags": []
+    },
+    {
+      "id": "w07_0134",
+      "theme": 7,
+      "nl": "overstapstation",
+      "article": "het",
+      "en": "interchange station",
+      "tags": []
+    },
+    {
+      "id": "w07_0135",
+      "theme": 7,
+      "nl": "spoorweg",
+      "article": "de",
+      "en": "railway",
+      "tags": []
+    },
+    {
+      "id": "w07_0136",
+      "theme": 7,
+      "nl": "lightrail",
+      "article": "de",
+      "en": "light rail",
+      "tags": []
+    },
+    {
+      "id": "w07_0137",
+      "theme": 7,
+      "nl": "sneltram",
+      "article": "de",
+      "en": "rapid tram",
+      "tags": []
+    },
+    {
+      "id": "w07_0138",
+      "theme": 7,
+      "nl": "waterbus",
+      "article": "de",
+      "en": "water bus",
+      "tags": []
+    },
+    {
+      "id": "w07_0139",
+      "theme": 7,
+      "nl": "rondvaart",
+      "article": "de",
+      "en": "canal cruise",
+      "tags": []
+    },
+    {
+      "id": "w07_0140",
+      "theme": 7,
+      "nl": "toerist",
+      "article": "de",
+      "en": "tourist",
+      "tags": []
+    },
+    {
+      "id": "w07_0141",
+      "theme": 7,
+      "nl": "reiziger",
+      "article": "de",
+      "en": "traveller",
+      "tags": []
+    },
+    {
+      "id": "w07_0142",
+      "theme": 7,
+      "nl": "forens",
+      "article": "de",
+      "en": "commuter",
+      "tags": []
+    },
+    {
+      "id": "w07_0143",
+      "theme": 7,
+      "nl": "fietsroute",
+      "article": "de",
+      "en": "cycle route",
+      "tags": []
+    },
+    {
+      "id": "w07_0144",
+      "theme": 7,
+      "nl": "wandelroute",
+      "article": "de",
+      "en": "walking route",
+      "tags": []
+    },
+    {
+      "id": "w07_0145",
+      "theme": 7,
+      "nl": "autosnelweg",
+      "article": "de",
+      "en": "motorway",
+      "tags": []
+    },
+    {
+      "id": "w07_0146",
+      "theme": 7,
+      "nl": "provinciale weg",
+      "article": "de",
+      "en": "provincial road",
+      "tags": []
+    },
+    {
+      "id": "w07_0147",
+      "theme": 7,
+      "nl": "rijksweg",
+      "article": "de",
+      "en": "national road",
+      "tags": []
+    },
+    {
+      "id": "w07_0148",
+      "theme": 7,
+      "nl": "brug",
+      "article": "de",
+      "en": "bridge",
+      "tags": []
+    },
+    {
+      "id": "w07_0149",
+      "theme": 7,
+      "nl": "tunnel",
+      "article": "de",
+      "en": "tunnel",
+      "tags": []
+    },
+    {
+      "id": "w07_0150",
+      "theme": 7,
+      "nl": "viaduct",
+      "article": "het",
+      "en": "viaduct",
+      "tags": []
+    },
+    {
+      "id": "w07_0151",
+      "theme": 7,
+      "nl": "ov-reisplanner",
+      "article": "de",
+      "en": "journey planner",
+      "tags": []
+    },
+    {
+      "id": "w07_0152",
+      "theme": 7,
+      "nl": "overstapmoment",
+      "article": "het",
+      "en": "transfer point",
+      "tags": []
+    },
+    {
+      "id": "w07_0153",
+      "theme": 7,
+      "nl": "treinreiziger",
+      "article": "de",
+      "en": "train passenger",
+      "tags": []
+    },
+    {
+      "id": "w07_0154",
+      "theme": 7,
+      "nl": "busreiziger",
+      "article": "de",
+      "en": "bus passenger",
+      "tags": []
+    },
+    {
       "id": "w08_0000",
       "theme": 8,
       "nl": "geld",
@@ -3921,14 +8465,6 @@
       "nl": "prijs",
       "article": "de",
       "en": "price",
-      "tags": []
-    },
-    {
-      "id": "w08_0003",
-      "theme": 8,
-      "nl": "bank",
-      "article": "de",
-      "en": "bank",
       "tags": []
     },
     {
@@ -4100,14 +8636,6 @@
       "tags": []
     },
     {
-      "id": "w08_0025",
-      "theme": 8,
-      "nl": "saldo",
-      "article": "het",
-      "en": "balance",
-      "tags": []
-    },
-    {
       "id": "w08_0026",
       "theme": 8,
       "nl": "rente",
@@ -4121,14 +8649,6 @@
       "nl": "hypotheek",
       "article": "de",
       "en": "mortgage",
-      "tags": []
-    },
-    {
-      "id": "w08_0028",
-      "theme": 8,
-      "nl": "lening",
-      "article": "de",
-      "en": "loan",
       "tags": []
     },
     {
@@ -4260,14 +8780,6 @@
       "tags": []
     },
     {
-      "id": "w08_0045",
-      "theme": 8,
-      "nl": "premie",
-      "article": "de",
-      "en": "premium",
-      "tags": []
-    },
-    {
       "id": "w08_0046",
       "theme": 8,
       "nl": "eigen risico",
@@ -4348,11 +8860,787 @@
       "tags": []
     },
     {
-      "id": "w09_0000",
-      "theme": 9,
-      "nl": "geschiedenis",
+      "id": "w08_0056",
+      "theme": 8,
+      "nl": "financiën",
       "article": "de",
-      "en": "history",
+      "en": "finances",
+      "tags": []
+    },
+    {
+      "id": "w08_0057",
+      "theme": 8,
+      "nl": "geldzaken",
+      "article": "de",
+      "en": "financial affairs",
+      "tags": []
+    },
+    {
+      "id": "w08_0058",
+      "theme": 8,
+      "nl": "financieel",
+      "article": null,
+      "en": "financial",
+      "tags": []
+    },
+    {
+      "id": "w08_0059",
+      "theme": 8,
+      "nl": "geldelijk",
+      "article": null,
+      "en": "monetary",
+      "tags": []
+    },
+    {
+      "id": "w08_0060",
+      "theme": 8,
+      "nl": "bedrag",
+      "article": "het",
+      "en": "amount",
+      "tags": []
+    },
+    {
+      "id": "w08_0061",
+      "theme": 8,
+      "nl": "som",
+      "article": "de",
+      "en": "sum",
+      "tags": []
+    },
+    {
+      "id": "w08_0062",
+      "theme": 8,
+      "nl": "totaal",
+      "article": "het",
+      "en": "total",
+      "tags": []
+    },
+    {
+      "id": "w08_0063",
+      "theme": 8,
+      "nl": "subtotaal",
+      "article": "het",
+      "en": "subtotal",
+      "tags": []
+    },
+    {
+      "id": "w08_0064",
+      "theme": 8,
+      "nl": "btw",
+      "article": "de",
+      "en": "VAT",
+      "tags": []
+    },
+    {
+      "id": "w08_0068",
+      "theme": 8,
+      "nl": "aanslag",
+      "article": "de",
+      "en": "assessment",
+      "tags": []
+    },
+    {
+      "id": "w08_0069",
+      "theme": 8,
+      "nl": "teruggave",
+      "article": "de",
+      "en": "refund",
+      "tags": []
+    },
+    {
+      "id": "w08_0070",
+      "theme": 8,
+      "nl": "voorheffing",
+      "article": "de",
+      "en": "withholding",
+      "tags": []
+    },
+    {
+      "id": "w08_0071",
+      "theme": 8,
+      "nl": "loonheffing",
+      "article": "de",
+      "en": "wage tax",
+      "tags": []
+    },
+    {
+      "id": "w08_0072",
+      "theme": 8,
+      "nl": "zorgpremie",
+      "article": "de",
+      "en": "health premium",
+      "tags": []
+    },
+    {
+      "id": "w08_0073",
+      "theme": 8,
+      "nl": "verzekeraar",
+      "article": "de",
+      "en": "insurer",
+      "tags": []
+    },
+    {
+      "id": "w08_0074",
+      "theme": 8,
+      "nl": "polis",
+      "article": "de",
+      "en": "policy",
+      "tags": []
+    },
+    {
+      "id": "w08_0075",
+      "theme": 8,
+      "nl": "polisvoorwaarden",
+      "article": "de",
+      "en": "policy terms",
+      "tags": []
+    },
+    {
+      "id": "w08_0076",
+      "theme": 8,
+      "nl": "dekking",
+      "article": "de",
+      "en": "coverage",
+      "tags": []
+    },
+    {
+      "id": "w08_0077",
+      "theme": 8,
+      "nl": "verzekerd",
+      "article": null,
+      "en": "insured",
+      "tags": []
+    },
+    {
+      "id": "w08_0078",
+      "theme": 8,
+      "nl": "onverzekerd",
+      "article": null,
+      "en": "uninsured",
+      "tags": []
+    },
+    {
+      "id": "w08_0079",
+      "theme": 8,
+      "nl": "aansprakelijk",
+      "article": null,
+      "en": "liable",
+      "tags": []
+    },
+    {
+      "id": "w08_0080",
+      "theme": 8,
+      "nl": "aansprakelijkheidsverzekering",
+      "article": "de",
+      "en": "liability insurance",
+      "tags": []
+    },
+    {
+      "id": "w08_0081",
+      "theme": 8,
+      "nl": "rechtsbijstand",
+      "article": "de",
+      "en": "legal aid",
+      "tags": []
+    },
+    {
+      "id": "w08_0082",
+      "theme": 8,
+      "nl": "rechtsbijstandverzekering",
+      "article": "de",
+      "en": "legal expenses insurance",
+      "tags": []
+    },
+    {
+      "id": "w08_0083",
+      "theme": 8,
+      "nl": "reisverzekering",
+      "article": "de",
+      "en": "travel insurance",
+      "tags": []
+    },
+    {
+      "id": "w08_0084",
+      "theme": 8,
+      "nl": "annulering",
+      "article": "de",
+      "en": "cancellation",
+      "tags": []
+    },
+    {
+      "id": "w08_0085",
+      "theme": 8,
+      "nl": "annuleringsverzekering",
+      "article": "de",
+      "en": "cancellation insurance",
+      "tags": []
+    },
+    {
+      "id": "w08_0086",
+      "theme": 8,
+      "nl": "spaarpot",
+      "article": "de",
+      "en": "piggy bank",
+      "tags": []
+    },
+    {
+      "id": "w08_0087",
+      "theme": 8,
+      "nl": "spaargeld",
+      "article": "het",
+      "en": "savings",
+      "tags": []
+    },
+    {
+      "id": "w08_0088",
+      "theme": 8,
+      "nl": "spaardoel",
+      "article": "het",
+      "en": "savings goal",
+      "tags": []
+    },
+    {
+      "id": "w08_0089",
+      "theme": 8,
+      "nl": "budgetteren",
+      "article": null,
+      "en": "to budget",
+      "tags": []
+    },
+    {
+      "id": "w08_0090",
+      "theme": 8,
+      "nl": "uitgaven bijhouden",
+      "article": null,
+      "en": "to track expenses",
+      "tags": []
+    },
+    {
+      "id": "w08_0091",
+      "theme": 8,
+      "nl": "excel",
+      "article": "de",
+      "en": "Excel",
+      "tags": []
+    },
+    {
+      "id": "w08_0092",
+      "theme": 8,
+      "nl": "app",
+      "article": "de",
+      "en": "app",
+      "tags": []
+    },
+    {
+      "id": "w08_0093",
+      "theme": 8,
+      "nl": "geld-app",
+      "article": "de",
+      "en": "money app",
+      "tags": []
+    },
+    {
+      "id": "w08_0094",
+      "theme": 8,
+      "nl": "ideal",
+      "article": "de",
+      "en": "iDEAL",
+      "tags": []
+    },
+    {
+      "id": "w08_0095",
+      "theme": 8,
+      "nl": "paypal",
+      "article": "de",
+      "en": "PayPal",
+      "tags": []
+    },
+    {
+      "id": "w08_0096",
+      "theme": 8,
+      "nl": "creditcard",
+      "article": "de",
+      "en": "credit card",
+      "tags": []
+    },
+    {
+      "id": "w08_0098",
+      "theme": 8,
+      "nl": "pincode",
+      "article": "de",
+      "en": "PIN code",
+      "tags": []
+    },
+    {
+      "id": "w08_0099",
+      "theme": 8,
+      "nl": "geheim",
+      "article": "het",
+      "en": "secret",
+      "tags": []
+    },
+    {
+      "id": "w08_0100",
+      "theme": 8,
+      "nl": "fraude",
+      "article": "de",
+      "en": "fraud",
+      "tags": []
+    },
+    {
+      "id": "w08_0101",
+      "theme": 8,
+      "nl": "oplichting",
+      "article": "de",
+      "en": "scam",
+      "tags": []
+    },
+    {
+      "id": "w08_0102",
+      "theme": 8,
+      "nl": "phishing",
+      "article": "de",
+      "en": "phishing",
+      "tags": []
+    },
+    {
+      "id": "w08_0103",
+      "theme": 8,
+      "nl": "waarschuwing",
+      "article": "de",
+      "en": "warning",
+      "tags": []
+    },
+    {
+      "id": "w08_0104",
+      "theme": 8,
+      "nl": "voorzichtig",
+      "article": null,
+      "en": "careful",
+      "tags": []
+    },
+    {
+      "id": "w08_0105",
+      "theme": 8,
+      "nl": "veilig",
+      "article": null,
+      "en": "safe",
+      "tags": []
+    },
+    {
+      "id": "w08_0106",
+      "theme": 8,
+      "nl": "onveilig",
+      "article": null,
+      "en": "unsafe",
+      "tags": []
+    },
+    {
+      "id": "w08_0107",
+      "theme": 8,
+      "nl": "encryptie",
+      "article": "de",
+      "en": "encryption",
+      "tags": []
+    },
+    {
+      "id": "w08_0108",
+      "theme": 8,
+      "nl": "tweefactorauthenticatie",
+      "article": "de",
+      "en": "two-factor authentication",
+      "tags": []
+    },
+    {
+      "id": "w08_0109",
+      "theme": 8,
+      "nl": "2fa",
+      "article": "de",
+      "en": "2FA",
+      "tags": []
+    },
+    {
+      "id": "w08_0110",
+      "theme": 8,
+      "nl": "rentepercentage",
+      "article": "het",
+      "en": "interest rate",
+      "tags": []
+    },
+    {
+      "id": "w08_0111",
+      "theme": 8,
+      "nl": "aflossing",
+      "article": "de",
+      "en": "repayment",
+      "tags": []
+    },
+    {
+      "id": "w08_0112",
+      "theme": 8,
+      "nl": "maandlasten",
+      "article": "de",
+      "en": "monthly payments",
+      "tags": []
+    },
+    {
+      "id": "w08_0113",
+      "theme": 8,
+      "nl": "schulden",
+      "article": "de",
+      "en": "debts",
+      "tags": []
+    },
+    {
+      "id": "w08_0114",
+      "theme": 8,
+      "nl": "schuldsanering",
+      "article": "de",
+      "en": "debt restructuring",
+      "tags": []
+    },
+    {
+      "id": "w08_0115",
+      "theme": 8,
+      "nl": "betalingsregeling",
+      "article": "de",
+      "en": "payment plan",
+      "tags": []
+    },
+    {
+      "id": "w08_0116",
+      "theme": 8,
+      "nl": "incassobureau",
+      "article": "het",
+      "en": "collection agency",
+      "tags": []
+    },
+    {
+      "id": "w08_0117",
+      "theme": 8,
+      "nl": "deurwaarder",
+      "article": "de",
+      "en": "bailiff",
+      "tags": []
+    },
+    {
+      "id": "w08_0118",
+      "theme": 8,
+      "nl": "beslag",
+      "article": "het",
+      "en": "seizure",
+      "tags": []
+    },
+    {
+      "id": "w08_0120",
+      "theme": 8,
+      "nl": "geldautomaten",
+      "article": "de",
+      "en": "ATMs",
+      "tags": []
+    },
+    {
+      "id": "w08_0121",
+      "theme": 8,
+      "nl": "bankfiliaal",
+      "article": "het",
+      "en": "bank branch",
+      "tags": []
+    },
+    {
+      "id": "w08_0122",
+      "theme": 8,
+      "nl": "online bankieren",
+      "article": "het",
+      "en": "online banking",
+      "tags": []
+    },
+    {
+      "id": "w08_0123",
+      "theme": 8,
+      "nl": "mobiel bankieren",
+      "article": "het",
+      "en": "mobile banking",
+      "tags": []
+    },
+    {
+      "id": "w08_0124",
+      "theme": 8,
+      "nl": "betaalverzoek",
+      "article": "het",
+      "en": "payment request",
+      "tags": []
+    },
+    {
+      "id": "w08_0125",
+      "theme": 8,
+      "nl": "periodieke betaling",
+      "article": "de",
+      "en": "recurring payment",
+      "tags": []
+    },
+    {
+      "id": "w08_0126",
+      "theme": 8,
+      "nl": "machtiging",
+      "article": "de",
+      "en": "authorization",
+      "tags": []
+    },
+    {
+      "id": "w08_0127",
+      "theme": 8,
+      "nl": "automatische incasso",
+      "article": "de",
+      "en": "direct debit",
+      "tags": []
+    },
+    {
+      "id": "w08_0128",
+      "theme": 8,
+      "nl": "overschrijving",
+      "article": "de",
+      "en": "transfer",
+      "tags": []
+    },
+    {
+      "id": "w08_0129",
+      "theme": 8,
+      "nl": "beschikbaar saldo",
+      "article": "het",
+      "en": "available balance",
+      "tags": []
+    },
+    {
+      "id": "w08_0130",
+      "theme": 8,
+      "nl": "kredietlimiet",
+      "article": "de",
+      "en": "credit limit",
+      "tags": []
+    },
+    {
+      "id": "w08_0131",
+      "theme": 8,
+      "nl": "maandelijkse lasten",
+      "article": "de",
+      "en": "monthly expenses",
+      "tags": []
+    },
+    {
+      "id": "w08_0132",
+      "theme": 8,
+      "nl": "vaste lasten",
+      "article": "de",
+      "en": "fixed costs",
+      "tags": []
+    },
+    {
+      "id": "w08_0133",
+      "theme": 8,
+      "nl": "variabele lasten",
+      "article": "de",
+      "en": "variable costs",
+      "tags": []
+    },
+    {
+      "id": "w08_0134",
+      "theme": 8,
+      "nl": "contactloos betalen",
+      "article": "het",
+      "en": "contactless payment",
+      "tags": []
+    },
+    {
+      "id": "w08_0135",
+      "theme": 8,
+      "nl": "mobiel betalen",
+      "article": "het",
+      "en": "mobile payment",
+      "tags": []
+    },
+    {
+      "id": "w08_0136",
+      "theme": 8,
+      "nl": "bankpas",
+      "article": "de",
+      "en": "bank card",
+      "tags": []
+    },
+    {
+      "id": "w08_0137",
+      "theme": 8,
+      "nl": "betaalpas",
+      "article": "de",
+      "en": "payment card",
+      "tags": []
+    },
+    {
+      "id": "w08_0138",
+      "theme": 8,
+      "nl": "daglimiet",
+      "article": "de",
+      "en": "daily limit",
+      "tags": []
+    },
+    {
+      "id": "w08_0139",
+      "theme": 8,
+      "nl": "opnamelimiet",
+      "article": "de",
+      "en": "withdrawal limit",
+      "tags": []
+    },
+    {
+      "id": "w08_0140",
+      "theme": 8,
+      "nl": "belegging",
+      "article": "de",
+      "en": "investment",
+      "tags": []
+    },
+    {
+      "id": "w08_0141",
+      "theme": 8,
+      "nl": "spaarrente",
+      "article": "de",
+      "en": "savings interest",
+      "tags": []
+    },
+    {
+      "id": "w08_0142",
+      "theme": 8,
+      "nl": "jaarrente",
+      "article": "de",
+      "en": "annual interest",
+      "tags": []
+    },
+    {
+      "id": "w08_0143",
+      "theme": 8,
+      "nl": "maandrente",
+      "article": "de",
+      "en": "monthly interest",
+      "tags": []
+    },
+    {
+      "id": "w08_0144",
+      "theme": 8,
+      "nl": "geldopname",
+      "article": "de",
+      "en": "withdrawal",
+      "tags": []
+    },
+    {
+      "id": "w08_0145",
+      "theme": 8,
+      "nl": "storting",
+      "article": "de",
+      "en": "deposit",
+      "tags": []
+    },
+    {
+      "id": "w08_0146",
+      "theme": 8,
+      "nl": "betalingsherinnering",
+      "article": "de",
+      "en": "payment reminder",
+      "tags": []
+    },
+    {
+      "id": "w08_0147",
+      "theme": 8,
+      "nl": "incassokosten",
+      "article": "de",
+      "en": "collection costs",
+      "tags": []
+    },
+    {
+      "id": "w08_0148",
+      "theme": 8,
+      "nl": "boeterente",
+      "article": "de",
+      "en": "penalty interest",
+      "tags": []
+    },
+    {
+      "id": "w08_0149",
+      "theme": 8,
+      "nl": "spaarplan",
+      "article": "het",
+      "en": "savings plan",
+      "tags": []
+    },
+    {
+      "id": "w08_0150",
+      "theme": 8,
+      "nl": "termijndeposito",
+      "article": "het",
+      "en": "term deposit",
+      "tags": []
+    },
+    {
+      "id": "w08_0151",
+      "theme": 8,
+      "nl": "spaarrekeningrente",
+      "article": "de",
+      "en": "savings account interest",
+      "tags": []
+    },
+    {
+      "id": "w08_0152",
+      "theme": 8,
+      "nl": "consumptief krediet",
+      "article": "het",
+      "en": "consumer credit",
+      "tags": []
+    },
+    {
+      "id": "w08_0153",
+      "theme": 8,
+      "nl": "doorlopend krediet",
+      "article": "het",
+      "en": "revolving credit",
+      "tags": []
+    },
+    {
+      "id": "w08_0154",
+      "theme": 8,
+      "nl": "persoonlijke lening",
+      "article": "de",
+      "en": "personal loan",
+      "tags": []
+    },
+    {
+      "id": "w08_0155",
+      "theme": 8,
+      "nl": "consumptief lenen",
+      "article": "het",
+      "en": "consumer lending",
+      "tags": []
+    },
+    {
+      "id": "w08_0156",
+      "theme": 8,
+      "nl": "hypotheekadviseur",
+      "article": "de",
+      "en": "mortgage adviser",
+      "tags": []
+    },
+    {
+      "id": "w08_0157",
+      "theme": 8,
+      "nl": "financieel adviseur",
+      "article": "de",
+      "en": "financial adviser",
+      "tags": []
+    },
+    {
+      "id": "w08_0158",
+      "theme": 8,
+      "nl": "spaarbedrag",
+      "article": "het",
+      "en": "savings amount",
       "tags": []
     },
     {
@@ -4409,14 +9697,6 @@
       "nl": "koning",
       "article": "de",
       "en": "king",
-      "tags": []
-    },
-    {
-      "id": "w09_0008",
-      "theme": 9,
-      "nl": "museum",
-      "article": "het",
-      "en": "museum",
       "tags": []
     },
     {
@@ -4489,14 +9769,6 @@
       "nl": "levensverhaal",
       "article": "het",
       "en": "life story",
-      "tags": []
-    },
-    {
-      "id": "w09_0018",
-      "theme": 9,
-      "nl": "herinnering",
-      "article": "de",
-      "en": "memory",
       "tags": []
     },
     {
@@ -4628,14 +9900,6 @@
       "tags": []
     },
     {
-      "id": "w09_0035",
-      "theme": 9,
-      "nl": "handel",
-      "article": "de",
-      "en": "trade",
-      "tags": []
-    },
-    {
       "id": "w09_0036",
       "theme": 9,
       "nl": "gouden eeuw",
@@ -4665,14 +9929,6 @@
       "nl": "bron",
       "article": "de",
       "en": "source",
-      "tags": []
-    },
-    {
-      "id": "w09_0040",
-      "theme": 9,
-      "nl": "document",
-      "article": "het",
-      "en": "document",
       "tags": []
     },
     {
@@ -4740,11 +9996,851 @@
       "tags": []
     },
     {
-      "id": "w10_0000",
-      "theme": 10,
-      "nl": "traditie",
+      "id": "w09_0049",
+      "theme": 9,
+      "nl": "tijdperk",
+      "article": "het",
+      "en": "era",
+      "tags": []
+    },
+    {
+      "id": "w09_0050",
+      "theme": 9,
+      "nl": "periode",
       "article": "de",
-      "en": "tradition",
+      "en": "period",
+      "tags": []
+    },
+    {
+      "id": "w09_0051",
+      "theme": 9,
+      "nl": "tijdvak",
+      "article": "het",
+      "en": "period",
+      "tags": []
+    },
+    {
+      "id": "w09_0052",
+      "theme": 9,
+      "nl": "oudheid",
+      "article": "de",
+      "en": "antiquity",
+      "tags": []
+    },
+    {
+      "id": "w09_0053",
+      "theme": 9,
+      "nl": "middeleeuwen",
+      "article": "de",
+      "en": "Middle Ages",
+      "tags": []
+    },
+    {
+      "id": "w09_0054",
+      "theme": 9,
+      "nl": "renaissance",
+      "article": "de",
+      "en": "Renaissance",
+      "tags": []
+    },
+    {
+      "id": "w09_0055",
+      "theme": 9,
+      "nl": "verlichting",
+      "article": "de",
+      "en": "Enlightenment",
+      "tags": []
+    },
+    {
+      "id": "w09_0056",
+      "theme": 9,
+      "nl": "moderne tijd",
+      "article": "de",
+      "en": "modern era",
+      "tags": []
+    },
+    {
+      "id": "w09_0057",
+      "theme": 9,
+      "nl": "contemporain",
+      "article": null,
+      "en": "contemporary",
+      "tags": []
+    },
+    {
+      "id": "w09_0058",
+      "theme": 9,
+      "nl": "prehistorie",
+      "article": "de",
+      "en": "prehistory",
+      "tags": []
+    },
+    {
+      "id": "w09_0059",
+      "theme": 9,
+      "nl": "steentijd",
+      "article": "de",
+      "en": "Stone Age",
+      "tags": []
+    },
+    {
+      "id": "w09_0060",
+      "theme": 9,
+      "nl": "ijzertijd",
+      "article": "de",
+      "en": "Iron Age",
+      "tags": []
+    },
+    {
+      "id": "w09_0061",
+      "theme": 9,
+      "nl": "romeinen",
+      "article": "de",
+      "en": "Romans",
+      "tags": []
+    },
+    {
+      "id": "w09_0062",
+      "theme": 9,
+      "nl": "romeins",
+      "article": null,
+      "en": "Roman",
+      "tags": []
+    },
+    {
+      "id": "w09_0063",
+      "theme": 9,
+      "nl": "germanen",
+      "article": "de",
+      "en": "Germanic tribes",
+      "tags": []
+    },
+    {
+      "id": "w09_0064",
+      "theme": 9,
+      "nl": "vikingen",
+      "article": "de",
+      "en": "Vikings",
+      "tags": []
+    },
+    {
+      "id": "w09_0065",
+      "theme": 9,
+      "nl": "ridders",
+      "article": "de",
+      "en": "knights",
+      "tags": []
+    },
+    {
+      "id": "w09_0066",
+      "theme": 9,
+      "nl": "kastelen",
+      "article": "de",
+      "en": "castles",
+      "tags": []
+    },
+    {
+      "id": "w09_0067",
+      "theme": 9,
+      "nl": "kathedralen",
+      "article": "de",
+      "en": "cathedrals",
+      "tags": []
+    },
+    {
+      "id": "w09_0068",
+      "theme": 9,
+      "nl": "reformatie",
+      "article": "de",
+      "en": "Reformation",
+      "tags": []
+    },
+    {
+      "id": "w09_0069",
+      "theme": 9,
+      "nl": "tachtigjarige oorlog",
+      "article": "de",
+      "en": "Eighty Years' War",
+      "tags": []
+    },
+    {
+      "id": "w09_0070",
+      "theme": 9,
+      "nl": "voc",
+      "article": "de",
+      "en": "VOC",
+      "tags": []
+    },
+    {
+      "id": "w09_0071",
+      "theme": 9,
+      "nl": "kolonialisme",
+      "article": "het",
+      "en": "colonialism",
+      "tags": []
+    },
+    {
+      "id": "w09_0072",
+      "theme": 9,
+      "nl": "slavernij",
+      "article": "de",
+      "en": "slavery",
+      "tags": []
+    },
+    {
+      "id": "w09_0073",
+      "theme": 9,
+      "nl": "afschaffing",
+      "article": "de",
+      "en": "abolition",
+      "tags": []
+    },
+    {
+      "id": "w09_0074",
+      "theme": 9,
+      "nl": "industrialisatie",
+      "article": "de",
+      "en": "industrialization",
+      "tags": []
+    },
+    {
+      "id": "w09_0075",
+      "theme": 9,
+      "nl": "eerste wereldoorlog",
+      "article": "de",
+      "en": "First World War",
+      "tags": []
+    },
+    {
+      "id": "w09_0076",
+      "theme": 9,
+      "nl": "tweede wereldoorlog",
+      "article": "de",
+      "en": "Second World War",
+      "tags": []
+    },
+    {
+      "id": "w09_0077",
+      "theme": 9,
+      "nl": "holocaust",
+      "article": "de",
+      "en": "Holocaust",
+      "tags": []
+    },
+    {
+      "id": "w09_0078",
+      "theme": 9,
+      "nl": "verzet",
+      "article": "het",
+      "en": "resistance",
+      "tags": []
+    },
+    {
+      "id": "w09_0079",
+      "theme": 9,
+      "nl": "verzetsstrijder",
+      "article": "de",
+      "en": "resistance fighter",
+      "tags": []
+    },
+    {
+      "id": "w09_0080",
+      "theme": 9,
+      "nl": "wederopbouw",
+      "article": "de",
+      "en": "reconstruction",
+      "tags": []
+    },
+    {
+      "id": "w09_0081",
+      "theme": 9,
+      "nl": "jaren zestig",
+      "article": "de",
+      "en": "sixties",
+      "tags": []
+    },
+    {
+      "id": "w09_0082",
+      "theme": 9,
+      "nl": "protest",
+      "article": "het",
+      "en": "protest",
+      "tags": []
+    },
+    {
+      "id": "w09_0083",
+      "theme": 9,
+      "nl": "emancipatie",
+      "article": "de",
+      "en": "emancipation",
+      "tags": []
+    },
+    {
+      "id": "w09_0084",
+      "theme": 9,
+      "nl": "vrouwenemancipatie",
+      "article": "de",
+      "en": "women's liberation",
+      "tags": []
+    },
+    {
+      "id": "w09_0086",
+      "theme": 9,
+      "nl": "welvaartstaat",
+      "article": "de",
+      "en": "welfare state",
+      "tags": []
+    },
+    {
+      "id": "w09_0087",
+      "theme": 9,
+      "nl": "europese unie",
+      "article": "de",
+      "en": "European Union",
+      "tags": []
+    },
+    {
+      "id": "w09_0089",
+      "theme": 9,
+      "nl": "vredesbeweging",
+      "article": "de",
+      "en": "peace movement",
+      "tags": []
+    },
+    {
+      "id": "w09_0090",
+      "theme": 9,
+      "nl": "milieu",
+      "article": "het",
+      "en": "environment",
+      "tags": []
+    },
+    {
+      "id": "w09_0091",
+      "theme": 9,
+      "nl": "klimaat",
+      "article": "het",
+      "en": "climate",
+      "tags": []
+    },
+    {
+      "id": "w09_0092",
+      "theme": 9,
+      "nl": "duurzaamheid",
+      "article": "de",
+      "en": "sustainability",
+      "tags": []
+    },
+    {
+      "id": "w09_0093",
+      "theme": 9,
+      "nl": "immigratie",
+      "article": "de",
+      "en": "immigration",
+      "tags": []
+    },
+    {
+      "id": "w09_0094",
+      "theme": 9,
+      "nl": "multiculturalisme",
+      "article": "het",
+      "en": "multiculturalism",
+      "tags": []
+    },
+    {
+      "id": "w09_0095",
+      "theme": 9,
+      "nl": "integratie",
+      "article": "de",
+      "en": "integration",
+      "tags": []
+    },
+    {
+      "id": "w09_0096",
+      "theme": 9,
+      "nl": "geschiedschrijving",
+      "article": "de",
+      "en": "historiography",
+      "tags": []
+    },
+    {
+      "id": "w09_0097",
+      "theme": 9,
+      "nl": "historicus",
+      "article": "de",
+      "en": "historian",
+      "tags": []
+    },
+    {
+      "id": "w09_0098",
+      "theme": 9,
+      "nl": "bronnenonderzoek",
+      "article": "het",
+      "en": "source research",
+      "tags": []
+    },
+    {
+      "id": "w09_0099",
+      "theme": 9,
+      "nl": "primaire bron",
+      "article": "de",
+      "en": "primary source",
+      "tags": []
+    },
+    {
+      "id": "w09_0100",
+      "theme": 9,
+      "nl": "secundaire bron",
+      "article": "de",
+      "en": "secondary source",
+      "tags": []
+    },
+    {
+      "id": "w09_0101",
+      "theme": 9,
+      "nl": "oral history",
+      "article": "de",
+      "en": "oral history",
+      "tags": []
+    },
+    {
+      "id": "w09_0102",
+      "theme": 9,
+      "nl": "getuigenis",
+      "article": "de",
+      "en": "testimony",
+      "tags": []
+    },
+    {
+      "id": "w09_0103",
+      "theme": 9,
+      "nl": "ooggetuige",
+      "article": "de",
+      "en": "eyewitness",
+      "tags": []
+    },
+    {
+      "id": "w09_0104",
+      "theme": 9,
+      "nl": "overlever",
+      "article": "de",
+      "en": "survivor",
+      "tags": []
+    },
+    {
+      "id": "w09_0105",
+      "theme": 9,
+      "nl": "dodenherdenking",
+      "article": "de",
+      "en": "Remembrance Day",
+      "tags": []
+    },
+    {
+      "id": "w09_0106",
+      "theme": 9,
+      "nl": "bevrijdingsdag",
+      "article": "de",
+      "en": "Liberation Day",
+      "tags": []
+    },
+    {
+      "id": "w09_0107",
+      "theme": 9,
+      "nl": "vlag",
+      "article": "de",
+      "en": "flag",
+      "tags": []
+    },
+    {
+      "id": "w09_0108",
+      "theme": 9,
+      "nl": "halfstok",
+      "article": null,
+      "en": "half-mast",
+      "tags": []
+    },
+    {
+      "id": "w09_0109",
+      "theme": 9,
+      "nl": "twee minuten stilte",
+      "article": "de",
+      "en": "two minutes silence",
+      "tags": []
+    },
+    {
+      "id": "w09_0110",
+      "theme": 9,
+      "nl": "krans",
+      "article": "de",
+      "en": "wreath",
+      "tags": []
+    },
+    {
+      "id": "w09_0111",
+      "theme": 9,
+      "nl": "plaquette",
+      "article": "de",
+      "en": "plaque",
+      "tags": []
+    },
+    {
+      "id": "w09_0112",
+      "theme": 9,
+      "nl": "gedenksteen",
+      "article": "de",
+      "en": "memorial stone",
+      "tags": []
+    },
+    {
+      "id": "w09_0113",
+      "theme": 9,
+      "nl": "herinneringscentrum",
+      "article": "het",
+      "en": "memorial centre",
+      "tags": []
+    },
+    {
+      "id": "w09_0114",
+      "theme": 9,
+      "nl": "kamp",
+      "article": "het",
+      "en": "camp",
+      "tags": []
+    },
+    {
+      "id": "w09_0115",
+      "theme": 9,
+      "nl": "concentratiekamp",
+      "article": "het",
+      "en": "concentration camp",
+      "tags": []
+    },
+    {
+      "id": "w09_0116",
+      "theme": 9,
+      "nl": "anne frank",
+      "article": "de",
+      "en": "Anne Frank",
+      "tags": []
+    },
+    {
+      "id": "w09_0117",
+      "theme": 9,
+      "nl": "dagboek",
+      "article": "het",
+      "en": "diary",
+      "tags": []
+    },
+    {
+      "id": "w09_0118",
+      "theme": 9,
+      "nl": "wereldoorlog",
+      "article": "de",
+      "en": "world war",
+      "tags": []
+    },
+    {
+      "id": "w09_0119",
+      "theme": 9,
+      "nl": "vredesverdrag",
+      "article": "het",
+      "en": "peace treaty",
+      "tags": []
+    },
+    {
+      "id": "w09_0120",
+      "theme": 9,
+      "nl": "revolutie",
+      "article": "de",
+      "en": "revolution",
+      "tags": []
+    },
+    {
+      "id": "w09_0121",
+      "theme": 9,
+      "nl": "opstand",
+      "article": "de",
+      "en": "uprising",
+      "tags": []
+    },
+    {
+      "id": "w09_0122",
+      "theme": 9,
+      "nl": "onafhankelijkheid",
+      "article": "de",
+      "en": "independence",
+      "tags": []
+    },
+    {
+      "id": "w09_0123",
+      "theme": 9,
+      "nl": "democratisering",
+      "article": "de",
+      "en": "democratization",
+      "tags": []
+    },
+    {
+      "id": "w09_0124",
+      "theme": 9,
+      "nl": "technologische vooruitgang",
+      "article": "de",
+      "en": "technological progress",
+      "tags": []
+    },
+    {
+      "id": "w09_0125",
+      "theme": 9,
+      "nl": "uitvinding",
+      "article": "de",
+      "en": "invention",
+      "tags": []
+    },
+    {
+      "id": "w09_0126",
+      "theme": 9,
+      "nl": "ontdekking",
+      "article": "de",
+      "en": "discovery",
+      "tags": []
+    },
+    {
+      "id": "w09_0127",
+      "theme": 9,
+      "nl": "expeditie",
+      "article": "de",
+      "en": "expedition",
+      "tags": []
+    },
+    {
+      "id": "w09_0128",
+      "theme": 9,
+      "nl": "ontdekkingsreiziger",
+      "article": "de",
+      "en": "explorer",
+      "tags": []
+    },
+    {
+      "id": "w09_0129",
+      "theme": 9,
+      "nl": "handelsroute",
+      "article": "de",
+      "en": "trade route",
+      "tags": []
+    },
+    {
+      "id": "w09_0130",
+      "theme": 9,
+      "nl": "specerijen",
+      "article": "de",
+      "en": "spices",
+      "tags": []
+    },
+    {
+      "id": "w09_0131",
+      "theme": 9,
+      "nl": "slavenhandel",
+      "article": "de",
+      "en": "slave trade",
+      "tags": []
+    },
+    {
+      "id": "w09_0132",
+      "theme": 9,
+      "nl": "koloniaal verleden",
+      "article": "het",
+      "en": "colonial past",
+      "tags": []
+    },
+    {
+      "id": "w09_0133",
+      "theme": 9,
+      "nl": "dekolonisatie",
+      "article": "de",
+      "en": "decolonization",
+      "tags": []
+    },
+    {
+      "id": "w09_0134",
+      "theme": 9,
+      "nl": "handelscompagnie",
+      "article": "de",
+      "en": "trading company",
+      "tags": []
+    },
+    {
+      "id": "w09_0135",
+      "theme": 9,
+      "nl": "abolitionisme",
+      "article": "het",
+      "en": "abolitionism",
+      "tags": []
+    },
+    {
+      "id": "w09_0136",
+      "theme": 9,
+      "nl": "verlichtingsdenkers",
+      "article": "de",
+      "en": "Enlightenment thinkers",
+      "tags": []
+    },
+    {
+      "id": "w09_0137",
+      "theme": 9,
+      "nl": "verzuiling",
+      "article": "de",
+      "en": "pillarization",
+      "tags": []
+    },
+    {
+      "id": "w09_0138",
+      "theme": 9,
+      "nl": "staten-generaal",
+      "article": "de",
+      "en": "States General",
+      "tags": []
+    },
+    {
+      "id": "w09_0139",
+      "theme": 9,
+      "nl": "grondwet",
+      "article": "de",
+      "en": "constitution",
+      "tags": []
+    },
+    {
+      "id": "w09_0140",
+      "theme": 9,
+      "nl": "grondwetsherziening",
+      "article": "de",
+      "en": "constitutional revision",
+      "tags": []
+    },
+    {
+      "id": "w09_0141",
+      "theme": 9,
+      "nl": "stadhouders",
+      "article": "de",
+      "en": "stadholders",
+      "tags": []
+    },
+    {
+      "id": "w09_0142",
+      "theme": 9,
+      "nl": "republiek der zeven verenigde nederlanden",
+      "article": "de",
+      "en": "Dutch Republic",
+      "tags": []
+    },
+    {
+      "id": "w09_0143",
+      "theme": 9,
+      "nl": "bataven",
+      "article": "de",
+      "en": "Batavians",
+      "tags": []
+    },
+    {
+      "id": "w09_0144",
+      "theme": 9,
+      "nl": "romeinse tijd",
+      "article": "de",
+      "en": "Roman period",
+      "tags": []
+    },
+    {
+      "id": "w09_0145",
+      "theme": 9,
+      "nl": "middeleeuwse stad",
+      "article": "de",
+      "en": "medieval town",
+      "tags": []
+    },
+    {
+      "id": "w09_0146",
+      "theme": 9,
+      "nl": "gracht",
+      "article": "de",
+      "en": "canal",
+      "tags": []
+    },
+    {
+      "id": "w09_0147",
+      "theme": 9,
+      "nl": "vestingstad",
+      "article": "de",
+      "en": "fortified town",
+      "tags": []
+    },
+    {
+      "id": "w09_0148",
+      "theme": 9,
+      "nl": "handelsstad",
+      "article": "de",
+      "en": "trading city",
+      "tags": []
+    },
+    {
+      "id": "w09_0149",
+      "theme": 9,
+      "nl": "havenstad",
+      "article": "de",
+      "en": "port city",
+      "tags": []
+    },
+    {
+      "id": "w09_0150",
+      "theme": 9,
+      "nl": "vaderlandse geschiedenis",
+      "article": "de",
+      "en": "national history",
+      "tags": []
+    },
+    {
+      "id": "w09_0151",
+      "theme": 9,
+      "nl": "wereldgeschiedenis",
+      "article": "de",
+      "en": "world history",
+      "tags": []
+    },
+    {
+      "id": "w09_0152",
+      "theme": 9,
+      "nl": "tijdsgeest",
+      "article": "de",
+      "en": "spirit of the times",
+      "tags": []
+    },
+    {
+      "id": "w09_0153",
+      "theme": 9,
+      "nl": "historische context",
+      "article": "de",
+      "en": "historical context",
+      "tags": []
+    },
+    {
+      "id": "w09_0154",
+      "theme": 9,
+      "nl": "geschiedkundige",
+      "article": "de",
+      "en": "historian",
+      "tags": []
+    },
+    {
+      "id": "w09_0155",
+      "theme": 9,
+      "nl": "bronnenkritiek",
+      "article": "de",
+      "en": "source criticism",
+      "tags": []
+    },
+    {
+      "id": "w09_0156",
+      "theme": 9,
+      "nl": "historisch besef",
+      "article": "het",
+      "en": "historical awareness",
       "tags": []
     },
     {
@@ -4793,14 +10889,6 @@
       "nl": "geloof",
       "article": "het",
       "en": "faith",
-      "tags": []
-    },
-    {
-      "id": "w10_0007",
-      "theme": 10,
-      "nl": "gezelligheid",
-      "article": "de",
-      "en": "coziness",
       "tags": []
     },
     {
@@ -4916,14 +11004,6 @@
       "tags": []
     },
     {
-      "id": "w10_0022",
-      "theme": 10,
-      "nl": "bezwaar",
-      "article": "het",
-      "en": "objection",
-      "tags": []
-    },
-    {
       "id": "w10_0023",
       "theme": 10,
       "nl": "reclamatie",
@@ -4961,30 +11041,6 @@
       "nl": "sociale zekerheid",
       "article": "de",
       "en": "social security",
-      "tags": []
-    },
-    {
-      "id": "w10_0028",
-      "theme": 10,
-      "nl": "uitkering",
-      "article": "de",
-      "en": "benefit",
-      "tags": []
-    },
-    {
-      "id": "w10_0029",
-      "theme": 10,
-      "nl": "aow",
-      "article": "de",
-      "en": "state pension",
-      "tags": []
-    },
-    {
-      "id": "w10_0030",
-      "theme": 10,
-      "nl": "bijstand",
-      "article": "de",
-      "en": "welfare",
       "tags": []
     },
     {
@@ -5084,14 +11140,6 @@
       "tags": []
     },
     {
-      "id": "w10_0043",
-      "theme": 10,
-      "nl": "sfeer",
-      "article": "de",
-      "en": "atmosphere",
-      "tags": []
-    },
-    {
       "id": "w10_0044",
       "theme": 10,
       "nl": "standpunt",
@@ -5172,14 +11220,6 @@
       "tags": []
     },
     {
-      "id": "w10_0054",
-      "theme": 10,
-      "nl": "integratie",
-      "article": "de",
-      "en": "integration",
-      "tags": []
-    },
-    {
       "id": "w10_0055",
       "theme": 10,
       "nl": "diversiteit",
@@ -5201,6 +11241,806 @@
       "nl": "respect",
       "article": "het",
       "en": "respect",
+      "tags": []
+    },
+    {
+      "id": "w10_0058",
+      "theme": 10,
+      "nl": "gemeenschap",
+      "article": "de",
+      "en": "community",
+      "tags": []
+    },
+    {
+      "id": "w10_0059",
+      "theme": 10,
+      "nl": "wijk",
+      "article": "de",
+      "en": "district",
+      "tags": []
+    },
+    {
+      "id": "w10_0061",
+      "theme": 10,
+      "nl": "dorp",
+      "article": "het",
+      "en": "village",
+      "tags": []
+    },
+    {
+      "id": "w10_0063",
+      "theme": 10,
+      "nl": "land",
+      "article": "het",
+      "en": "country",
+      "tags": []
+    },
+    {
+      "id": "w10_0064",
+      "theme": 10,
+      "nl": "burger",
+      "article": "de",
+      "en": "citizen",
+      "tags": []
+    },
+    {
+      "id": "w10_0065",
+      "theme": 10,
+      "nl": "inwoner",
+      "article": "de",
+      "en": "inhabitant",
+      "tags": []
+    },
+    {
+      "id": "w10_0066",
+      "theme": 10,
+      "nl": "medeburger",
+      "article": "de",
+      "en": "fellow citizen",
+      "tags": []
+    },
+    {
+      "id": "w10_0067",
+      "theme": 10,
+      "nl": "buren",
+      "article": "de",
+      "en": "neighbours",
+      "tags": []
+    },
+    {
+      "id": "w10_0068",
+      "theme": 10,
+      "nl": "buurtschap",
+      "article": "de",
+      "en": "neighbourliness",
+      "tags": []
+    },
+    {
+      "id": "w10_0069",
+      "theme": 10,
+      "nl": "straat",
+      "article": "de",
+      "en": "street",
+      "tags": []
+    },
+    {
+      "id": "w10_0070",
+      "theme": 10,
+      "nl": "blok",
+      "article": "het",
+      "en": "block",
+      "tags": []
+    },
+    {
+      "id": "w10_0071",
+      "theme": 10,
+      "nl": "flat",
+      "article": "de",
+      "en": "apartment building",
+      "tags": []
+    },
+    {
+      "id": "w10_0072",
+      "theme": 10,
+      "nl": "woningbouwvereniging",
+      "article": "de",
+      "en": "housing association",
+      "tags": []
+    },
+    {
+      "id": "w10_0073",
+      "theme": 10,
+      "nl": "vve",
+      "article": "de",
+      "en": "homeowners association",
+      "tags": []
+    },
+    {
+      "id": "w10_0074",
+      "theme": 10,
+      "nl": "huurdersvereniging",
+      "article": "de",
+      "en": "tenants association",
+      "tags": []
+    },
+    {
+      "id": "w10_0075",
+      "theme": 10,
+      "nl": "actiegroep",
+      "article": "de",
+      "en": "action group",
+      "tags": []
+    },
+    {
+      "id": "w10_0076",
+      "theme": 10,
+      "nl": "bewonerscommissie",
+      "article": "de",
+      "en": "residents committee",
+      "tags": []
+    },
+    {
+      "id": "w10_0077",
+      "theme": 10,
+      "nl": "wijkraad",
+      "article": "de",
+      "en": "district council",
+      "tags": []
+    },
+    {
+      "id": "w10_0078",
+      "theme": 10,
+      "nl": "gemeenteraad",
+      "article": "de",
+      "en": "municipal council",
+      "tags": []
+    },
+    {
+      "id": "w10_0079",
+      "theme": 10,
+      "nl": "democratie",
+      "article": "de",
+      "en": "democracy",
+      "tags": []
+    },
+    {
+      "id": "w10_0080",
+      "theme": 10,
+      "nl": "dictatuur",
+      "article": "de",
+      "en": "dictatorship",
+      "tags": []
+    },
+    {
+      "id": "w10_0081",
+      "theme": 10,
+      "nl": "vrijheid",
+      "article": "de",
+      "en": "freedom",
+      "tags": []
+    },
+    {
+      "id": "w10_0082",
+      "theme": 10,
+      "nl": "gelijkheid",
+      "article": "de",
+      "en": "equality",
+      "tags": []
+    },
+    {
+      "id": "w10_0083",
+      "theme": 10,
+      "nl": "rechtvaardigheid",
+      "article": "de",
+      "en": "justice",
+      "tags": []
+    },
+    {
+      "id": "w10_0085",
+      "theme": 10,
+      "nl": "participatie",
+      "article": "de",
+      "en": "participation",
+      "tags": []
+    },
+    {
+      "id": "w10_0086",
+      "theme": 10,
+      "nl": "burgerparticipatie",
+      "article": "de",
+      "en": "citizen participation",
+      "tags": []
+    },
+    {
+      "id": "w10_0087",
+      "theme": 10,
+      "nl": "referendum",
+      "article": "het",
+      "en": "referendum",
+      "tags": []
+    },
+    {
+      "id": "w10_0088",
+      "theme": 10,
+      "nl": "petitie",
+      "article": "de",
+      "en": "petition",
+      "tags": []
+    },
+    {
+      "id": "w10_0089",
+      "theme": 10,
+      "nl": "demonstratie",
+      "article": "de",
+      "en": "demonstration",
+      "tags": []
+    },
+    {
+      "id": "w10_0091",
+      "theme": 10,
+      "nl": "staking",
+      "article": "de",
+      "en": "strike",
+      "tags": []
+    },
+    {
+      "id": "w10_0092",
+      "theme": 10,
+      "nl": "vakbond",
+      "article": "de",
+      "en": "trade union",
+      "tags": []
+    },
+    {
+      "id": "w10_0093",
+      "theme": 10,
+      "nl": "werkgeversorganisatie",
+      "article": "de",
+      "en": "employers organization",
+      "tags": []
+    },
+    {
+      "id": "w10_0094",
+      "theme": 10,
+      "nl": "belangenvereniging",
+      "article": "de",
+      "en": "interest group",
+      "tags": []
+    },
+    {
+      "id": "w10_0095",
+      "theme": 10,
+      "nl": "ngo",
+      "article": "de",
+      "en": "NGO",
+      "tags": []
+    },
+    {
+      "id": "w10_0096",
+      "theme": 10,
+      "nl": "goede doel",
+      "article": "het",
+      "en": "charity",
+      "tags": []
+    },
+    {
+      "id": "w10_0097",
+      "theme": 10,
+      "nl": "doneren",
+      "article": null,
+      "en": "to donate",
+      "tags": []
+    },
+    {
+      "id": "w10_0098",
+      "theme": 10,
+      "nl": "mantelzorg",
+      "article": "de",
+      "en": "informal care",
+      "tags": []
+    },
+    {
+      "id": "w10_0099",
+      "theme": 10,
+      "nl": "zorg",
+      "article": "de",
+      "en": "care",
+      "tags": []
+    },
+    {
+      "id": "w10_0100",
+      "theme": 10,
+      "nl": "ouderenzorg",
+      "article": "de",
+      "en": "elderly care",
+      "tags": []
+    },
+    {
+      "id": "w10_0101",
+      "theme": 10,
+      "nl": "gehandicaptenzorg",
+      "article": "de",
+      "en": "disability care",
+      "tags": []
+    },
+    {
+      "id": "w10_0102",
+      "theme": 10,
+      "nl": "jeugdzorg",
+      "article": "de",
+      "en": "youth care",
+      "tags": []
+    },
+    {
+      "id": "w10_0103",
+      "theme": 10,
+      "nl": "geestelijke gezondheidszorg",
+      "article": "de",
+      "en": "mental health care",
+      "tags": []
+    },
+    {
+      "id": "w10_0104",
+      "theme": 10,
+      "nl": "thuiszorg",
+      "article": "de",
+      "en": "home care",
+      "tags": []
+    },
+    {
+      "id": "w10_0105",
+      "theme": 10,
+      "nl": "verpleeghuis",
+      "article": "het",
+      "en": "nursing home",
+      "tags": []
+    },
+    {
+      "id": "w10_0106",
+      "theme": 10,
+      "nl": "bejaardentehuis",
+      "article": "het",
+      "en": "old people's home",
+      "tags": []
+    },
+    {
+      "id": "w10_0109",
+      "theme": 10,
+      "nl": "sportvereniging",
+      "article": "de",
+      "en": "sports club",
+      "tags": []
+    },
+    {
+      "id": "w10_0110",
+      "theme": 10,
+      "nl": "muziekvereniging",
+      "article": "de",
+      "en": "music society",
+      "tags": []
+    },
+    {
+      "id": "w10_0111",
+      "theme": 10,
+      "nl": "theatergroep",
+      "article": "de",
+      "en": "theatre group",
+      "tags": []
+    },
+    {
+      "id": "w10_0112",
+      "theme": 10,
+      "nl": "leeskring",
+      "article": "de",
+      "en": "book club",
+      "tags": []
+    },
+    {
+      "id": "w10_0113",
+      "theme": 10,
+      "nl": "hobbyclub",
+      "article": "de",
+      "en": "hobby club",
+      "tags": []
+    },
+    {
+      "id": "w10_0114",
+      "theme": 10,
+      "nl": "ontmoetingsplek",
+      "article": "de",
+      "en": "meeting place",
+      "tags": []
+    },
+    {
+      "id": "w10_0115",
+      "theme": 10,
+      "nl": "buurthuis",
+      "article": "het",
+      "en": "community centre",
+      "tags": []
+    },
+    {
+      "id": "w10_0117",
+      "theme": 10,
+      "nl": "cultureel centrum",
+      "article": "het",
+      "en": "cultural centre",
+      "tags": []
+    },
+    {
+      "id": "w10_0118",
+      "theme": 10,
+      "nl": "sportcomplex",
+      "article": "het",
+      "en": "sports complex",
+      "tags": []
+    },
+    {
+      "id": "w10_0119",
+      "theme": 10,
+      "nl": "speeltuin",
+      "article": "de",
+      "en": "playground",
+      "tags": []
+    },
+    {
+      "id": "w10_0120",
+      "theme": 10,
+      "nl": "park",
+      "article": "het",
+      "en": "park",
+      "tags": []
+    },
+    {
+      "id": "w10_0121",
+      "theme": 10,
+      "nl": "groen",
+      "article": "het",
+      "en": "green space",
+      "tags": []
+    },
+    {
+      "id": "w10_0122",
+      "theme": 10,
+      "nl": "openbare ruimte",
+      "article": "de",
+      "en": "public space",
+      "tags": []
+    },
+    {
+      "id": "w10_0123",
+      "theme": 10,
+      "nl": "veiligheid",
+      "article": "de",
+      "en": "safety",
+      "tags": []
+    },
+    {
+      "id": "w10_0124",
+      "theme": 10,
+      "nl": "leefbaarheid",
+      "article": "de",
+      "en": "livability",
+      "tags": []
+    },
+    {
+      "id": "w10_0125",
+      "theme": 10,
+      "nl": "overlast",
+      "article": "de",
+      "en": "nuisance",
+      "tags": []
+    },
+    {
+      "id": "w10_0126",
+      "theme": 10,
+      "nl": "geluidsoverlast",
+      "article": "de",
+      "en": "noise nuisance",
+      "tags": []
+    },
+    {
+      "id": "w10_0127",
+      "theme": 10,
+      "nl": "burenruzie",
+      "article": "de",
+      "en": "neighbour dispute",
+      "tags": []
+    },
+    {
+      "id": "w10_0128",
+      "theme": 10,
+      "nl": "bemiddeling",
+      "article": "de",
+      "en": "mediation",
+      "tags": []
+    },
+    {
+      "id": "w10_0129",
+      "theme": 10,
+      "nl": "conflict",
+      "article": "het",
+      "en": "conflict",
+      "tags": []
+    },
+    {
+      "id": "w10_0130",
+      "theme": 10,
+      "nl": "oplossing",
+      "article": "de",
+      "en": "solution",
+      "tags": []
+    },
+    {
+      "id": "w10_0131",
+      "theme": 10,
+      "nl": "buurtfeest",
+      "article": "het",
+      "en": "street party",
+      "tags": []
+    },
+    {
+      "id": "w10_0132",
+      "theme": 10,
+      "nl": "straatfeest",
+      "article": "het",
+      "en": "street festival",
+      "tags": []
+    },
+    {
+      "id": "w10_0133",
+      "theme": 10,
+      "nl": "buurtbarbecue",
+      "article": "de",
+      "en": "neighbourhood barbecue",
+      "tags": []
+    },
+    {
+      "id": "w10_0134",
+      "theme": 10,
+      "nl": "open dag",
+      "article": "de",
+      "en": "open day",
+      "tags": []
+    },
+    {
+      "id": "w10_0135",
+      "theme": 10,
+      "nl": "inloop",
+      "article": "de",
+      "en": "drop-in",
+      "tags": []
+    },
+    {
+      "id": "w10_0136",
+      "theme": 10,
+      "nl": "activiteit",
+      "article": "de",
+      "en": "activity",
+      "tags": []
+    },
+    {
+      "id": "w10_0137",
+      "theme": 10,
+      "nl": "evenement",
+      "article": "het",
+      "en": "event",
+      "tags": []
+    },
+    {
+      "id": "w10_0138",
+      "theme": 10,
+      "nl": "festival",
+      "article": "het",
+      "en": "festival",
+      "tags": []
+    },
+    {
+      "id": "w10_0140",
+      "theme": 10,
+      "nl": "weekmarkt",
+      "article": "de",
+      "en": "weekly market",
+      "tags": []
+    },
+    {
+      "id": "w10_0141",
+      "theme": 10,
+      "nl": "kerstmarkt",
+      "article": "de",
+      "en": "Christmas market",
+      "tags": []
+    },
+    {
+      "id": "w10_0142",
+      "theme": 10,
+      "nl": "rommelmarkt",
+      "article": "de",
+      "en": "flea market",
+      "tags": []
+    },
+    {
+      "id": "w10_0143",
+      "theme": 10,
+      "nl": "gezamenlijk",
+      "article": null,
+      "en": "joint",
+      "tags": []
+    },
+    {
+      "id": "w10_0144",
+      "theme": 10,
+      "nl": "collectief",
+      "article": null,
+      "en": "collective",
+      "tags": []
+    },
+    {
+      "id": "w10_0145",
+      "theme": 10,
+      "nl": "samenhorigheid",
+      "article": "de",
+      "en": "solidarity",
+      "tags": []
+    },
+    {
+      "id": "w10_0147",
+      "theme": 10,
+      "nl": "wederzijdse hulp",
+      "article": "de",
+      "en": "mutual aid",
+      "tags": []
+    },
+    {
+      "id": "w10_0148",
+      "theme": 10,
+      "nl": "burenhulp",
+      "article": "de",
+      "en": "neighbour help",
+      "tags": []
+    },
+    {
+      "id": "w10_0149",
+      "theme": 10,
+      "nl": "buurtinitiatief",
+      "article": "het",
+      "en": "neighbourhood initiative",
+      "tags": []
+    },
+    {
+      "id": "w10_0150",
+      "theme": 10,
+      "nl": "wijkagent",
+      "article": "de",
+      "en": "community police officer",
+      "tags": []
+    },
+    {
+      "id": "w10_0151",
+      "theme": 10,
+      "nl": "buurtpreventie",
+      "article": "de",
+      "en": "neighbourhood watch",
+      "tags": []
+    },
+    {
+      "id": "w10_0152",
+      "theme": 10,
+      "nl": "buurtapp",
+      "article": "de",
+      "en": "neighbourhood app",
+      "tags": []
+    },
+    {
+      "id": "w10_0153",
+      "theme": 10,
+      "nl": "buurtwhatsapp",
+      "article": "de",
+      "en": "neighbourhood WhatsApp",
+      "tags": []
+    },
+    {
+      "id": "w10_0154",
+      "theme": 10,
+      "nl": "buurtbbq",
+      "article": "de",
+      "en": "neighbourhood BBQ",
+      "tags": []
+    },
+    {
+      "id": "w10_0155",
+      "theme": 10,
+      "nl": "gezamenlijke tuin",
+      "article": "de",
+      "en": "shared garden",
+      "tags": []
+    },
+    {
+      "id": "w10_0156",
+      "theme": 10,
+      "nl": "speeltuinvereniging",
+      "article": "de",
+      "en": "playground association",
+      "tags": []
+    },
+    {
+      "id": "w10_0157",
+      "theme": 10,
+      "nl": "buurtbudget",
+      "article": "het",
+      "en": "neighbourhood budget",
+      "tags": []
+    },
+    {
+      "id": "w10_0158",
+      "theme": 10,
+      "nl": "participatiebudget",
+      "article": "het",
+      "en": "participation budget",
+      "tags": []
+    },
+    {
+      "id": "w10_0159",
+      "theme": 10,
+      "nl": "bewonersavond",
+      "article": "de",
+      "en": "residents evening",
+      "tags": []
+    },
+    {
+      "id": "w10_0160",
+      "theme": 10,
+      "nl": "wijkbijeenkomst",
+      "article": "de",
+      "en": "district meeting",
+      "tags": []
+    },
+    {
+      "id": "w10_0161",
+      "theme": 10,
+      "nl": "buurtondersteuning",
+      "article": "de",
+      "en": "neighbourhood support",
+      "tags": []
+    },
+    {
+      "id": "w10_0162",
+      "theme": 10,
+      "nl": "mantelzorgondersteuning",
+      "article": "de",
+      "en": "informal care support",
+      "tags": []
+    },
+    {
+      "id": "w10_0163",
+      "theme": 10,
+      "nl": "vrijwilligerscentrale",
+      "article": "de",
+      "en": "volunteer centre",
+      "tags": []
+    },
+    {
+      "id": "w10_0164",
+      "theme": 10,
+      "nl": "buurtcontact",
+      "article": "het",
+      "en": "neighbourhood contact",
+      "tags": []
+    },
+    {
+      "id": "w10_0165",
+      "theme": 10,
+      "nl": "buurtgenoot",
+      "article": "de",
+      "en": "neighbour",
+      "tags": []
+    },
+    {
+      "id": "w10_0166",
+      "theme": 10,
+      "nl": "straatgenoot",
+      "article": "de",
+      "en": "neighbour",
       "tags": []
     }
   ]
