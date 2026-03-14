@@ -125,7 +125,6 @@ for word in vocab_data['1']:
         "article": word['article'],
         "en": word['en'],
         "tags": [],
-        "image": f"/images/cards/t01_{max_id:04d}.png"
     }
     course['vocab'].append(entry)
 

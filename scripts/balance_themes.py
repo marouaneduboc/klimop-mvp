@@ -569,7 +569,6 @@ def main():
                 "article": article,
                 "en": en,
                 "tags": [],
-                "image": f"/images/cards/t{theme_id:02d}_{max_id:04d}.png",
             }
             course["vocab"].append(entry)
             existing.add(nl.lower().strip())
