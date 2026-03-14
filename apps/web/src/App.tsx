@@ -36,7 +36,7 @@ const MAX_NEW_PER_DAY = 80
 const clamp = (n:number, min:number, max:number)=>Math.min(max, Math.max(min, n))
 function normalizeSettings(raw:any):Settings{
   const base = {
-    ttsBaseUrl:'http://192.168.68.107:8000',
+    ttsBaseUrl:`http://${window.location.hostname}:8000`,
     autoSpeak:false,
     voice:'',
     speed:1.0,

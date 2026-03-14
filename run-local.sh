@@ -43,14 +43,14 @@ while [[ $PORT -le 5180 ]]; do
   break
 done
 
-echo "Starting web dev server (http://0.0.0.0:$PORT/klimop-mvp/)"
-npm run dev -- --host 0.0.0.0 --port $PORT &
+echo "Starting web dev server (http://0.0.0.0:$PORT/)"
+npm run dev -- --host 192.168.68.107 --port $PORT &
 WEB_PID=$!
 
 # Try to open local browser
-open "http://localhost:$PORT/klimop-mvp/"
+open "http://localhost:$PORT/"
 
 # Print a helpful tip for connecting from another device
-LAN_IP=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || echo "localhost")
-echo "To access from a phone on the same Wi-Fi, open: http://$LAN_IP:$PORT/klimop-mvp/"
+LAN_IP="192.168.68.107"
+echo "To access from a phone on the same Wi-Fi, open: http://$LAN_IP:$PORT/"
 echo "Running. To stop, run: kill $API_PID $WEB_PID"

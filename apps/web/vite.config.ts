@@ -3,6 +3,6 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/klimop-mvp/',
-  server: { host: true, port: 5174, strictPort: true }
+  base: '/',
+  server: { host: '192.168.68.107', port: 5174, strictPort: true }
 })
