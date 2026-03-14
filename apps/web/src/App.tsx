@@ -241,7 +241,6 @@ export default function App(){
     const [idx,setIdx]=useState(0)
     const [showTranslation,setShowTranslation]=useState(false)
     const [showClue,setShowClue]=useState(false)
-    const [clueError,setClueError]=useState(false)
 
     const now = Date.now()
     const baseDeck = useMemo(()=> studyTheme===0 ? course.vocab : course.vocab.filter(v=>v.theme===studyTheme),[course,studyTheme])
@@ -306,13 +305,11 @@ export default function App(){
       setIdx(0)
       setShowTranslation(false)
       setShowClue(false)
-      setClueError(false)
     },[studyTheme])
 
     useEffect(()=>{
       setShowTranslation(false)
       setShowClue(false)
-      setClueError(false)
     },[cur?.id])
 
     useEffect(()=>{
@@ -339,13 +336,19 @@ export default function App(){
       setIdx(0)
       setShowTranslation(false)
       setShowClue(false)
-      setClueError(false)
     }
 
     function toggleDifficult(){
       if(!cur) return
       setDifficultMap(m=>({ ...m, [cur.id]: !m[cur.id] }))
     }
+
+    const generateClue = (word: string) => {
+      if (!word) return '';
+      const first = word[0].toUpperCase();
+      const rest = word.slice(1).split('').map(() => '_').join(' ');
+      return `${first} ${rest}`;
+    };
 
     if(!cur){
       return (
@@ -360,9 +363,6 @@ export default function App(){
         </div>
       )
     }
-
-    const clueQuery = encodeURIComponent((cur.en || cur.nl).replace(/[()]/g,' '))
-    const clueUrl = cur.image || `https://source.unsplash.com/900x520/?${clueQuery}`
 
     return (
       <div className="row" style={{alignItems:'stretch'}}>
@@ -396,17 +396,11 @@ export default function App(){
           </div>
 
           <div className="clueCard" onClick={()=>setShowClue(v=>!v)}>
-            {!showClue && <div style={{textAlign:'center'}}>Tap to reveal clue image</div>}
-            {showClue && !clueError && (
-              <img
-                src={clueUrl}
-                alt={`Clue for ${cur.nl}`}
-                className="clueImage"
-                onError={()=>setClueError(true)}
-              />
-            )}
-            {showClue && clueError && (
-              <div className="small" style={{textAlign:'center'}}>No clue image found for this word.</div>
+            {!showClue && <div style={{textAlign:'center'}}>Tap to reveal clue</div>}
+            {showClue && (
+              <div style={{textAlign:'center', fontSize:'2rem', fontWeight:'bold'}}>
+                {generateClue(cur.nl)}
+              </div>
             )}
           </div>
 
@@ -457,28 +451,121 @@ export default function App(){
   }
 
   function Progress(){
+    if(!course) return null
+    const courseData = course
+    const now = Date.now()
     const acc = stats.reviewsToday ? Math.round(100*stats.correctToday/stats.reviewsToday) : 0
+    const byTheme = courseData.themes.map(t=>{
+      const cards = courseData.vocab.filter(v=>v.theme===t.id)
+      const total = cards.length
+      const seen = cards.filter(v=>!!reviewsMap[v.id]).length
+      const due = cards.filter(v=>{ const r=reviewsMap[v.id]; return !!r && r.due<=now }).length
+      const difficult = cards.filter(v=>!!difficultMap[v.id]).length
+      const mastered = cards.filter(v=>{
+        const r=reviewsMap[v.id]
+        return !!r && r.interval>=7 && r.due>now
+      }).length
+      const unseen = total - seen
+      const seenPct = total ? Math.round((seen/total)*100) : 0
+      const masteredPct = total ? Math.round((mastered/total)*100) : 0
+      return {id:t.id,title:t.title,total,seen,unseen,due,difficult,mastered,seenPct,masteredPct}
+    })
+
+    function resetThemeProgress(themeId:number){
+      const ids = new Set(courseData.vocab.filter(v=>v.theme===themeId).map(v=>v.id))
+      setReviewsMap(prev=>{
+        const next={...prev}
+        for(const id of ids) delete next[id]
+        return next
+      })
+      setDifficultMap(prev=>{
+        const next={...prev}
+        for(const id of ids) delete next[id]
+        return next
+      })
+      setStudySeenSession(prev=>{
+        const next={...prev}
+        for(const id of ids) delete next[id]
+        return next
+      })
+    }
+
     return (
-      <div className="card">
-        <div className="h1">Progress</div>
-        <div className="h2">Binary scoring with daily caps.</div>
-        <div className="sep" />
-        <div className="row">
-          <div className="pill">Streak {stats.streak}🔥</div>
-          <div className="pill">Today target {dueCount}</div>
-          <div className="pill">Reviews today {stats.reviewsToday}</div>
-          <div className="pill">Accuracy {acc}%</div>
-          <div className="pill">New today {stats.newToday}</div>
+      <div className="progressLayout">
+        <div className="card">
+          <div className="h1">Progress Dashboard</div>
+          <div className="h2">Track progress by theme and tune your study targets.</div>
+          <div className="sep" />
+          <div className="row">
+            <div className="pill">Streak {stats.streak}🔥</div>
+            <div className="pill">Today target {dueCount}</div>
+            <div className="pill">Reviews today {stats.reviewsToday}</div>
+            <div className="pill">Accuracy {acc}%</div>
+            <div className="pill">New today {stats.newToday}</div>
+          </div>
+          <div className="sep" />
+          <div className="targetGrid">
+            <div>
+              <div className="small">Daily target</div>
+              <input
+                type="number"
+                min={MIN_DAILY_TARGET}
+                max={MAX_DAILY_TARGET}
+                value={settings.dailyTarget}
+                onChange={e=>setSettings(s=>({...s,dailyTarget:Math.round(clamp(Number(e.target.value||DEFAULT_DAILY_TARGET), MIN_DAILY_TARGET, MAX_DAILY_TARGET))}))}
+                style={{width:'100%'}}
+              />
+            </div>
+            <div>
+              <div className="small">New cards/day</div>
+              <input
+                type="number"
+                min={MIN_NEW_PER_DAY}
+                max={MAX_NEW_PER_DAY}
+                value={settings.newPerDay}
+                onChange={e=>setSettings(s=>({...s,newPerDay:Math.round(clamp(Number(e.target.value||DEFAULT_NEW_PER_DAY), MIN_NEW_PER_DAY, MAX_NEW_PER_DAY))}))}
+                style={{width:'100%'}}
+              />
+            </div>
+          </div>
+          <div className="small" style={{marginTop:8}}>Targets are saved immediately and apply to the next queue build.</div>
         </div>
-        <div className="sep" />
-        <button onClick={()=>{
-          localStorage.removeItem(LS.reviews)
-          localStorage.removeItem(LS.stats)
-          localStorage.removeItem(LS.difficult)
-          setReviewsMap({})
-          setDifficultMap({})
-          setStats(ensureStats())
-        }}>Reset local progress</button>
+
+        <div className="card progressThemeCard">
+          <div className="row" style={{justifyContent:'space-between',alignItems:'center'}}>
+            <div>
+              <div className="h1" style={{fontSize:24,marginBottom:6}}>By Theme</div>
+              <div className="small">Seen and mastered coverage, due load and difficult load.</div>
+            </div>
+            <button onClick={()=>{
+              localStorage.removeItem(LS.reviews)
+              localStorage.removeItem(LS.stats)
+              localStorage.removeItem(LS.difficult)
+              setReviewsMap({})
+              setDifficultMap({})
+              setStats(ensureStats())
+              setStudySeenSession({})
+            }}>Reset all progress</button>
+          </div>
+          <div className="sep" />
+
+          <div className="themeGrid">
+            {byTheme.map(t=>(
+              <div key={t.id} className="themeStatCard">
+                <div className="row" style={{justifyContent:'space-between',alignItems:'center'}}>
+                  <div style={{fontWeight:700}}>{t.title}</div>
+                  <button onClick={()=>resetThemeProgress(t.id)}>Reset theme</button>
+                </div>
+                <div className="themeBarTrack" aria-label={`Progress for ${t.title}`}>
+                  <div className="themeBarSeen" style={{width:`${t.seenPct}%`}} />
+                  <div className="themeBarMastered" style={{width:`${t.masteredPct}%`}} />
+                </div>
+                <div className="small">Seen {t.seen}/{t.total} ({t.seenPct}%) • Mastered {t.mastered} ({t.masteredPct}%)</div>
+                <div className="small">Unseen {t.unseen} • Due {t.due} • Difficult {t.difficult}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     )
   }
