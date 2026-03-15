@@ -220,6 +220,20 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     setDifficultMap(migratedDifficult)
   },[migratedReviews,migratedDifficult])
 
+  const MIGRATED_TO_USER_SCOPED = 'klimop.migratedToUserScoped'
+  useEffect(()=>{
+    if(currentUserId!=='default'||localStorage.getItem(MIGRATED_TO_USER_SCOPED)) return
+    const legacyReviews=loadJSON<Record<string,Review>>(LS.reviews,{})
+    const legacyDifficult=loadJSON<Record<string,boolean>>(LS.difficult,{})
+    if(Object.keys(legacyReviews).length>0){ saveJSON(sk(LS.reviews),legacyReviews); setReviewsMap(legacyReviews) }
+    if(Object.keys(legacyDifficult).length>0){ saveJSON(sk(LS.difficult),legacyDifficult); setDifficultMap(legacyDifficult) }
+    const legacyStats=loadJSON<any>(LS.stats,null)
+    if(legacyStats&&(legacyStats.reviewsToday>0||legacyStats.streak>0)){ saveJSON(sk(LS.stats),legacyStats); setStats(legacyStats as Stats) }
+    const legacySettings=loadJSON(LS.settings,null)
+    if(legacySettings){ saveJSON(sk(LS.settings),legacySettings); setSettings(normalizeSettings(legacySettings)) }
+    localStorage.setItem(MIGRATED_TO_USER_SCOPED,'1')
+  },[currentUserId])
+
   useEffect(()=>{
     fetchJSON<BooksManifest>('/content/books.json')
       .then(m=>{
@@ -309,9 +323,30 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   }
 
   function Top(){
+    const [newUserName,setNewUserName]=useState('')
+    const [showAddUser,setShowAddUser]=useState(false)
+    const addUser = ()=>{
+      const name = (newUserName||'').trim().toLowerCase().replace(/\s+/g,'_') || 'user'
+      if(name && !users.includes(name)){ setUsers(prev=>[...prev,name]); setCurrentUserId(name); setNewUserName(''); setShowAddUser(false) }
+    }
     return (
-      <div className="row" style={{justifyContent:'space-between'}}>
+      <div className="row" style={{justifyContent:'space-between',flexWrap:'wrap'}}>
         <div className="row" style={{gap:10,flexWrap:'wrap'}}>
+          <div className="userSwitcher">
+            <label className="small" style={{marginRight:6}}>User</label>
+            <select value={currentUserId} onChange={e=>setCurrentUserId(e.target.value)} className="pill" style={{padding:'8px 12px',minWidth:100}}>
+              {users.map(u=><option key={u} value={u}>{u}</option>)}
+            </select>
+            {!showAddUser ? (
+              <button type="button" className="pill" onClick={()=>setShowAddUser(true)} style={{padding:'8px 10px'}} title="Add user">+</button>
+            ) : (
+              <span className="row" style={{gap:4}}>
+                <input placeholder="Name" value={newUserName} onChange={e=>setNewUserName(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addUser()} style={{width:80,padding:6}} />
+                <button type="button" className="pill" onClick={addUser}>Add</button>
+                <button type="button" className="pill" onClick={()=>{ setShowAddUser(false); setNewUserName('') }}>Cancel</button>
+              </span>
+            )}
+          </div>
           <div className="row" style={{gap:4}}>
             {books.map(b=>(
               <button
@@ -666,8 +701,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const now = Date.now()
     const acc = stats.reviewsToday ? Math.round(100*stats.correctToday/stats.reviewsToday) : 0
     const placeholdersCount = 2
-    const [deofhetData] = useState(()=>({ stats: loadJSON<any>('klimop.deofhet.v2', {correct:0,total:0,mastered:{}}), history: loadJSON<DaySnapshot[]>(LS.deofhetHistory, []) }))
-    const [grammarData] = useState(()=>({ stats: loadJSON<any>('klimop.grammar.v1', {correct:0,total:0,mastered:{}}), history: loadJSON<DaySnapshot[]>(LS.grammarHistory, []) }))
+    const [deofhetData] = useState(()=>({ stats: loadJSON<any>(userScopedKey(DEHET_LS_BASE,currentUserId), {correct:0,total:0,mastered:{}}), history: loadJSON<DaySnapshot[]>(userScopedKey(LS.deofhetHistory,currentUserId), []) }))
+    const [grammarData] = useState(()=>({ stats: loadJSON<any>(userScopedKey(GRAMMAR_LS_BASE,currentUserId), {correct:0,total:0,mastered:{}}), history: loadJSON<DaySnapshot[]>(userScopedKey(LS.grammarHistory,currentUserId), []) }))
     const deofhetPct = deofhetData.stats.total ? Math.round(100*deofhetData.stats.correct/deofhetData.stats.total) : 0
     const grammarPct = grammarData.stats.total ? Math.round(100*grammarData.stats.correct/grammarData.stats.total) : 0
     const dailyHistory = stats.history || []
@@ -1544,8 +1579,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         {route==='study' && <div className="pagePane"><Study /></div>}
         {route==='progress' && <div className="pagePane"><Progress /></div>}
         {route==='tts' && <div className="pagePane"><TTS /></div>}
-        {route==='deofhet' && <div className="pagePane"><DeOfHet coursesByBookId={coursesByBookId} reviewsMap={reviewsMap} difficultMap={difficultMap} speak={speak} /></div>}
-        {route==='grammar' && <div className="pagePane"><Grammar speak={speak} /></div>}
+        {route==='deofhet' && <div className="pagePane"><DeOfHet currentUserId={currentUserId} coursesByBookId={coursesByBookId} reviewsMap={reviewsMap} difficultMap={difficultMap} speak={speak} /></div>}
+        {route==='grammar' && <div className="pagePane"><Grammar currentUserId={currentUserId} speak={speak} /></div>}
       </div>
       <div className="sep appFooterSep" />
       <div className="small appFooterText">MVP • local-only • calm UI • private</div>
