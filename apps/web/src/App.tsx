@@ -171,22 +171,54 @@ async function fetchJSON<T>(url:string):Promise<T>{
 }
 
 export default function App(){
+  const [users,setUsers]=useState<string[]>(()=>loadJSON<string[]>(USERS_LIST_KEY,['default']))
+  const [currentUserId,setCurrentUserId]=useState<string>(()=>{
+    const cur=loadJSON(CURRENT_USER_KEY,'default')
+    const list=loadJSON<string[]>(USERS_LIST_KEY,['default'])
+    return list.includes(cur)?cur:list[0]||'default'
+  })
+  useEffect(()=>{ saveJSON(CURRENT_USER_KEY,currentUserId) },[currentUserId])
+  useEffect(()=>{
+    if(users.length===0) setUsers(['default'])
+    if(!users.includes(currentUserId)) setUsers(prev=>[...prev,currentUserId])
+  },[currentUserId,users])
+  useEffect(()=>{ saveJSON(USERS_LIST_KEY,users) },[users])
+
+  return (
+    <div className="container">
+      <AppContent key={currentUserId} currentUserId={currentUserId} users={users} setUsers={setUsers} setCurrentUserId={setCurrentUserId} />
+    </div>
+  )
+}
+
+function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { currentUserId:string; users:string[]; setUsers:(u:string[]|((p:string[])=>string[]))=>void; setCurrentUserId:(u:string)=>void }){
+  const sk=(base:string)=>userScopedKey(base,currentUserId)
   const [books,setBooks]=useState<Book[]>([])
   const [coursesByBookId,setCoursesByBookId]=useState<Record<string,Course>>({})
   const [currentBookId,setCurrentBookId]=useState<string>('klimop')
   const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'|'deofhet'|'grammar'>('home')
-  const rawReviews=useMemo(()=>loadJSON<Record<string,Review>>(LS.reviews,{}),[])
-  const rawDifficult=useMemo(()=>loadJSON<Record<string,boolean>>(LS.difficult,{}),[])
-  const {reviews:migratedReviews,difficult:migratedDifficult}=useMemo(()=>migrateToScopedKeys(rawReviews,rawDifficult),[rawReviews,rawDifficult])
+  const rawReviews=useMemo(()=>loadJSON<Record<string,Review>>(sk(LS.reviews),{}),[currentUserId])
+  const rawDifficult=useMemo(()=>loadJSON<Record<string,boolean>>(sk(LS.difficult),{}),[currentUserId])
+  const {reviews:migratedReviews,difficult:migratedDifficult}=useMemo(()=>
+    migrateToScopedKeys(rawReviews,rawDifficult,{
+      reviewsKey:sk(LS.reviews),
+      difficultKey:sk(LS.difficult),
+      migratedKey:userScopedKey(SCOPED_KEY_MIGRATED_BASE,currentUserId),
+    }),[rawReviews,rawDifficult,currentUserId])
   const [reviewsMap,setReviewsMap]=useState<Record<string,Review>>(migratedReviews)
   const [difficultMap,setDifficultMap]=useState<Record<string,boolean>>(migratedDifficult)
-  const [stats,setStats]=useState<Stats>(()=>ensureStats())
+  const [stats,setStats]=useState<Stats>(()=>ensureStats(sk(LS.stats)))
   const [studyTheme,setStudyTheme]=useState<number>(0)
   const [studyContinueMode,setStudyContinueMode]=useState(false)
   const [studySeenSession,setStudySeenSession]=useState<Record<string,boolean>>({})
-  const [settings,setSettings]=useState<Settings>(()=>normalizeSettings(loadJSON(LS.settings,null)))
+  const [settings,setSettings]=useState<Settings>(()=>normalizeSettings(loadJSON(sk(LS.settings),null)))
   const [voices,setVoices]=useState<string[]>([])
   const [err,setErr]=useState('')
+
+  useEffect(()=>{
+    setReviewsMap(migratedReviews)
+    setDifficultMap(migratedDifficult)
+  },[migratedReviews,migratedDifficult])
 
   useEffect(()=>{
     fetchJSON<BooksManifest>('/content/books.json')
@@ -208,9 +240,9 @@ export default function App(){
           .catch(e=>setErr(String(e)))
       })
   },[])
-  useEffect(()=>saveJSON(LS.reviews,reviewsMap),[reviewsMap])
-  useEffect(()=>saveJSON(LS.difficult,difficultMap),[difficultMap])
-  useEffect(()=>saveJSON(LS.settings,settings),[settings])
+  useEffect(()=>saveJSON(sk(LS.reviews),reviewsMap),[reviewsMap,currentUserId])
+  useEffect(()=>saveJSON(sk(LS.difficult),difficultMap),[difficultMap,currentUserId])
+  useEffect(()=>saveJSON(sk(LS.settings),settings),[settings,currentUserId])
   useEffect(()=>{
     if(route!=='study') setStudySeenSession({})
   },[route])
@@ -503,7 +535,7 @@ export default function App(){
       if(correct) s.correctToday+=1
       if(wasNew) s.newToday+=1
       setStats(s)
-      saveJSON(LS.stats,s)
+      saveJSON(sk(LS.stats),s)
 
       const graduated = (r.learningStep ?? 0) === 0
       if(correct){
@@ -865,17 +897,17 @@ export default function App(){
 
         <div className="card" style={{marginTop:12}}>
           <button onClick={()=>{
-            localStorage.removeItem(LS.reviews)
-            localStorage.removeItem(LS.stats)
-            localStorage.removeItem(LS.difficult)
-            localStorage.removeItem(LS.deofhetHistory)
-            localStorage.removeItem(LS.grammarHistory)
-            localStorage.removeItem('klimop.deofhet.v2')
-            localStorage.removeItem('klimop.grammar.v1')
-            localStorage.removeItem(SCOPED_KEY_MIGRATED)
+            localStorage.removeItem(sk(LS.reviews))
+            localStorage.removeItem(sk(LS.stats))
+            localStorage.removeItem(sk(LS.difficult))
+            localStorage.removeItem(sk(LS.deofhetHistory))
+            localStorage.removeItem(sk(LS.grammarHistory))
+            localStorage.removeItem(sk(DEHET_LS_BASE))
+            localStorage.removeItem(sk(GRAMMAR_LS_BASE))
+            localStorage.removeItem(userScopedKey(SCOPED_KEY_MIGRATED_BASE,currentUserId))
             setReviewsMap({})
             setDifficultMap({})
-            setStats(ensureStats())
+            setStats(ensureStats(sk(LS.stats)))
             setStudySeenSession({})
           }}>Reset all progress (all books)</button>
         </div>
@@ -981,9 +1013,10 @@ export default function App(){
     )
   }
 
-  const DEHET_LS = 'klimop.deofhet.v2'
   type DeHetStats = { correct:number; total:number; wrongIds:Record<string,number>; mastered:Record<string,boolean>; streak:Record<string,number> }
-  function DeOfHet({ coursesByBookId, reviewsMap, difficultMap, speak }:{ coursesByBookId:Record<string,Course>; reviewsMap:Record<string,Review>; difficultMap:Record<string,boolean>; speak:(t:string)=>Promise<void> }){
+  function DeOfHet({ currentUserId, coursesByBookId, reviewsMap, difficultMap, speak }:{
+    currentUserId:string coursesByBookId:Record<string,Course>; reviewsMap:Record<string,Review>; difficultMap:Record<string,boolean>; speak:(t:string)=>Promise<void> }){
+    const deofhetLsKey = userScopedKey(DEHET_LS_BASE, currentUserId)
     const wrongKey = (v:Vocab)=>v.nl.toLowerCase()
 
     const difficultNls = useMemo(()=>{
@@ -1025,7 +1058,7 @@ export default function App(){
     },[coursesByBookId,reviewsMap])
 
     const [stats,setStats]=useState<DeHetStats>(()=>{
-      const raw=loadJSON<any>(DEHET_LS,{correct:0,total:0,wrongIds:{}})
+      const raw=loadJSON<any>(deofhetLsKey,{correct:0,total:0,wrongIds:{}})
       return {
         correct:raw.correct??0,
         total:raw.total??0,
@@ -1043,8 +1076,8 @@ export default function App(){
     const lastShownNlsRef = useRef<string[]>([])
 
     useEffect(()=>{
-      saveJSON(DEHET_LS,stats)
-      updateDayHistory(LS.deofhetHistory, stats.correct, stats.total)
+      saveJSON(deofhetLsKey,stats)
+      updateDayHistory(userScopedKey(LS.deofhetHistory,currentUserId), stats.correct, stats.total)
     },[stats])
 
     const activePool = useMemo(()=>
@@ -1214,10 +1247,10 @@ export default function App(){
     )
   }
 
-  const GRAMMAR_LS = 'klimop.grammar.v1'
   type GrammarStats = { correct:number; total:number; wrongIds:Record<string,number>; mastered:Record<string,boolean>; streak:Record<string,number>; mode?:'mc'|'typing' }
   type GrammarItem = { verb:GrammarVerb; tense:'present'|'past'|'perfect'|'future'|'conditional'; person?:string; correct:string; key:string }
-  function Grammar({ speak }:{ speak:(t:string)=>Promise<void> }){
+  function Grammar({ currentUserId, speak }:{ currentUserId:string; speak:(t:string)=>Promise<void> }){
+    const grammarLsKey = userScopedKey(GRAMMAR_LS_BASE, currentUserId)
     const [grammarData,setGrammarData]=useState<GrammarData|null>(null)
     useEffect(()=>{ fetchJSON<GrammarData>('/content/grammar.json').then(setGrammarData).catch(()=>{}) },[])
 
@@ -1255,7 +1288,7 @@ export default function App(){
     },[grammarData])
 
     const [stats,setStats]=useState<GrammarStats>(()=>{
-      const raw=loadJSON<any>(GRAMMAR_LS,{correct:0,total:0,wrongIds:{},mastered:{},streak:{},mode:'mc'})
+      const raw=loadJSON<any>(grammarLsKey,{correct:0,total:0,wrongIds:{},mastered:{},streak:{},mode:'mc'})
       return { correct:raw.correct??0, total:raw.total??0, wrongIds:raw.wrongIds??{}, mastered:raw.mastered??{}, streak:raw.streak??{}, mode:raw.mode??'mc' }
     })
     const [card,setCard]=useState<{ cur:GrammarItem|null; options:string[] }>({ cur:null, options:[] })
@@ -1273,8 +1306,8 @@ export default function App(){
     const lastShownKeysRef = useRef<string[]>([])
 
     useEffect(()=>{
-      saveJSON(GRAMMAR_LS,stats)
-      updateDayHistory(LS.grammarHistory, stats.correct, stats.total)
+      saveJSON(grammarLsKey,stats)
+      updateDayHistory(userScopedKey(LS.grammarHistory,currentUserId), stats.correct, stats.total)
     },[stats])
 
     const activePool = useMemo(()=>fullPool.filter(i=>!stats.mastered[i.key]),[fullPool,stats.mastered])
