@@ -8,6 +8,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 API_DIR="$ROOT/apps/api"
 WEB_DIR="$ROOT/apps/web"
 PROJECT_ROOT="$ROOT"
+LAN_IP="192.168.68.107"
+
 
 # Start API in background
 cd "$API_DIR"
@@ -35,7 +37,7 @@ API_PID=$!
 cd "$WEB_DIR"
 
 # Prefer binding to all interfaces so your phone can connect via your Mac's LAN IP
-PORT=5174
+PORT=5175
 while [[ $PORT -le 5180 ]]; do
   if lsof -i :$PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
     PORT=$((PORT+1))
@@ -45,13 +47,12 @@ while [[ $PORT -le 5180 ]]; do
 done
 
 echo "Starting web dev server (http://0.0.0.0:$PORT/)"
-npm run dev -- --host 192.168.68.107 --port $PORT &
+npm run dev -- --host $LAN_IP --port $PORT &
 WEB_PID=$!
 
 # Try to open local browser
-open "http://localhost:$PORT/"
+open "http://$LAN_IP:$PORT/"
 
 # Print a helpful tip for connecting from another device
-LAN_IP="192.168.68.107"
 echo "To access from a phone on the same Wi-Fi, open: http://$LAN_IP:$PORT/"
 echo "Running. To stop, run: kill $API_PID $WEB_PID"
