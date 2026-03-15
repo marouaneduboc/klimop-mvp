@@ -184,11 +184,7 @@ export default function App(){
   },[currentUserId,users])
   useEffect(()=>{ saveJSON(USERS_LIST_KEY,users) },[users])
 
-  return (
-    <div className="container">
-      <AppContent key={currentUserId} currentUserId={currentUserId} users={users} setUsers={setUsers} setCurrentUserId={setCurrentUserId} />
-    </div>
-  )
+  return <AppContent key={currentUserId} currentUserId={currentUserId} users={users} setUsers={setUsers} setCurrentUserId={setCurrentUserId} />
 }
 
 function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { currentUserId:string; users:string[]; setUsers:(u:string[]|((p:string[])=>string[]))=>void; setCurrentUserId:(u:string)=>void }){
@@ -228,7 +224,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     if(Object.keys(legacyReviews).length>0){ saveJSON(sk(LS.reviews),legacyReviews); setReviewsMap(legacyReviews) }
     if(Object.keys(legacyDifficult).length>0){ saveJSON(sk(LS.difficult),legacyDifficult); setDifficultMap(legacyDifficult) }
     const legacyStats=loadJSON<any>(LS.stats,null)
-    if(legacyStats&&(legacyStats.reviewsToday>0||legacyStats.streak>0)){ saveJSON(sk(LS.stats),legacyStats); setStats(legacyStats as Stats) }
+    if(legacyStats&&(legacyStats.reviewsToday>0||legacyStats.streak>0)){ saveJSON(sk(LS.stats),legacyStats); setStats(ensureStats(sk(LS.stats))) }
     const legacySettings=loadJSON(LS.settings,null)
     if(legacySettings){ saveJSON(sk(LS.settings),legacySettings); setSettings(normalizeSettings(legacySettings)) }
     localStorage.setItem(MIGRATED_TO_USER_SCOPED,'1')
