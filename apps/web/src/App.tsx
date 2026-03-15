@@ -28,6 +28,7 @@ type GrammarData = { version:string; verbs:GrammarVerb[]; zullen?:{ present:Reco
 const LS = { reviews:'klimop.reviews.v1', stats:'klimop.stats.v1', settings:'klimop.settings.v1', difficult:'klimop.difficult.v1', deofhetHistory:'klimop.deofhet.history', grammarHistory:'klimop.grammar.history' }
 const USERS_LIST_KEY = 'klimop.users'
 const CURRENT_USER_KEY = 'klimop.currentUser'
+const USER_DISPLAY_NAMES_KEY = 'klimop.userDisplayNames'
 const DEHET_LS_BASE = 'klimop.deofhet.v2'
 const GRAMMAR_LS_BASE = 'klimop.grammar.v1'
 
@@ -210,6 +211,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   const [settings,setSettings]=useState<Settings>(()=>normalizeSettings(loadJSON(sk(LS.settings),null)))
   const [voices,setVoices]=useState<string[]>([])
   const [err,setErr]=useState('')
+  const [displayNames,setDisplayNames]=useState<Record<string,string>>(()=>loadJSON(USER_DISPLAY_NAMES_KEY,{}))
+  useEffect(()=>saveJSON(USER_DISPLAY_NAMES_KEY,displayNames),[displayNames])
 
   useEffect(()=>{
     setReviewsMap(migratedReviews)
@@ -319,30 +322,28 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   }
 
   function Top(){
-    const [newUserName,setNewUserName]=useState('')
-    const [showAddUser,setShowAddUser]=useState(false)
-    const addUser = ()=>{
-      const name = (newUserName||'').trim().toLowerCase().replace(/\s+/g,'_') || 'user'
-      if(name && !users.includes(name)){ setUsers(prev=>[...prev,name]); setCurrentUserId(name); setNewUserName(''); setShowAddUser(false) }
+    const displayName = displayNames[currentUserId] ?? (currentUserId==='default'?'Guest':currentUserId.replace(/_/g,' '))
+    const [editingName,setEditingName]=useState(false)
+    const [editValue,setEditValue]=useState(displayName)
+    const [showUserList,setShowUserList]=useState(false)
+    const profileWrapRef = useRef<HTMLDivElement>(null)
+    useEffect(()=>{
+      if(!showUserList) return
+      const onDocClick = (e:MouseEvent)=>{
+        if(profileWrapRef.current && !profileWrapRef.current.contains(e.target as Node)) setShowUserList(false)
+      }
+      document.addEventListener('click', onDocClick)
+      return ()=> document.removeEventListener('click', onDocClick)
+    },[showUserList])
+    const saveDisplayName = ()=>{
+      const name = (editValue||'').trim()
+      if(name){ setDisplayNames(prev=>({...prev,[currentUserId]:name})); setEditValue(name) }
+      setEditingName(false)
     }
+    const otherUsers = users.filter(u=>u!==currentUserId)
     return (
-      <div className="row" style={{justifyContent:'space-between',flexWrap:'wrap'}}>
-        <div className="row" style={{gap:10,flexWrap:'wrap'}}>
-          <div className="userSwitcher">
-            <label className="small" style={{marginRight:6}}>User</label>
-            <select value={currentUserId} onChange={e=>setCurrentUserId(e.target.value)} className="pill" style={{padding:'8px 12px',minWidth:100}}>
-              {users.map(u=><option key={u} value={u}>{u}</option>)}
-            </select>
-            {!showAddUser ? (
-              <button type="button" className="pill" onClick={()=>setShowAddUser(true)} style={{padding:'8px 10px'}} title="Add user">+</button>
-            ) : (
-              <span className="row" style={{gap:4}}>
-                <input placeholder="Name" value={newUserName} onChange={e=>setNewUserName(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addUser()} style={{width:80,padding:6}} />
-                <button type="button" className="pill" onClick={addUser}>Add</button>
-                <button type="button" className="pill" onClick={()=>{ setShowAddUser(false); setNewUserName('') }}>Cancel</button>
-              </span>
-            )}
-          </div>
+      <div className="row topBar" style={{justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
+        <div className="row" style={{gap:10,flexWrap:'wrap',minWidth:0}}>
           <div className="row" style={{gap:4}}>
             {books.map(b=>(
               <button
@@ -396,11 +397,62 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           <div className="pill">Streak {stats.streak}🔥</div>
           <div className="pill">Today {dueCount}</div>
         </div>
-        <div className="row" style={{gap:4}}>
+        <div className="row" style={{gap:8,alignItems:'center',flexShrink:0}}>
           <button type="button" onClick={()=>setRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
           <button type="button" onClick={()=>setRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
           <button type="button" onClick={()=>setRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
           <button type="button" onClick={()=>setRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
+          <div className="profileWrap" ref={profileWrapRef} style={{position:'relative',display:'flex',alignItems:'center',gap:4}}>
+            <button
+              type="button"
+              className="profileChip"
+              onClick={()=>{ if(!editingName){ setEditingName(true); setEditValue(displayName); setShowUserList(false) } }}
+              title="Change name"
+            >
+              <span className="profileIcon" aria-hidden>👤</span>
+              {editingName ? (
+                <input
+                  className="profileNameInput"
+                  value={editValue}
+                  onChange={e=>setEditValue(e.target.value)}
+                  onBlur={saveDisplayName}
+                  onKeyDown={e=>{ if(e.key==='Enter') saveDisplayName(); if(e.key==='Escape'){ setEditingName(false); setEditValue(displayName) } }}
+                  onClick={e=>e.stopPropagation()}
+                  autoFocus
+                  aria-label="Your name"
+                />
+              ) : (
+                <span className="profileName">{displayName}</span>
+              )}
+            </button>
+            {!editingName && (
+              <button
+                type="button"
+                className="profileChip profileDropdownBtn"
+                onClick={()=>setShowUserList(v=>!v)}
+                title="Switch or add user"
+                aria-haspopup="listbox"
+                aria-expanded={showUserList}
+              >
+                <span aria-hidden>▼</span>
+              </button>
+            )}
+            {showUserList && (
+              <div className="profileUserList" role="listbox">
+                {otherUsers.map(u=>(
+                  <button
+                    key={u}
+                    type="button"
+                    className="profileUserItem"
+                    onClick={()=>{ setCurrentUserId(u); setShowUserList(false) }}
+                  >
+                    {displayNames[u] ?? (u==='default'?'Guest':u.replace(/_/g,' '))}
+                  </button>
+                ))}
+                <button type="button" className="profileUserItem" onClick={()=>{ const id=(Date.now().toString(36)+'_user'); setUsers(prev=>[...prev,id]); setCurrentUserId(id); setShowUserList(false) }}>+ New user</button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     )
@@ -1046,7 +1098,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
 
   type DeHetStats = { correct:number; total:number; wrongIds:Record<string,number>; mastered:Record<string,boolean>; streak:Record<string,number> }
   function DeOfHet({ currentUserId, coursesByBookId, reviewsMap, difficultMap, speak }:{
-    currentUserId:string coursesByBookId:Record<string,Course>; reviewsMap:Record<string,Review>; difficultMap:Record<string,boolean>; speak:(t:string)=>Promise<void> }){
+    currentUserId:string; coursesByBookId:Record<string,Course>; reviewsMap:Record<string,Review>; difficultMap:Record<string,boolean>; speak:(t:string)=>Promise<void> }){
     const deofhetLsKey = userScopedKey(DEHET_LS_BASE, currentUserId)
     const wrongKey = (v:Vocab)=>v.nl.toLowerCase()
 
