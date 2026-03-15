@@ -74,7 +74,7 @@ const MAX_NEW_PER_DAY = 80
 const clamp = (n:number, min:number, max:number)=>Math.min(max, Math.max(min, n))
 function normalizeSettings(raw:any):Settings{
   const base = {
-    ttsBaseUrl:'http://127.0.0.1:8787',
+    ttsBaseUrl:'http://127.0.0.1:8000',
     autoSpeak:false,
     voice:'',
     speed:1.0,
@@ -191,6 +191,7 @@ export default function App(){
 function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { currentUserId:string; users:string[]; setUsers:(u:string[]|((p:string[])=>string[]))=>void; setCurrentUserId:(u:string)=>void }){
   const sk=(base:string)=>userScopedKey(base,currentUserId)
   const [books,setBooks]=useState<Book[]>([])
+  const [placeholdersCount,setPlaceholdersCount]=useState(0)
   const [coursesByBookId,setCoursesByBookId]=useState<Record<string,Course>>({})
   const [currentBookId,setCurrentBookId]=useState<string>('klimop')
   const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'|'deofhet'|'grammar'>('home')
@@ -212,6 +213,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   const [voices,setVoices]=useState<string[]>([])
   const [err,setErr]=useState('')
   const [displayNames,setDisplayNames]=useState<Record<string,string>>(()=>loadJSON(USER_DISPLAY_NAMES_KEY,{}))
+  const ttsUrlRef = useRef<HTMLInputElement>(null)
   useEffect(()=>saveJSON(USER_DISPLAY_NAMES_KEY,displayNames),[displayNames])
 
   useEffect(()=>{
@@ -237,6 +239,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     fetchJSON<BooksManifest>('/content/books.json')
       .then(m=>{
         setBooks(m.books)
+        setPlaceholdersCount(m.placeholders ?? 0)
         return Promise.all(m.books.map(b=>fetchJSON<Course>(b.url).then(c=>[b.id,c] as const)))
       })
       .then(entries=>{
@@ -290,16 +293,19 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     return Math.min(settings.dailyTarget, dueReviews.length + difficultRepeat + Math.min(unseen, newSlots))
   },[course,currentBookId,reviewsMap,difficultMap,stats.newToday,settings.dailyTarget,settings.newPerDay])
 
-  async function refreshVoices(){
+  async function refreshVoices(overrideBaseUrl?:string){
+    const baseUrl = (overrideBaseUrl ?? settings.ttsBaseUrl).trim() || settings.ttsBaseUrl
     setErr('')
     try{
-      const r=await fetchJSON<{voices:string[]}>(`${settings.ttsBaseUrl}/tts/voices`)
+      const r=await fetchJSON<{voices:string[]}>(`${baseUrl}/tts/voices`)
       const available=r.voices||[]
       setVoices(available)
       setSettings(s=>({
         ...s,
+        ...(overrideBaseUrl !== undefined ? { ttsBaseUrl: baseUrl } : {}),
         voice: available.includes(s.voice) ? s.voice : (available[0]||'')
       }))
+      if(overrideBaseUrl !== undefined && ttsUrlRef.current) ttsUrlRef.current.value = baseUrl
     }catch(e:any){ setErr(String(e?.message??e)) }
   }
   useEffect(()=>{ refreshVoices() },[settings.ttsBaseUrl])
@@ -316,8 +322,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         body:JSON.stringify({text,voice:settings.voice,speed:settings.speed})})
       if(!r.ok) throw new Error(await r.text())
       const blob=await r.blob()
-      const url=URL.createObjectURL(blob)
-      const a=new Audio(url); await a.play(); a.onended=()=>URL.revokeObjectURL(url)
+      const audioUrl=URL.createObjectURL(blob)
+      const a=new Audio(audioUrl)
+      a.onended=()=>URL.revokeObjectURL(audioUrl)
+      await a.play()
     }catch(e:any){ setErr(String(e?.message??e)) }
   }
 
@@ -342,101 +350,77 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     }
     const otherUsers = users.filter(u=>u!==currentUserId)
     return (
-      <div className="row topBar" style={{justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
-        <div className="row" style={{gap:10,flexWrap:'wrap',minWidth:0}}>
-          <div className="row" style={{gap:4}}>
-            {books.map(b=>(
-              <button
-                key={b.id}
-                type="button"
-                onClick={()=>{
-                  setCurrentBookId(b.id)
-                  setRoute('home')
-                }}
-                className="pill"
-                style={{
-                  borderRadius:14,
-                  padding:'10px 12px',
-                  fontWeight:currentBookId===b.id?700:400,
-                  background:currentBookId===b.id?'rgba(255,255,255,0.14)':'var(--panel)',
-                  border:'1px solid rgba(255,255,255,0.12)',
-                }}
-              >
-                {b.title}
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={()=>setRoute('deofhet')}
-              className="pill"
-              style={{
-                borderRadius:14,
-                padding:'10px 12px',
-                fontWeight:route==='deofhet'?700:500,
-                background:route==='deofhet'?'rgba(255,255,255,0.14)':'var(--panel)',
-                border:'1px solid rgba(255,255,255,0.12)',
-              }}
-            >
-              De of Het
-            </button>
-            <button
-              type="button"
-              onClick={()=>setRoute('grammar')}
-              className="pill"
-              style={{
-                borderRadius:14,
-                padding:'10px 12px',
-                fontWeight:route==='grammar'?700:500,
-                background:route==='grammar'?'rgba(255,255,255,0.14)':'var(--panel)',
-                border:'1px solid rgba(255,255,255,0.12)',
-              }}
-            >
-              Grammar
-            </button>
-          </div>
-          <div className="pill">Streak {stats.streak}🔥</div>
-          <div className="pill">Today {dueCount}</div>
+      <header className="topBar">
+        <div className="topBarRowNav">
+          <button type="button" className="topBarNavBtn" onClick={()=>setRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>setRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>setRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>setRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
         </div>
-        <div className="row" style={{gap:8,alignItems:'center',flexShrink:0}}>
-          <button type="button" onClick={()=>setRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
-          <button type="button" onClick={()=>setRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
-          <button type="button" onClick={()=>setRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
-          <button type="button" onClick={()=>setRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
-          <div className="profileWrap" ref={profileWrapRef} style={{position:'relative',display:'flex',alignItems:'center',gap:4}}>
+        <div className="topBarRowBooks">
+          {books.map(b=>(
             <button
+              key={b.id}
               type="button"
-              className="profileChip"
-              onClick={()=>{ if(!editingName){ setEditingName(true); setEditValue(displayName); setShowUserList(false) } }}
-              title="Change name"
+              onClick={()=>{ setCurrentBookId(b.id); setRoute('home') }}
+              className="pill topBarBookPill"
+              style={{
+                fontWeight:currentBookId===b.id?700:400,
+                background:currentBookId===b.id?'rgba(255,255,255,0.14)':'var(--panel)',
+                border:'1px solid rgba(255,255,255,0.12)',
+              }}
             >
-              <span className="profileIcon" aria-hidden>👤</span>
-              {editingName ? (
-                <input
-                  className="profileNameInput"
-                  value={editValue}
-                  onChange={e=>setEditValue(e.target.value)}
-                  onBlur={saveDisplayName}
-                  onKeyDown={e=>{ if(e.key==='Enter') saveDisplayName(); if(e.key==='Escape'){ setEditingName(false); setEditValue(displayName) } }}
-                  onClick={e=>e.stopPropagation()}
-                  autoFocus
-                  aria-label="Your name"
-                />
-              ) : (
-                <span className="profileName">{displayName}</span>
-              )}
+              {b.title}
             </button>
-            {!editingName && (
+          ))}
+          {Array.from({length:placeholdersCount},(_,i)=>(
+            <span key={`book-ph-${i}`} className="pill topBarBookPill topBarBookPlaceholder" title="Coming soon">
+              Book {books.length+i+1}
+            </span>
+          ))}
+        </div>
+        <div className="topBarRowTools">
+          <button type="button" onClick={()=>setRoute('deofhet')} className="pill topBarBookPill" style={{ fontWeight:route==='deofhet'?700:500, background:route==='deofhet'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}>De of Het</button>
+          <button type="button" onClick={()=>setRoute('grammar')} className="pill topBarBookPill" style={{ fontWeight:route==='grammar'?700:500, background:route==='grammar'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}>Grammar</button>
+        </div>
+        <div className="topBarRow2">
+          <div className="profilePillWrap" ref={profileWrapRef}>
+            <div className="profilePill">
               <button
                 type="button"
-                className="profileChip profileDropdownBtn"
-                onClick={()=>setShowUserList(v=>!v)}
-                title="Switch or add user"
-                aria-haspopup="listbox"
-                aria-expanded={showUserList}
+                className="profilePillMain"
+                onClick={()=>{ if(!editingName){ setEditingName(true); setEditValue(displayName); setShowUserList(false) } }}
+                title="Change name"
               >
-                <span aria-hidden>▼</span>
+                <span className="profilePillIcon" aria-hidden>👤</span>
+                {editingName ? (
+                  <input
+                    className="profileNameInput"
+                    value={editValue}
+                    onChange={e=>setEditValue(e.target.value)}
+                    onBlur={saveDisplayName}
+                    onKeyDown={e=>{ if(e.key==='Enter') saveDisplayName(); if(e.key==='Escape'){ setEditingName(false); setEditValue(displayName) } }}
+                    onClick={e=>e.stopPropagation()}
+                    autoFocus
+                    aria-label="Your name"
+                  />
+                ) : (
+                  <span className="profilePillName">{displayName}</span>
+                )}
               </button>
-            )}
+              {!editingName && (
+                <button
+                  type="button"
+                  className="profilePillChevron"
+                  onClick={()=>setShowUserList(v=>!v)}
+                  title="Switch or add user"
+                  aria-haspopup="listbox"
+                  aria-expanded={showUserList}
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+              )}
+            </div>
             {showUserList && (
               <div className="profileUserList" role="listbox">
                 {otherUsers.map(u=>(
@@ -453,8 +437,12 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               </div>
             )}
           </div>
+          <div className="topBarRow2Right">
+            <div className="pill">Streak {stats.streak}🔥</div>
+            <div className="pill">Today {dueCount}</div>
+          </div>
         </div>
-      </div>
+      </header>
     )
   }
 
@@ -748,7 +736,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   function Progress(){
     const now = Date.now()
     const acc = stats.reviewsToday ? Math.round(100*stats.correctToday/stats.reviewsToday) : 0
-    const placeholdersCount = 2
     const [deofhetData] = useState(()=>({ stats: loadJSON<any>(userScopedKey(DEHET_LS_BASE,currentUserId), {correct:0,total:0,mastered:{}}), history: loadJSON<DaySnapshot[]>(userScopedKey(LS.deofhetHistory,currentUserId), []) }))
     const [grammarData] = useState(()=>({ stats: loadJSON<any>(userScopedKey(GRAMMAR_LS_BASE,currentUserId), {correct:0,total:0,mastered:{}}), history: loadJSON<DaySnapshot[]>(userScopedKey(LS.grammarHistory,currentUserId), []) }))
     const deofhetPct = deofhetData.stats.total ? Math.round(100*deofhetData.stats.correct/deofhetData.stats.total) : 0
@@ -971,8 +958,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             courseData={coursesByBookId[b.id] ?? null}
           />
         ))}
-        {Array.from({length:placeholdersCount},(_,i)=>(
-          <div key={`placeholder-${i}`} className="card progressThemeCard" style={{opacity:0.5,borderStyle:'dashed'}}>
+        {placeholdersCount > 0 && Array.from({length:placeholdersCount},(_,i)=>(
+          <div key={`placeholder-${i}`} className="card progressThemeCard progressBookPlaceholder">
             <div className="h1" style={{fontSize:24}}>Book {books.length+i+1}</div>
             <div className="small" style={{marginTop:8}}>Coming soon</div>
           </div>
@@ -1008,12 +995,20 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           <div>
             <div className="small">API base URL</div>
             <input
-              value={settings.ttsBaseUrl}
-              onChange={e=>setSettings(s=>({...s,ttsBaseUrl:e.target.value}))}
+              ref={ttsUrlRef}
+              type="text"
+              inputMode="url"
+              autoComplete="off"
+              defaultValue={settings.ttsBaseUrl}
+              onBlur={()=>{
+                const v = ttsUrlRef.current?.value.trim()
+                if(v) setSettings(s=>({...s,ttsBaseUrl:v}))
+              }}
               style={{width:'100%'}}
+              className="ttsUrlInput"
             />
             <div className="row" style={{justifyContent:'flex-end', marginTop:10}}>
-              <button onClick={refreshVoices}>Refresh</button>
+              <button type="button" onClick={()=>refreshVoices(ttsUrlRef.current?.value.trim()||undefined)}>Refresh</button>
             </div>
           </div>
           <div className="sep" />

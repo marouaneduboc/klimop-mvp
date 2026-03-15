@@ -55,27 +55,115 @@ body::before{
 .appFooterSep{margin-top:12px}
 .appFooterText{padding-bottom:2px}
 .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.topBar{align-items:center}
-.profileChip{
+.topBar{display:flex;flex-direction:column;gap:8px;align-items:stretch;width:100%}
+.topBarRowBooks{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+}
+.topBarRowTools{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+}
+.topBarRowNav{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+}
+.topBarRow2{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+.topBarRow2Right{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.topBarBookPill{
+  border-radius:14px;
+  padding:10px 12px;
+  font-size:13px;
+  white-space:nowrap;
+}
+.topBarBookPlaceholder{
+  opacity:0.55;
+  cursor:default;
+  border-style:dashed;
+  color:var(--muted);
+}
+.topBarBookPlaceholder:hover{background:var(--panel);border-color:var(--border)}
+.topBarNavBtn{
+  padding:8px 10px;
+  font-size:13px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--muted);
+  white-space:nowrap;
+}
+.topBarNavBtn:hover{background:var(--panel2);color:var(--text);border-color:rgba(255,255,255,0.2)}
+.profilePillWrap{
+  position:relative;
+  display:flex;
+  align-items:center;
+  min-width:0;
+  max-width:100%;
+}
+.profilePill{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid var(--border);
+  max-width:100%;
+  min-width:0;
+  overflow:hidden;
+  transition:background 0.15s, border-color 0.15s;
+}
+.profilePillWrap:focus-within .profilePill,
+.profilePill:hover{border-color:rgba(255,255,255,0.2)}
+.profilePillMain{
   display:inline-flex;
   align-items:center;
   gap:6px;
-  padding:6px 10px;
-  border-radius:999px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid var(--border);
+  padding:6px 8px 6px 10px;
+  border:none;
+  background:transparent;
   font-size:13px;
+  font-weight:500;
+  color:var(--text);
+  cursor:pointer;
+  min-width:0;
+}
+.profilePillIcon{font-size:15px;line-height:1;flex-shrink:0}
+.profilePillName{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.profilePillChevron{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  padding:0;
+  border:none;
+  border-left:1px solid var(--border);
+  background:rgba(255,255,255,0.04);
   color:var(--muted);
   cursor:pointer;
-  transition:background 0.15s, border-color 0.15s;
+  transition:background 0.15s, color 0.15s;
+  flex-shrink:0;
 }
-.profileChip:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:var(--text)}
-.profileIcon{font-size:16px;line-height:1}
-.profileName{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.profilePillChevron:hover{background:rgba(255,255,255,0.1);color:var(--text)}
+.profilePillChevron svg{opacity:0.9}
 .profileNameInput{
   width:100%;
   min-width:80px;
-  max-width:160px;
+  max-width:140px;
   padding:2px 6px;
   font-size:13px;
   background:rgba(255,255,255,0.08);
@@ -84,8 +172,6 @@ body::before{
   color:var(--text);
 }
 .profileNameInput:focus{outline:none;border-color:rgba(255,255,255,0.3)}
-.profileWrap{display:flex;align-items:center;gap:4}
-.profileDropdownBtn{padding:6px 8px;min-width:auto}
 .profileUserList{
   position:absolute;
   top:100%;
@@ -120,6 +206,8 @@ body::before{
 .sep{height:1px;background:var(--border);margin:12px 0}
 .pill{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.08);border:1px solid var(--border);font-size:12px;color:var(--muted)}
 button,select,input{font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 12px;max-width:100%}
+/* Keep keyboard open on iOS: local state in React + no zoom on focus */
+.ttsUrlInput{font-size:16px;transform:translateZ(0)}
 button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor:pointer}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
 .bigword{font-size:44px;font-weight:700;text-align:center}
@@ -491,6 +579,11 @@ button.grammarOptionBtn.is-wrong:disabled{
 .progressThemeCard{
   margin:0;
 }
+.progressBookPlaceholder{
+  opacity:0.6;
+  border-style:dashed;
+}
+.progressBookPlaceholder .h1{color:var(--muted)}
 .progressLegend{
   display:flex;
   flex-wrap:wrap;
