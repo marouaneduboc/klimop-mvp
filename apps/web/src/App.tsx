@@ -214,7 +214,32 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   const [err,setErr]=useState('')
   const [displayNames,setDisplayNames]=useState<Record<string,string>>(()=>loadJSON(USER_DISPLAY_NAMES_KEY,{}))
   const ttsUrlRef = useRef<HTMLInputElement>(null)
+  const dailyTargetRef = useRef<HTMLInputElement>(null)
+  const newPerDayRef = useRef<HTMLInputElement>(null)
+  const speedRef = useRef<HTMLInputElement>(null)
+  const profileNameInputRef = useRef<HTMLInputElement>(null)
   useEffect(()=>saveJSON(USER_DISPLAY_NAMES_KEY,displayNames),[displayNames])
+  const commitDailyTarget = ()=>{
+    const el = dailyTargetRef.current
+    if(!el) return
+    const n = Math.round(clamp(Number(el.value)||DEFAULT_DAILY_TARGET, MIN_DAILY_TARGET, MAX_DAILY_TARGET))
+    setSettings(s=>({...s,dailyTarget:n}))
+    el.value = String(n)
+  }
+  const commitNewPerDay = ()=>{
+    const el = newPerDayRef.current
+    if(!el) return
+    const n = Math.round(clamp(Number(el.value)||DEFAULT_NEW_PER_DAY, MIN_NEW_PER_DAY, MAX_NEW_PER_DAY))
+    setSettings(s=>({...s,newPerDay:n}))
+    el.value = String(n)
+  }
+  const commitSpeed = ()=>{
+    const el = speedRef.current
+    if(!el) return
+    const n = clamp(Number(el.value)||1, 0.6, 1.4)
+    setSettings(s=>({...s,speed:n}))
+    el.value = String(n)
+  }
 
   useEffect(()=>{
     setReviewsMap(migratedReviews)
@@ -332,7 +357,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   function Top(){
     const displayName = displayNames[currentUserId] ?? (currentUserId==='default'?'Guest':currentUserId.replace(/_/g,' '))
     const [editingName,setEditingName]=useState(false)
-    const [editValue,setEditValue]=useState(displayName)
     const [showUserList,setShowUserList]=useState(false)
     const profileWrapRef = useRef<HTMLDivElement>(null)
     useEffect(()=>{
@@ -344,8 +368,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       return ()=> document.removeEventListener('click', onDocClick)
     },[showUserList])
     const saveDisplayName = ()=>{
-      const name = (editValue||'').trim()
-      if(name){ setDisplayNames(prev=>({...prev,[currentUserId]:name})); setEditValue(name) }
+      const name = (profileNameInputRef.current?.value??'').trim()
+      if(name) setDisplayNames(prev=>({...prev,[currentUserId]:name}))
       setEditingName(false)
     }
     const otherUsers = users.filter(u=>u!==currentUserId)
@@ -389,17 +413,17 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               <button
                 type="button"
                 className="profilePillMain"
-                onClick={()=>{ if(!editingName){ setEditingName(true); setEditValue(displayName); setShowUserList(false) } }}
+                onClick={()=>{ if(!editingName){ setEditingName(true); setShowUserList(false) } }}
                 title="Change name"
               >
                 <span className="profilePillIcon" aria-hidden>👤</span>
                 {editingName ? (
                   <input
-                    className="profileNameInput"
-                    value={editValue}
-                    onChange={e=>setEditValue(e.target.value)}
+                    ref={profileNameInputRef}
+                    className="profileNameInput iosInputFix"
+                    defaultValue={displayName}
                     onBlur={saveDisplayName}
-                    onKeyDown={e=>{ if(e.key==='Enter') saveDisplayName(); if(e.key==='Escape'){ setEditingName(false); setEditValue(displayName) } }}
+                    onKeyDown={e=>{ if(e.key==='Enter') saveDisplayName(); if(e.key==='Escape') setEditingName(false) }}
                     onClick={e=>e.stopPropagation()}
                     autoFocus
                     aria-label="Your name"
@@ -866,11 +890,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <div className="targetGrid" style={{marginTop:12}}>
               <div>
                 <div className="small">Daily target</div>
-                <input type="number" min={MIN_DAILY_TARGET} max={MAX_DAILY_TARGET} value={settings.dailyTarget} onChange={e=>setSettings(s=>({...s,dailyTarget:Math.round(clamp(Number(e.target.value||DEFAULT_DAILY_TARGET), MIN_DAILY_TARGET, MAX_DAILY_TARGET))}))} style={{width:'100%'}} />
+                <input ref={dailyTargetRef} type="number" min={MIN_DAILY_TARGET} max={MAX_DAILY_TARGET} defaultValue={settings.dailyTarget} onBlur={commitDailyTarget} style={{width:'100%'}} className="iosInputFix" />
               </div>
               <div>
                 <div className="small">New/day</div>
-                <input type="number" min={MIN_NEW_PER_DAY} max={MAX_NEW_PER_DAY} value={settings.newPerDay} onChange={e=>setSettings(s=>({...s,newPerDay:Math.round(clamp(Number(e.target.value||DEFAULT_NEW_PER_DAY), MIN_NEW_PER_DAY, MAX_NEW_PER_DAY))}))} style={{width:'100%'}} />
+                <input ref={newPerDayRef} type="number" min={MIN_NEW_PER_DAY} max={MAX_NEW_PER_DAY} defaultValue={settings.newPerDay} onBlur={commitNewPerDay} style={{width:'100%'}} className="iosInputFix" />
               </div>
             </div>
             {last14.length>0 && (
@@ -1027,12 +1051,13 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <div>
               <div className="small">Speed</div>
               <input
+                ref={speedRef}
                 type="number"
                 min="0.6"
                 max="1.4"
                 step="0.05"
-                value={settings.speed}
-                onChange={e=>setSettings(s=>({...s,speed:Number(e.target.value)}))}
+                defaultValue={settings.speed}
+                onBlur={commitSpeed}
                 style={{width:'100%'}}
               />
             </div>
@@ -1054,25 +1079,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginTop:8}}>
               <div>
                 <div className="small">Daily target</div>
-                <input
-                  type="number"
-                  min={MIN_DAILY_TARGET}
-                  max={MAX_DAILY_TARGET}
-                  value={settings.dailyTarget}
-                  onChange={e=>setSettings(s=>({...s,dailyTarget:Math.round(clamp(Number(e.target.value||DEFAULT_DAILY_TARGET), MIN_DAILY_TARGET, MAX_DAILY_TARGET))}))}
-                  style={{width:'100%'}}
-                />
+                <input ref={dailyTargetRef} type="number" min={MIN_DAILY_TARGET} max={MAX_DAILY_TARGET} defaultValue={settings.dailyTarget} onBlur={commitDailyTarget} style={{width:'100%'}} className="iosInputFix" />
               </div>
               <div>
                 <div className="small">New cards/day</div>
-                <input
-                  type="number"
-                  min={MIN_NEW_PER_DAY}
-                  max={MAX_NEW_PER_DAY}
-                  value={settings.newPerDay}
-                  onChange={e=>setSettings(s=>({...s,newPerDay:Math.round(clamp(Number(e.target.value||DEFAULT_NEW_PER_DAY), MIN_NEW_PER_DAY, MAX_NEW_PER_DAY))}))}
-                  style={{width:'100%'}}
-                />
+                <input ref={newPerDayRef} type="number" min={MIN_NEW_PER_DAY} max={MAX_NEW_PER_DAY} defaultValue={settings.newPerDay} onBlur={commitNewPerDay} style={{width:'100%'}} className="iosInputFix" />
               </div>
             </div>
             <div className="small" style={{marginTop:8}}>You can still override the plan anytime in Study with the Continue button.</div>
@@ -1374,7 +1385,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const options = card.options
     const [feedback,setFeedback]=useState<'correct'|'wrong'|null>(null)
     const [chosenOption,setChosenOption]=useState<string|null>(null)
-    const [typedAnswer,setTypedAnswer]=useState('')
+    const typedAnswerRef = useRef<HTMLInputElement>(null)
     const [sessionWrong,setSessionWrong]=useState<string[]>([])
     const [picksSinceWrong,setPicksSinceWrong]=useState(0)
     const [triggerPick,setTriggerPick]=useState(0)
@@ -1443,7 +1454,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     useEffect(()=>{
       const next = pickNext()
       setFeedback(null)
-      setTypedAnswer('')
+      if(typedAnswerRef.current) typedAnswerRef.current.value = ''
       setChosenOption(null)
       if(!next){
         curKeyRef.current = null
@@ -1580,16 +1591,16 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               ) : (
                 <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
                   <input
+                    ref={typedAnswerRef}
                     type="text"
-                    value={typedAnswer}
-                    onChange={e=>setTypedAnswer(e.target.value)}
-                    onKeyDown={e=>{ if(e.key==='Enter' && feedback===null) answer(typedAnswer) }}
+                    onKeyDown={e=>{ if(e.key==='Enter' && feedback===null){ const v = typedAnswerRef.current?.value??''; answer(v); typedAnswerRef.current&&(typedAnswerRef.current.value='') } }}
                     placeholder="Type the conjugated form"
                     disabled={feedback!==null}
                     style={{width:'100%',maxWidth:320,padding:14,fontSize:18}}
+                    className="iosInputFix"
                     autoFocus
                   />
-                  <button className="deofhetBtn de" onClick={()=>feedback===null&&answer(typedAnswer)} disabled={feedback!==null || !typedAnswer.trim()}>
+                  <button className="deofhetBtn de" onClick={()=>{ if(feedback!==null) return; const v = typedAnswerRef.current?.value?.trim()??''; if(!v) return; answer(v); typedAnswerRef.current&&(typedAnswerRef.current.value='') }} disabled={feedback!==null}>
                     Check
                   </button>
                 </div>
