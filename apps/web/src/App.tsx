@@ -558,6 +558,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           if(!difficultMap[sk(v.id)]) return false
           if(studySeenSession[v.id]) return false
           const r = reviewsMap[sk(v.id)]
+          // When a card is in the learning phase (after Incorrect/partial learning),
+          // don't keep it in the high-priority "difficultPart" queue.
+          // This prevents Difficult+Incorrect from keeping the same card at queue[0].
+          if(r && (r.learningStep ?? 0) > 0) return false
           return !r || r.due>now
         })
         .sort((a,b)=>(reviewsMap[sk(a.id)]?.due||Number.MAX_SAFE_INTEGER)-(reviewsMap[sk(b.id)]?.due||Number.MAX_SAFE_INTEGER))
