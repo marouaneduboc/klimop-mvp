@@ -573,17 +573,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         return true
       })
       const wrongList = sessionWrongRetry.filter(v=>!seen.has(v.id))
-      // If there is at least one "main" card to show, don't put the just-answered card
-      // as the first retry item. It will come back naturally in later steps.
-      const effectiveMain =
-        skipWrongCardId && main.length>0
-          ? main.filter(v=>v.id!==skipWrongCardId)
-          : main
-      const filteredWrongList =
-        skipWrongCardId && effectiveMain.length>0
-          ? wrongList.filter(v=>v.id!==skipWrongCardId)
-          : wrongList
-      const merged = interleaveAfter(effectiveMain,filteredWrongList,3)
+      const mainWithoutSkip = skipWrongCardId ? main.filter(v=>v.id!==skipWrongCardId) : main
+      const shouldSkip = !!skipWrongCardId && mainWithoutSkip.length>0
+      const effectiveMain = shouldSkip ? mainWithoutSkip : main
+      const effectiveWrongList = shouldSkip && skipWrongCardId ? wrongList.filter(v=>v.id!==skipWrongCardId) : wrongList
+      const merged = interleaveAfter(effectiveMain,effectiveWrongList,3)
 
       return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
     },[baseDeck,currentBookId,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
@@ -623,7 +617,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     useEffect(()=>{
       setShowTranslation(false)
       setShowClue(false)
-    },[cur?.id])
+      if(skipWrongCardId && cur?.id !== skipWrongCardId){
+        setSkipWrongCardId(null)
+      }
+    },[cur?.id, skipWrongCardId])
 
     useEffect(()=>{
       if(cur && settings.autoSpeak) speak(cur.nl)
@@ -655,7 +652,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       }
       // Avoid immediate re-show as `queue[0]` via retry lists.
       setSkipWrongCardId(cur.id)
-      requestAnimationFrame(()=>setSkipWrongCardId(null))
       setIdx(0)
       setShowTranslation(false)
       setShowClue(false)
