@@ -328,7 +328,20 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       }
       const synth = window.speechSynthesis
       const available = synth.getVoices() || []
-      const names = available.map(v=>v.name).filter((n): n is string => !!n)
+      // Prefer Dutch voices so pronunciation is decent without any setup.
+      // Different iOS/macOS/browser engines expose different fields, so we combine `lang` and name heuristics.
+      const dutch = available.filter(v=>{
+        const lang = (v.lang || '').toLowerCase()
+        const name = (v.name || '').toLowerCase()
+        return (
+          lang.startsWith('nl') ||
+          name.includes('dutch') ||
+          name.includes('nederlands') ||
+          name.includes('nederland')
+        )
+      })
+      const candidates = dutch.length>0 ? dutch : available
+      const names = [...new Set(candidates.map(v=>v.name).filter((n): n is string => !!n))]
       setVoices(names)
       setSettings(s=>({
         ...s,
