@@ -5,7 +5,7 @@
 - Ensures the app loads its data from `content/*` using relative paths, so it works on GitHub Pages subpaths.
 - Leaves **voice/TTS** as-is for now. Students may see errors on the `TTS` tab; everything else should work.
 
-Last updated: redeploy triggered for Pages validation.
+Last updated: redeploy triggered for Pages validation (workflow mode).
 
 ## Student access
 - After GitHub Pages finishes deploying, students will get the Pages URL from the workflow logs / GitHub Pages settings.
