@@ -575,11 +575,15 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       const wrongList = sessionWrongRetry.filter(v=>!seen.has(v.id))
       // If there is at least one "main" card to show, don't put the just-answered card
       // as the first retry item. It will come back naturally in later steps.
-      const filteredWrongList =
+      const effectiveMain =
         skipWrongCardId && main.length>0
+          ? main.filter(v=>v.id!==skipWrongCardId)
+          : main
+      const filteredWrongList =
+        skipWrongCardId && effectiveMain.length>0
           ? wrongList.filter(v=>v.id!==skipWrongCardId)
           : wrongList
-      const merged = interleaveAfter(main,filteredWrongList,3)
+      const merged = interleaveAfter(effectiveMain,filteredWrongList,3)
 
       return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
     },[baseDeck,currentBookId,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
