@@ -318,39 +318,59 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     return Math.min(settings.dailyTarget, dueReviews.length + difficultRepeat + Math.min(unseen, newSlots))
   },[course,currentBookId,reviewsMap,difficultMap,stats.newToday,settings.dailyTarget,settings.newPerDay])
 
-  async function refreshVoices(overrideBaseUrl?:string){
-    const baseUrl = (overrideBaseUrl ?? settings.ttsBaseUrl).trim() || settings.ttsBaseUrl
+  function refreshVoices(){
     setErr('')
     try{
-      const r=await fetchJSON<{voices:string[]}>(`${baseUrl}/tts/voices`)
-      const available=r.voices||[]
-      setVoices(available)
+      if(typeof window === 'undefined' || !('speechSynthesis' in window)){
+        setVoices([])
+        setErr('Browser TTS (speech synthesis) is not supported on this device.')
+        return
+      }
+      const synth = window.speechSynthesis
+      const available = synth.getVoices() || []
+      const names = available.map(v=>v.name).filter((n): n is string => !!n)
+      setVoices(names)
       setSettings(s=>({
         ...s,
-        ...(overrideBaseUrl !== undefined ? { ttsBaseUrl: baseUrl } : {}),
-        voice: available.includes(s.voice) ? s.voice : (available[0]||'')
+        voice: names.includes(s.voice) ? s.voice : (names[0] || '')
       }))
-      if(overrideBaseUrl !== undefined && ttsUrlRef.current) ttsUrlRef.current.value = baseUrl
     }catch(e:any){ setErr(String(e?.message??e)) }
   }
-  useEffect(()=>{ refreshVoices() },[settings.ttsBaseUrl])
+  useEffect(()=>{
+    // Device voices can load async (especially on iOS Safari). Re-run when they change.
+    if(typeof window === 'undefined' || !('speechSynthesis' in window)) return
+    refreshVoices()
+    const synth = window.speechSynthesis
+    // Not all browsers support the event API typing, so we guard it.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const anySynth = synth as any
+    if(typeof anySynth.addEventListener === 'function'){
+      anySynth.addEventListener('voiceschanged', refreshVoices)
+      return ()=> anySynth.removeEventListener('voiceschanged', refreshVoices)
+    }
+    return
+  },[])
 
   async function speak(text:string){
-    if(!settings.voice){ setErr('No voice selected. Go to TTS tab.'); return }
-    if(voices.length && !voices.includes(settings.voice)){
-      setErr('Selected voice is no longer available. Click Refresh in TTS tab.')
-      return
-    }
     setErr('')
     try{
-      const r=await fetch(`${settings.ttsBaseUrl}/tts/speak`,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({text,voice:settings.voice,speed:settings.speed})})
-      if(!r.ok) throw new Error(await r.text())
-      const blob=await r.blob()
-      const audioUrl=URL.createObjectURL(blob)
-      const a=new Audio(audioUrl)
-      a.onended=()=>URL.revokeObjectURL(audioUrl)
-      await a.play()
+      if(typeof window === 'undefined' || !('speechSynthesis' in window)){
+        setErr('Browser TTS is not supported on this device.')
+        return
+      }
+      const synth = window.speechSynthesis
+      const utter = new SpeechSynthesisUtterance(text)
+      utter.lang = 'nl-NL'
+      // UI speed is already clamped between 0.6..1.4.
+      utter.rate = Math.min(1.4, Math.max(0.6, settings.speed))
+
+      const all = synth.getVoices() || []
+      const byName = all.find(v=>v.name===settings.voice)
+      const byNl = all.find(v=>v.lang && v.lang.toLowerCase().startsWith('nl'))
+      utter.voice = byName || byNl || all[0] || null
+
+      synth.cancel()
+      synth.speak(utter)
     }catch(e:any){ setErr(String(e?.message??e)) }
   }
 
@@ -1031,26 +1051,13 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       <div className="row" style={{alignItems:'stretch'}}>
         <div className="card" style={{flex:2}}>
           <div className="h1">TTS</div>
-          <div className="h2">Local FastAPI + sherpa-onnx-offline-tts</div>
+          <div className="h2">Browser TTS (device voices via speechSynthesis)</div>
           <div className="sep" />
-          <div>
-            <div className="small">API base URL</div>
-            <input
-              ref={ttsUrlRef}
-              type="text"
-              inputMode="url"
-              autoComplete="off"
-              defaultValue={settings.ttsBaseUrl}
-              onBlur={()=>{
-                const v = ttsUrlRef.current?.value.trim()
-                if(v) setSettings(s=>({...s,ttsBaseUrl:v}))
-              }}
-              style={{width:'100%'}}
-              className="ttsUrlInput"
-            />
-            <div className="row" style={{justifyContent:'flex-end', marginTop:10}}>
-              <button type="button" onClick={()=>refreshVoices(ttsUrlRef.current?.value.trim()||undefined)}>Refresh</button>
-            </div>
+          <div className="small" style={{marginBottom:10}}>
+            Uses your device voices. No server setup required.
+          </div>
+          <div className="row" style={{justifyContent:'flex-end', marginTop:0}}>
+            <button type="button" onClick={refreshVoices}>Refresh voices</button>
           </div>
           <div className="sep" />
           <div style={{display:'grid', gridTemplateColumns:'2fr 1fr', gap:12}}>
