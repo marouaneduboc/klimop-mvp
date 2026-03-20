@@ -1,7 +1,7 @@
 {
   "books": [
-    { "id": "klimop", "title": "Klim Op", "levels": "A0 naar A1", "url": "/content/klimop.json" },
-    { "id": "windmee", "title": "Wind mee", "levels": "A1 naar A2", "url": "/content/windmee.json" }
+    { "id": "klimop", "title": "Klim Op", "levels": "A0 naar A1", "url": "content/klimop.json" },
+    { "id": "windmee", "title": "Wind mee", "levels": "A1 naar A2", "url": "content/windmee.json" }
   ],
   "placeholders": 2
 }

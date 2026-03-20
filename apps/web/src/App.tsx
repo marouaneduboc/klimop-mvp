@@ -261,7 +261,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   },[currentUserId])
 
   useEffect(()=>{
-    fetchJSON<BooksManifest>('/content/books.json')
+    fetchJSON<BooksManifest>('content/books.json')
       .then(m=>{
         setBooks(m.books)
         setPlaceholdersCount(m.placeholders ?? 0)
@@ -273,9 +273,9 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         setCoursesByBookId(map)
       })
       .catch(()=>{
-        fetchJSON<Course>('/content/course.json')
+        fetchJSON<Course>('content/course.json')
           .then(c=>{
-            setBooks([{id:'klimop',title:'Klim Op',levels:'A0 naar A1',url:'/content/course.json'}])
+            setBooks([{id:'klimop',title:'Klim Op',levels:'A0 naar A1',url:'content/course.json'}])
             setCoursesByBookId({klimop:c})
           })
           .catch(e=>setErr(String(e)))
@@ -1235,7 +1235,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     useEffect(()=>{
       const next = pickNext()
       if(next){
-        lastShownNlsRef.current = [next.nl.toLowerCase(), cur?.nl?.toLowerCase()].filter(Boolean).slice(0,2)
+        lastShownNlsRef.current = [next.nl.toLowerCase(), cur?.nl?.toLowerCase()].filter((v): v is string => !!v).slice(0,2)
       }
       setCur(next ?? null)
       setFeedback(null)
@@ -1358,7 +1358,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   function Grammar({ currentUserId, speak }:{ currentUserId:string; speak:(t:string)=>Promise<void> }){
     const grammarLsKey = userScopedKey(GRAMMAR_LS_BASE, currentUserId)
     const [grammarData,setGrammarData]=useState<GrammarData|null>(null)
-    useEffect(()=>{ fetchJSON<GrammarData>('/content/grammar.json').then(setGrammarData).catch(()=>{}) },[])
+    useEffect(()=>{ fetchJSON<GrammarData>('content/grammar.json').then(setGrammarData).catch(()=>{}) },[])
 
     const fullPool = useMemo(()=>{
       if(!grammarData?.verbs) return []
@@ -1506,7 +1506,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       for(let i=all.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [all[i],all[j]]=[all[j],all[i]] }
       const oldKey = curKeyRef.current
       curKeyRef.current = next.key
-      lastShownKeysRef.current = [next.key, oldKey].filter(Boolean).slice(0,2)
+      lastShownKeysRef.current = [next.key, oldKey].filter((v): v is string => !!v).slice(0,2)
       setCard({ cur:next, options:all })
       // triggerPick: advance after answer timeout. fullPool: run when data first loads.
       // Do NOT depend on pickNext (it changes when stats changes and would wipe feedback).
