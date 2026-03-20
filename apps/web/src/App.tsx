@@ -525,6 +525,9 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const [showTranslation,setShowTranslation]=useState(false)
     const [showClue,setShowClue]=useState(false)
     const [sessionWrongIds,setSessionWrongIds]=useState<Set<string>>(new Set())
+    // Prevent the just-answered card from immediately becoming `queue[0]` via `wrongList`,
+    // which can happen especially when a card is marked "Difficult".
+    const [skipWrongCardId,setSkipWrongCardId]=useState<string | null>(null)
     const sk=(id:string)=>scopedKey(currentBookId,id)
 
     const now = Date.now()
@@ -570,10 +573,16 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         return true
       })
       const wrongList = sessionWrongRetry.filter(v=>!seen.has(v.id))
-      const merged = interleaveAfter(main,wrongList,3)
+      // If there is at least one "main" card to show, don't put the just-answered card
+      // as the first retry item. It will come back naturally in later steps.
+      const filteredWrongList =
+        skipWrongCardId && main.length>0
+          ? wrongList.filter(v=>v.id!==skipWrongCardId)
+          : wrongList
+      const merged = interleaveAfter(main,filteredWrongList,3)
 
       return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
-    },[baseDeck,currentBookId,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
+    },[baseDeck,currentBookId,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
 
     const cur=queue[0]
     const answeredSessionCount = Object.keys(studySeenSession).length
@@ -604,6 +613,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       setShowTranslation(false)
       setShowClue(false)
       setSessionWrongIds(new Set())
+      setSkipWrongCardId(null)
     },[studyTheme])
 
     useEffect(()=>{
@@ -639,6 +649,9 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       } else {
         setSessionWrongIds(prev=>new Set(prev).add(cur.id))
       }
+      // Avoid immediate re-show as `queue[0]` via retry lists.
+      setSkipWrongCardId(cur.id)
+      requestAnimationFrame(()=>setSkipWrongCardId(null))
       setIdx(0)
       setShowTranslation(false)
       setShowClue(false)
