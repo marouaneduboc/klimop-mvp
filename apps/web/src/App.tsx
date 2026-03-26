@@ -420,6 +420,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const [showUserList,setShowUserList]=useState(false)
     const profileWrapRef = useRef<HTMLDivElement>(null)
     const goRoute = (next:'home'|'study'|'progress'|'tts')=>{
+      if(route===next) return
       setRoute(next)
       window.scrollTo({ top:0, behavior:'auto' })
     }
@@ -440,10 +441,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     return (
       <header className="topBar">
         <div className="topBarRowNav">
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('home')} onPointerUp={()=>goRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('study')} onPointerUp={()=>goRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('progress')} onPointerUp={()=>goRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('tts')} onPointerUp={()=>goRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
         </div>
         <div className="topBarRowBooks">
           {books.map(b=>(
@@ -567,7 +568,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               <button
                 key={t.id}
                 onClick={()=>startTheme(t.id)}
-                onPointerUp={()=>startTheme(t.id)}
                 type="button"
                 className="card"
                 style={{padding:12, textAlign:'left', width:'100%', cursor:'pointer'}}
@@ -792,9 +792,9 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             </div>
           </div>
           <div className="row practiceModeQuick">
-            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='mixed'?700:500}} onClick={()=>setPractice('mixed')} onPointerUp={()=>setPractice('mixed')}>Both</button>
-            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='vocab'?700:500}} onClick={()=>setPractice('vocab')} onPointerUp={()=>setPractice('vocab')}>Vocabulary</button>
-            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='grammar'?700:500}} onClick={()=>setPractice('grammar')} onPointerUp={()=>setPractice('grammar')}>Grammar</button>
+            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='mixed'?700:500}} onClick={()=>setPractice('mixed')}>Both</button>
+            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='vocab'?700:500}} onClick={()=>setPractice('vocab')}>Vocabulary</button>
+            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='grammar'?700:500}} onClick={()=>setPractice('grammar')}>Grammar</button>
           </div>
 
           <div className="sep" />
