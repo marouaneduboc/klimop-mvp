@@ -628,7 +628,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       setGrammarChosen(null)
     }
     const sk=(id:string)=>scopedKey(currentBookId,id)
-    const now = Date.now()
     const themesInScope = studyTheme===0 ? course.themes.map(t=>t.id) : [studyTheme]
 
     const vocabDeck = useMemo<StudyCard[]>(
@@ -665,6 +664,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     },[practiceMode,vocabDeck,grammarDeck])
 
     const queue = useMemo(()=>{
+      const now = Date.now()
       const sessionWrongRetry = activeDeck.filter(c=>sessionWrongIds.has(c.id))
       const dueReviews = activeDeck
         .filter(c=>{
@@ -707,7 +707,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       const effectiveWrongList = shouldSkip && skipWrongCardId ? wrongList.filter(c=>c.id!==skipWrongCardId) : wrongList
       const merged = interleaveAfter(effectiveMain,effectiveWrongList,3)
       return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
-    },[activeDeck,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,now,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
+    },[activeDeck,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
 
     const cur=queue[0]
     const answeredSessionCount = Object.keys(studySeenSession).length
