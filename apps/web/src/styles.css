@@ -217,6 +217,12 @@ button,select,input{
 /* Keep keyboard open on iOS: uncontrolled inputs + no zoom on focus */
 .ttsUrlInput,.iosInputFix{font-size:16px;transform:translateZ(0)}
 button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor:pointer}
+@media (hover: none){
+  button:hover{
+    border-color:var(--border);
+    background:var(--panel);
+  }
+}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
 .bigword{font-size:44px;font-weight:700;text-align:center}
 .small{font-size:12px;color:var(--muted)}
