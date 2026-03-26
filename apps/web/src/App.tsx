@@ -145,6 +145,8 @@ function upsertReview(map:Record<string,Review>, id:string):Review{
 
 const LEARNING_STEP_1_MS = 60*1000
 const LEARNING_STEP_2_MS = 10*60*1000
+const FEEDBACK_CORRECT_MS = 1400
+const FEEDBACK_WRONG_MS = 2200
 
 function interleaveAfter<T>(main:T[], wrong:T[], everyN:number):T[]{
   if(wrong.length===0) return main
@@ -451,7 +453,7 @@ function DailyPractice({
     setGrammarChosen(guess)
     setGrammarFeedback(correct?'correct':'wrong')
     advance(cur, correct)
-    setTimeout(()=>{ setGrammarFeedback(null); setGrammarChosen(null) }, correct ? 1100 : 1700)
+    setTimeout(()=>{ setGrammarFeedback(null); setGrammarChosen(null) }, correct ? FEEDBACK_CORRECT_MS : FEEDBACK_WRONG_MS)
   }
 
   if(!cur){
@@ -1439,7 +1441,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       } else {
         setPicksSinceWrong(p=>p+1)
       }
-      setTimeout(()=>setTriggerPick(t=>t+1),correct?800:1400)
+      setTimeout(()=>setTriggerPick(t=>t+1),correct?FEEDBACK_CORRECT_MS:FEEDBACK_WRONG_MS)
     }
 
     const pct = stats.total>0 ? Math.round(100*stats.correct/stats.total) : 0
@@ -1833,7 +1835,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       setFeedback(correct?'correct':'wrong')
       if(!correct) setSessionWrong(w=>w.includes(cur.key)?w:[...w,cur.key])
       else setPicksSinceWrong(p=>p+1)
-      setTimeout(()=>setTriggerPick(t=>t+1),correct?1200:1800)
+      setTimeout(()=>setTriggerPick(t=>t+1),correct?FEEDBACK_CORRECT_MS:FEEDBACK_WRONG_MS)
     }
 
     const pct = stats.total>0 ? Math.round(100*stats.correct/stats.total) : 0
