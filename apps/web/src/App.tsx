@@ -272,26 +272,94 @@ function DailyPractice({
   const [practiceMode,setPracticeMode]=useState<'mixed'|'vocab'|'grammar'>('vocab')
   const [showTranslation,setShowTranslation]=useState(false)
   const [showClue,setShowClue]=useState(false)
+  const [grammarAnswerMode,setGrammarAnswerMode]=useState<'mc'|'typing'>('mc')
   const [sessionWrongIds,setSessionWrongIds]=useState<Set<string>>(new Set())
   const [skipWrongCardId,setSkipWrongCardId]=useState<string | null>(null)
   const [grammarFeedback,setGrammarFeedback]=useState<'correct'|'wrong'|null>(null)
   const [grammarChosen,setGrammarChosen]=useState<string | null>(null)
+  const grammarTypedInputRef = useRef<HTMLInputElement>(null)
   const buildDailyTopicExercise = (themeTitle:string, subject:string, keyBase:string)=>{
     const s = subject.toLowerCase()
     const subjectSlug = s.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'topic'
+    const uniq = (opts:string[])=>[...new Set(opts)]
+    const mc = (key:string,prompt:string,correct:string,opts:string[])=>({ key:`${keyBase}:${subjectSlug}:${key}`, prompt, correct, options:uniq([correct,...opts]) })
     if(s.includes('niet') && s.includes('geen')){
-      return { key:`${keyBase}:${subjectSlug}:niet-geen`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Ik heb geen geld.', options:['Ik heb geen geld.','Ik heb niet geld.','Ik niet heb geld.'] }
+      return mc('niet-geen',`${themeTitle}: kies de juiste zin`,'Ik heb geen geld.',['Ik heb niet geld.','Ik niet heb geld.'])
     }
     if(s.includes('inversie')){
-      return { key:`${keyBase}:${subjectSlug}:inversie`, prompt:`${themeTitle}: vul in (inversie) — "___ je morgen naar school?"`, correct:'Ga', options:['Ga','Gaat','Gaan'] }
+      return mc('inversie',`${themeTitle}: vul in (inversie) — "___ je morgen naar school?"`,'Ga',['Gaat','Gaan'])
+    }
+    if(s.includes('om...te') || (s.includes('om') && s.includes('te'))){
+      return mc('om-te',`${themeTitle}: vul in — "Ik probeer Nederlands ___ leren."`,'te',['om','naar'])
+    }
+    if(s.includes('scheidbare')){
+      return mc('scheidbaar',`${themeTitle}: welke zin is correct?`,'Ik sta om zeven uur op.',['Ik op sta om zeven uur.','Ik sta op om zeven uur ik.'])
+    }
+    if(s.includes('de/het/een') || s.includes('de/het')){
+      return mc('dehet',`${themeTitle}: kies het juiste lidwoord`,'de tafel',['het tafel','een tafel het'])
+    }
+    if(s.includes('verleden tijd')){
+      return mc('past',`${themeTitle}: kies de juiste vorm — "Gisteren ___ ik thuis."`,'was',['ben','is'])
+    }
+    if(s.includes('zullen')){
+      return mc('zullen',`${themeTitle}: kies de juiste zin`,'Zullen we morgen afspreken?',['Zullen we afspreken morgen we?','Zult we morgen afspreken?'])
+    }
+    if(s.includes('want') || s.includes('maar') || s.includes('dus') || s.includes('omdat')){
+      return mc('conj',`${themeTitle}: kies de beste voegwoord-zin`,'Ik blijf thuis, omdat ik moe ben.',['Ik blijf thuis omdat ben ik moe.','Ik blijf thuis, omdat moe ik ben.'])
+    }
+    if(s.includes('er als plaats') || s.includes('er + getal') || s.includes('er als onbepaald onderwerp')){
+      return mc('er',`${themeTitle}: kies de juiste zin met "er"`,'Er staan drie fietsen buiten.',['Staan er drie fietsen buiten er.','Er drie fietsen staan buiten.'])
     }
     if(s.includes('voorzetsels van plaats') || s.includes('positiewerkwoorden')){
-      return { key:`${keyBase}:${subjectSlug}:plaats`, prompt:`${themeTitle}: kies de correcte zin (plaats + positiewerkwoord)`, correct:'De lamp hangt boven de tafel.', options:['De lamp hangt boven de tafel.','De lamp ligt boven de tafel.','De lamp staat boven de tafel.'] }
+      return mc('plaats',`${themeTitle}: kies de correcte zin (plaats + positiewerkwoord)`,'De lamp hangt boven de tafel.',['De lamp ligt boven de tafel.','De lamp staat boven de tafel.'])
     }
-    return { key:`${keyBase}:${subjectSlug}:focus`, prompt:`${themeTitle}: welke grammaticale focus hoort bij deze les?`, correct:subject, options:[subject,'werkwoordvolgorde in bijzin','bezittelijk voornaamwoord'] }
+    if(s.includes('bijvoeglijk') || s.includes('vergelijken')){
+      return mc('adj',`${themeTitle}: kies de juiste vergelijking`,'Deze jas is goedkoper dan die jas.',['Deze jas is goedkoopste dan die jas.','Deze jas is meest goedkoop dan die jas.'])
+    }
+    if(
+      s.includes('persoonlijk voornaamwoord') ||
+      s.includes('persoonlijke voornaamwoorden')
+    ){
+      return mc('pron',`${themeTitle}: kies het juiste voornaamwoord`,'Wij gaan naar school.',['Ons gaan naar school.','Wij gaat naar school.'])
+    }
+    if(s.includes('bezittelijk voornaamwoord')){
+      return mc('poss-pron',`${themeTitle}: kies het bezittelijk voornaamwoord`,'Dat is mijn boek.',['Dat is me boek.','Dat is mij boek.'])
+    }
+    if(s.includes('werkwoord enkelvoud')){
+      return mc('ww-sing',`${themeTitle}: kies de juiste vervoeging (enkelvoud)`,'Hij werkt vandaag thuis.',['Hij werken vandaag thuis.','Hij werk vandaag thuis.'])
+    }
+    if(s.includes('werkwoord meervoud')){
+      return mc('ww-plur',`${themeTitle}: kies de juiste vervoeging (meervoud)`,'Wij werken vandaag thuis.',['Wij werkt vandaag thuis.','Wij werk vandaag thuis.'])
+    }
+    if(s.includes('werkwoorden in de tegenwoordige tijd')){
+      return mc('ww-tt',`${themeTitle}: kies de juiste tegenwoordige tijd`,'Wij werken vandaag op kantoor.',['Wij werkt vandaag op kantoor.','Wij werk vandaag op kantoor.'])
+    }
+    if(s.includes('hulpwerkwoorden')){
+      return mc('hulpww',`${themeTitle}: kies het juiste hulpwerkwoord`,'Ik heb gisteren gewerkt.',['Ik ben gisteren gewerkt.','Ik was gisteren gewerkt.'])
+    }
+    if(s.includes('vragen stellen') || s.includes('vragen')){
+      return mc('vragen',`${themeTitle}: kies de correcte vraag`,'Waar woon je?',['Waar je woont?','Woon je waar?'])
+    }
+    if(s.includes('verwijswoorden')){
+      return mc('verwijs',`${themeTitle}: kies het juiste verwijswoord`,'Het boek? Dat ligt op tafel.',['Het boek? Die ligt op tafel.','Het boek? Deze ligt op tafel.'])
+    }
+    if(s.includes('advies met moeten')){
+      return mc('moeten',`${themeTitle}: kies de beste advieszin`,'Je moet meer water drinken.',['Je moet te water drinken.','Je moeten meer water drinken.'])
+    }
+    if(s.includes('en/of')){
+      return mc('en-of',`${themeTitle}: kies de juiste voegwoordzin`,'Ik neem thee of koffie.',['Ik neem thee en/of koffie of.','Ik neem of thee koffie.'])
+    }
+    if(s.includes('enkelvoud en meervoud van het zelfstandig naamwoord') || s.includes('meervoud')){
+      return mc('plural',`${themeTitle}: kies het meervoud`,'de kinderen',['de kinderens','het kinderen'])
+    }
+    if(s.includes('als') || s.includes('dat') || s.includes('toen')){
+      return mc('alsdat',`${themeTitle}: kies de juiste zin`,'Ik denk dat hij morgen komt.',['Ik denk als hij morgen komt.','Ik denk dat komt hij morgen.'])
+    }
+    return mc('fallback',`${themeTitle}: kies de correcte zin`,'Ik woon in Amsterdam.',['Ik woon op Amsterdam.','Ik woon te Amsterdam in.'])
   }
   const setPractice = (next:'mixed'|'vocab'|'grammar')=>{
     setPracticeMode(next)
+    setGrammarAnswerMode('mc')
     setSessionWrongIds(new Set())
     setSkipWrongCardId(null)
     setStudySeenSession({})
@@ -401,6 +469,7 @@ function DailyPractice({
     setShowClue(false)
     setGrammarFeedback(null)
     setGrammarChosen(null)
+    if(grammarTypedInputRef.current) grammarTypedInputRef.current.value = ''
     if(skipWrongCardId && cur?.id !== skipWrongCardId) setSkipWrongCardId(null)
   },[cur?.id, skipWrongCardId])
   useEffect(()=>{
@@ -489,6 +558,11 @@ function DailyPractice({
         <div className="row practiceModeQuick">
           <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='vocab'?700:500}} onClick={()=>setPractice('vocab')}>Vocabulary</button>
           <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='grammar'?700:500}} onClick={()=>setPractice('grammar')}>Grammar</button>
+          {cur.kind==='grammar' && (
+            <button type="button" className="topBarNavBtn" style={{fontWeight:700}} onClick={()=>setGrammarAnswerMode(m=>m==='mc'?'typing':'mc')}>
+              {grammarAnswerMode==='mc' ? 'Typing mode' : 'Multiple choice'}
+            </button>
+          )}
         </div>
 
         <div className="sep" />
@@ -525,25 +599,41 @@ function DailyPractice({
             <div className="row" style={{justifyContent:'center', marginBottom:10}}>
               <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
             </div>
-            <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
-              {cur.options.map(opt=>{
-                const norm = (s:string)=>s.toLowerCase().trim()
-                const isCorrect = norm(opt)===norm(cur.correct)
-                const isChosenWrong = grammarFeedback&&grammarChosen!==null&&norm(grammarChosen)===norm(opt)&&!isCorrect
-                const showGreen = grammarFeedback&&isCorrect
-                const showRed = grammarFeedback&&!!isChosenWrong
-                return (
-                  <button
-                    key={opt}
-                    className={`grammarOptionBtn${showGreen ? ' is-correct' : ''}${showRed ? ' is-wrong' : ''}`}
-                    onClick={()=>answerGrammar(opt)}
-                    disabled={!!grammarFeedback}
-                  >
-                    {opt}
-                  </button>
-                )
-              })}
-            </div>
+            {grammarAnswerMode==='mc' ? (
+              <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
+                {cur.options.map(opt=>{
+                  const norm = (s:string)=>s.toLowerCase().trim()
+                  const isCorrect = norm(opt)===norm(cur.correct)
+                  const isChosenWrong = grammarFeedback&&grammarChosen!==null&&norm(grammarChosen)===norm(opt)&&!isCorrect
+                  const showGreen = grammarFeedback&&isCorrect
+                  const showRed = grammarFeedback&&!!isChosenWrong
+                  return (
+                    <button
+                      key={opt}
+                      className={`grammarOptionBtn${showGreen ? ' is-correct' : ''}${showRed ? ' is-wrong' : ''}`}
+                      onClick={()=>answerGrammar(opt)}
+                      disabled={!!grammarFeedback}
+                    >
+                      {opt}
+                    </button>
+                  )
+                })}
+              </div>
+            ) : (
+              <div className="row" style={{justifyContent:'center', gap:8}}>
+                <input
+                  ref={grammarTypedInputRef}
+                  className="iosInputFix"
+                  placeholder="Type your answer"
+                  onKeyDown={e=>{ if(e.key==='Enter' && !grammarFeedback) answerGrammar(grammarTypedInputRef.current?.value ?? '') }}
+                  style={{minWidth:220, maxWidth:'100%'}}
+                  disabled={!!grammarFeedback}
+                />
+                <button onClick={()=>!grammarFeedback&&answerGrammar(grammarTypedInputRef.current?.value ?? '')} disabled={!!grammarFeedback}>
+                  Check
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>
@@ -1571,59 +1661,81 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const s = subject.toLowerCase()
     const subjectSlug = s.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'topic'
     const common = { kind:'topic' as const, themeTitle, subject, bookId:keyBase.split(':')[0], themeId:Number(keyBase.split(':')[1]) }
+    const uniq = (opts:string[])=>[...new Set(opts)]
+    const mc = (key:string,prompt:string,correct:string,opts:string[])=>({ ...common, key:`${keyBase}:${subjectSlug}:${key}`, prompt, correct, options:shuffle(uniq([correct,...opts])) })
     if(s.includes('niet') && s.includes('geen')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:niet-geen`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Ik heb geen geld.', options:shuffle(['Ik heb geen geld.','Ik heb niet geld.','Ik niet heb geld.']) }
+      return mc('niet-geen',`${themeTitle}: kies de juiste zin`,'Ik heb geen geld.',['Ik heb niet geld.','Ik niet heb geld.'])
     }
     if(s.includes('inversie')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:inversie`, prompt:`${themeTitle}: vul in (inversie) — "___ je morgen naar school?"`, correct:'Ga', options:shuffle(['Ga','Gaat','Gaan']) }
+      return mc('inversie',`${themeTitle}: vul in (inversie) — "___ je morgen naar school?"`,'Ga',['Gaat','Gaan'])
     }
     if(s.includes('om...te') || s.includes('om') && s.includes('te')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:om-te`, prompt:`${themeTitle}: vul in — "Ik probeer Nederlands ___ leren."`, correct:'te', options:shuffle(['te','om','naar']) }
+      return mc('om-te',`${themeTitle}: vul in — "Ik probeer Nederlands ___ leren."`,'te',['om','naar'])
     }
     if(s.includes('scheidbare')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:scheidbaar`, prompt:`${themeTitle}: welke zin is correct?`, correct:'Ik sta om zeven uur op.', options:shuffle(['Ik sta om zeven uur op.','Ik op sta om zeven uur.','Ik sta op om zeven uur ik.']) }
+      return mc('scheidbaar',`${themeTitle}: welke zin is correct?`,'Ik sta om zeven uur op.',['Ik op sta om zeven uur.','Ik sta op om zeven uur ik.'])
     }
     if(s.includes('de/het/een') || s.includes('de/het')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:dehet`, prompt:`${themeTitle}: kies het juiste lidwoord`, correct:'de tafel', options:shuffle(['de tafel','het tafel','een tafel het']) }
+      return mc('dehet',`${themeTitle}: kies het juiste lidwoord`,'de tafel',['het tafel','een tafel het'])
     }
     if(s.includes('verleden tijd')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:past`, prompt:`${themeTitle}: kies de juiste vorm — "Gisteren ___ ik thuis."`, correct:'was', options:shuffle(['was','ben','is']) }
+      return mc('past',`${themeTitle}: kies de juiste vorm — "Gisteren ___ ik thuis."`,'was',['ben','is'])
     }
     if(s.includes('zullen')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:zullen`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Zullen we morgen afspreken?', options:shuffle(['Zullen we morgen afspreken?','Zullen we afspreken morgen we?','Zult we morgen afspreken?']) }
+      return mc('zullen',`${themeTitle}: kies de juiste zin`,'Zullen we morgen afspreken?',['Zullen we afspreken morgen we?','Zult we morgen afspreken?'])
     }
     if(s.includes('want') || s.includes('maar') || s.includes('dus') || s.includes('omdat')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:conj`, prompt:`${themeTitle}: kies de beste voegwoord-zin`, correct:'Ik blijf thuis, omdat ik moe ben.', options:shuffle(['Ik blijf thuis, omdat ik moe ben.','Ik blijf thuis omdat ben ik moe.','Ik blijf thuis, omdat moe ik ben.']) }
+      return mc('conj',`${themeTitle}: kies de beste voegwoord-zin`,'Ik blijf thuis, omdat ik moe ben.',['Ik blijf thuis omdat ben ik moe.','Ik blijf thuis, omdat moe ik ben.'])
     }
     if(s.includes('er als plaats') || s.includes('er + getal') || s.includes('er als onbepaald onderwerp')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:er`, prompt:`${themeTitle}: kies de juiste zin met "er"`, correct:'Er staan drie fietsen buiten.', options:shuffle(['Er staan drie fietsen buiten.','Staan er drie fietsen buiten er.','Er drie fietsen staan buiten.']) }
+      return mc('er',`${themeTitle}: kies de juiste zin met "er"`,'Er staan drie fietsen buiten.',['Staan er drie fietsen buiten er.','Er drie fietsen staan buiten.'])
     }
     if(s.includes('voorzetsels van plaats') || s.includes('positiewerkwoorden')){
-      return {
-        ...common,
-        key:`${keyBase}:${subjectSlug}:plaats`,
-        prompt:`${themeTitle}: kies de correcte zin (plaats + positiewerkwoord)`,
-        correct:'De lamp hangt boven de tafel.',
-        options:shuffle([
-          'De lamp hangt boven de tafel.',
-          'De lamp ligt boven de tafel.',
-          'De lamp staat boven de tafel.'
-        ])
-      }
+      return mc('plaats',`${themeTitle}: kies de correcte zin (plaats + positiewerkwoord)`,'De lamp hangt boven de tafel.',['De lamp ligt boven de tafel.','De lamp staat boven de tafel.'])
     }
     if(s.includes('bijvoeglijk') || s.includes('vergelijken')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:adj`, prompt:`${themeTitle}: kies de juiste vergelijking`, correct:'Deze jas is goedkoper dan die jas.', options:shuffle(['Deze jas is goedkoper dan die jas.','Deze jas is goedkoopste dan die jas.','Deze jas is meest goedkoop dan die jas.']) }
+      return mc('adj',`${themeTitle}: kies de juiste vergelijking`,'Deze jas is goedkoper dan die jas.',['Deze jas is goedkoopste dan die jas.','Deze jas is meest goedkoop dan die jas.'])
     }
-    if(s.includes('persoonlijk voornaamwoord')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:pron`, prompt:`${themeTitle}: kies het juiste voornaamwoord`, correct:'Wij gaan naar school.', options:shuffle(['Wij gaan naar school.','Ons gaan naar school.','Wij gaat naar school.']) }
+    if(
+      s.includes('persoonlijk voornaamwoord') ||
+      s.includes('persoonlijke voornaamwoorden')
+    ){
+      return mc('pron',`${themeTitle}: kies het juiste voornaamwoord`,'Wij gaan naar school.',['Ons gaan naar school.','Wij gaat naar school.'])
     }
-    if(s.includes('meervoud')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:plural`, prompt:`${themeTitle}: kies het meervoud`, correct:'de kinderen', options:shuffle(['de kinderen','de kinderens','het kinderen']) }
+    if(s.includes('bezittelijk voornaamwoord')){
+      return mc('poss-pron',`${themeTitle}: kies het bezittelijk voornaamwoord`,'Dat is mijn boek.',['Dat is me boek.','Dat is mij boek.'])
+    }
+    if(s.includes('werkwoord enkelvoud')){
+      return mc('ww-sing',`${themeTitle}: kies de juiste vervoeging (enkelvoud)`,'Hij werkt vandaag thuis.',['Hij werken vandaag thuis.','Hij werk vandaag thuis.'])
+    }
+    if(s.includes('werkwoord meervoud')){
+      return mc('ww-plur',`${themeTitle}: kies de juiste vervoeging (meervoud)`,'Wij werken vandaag thuis.',['Wij werkt vandaag thuis.','Wij werk vandaag thuis.'])
+    }
+    if(s.includes('werkwoorden in de tegenwoordige tijd')){
+      return mc('ww-tt',`${themeTitle}: kies de juiste tegenwoordige tijd`,'Wij werken vandaag op kantoor.',['Wij werkt vandaag op kantoor.','Wij werk vandaag op kantoor.'])
+    }
+    if(s.includes('hulpwerkwoorden')){
+      return mc('hulpww',`${themeTitle}: kies het juiste hulpwerkwoord`,'Ik heb gisteren gewerkt.',['Ik ben gisteren gewerkt.','Ik was gisteren gewerkt.'])
+    }
+    if(s.includes('vragen stellen') || s.includes('vragen')){
+      return mc('vragen',`${themeTitle}: kies de correcte vraag`,'Waar woon je?',['Waar je woont?','Woon je waar?'])
+    }
+    if(s.includes('verwijswoorden')){
+      return mc('verwijs',`${themeTitle}: kies het juiste verwijswoord`,'Het boek? Dat ligt op tafel.',['Het boek? Die ligt op tafel.','Het boek? Deze ligt op tafel.'])
+    }
+    if(s.includes('advies met moeten')){
+      return mc('moeten',`${themeTitle}: kies de beste advieszin`,'Je moet meer water drinken.',['Je moet te water drinken.','Je moeten meer water drinken.'])
+    }
+    if(s.includes('en/of')){
+      return mc('en-of',`${themeTitle}: kies de juiste voegwoordzin`,'Ik neem thee of koffie.',['Ik neem thee en/of koffie of.','Ik neem of thee koffie.'])
+    }
+    if(s.includes('enkelvoud en meervoud van het zelfstandig naamwoord') || s.includes('meervoud')){
+      return mc('plural',`${themeTitle}: kies het meervoud`,'de kinderen',['de kinderens','het kinderen'])
     }
     if(s.includes('als') || s.includes('dat') || s.includes('toen')){
-      return { ...common, key:`${keyBase}:${subjectSlug}:alsdat`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Ik denk dat hij morgen komt.', options:shuffle(['Ik denk dat hij morgen komt.','Ik denk als hij morgen komt.','Ik denk dat komt hij morgen.']) }
+      return mc('alsdat',`${themeTitle}: kies de juiste zin`,'Ik denk dat hij morgen komt.',['Ik denk als hij morgen komt.','Ik denk dat komt hij morgen.'])
     }
-    return { ...common, key:`${keyBase}:${subjectSlug}:focus`, prompt:`${themeTitle}: welke grammaticale focus hoort bij deze les?`, correct:subject, options:shuffle([subject,'werkwoordvolgorde in bijzin','bezittelijk voornaamwoord']) }
+    return mc('fallback',`${themeTitle}: kies de correcte zin`,'Ik woon in Amsterdam.',['Ik woon op Amsterdam.','Ik woon te Amsterdam in.'])
   }
 
   function Grammar({ currentUserId, currentBookId, speak }:{ currentUserId:string; currentBookId:string; speak:(t:string)=>Promise<void> }){
