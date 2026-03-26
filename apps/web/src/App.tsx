@@ -751,8 +751,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     }
 
     return (
-      <div className="row" style={{alignItems:'stretch'}}>
-        <div className="card studyMain" style={{flex:2}}>
+      <div className="studyShell">
+        <div className="card studyMain">
           <div className="row" style={{justifyContent:'space-between', alignItems:'flex-end'}}>
             <div>
               <div className="h1">Daily Practice</div>
@@ -836,7 +836,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           )}
         </div>
 
-        <div className="card" style={{flex:1}}>
+        <div className="card studyQueue">
           <div className="h1">Queue</div>
           <div className="h2">Planned now: {queue.length}</div>
           <div className="sep" />

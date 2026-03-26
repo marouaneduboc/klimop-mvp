@@ -240,6 +240,14 @@ button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor
   min-height: 0;
   display: flex;
   flex-direction: column;
+  min-width:0;
+}
+.studyQueue{min-width:0}
+.studyShell{
+  display:grid;
+  grid-template-columns:minmax(0,2fr) minmax(0,1fr);
+  gap:12px;
+  align-items:stretch;
 }
 .studyLayout{flex:1;min-height:0}
 .studyLayout > .card{min-height:0}
@@ -247,7 +255,11 @@ button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor
   display:flex;
   gap:10px;
   align-items:flex-end;
+  flex-wrap:wrap;
+  min-width:0;
 }
+.studyTopActions > div{min-width:0}
+.studyTopActions select{width:100%}
 .flipCard{
   margin:14px auto 0 auto;
   max-width:560px;
@@ -682,7 +694,11 @@ button.grammarOptionBtn.is-wrong:disabled{
     gap:8px;
   }
   .studyTopActions > div{
-    min-width:140px;
+    min-width:0;
+    flex:1 1 170px;
+  }
+  .studyShell{
+    grid-template-columns:1fr;
   }
   .h1{
     font-size:26px;
