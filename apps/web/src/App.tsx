@@ -31,6 +31,33 @@ const CURRENT_USER_KEY = 'klimop.currentUser'
 const USER_DISPLAY_NAMES_KEY = 'klimop.userDisplayNames'
 const DEHET_LS_BASE = 'klimop.deofhet.v2'
 const GRAMMAR_LS_BASE = 'klimop.grammar.v1'
+type GrammarThemePlan = { id:number; title:string; subjects:string[] }
+const GRAMMAR_BOOK_THEMES:Record<string,GrammarThemePlan[]> = {
+  klimop: [
+    { id:1, title:'Kennismaken', subjects:['werkwoord enkelvoud','persoonlijk voornaamwoord enkelvoud','vragen stellen'] },
+    { id:2, title:'Hoe gaat het?', subjects:['werkwoord meervoud','persoonlijk voornaamwoord meervoud','vragen stellen'] },
+    { id:3, title:'Familie', subjects:['enkelvoud en meervoud van het zelfstandig naamwoord','bezittelijk voornaamwoord','vragen'] },
+    { id:4, title:'Dagelijkse activiteiten', subjects:['werkwoorden in de tegenwoordige tijd','hulpwerkwoorden'] },
+    { id:5, title:'De tijd', subjects:['werkwoorden in de tegenwoordige tijd','inversie','vragen','hulpwerkwoorden','en/of'] },
+    { id:6, title:'Afspreken', subjects:['zullen','want','maar','inversie'] },
+    { id:7, title:'Eten en drinken', subjects:['niet en geen'] },
+    { id:8, title:'Boodschappen doen', subjects:['meervoud','de/het/een','bijvoeglijk naamwoord','vergelijken'] },
+    { id:9, title:'Winkelen', subjects:['meervoud','de/het/een','verwijswoorden','bijvoeglijk naamwoord','vergelijken','er als plaats'] },
+    { id:10, title:'Gezondheid', subjects:['meervoud','dus','advies met moeten','oorzaak en gevolg met want','verleden tijd'] },
+  ],
+  windmee: [
+    { id:1, title:'Wonen', subjects:['niet en geen','meervoud','er als onbepaald onderwerp','er als plaats','verleden tijd','inversie','verwijswoorden','scheidbare werkwoorden'] },
+    { id:2, title:'Sociale contacten', subjects:['verleden tijd','om...te','persoonlijke voornaamwoorden','scheidbare werkwoorden'] },
+    { id:3, title:'Onderwijs', subjects:['verleden tijd','inversie','scheidbare werkwoorden'] },
+    { id:4, title:'Werk zoeken', subjects:['omdat','scheidbare werkwoorden'] },
+    { id:5, title:'Een dag op het werk', subjects:['verleden tijd','om...te','scheidbare werkwoorden'] },
+    { id:6, title:'Officiele instanties', subjects:['om...te','verleden tijd'] },
+    { id:7, title:'Op reis door Nederland', subjects:['om...te','inversie','zullen we','verleden tijd','bijvoeglijk naamwoord','scheidbare werkwoorden'] },
+    { id:8, title:'Geld', subjects:['om...te','er + getal','scheidbare werkwoorden'] },
+    { id:9, title:'Geschiedenis', subjects:['verleden tijd','toen','scheidbare werkwoorden'] },
+    { id:10, title:'Samen leven', subjects:['als','dat'] },
+  ],
+}
 
 function userScopedKey(base:string, userId:string):string { return `${base}:u:${userId}` }
 const todayISO = ()=> new Date().toISOString().slice(0,10)
@@ -1413,50 +1440,155 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   }
 
   type GrammarStats = { correct:number; total:number; wrongIds:Record<string,number>; mastered:Record<string,boolean>; streak:Record<string,number>; mode?:'mc'|'typing' }
-  type GrammarItem = { verb:GrammarVerb; tense:'present'|'past'|'perfect'|'future'|'conditional'; person?:string; correct:string; key:string }
-  function Grammar({ currentUserId, speak }:{ currentUserId:string; speak:(t:string)=>Promise<void> }){
+  type GrammarConjItem = {
+    kind:'conjugation'
+    bookId:string
+    themeId:number
+    themeTitle:string
+    verb:GrammarVerb
+    tense:'present'|'past'|'perfect'|'future'|'conditional'
+    person?:string
+    correct:string
+    key:string
+  }
+  type GrammarTopicItem = {
+    kind:'topic'
+    bookId:string
+    themeId:number
+    themeTitle:string
+    subject:string
+    prompt:string
+    correct:string
+    options:string[]
+    key:string
+  }
+  type GrammarCardItem = GrammarConjItem | GrammarTopicItem
+
+  const hashString = (s:string)=>{
+    let h = 0
+    for(let i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i))>>>0
+    return h
+  }
+  const shuffle = <T,>(arr:T[])=>{
+    const out = [...arr]
+    for(let i=out.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1))
+      ;[out[i],out[j]]=[out[j],out[i]]
+    }
+    return out
+  }
+  function topicExercise(themeTitle:string, subject:string, keyBase:string):GrammarTopicItem{
+    const s = subject.toLowerCase()
+    const common = { kind:'topic' as const, themeTitle, subject, bookId:keyBase.split(':')[0], themeId:Number(keyBase.split(':')[1]) }
+    if(s.includes('niet') && s.includes('geen')){
+      return { ...common, key:`${keyBase}:niet-geen`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Ik heb geen geld.', options:shuffle(['Ik heb geen geld.','Ik heb niet geld.','Ik niet heb geld.']) }
+    }
+    if(s.includes('inversie')){
+      return { ...common, key:`${keyBase}:inversie`, prompt:`${themeTitle}: vul in (inversie) — "___ je morgen naar school?"`, correct:'Ga', options:shuffle(['Ga','Gaat','Gaan']) }
+    }
+    if(s.includes('om...te') || s.includes('om') && s.includes('te')){
+      return { ...common, key:`${keyBase}:om-te`, prompt:`${themeTitle}: vul in — "Ik probeer Nederlands ___ leren."`, correct:'te', options:shuffle(['te','om','naar']) }
+    }
+    if(s.includes('scheidbare')){
+      return { ...common, key:`${keyBase}:scheidbaar`, prompt:`${themeTitle}: welke zin is correct?`, correct:'Ik sta om zeven uur op.', options:shuffle(['Ik sta om zeven uur op.','Ik op sta om zeven uur.','Ik sta op om zeven uur ik.']) }
+    }
+    if(s.includes('de/het/een') || s.includes('de/het')){
+      return { ...common, key:`${keyBase}:dehet`, prompt:`${themeTitle}: kies het juiste lidwoord`, correct:'de tafel', options:shuffle(['de tafel','het tafel','een tafel het']) }
+    }
+    if(s.includes('verleden tijd')){
+      return { ...common, key:`${keyBase}:past`, prompt:`${themeTitle}: kies de juiste vorm — "Gisteren ___ ik thuis."`, correct:'was', options:shuffle(['was','ben','is']) }
+    }
+    if(s.includes('zullen')){
+      return { ...common, key:`${keyBase}:zullen`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Zullen we morgen afspreken?', options:shuffle(['Zullen we morgen afspreken?','Zullen we afspreken morgen we?','Zult we morgen afspreken?']) }
+    }
+    if(s.includes('want') || s.includes('maar') || s.includes('dus') || s.includes('omdat')){
+      return { ...common, key:`${keyBase}:conj`, prompt:`${themeTitle}: kies de beste voegwoord-zin`, correct:'Ik blijf thuis, omdat ik moe ben.', options:shuffle(['Ik blijf thuis, omdat ik moe ben.','Ik blijf thuis omdat ben ik moe.','Ik blijf thuis, omdat moe ik ben.']) }
+    }
+    if(s.includes('er als plaats') || s.includes('er + getal') || s.includes('er als onbepaald onderwerp')){
+      return { ...common, key:`${keyBase}:er`, prompt:`${themeTitle}: kies de juiste zin met "er"`, correct:'Er staan drie fietsen buiten.', options:shuffle(['Er staan drie fietsen buiten.','Staan er drie fietsen buiten er.','Er drie fietsen staan buiten.']) }
+    }
+    if(s.includes('bijvoeglijk') || s.includes('vergelijken')){
+      return { ...common, key:`${keyBase}:adj`, prompt:`${themeTitle}: kies de juiste vergelijking`, correct:'Deze jas is goedkoper dan die jas.', options:shuffle(['Deze jas is goedkoper dan die jas.','Deze jas is goedkoopste dan die jas.','Deze jas is meest goedkoop dan die jas.']) }
+    }
+    if(s.includes('persoonlijk voornaamwoord')){
+      return { ...common, key:`${keyBase}:pron`, prompt:`${themeTitle}: kies het juiste voornaamwoord`, correct:'Wij gaan naar school.', options:shuffle(['Wij gaan naar school.','Ons gaan naar school.','Wij gaat naar school.']) }
+    }
+    if(s.includes('meervoud')){
+      return { ...common, key:`${keyBase}:plural`, prompt:`${themeTitle}: kies het meervoud`, correct:'de kinderen', options:shuffle(['de kinderen','de kinderens','het kinderen']) }
+    }
+    if(s.includes('als') || s.includes('dat') || s.includes('toen')){
+      return { ...common, key:`${keyBase}:alsdat`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Ik denk dat hij morgen komt.', options:shuffle(['Ik denk dat hij morgen komt.','Ik denk als hij morgen komt.','Ik denk dat komt hij morgen.']) }
+    }
+    return { ...common, key:`${keyBase}:focus`, prompt:`${themeTitle}: welke grammaticale focus hoort bij deze les?`, correct:subject, options:shuffle([subject,'werkwoordvolgorde in bijzin','bezittelijk voornaamwoord']) }
+  }
+
+  function Grammar({ currentUserId, currentBookId, speak }:{ currentUserId:string; currentBookId:string; speak:(t:string)=>Promise<void> }){
     const grammarLsKey = userScopedKey(GRAMMAR_LS_BASE, currentUserId)
     const [grammarData,setGrammarData]=useState<GrammarData|null>(null)
     useEffect(()=>{ fetchJSON<GrammarData>('/content/grammar.json').then(setGrammarData).catch(()=>{}) },[])
+    const bookIds = useMemo(()=>Object.keys(GRAMMAR_BOOK_THEMES),[])
+    const [selectedBookId,setSelectedBookId]=useState<string>(bookIds.includes(currentBookId) ? currentBookId : bookIds[0])
+    const [selectedThemeId,setSelectedThemeId]=useState<number>(1)
+    const [track,setTrack]=useState<'conjugation'|'topics'>('conjugation')
+    useEffect(()=>{ if(bookIds.includes(currentBookId)) setSelectedBookId(currentBookId) },[currentBookId,bookIds])
+    useEffect(()=>{
+      const themes = GRAMMAR_BOOK_THEMES[selectedBookId]||[]
+      if(!themes.some(t=>t.id===selectedThemeId)) setSelectedThemeId(themes[0]?.id ?? 1)
+    },[selectedBookId,selectedThemeId])
 
-    const fullPool = useMemo(()=>{
-      if(!grammarData?.verbs) return []
-      const out:GrammarItem[]=[]
+    const conjugationPool = useMemo(()=>{
+      if(!grammarData?.verbs) return [] as GrammarConjItem[]
+      const out:GrammarConjItem[]=[]
       const persons = ['ik','jij','hij','wij','jullie','zij'] as const
       const singular = ['ik','jij','hij']
       const plural = ['wij','jullie','zij']
       const zullen = grammarData.zullen
-      for(const v of grammarData.verbs){
-        for(const p of persons){
-          const form = v.present[p]
-          if(form) out.push({ verb:v, tense:'present', person:p, correct:form, key:`${v.id}:present:${p}` })
-        }
-        for(const p of persons){
-          const form = v.past[singular.includes(p)?'singular':'plural']
-          if(form) out.push({ verb:v, tense:'past', person:p, correct:form, key:`${v.id}:past:${p}` })
-        }
-        out.push({ verb:v, tense:'perfect', correct:v.perfect, key:`${v.id}:perfect` })
-        if(zullen?.present){
+      for(const [bookId,themes] of Object.entries(GRAMMAR_BOOK_THEMES)){
+        for(const v of grammarData.verbs){
+          const t = themes[hashString(`${bookId}:${v.id}`)%themes.length]
           for(const p of persons){
-            const aux = zullen.present[p]
-            if(aux) out.push({ verb:v, tense:'future', person:p, correct:`${aux} ${v.infinitive}`, key:`${v.id}:future:${p}` })
+            const form = v.present[p]
+            if(form) out.push({ kind:'conjugation', bookId, themeId:t.id, themeTitle:t.title, verb:v, tense:'present', person:p, correct:form, key:`${bookId}:t${t.id}:${v.id}:present:${p}` })
           }
-        }
-        if(zullen?.past){
           for(const p of persons){
-            const aux = zullen.past[plural.includes(p)?'plural':'singular']
-            if(aux) out.push({ verb:v, tense:'conditional', person:p, correct:`${aux} ${v.infinitive}`, key:`${v.id}:conditional:${p}` })
+            const form = v.past[singular.includes(p)?'singular':'plural']
+            if(form) out.push({ kind:'conjugation', bookId, themeId:t.id, themeTitle:t.title, verb:v, tense:'past', person:p, correct:form, key:`${bookId}:t${t.id}:${v.id}:past:${p}` })
+          }
+          out.push({ kind:'conjugation', bookId, themeId:t.id, themeTitle:t.title, verb:v, tense:'perfect', correct:v.perfect, key:`${bookId}:t${t.id}:${v.id}:perfect` })
+          if(zullen?.present){
+            for(const p of persons){
+              const aux = zullen.present[p]
+              if(aux) out.push({ kind:'conjugation', bookId, themeId:t.id, themeTitle:t.title, verb:v, tense:'future', person:p, correct:`${aux} ${v.infinitive}`, key:`${bookId}:t${t.id}:${v.id}:future:${p}` })
+            }
+          }
+          if(zullen?.past){
+            for(const p of persons){
+              const aux = zullen.past[plural.includes(p)?'plural':'singular']
+              if(aux) out.push({ kind:'conjugation', bookId, themeId:t.id, themeTitle:t.title, verb:v, tense:'conditional', person:p, correct:`${aux} ${v.infinitive}`, key:`${bookId}:t${t.id}:${v.id}:conditional:${p}` })
+            }
           }
         }
       }
       return out
     },[grammarData])
 
+    const topicPool = useMemo(()=>{
+      const out:GrammarTopicItem[]=[]
+      for(const [bookId,themes] of Object.entries(GRAMMAR_BOOK_THEMES)){
+        for(const t of themes){
+          t.subjects.forEach((subject,idx)=>{
+            out.push(topicExercise(t.title, subject, `${bookId}:${t.id}:${idx}`))
+          })
+        }
+      }
+      return out
+    },[])
+
     const [stats,setStats]=useState<GrammarStats>(()=>{
       const raw=loadJSON<any>(grammarLsKey,{correct:0,total:0,wrongIds:{},mastered:{},streak:{},mode:'mc'})
       return { correct:raw.correct??0, total:raw.total??0, wrongIds:raw.wrongIds??{}, mastered:raw.mastered??{}, streak:raw.streak??{}, mode:raw.mode??'mc' }
     })
-    const [card,setCard]=useState<{ cur:GrammarItem|null; options:string[] }>({ cur:null, options:[] })
+    const [card,setCard]=useState<{ cur:GrammarCardItem|null; options:string[] }>({ cur:null, options:[] })
     const cur = card.cur
     const options = card.options
     const [feedback,setFeedback]=useState<'correct'|'wrong'|null>(null)
@@ -1475,13 +1607,21 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       updateDayHistory(userScopedKey(LS.grammarHistory,currentUserId), stats.correct, stats.total)
     },[stats])
 
-    const activePool = useMemo(()=>fullPool.filter(i=>!stats.mastered[i.key]),[fullPool,stats.mastered])
+    const scopedConjugationPool = useMemo(()=>conjugationPool.filter(i=>i.bookId===selectedBookId && i.themeId===selectedThemeId),[conjugationPool,selectedBookId,selectedThemeId])
+    const scopedTopicPool = useMemo(()=>topicPool.filter(i=>i.bookId===selectedBookId && i.themeId===selectedThemeId),[topicPool,selectedBookId,selectedThemeId])
+    const activePool = useMemo(()=>{
+      const pool = track==='conjugation' ? scopedConjugationPool : scopedTopicPool
+      return pool.filter(i=>!stats.mastered[i.key])
+    },[track,scopedConjugationPool,scopedTopicPool,stats.mastered])
 
     const pickNext = useCallback(()=>{
       if(activePool.length===0) return null
-      const avoid = lastPickedVerbIdsRef.current
-      const avoidSameVerb = activePool.filter(i=>!avoid.includes(i.verb.id))
-      let pool = avoidSameVerb.length>0 ? avoidSameVerb : activePool
+      let pool = activePool
+      if(track==='conjugation'){
+        const avoid = lastPickedVerbIdsRef.current
+        const avoidSameVerb = activePool.filter(i=>i.kind!=='conjugation' || !avoid.includes(i.verb.id))
+        pool = avoidSameVerb.length>0 ? avoidSameVerb : activePool
+      }
       // Avoid showing the same item in the last 2 positions (reduces boring repetition)
       const recent = lastShownKeysRef.current
       let freshPool = pool.filter(i=>!recent.includes(i.key))
@@ -1511,7 +1651,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         return topWrong[0]
       }
       return pool[Math.floor(Math.random()*pool.length)]
-    },[activePool,stats.wrongIds,sessionWrong,picksSinceWrong])
+    },[activePool,track,stats.wrongIds,sessionWrong,picksSinceWrong])
 
     function orthoFoils(correct:string):string[]{
       const out:string[]=[]
@@ -1537,29 +1677,37 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         setCard({ cur:null, options:[] })
         return
       }
-      const nextIds = [next.verb.id,...lastPickedVerbIdsRef.current].slice(0,2)
-      lastPickedVerbIdsRef.current = nextIds
-      setLastPickedVerbIds(nextIds)
+      if(next.kind==='conjugation'){
+        const nextIds = [next.verb.id,...lastPickedVerbIdsRef.current].slice(0,2)
+        lastPickedVerbIdsRef.current = nextIds
+        setLastPickedVerbIds(nextIds)
+      }
       const distractors:string[]=[]
-      const sameVerbOther = fullPool.filter(i=>i.verb.id===next.verb.id && i.correct!==next.correct).map(i=>i.correct)
-      const sameTenseOther = fullPool.filter(i=>i.verb.id===next.verb.id && i.tense===next.tense && i.correct!==next.correct).map(i=>i.correct)
-      const otherTenseSameVerb = sameVerbOther.filter(c=>!sameTenseOther.includes(c))
-      const candidatesSameTense = [...new Set(sameTenseOther)]
-      const candidatesOtherTense = [...new Set(otherTenseSameVerb)]
-      while(distractors.length<2 && candidatesSameTense.length>0){
-        const idx = Math.floor(Math.random()*candidatesSameTense.length)
-        const v = candidatesSameTense.splice(idx,1)[0]
-        if(!distractors.includes(v)) distractors.push(v)
+      if(next.kind==='conjugation'){
+        const scope = scopedConjugationPool
+        const sameVerbOther = scope.filter(i=>i.verb.id===next.verb.id && i.correct!==next.correct).map(i=>i.correct)
+        const sameTenseOther = scope.filter(i=>i.verb.id===next.verb.id && i.tense===next.tense && i.correct!==next.correct).map(i=>i.correct)
+        const otherTenseSameVerb = sameVerbOther.filter(c=>!sameTenseOther.includes(c))
+        const candidatesSameTense = [...new Set(sameTenseOther)]
+        const candidatesOtherTense = [...new Set(otherTenseSameVerb)]
+        while(distractors.length<2 && candidatesSameTense.length>0){
+          const idx = Math.floor(Math.random()*candidatesSameTense.length)
+          const v = candidatesSameTense.splice(idx,1)[0]
+          if(!distractors.includes(v)) distractors.push(v)
+        }
+        while(distractors.length<2 && candidatesOtherTense.length>0){
+          const idx = Math.floor(Math.random()*candidatesOtherTense.length)
+          const v = candidatesOtherTense.splice(idx,1)[0]
+          if(!distractors.includes(v)) distractors.push(v)
+        }
+        const foils = orthoFoils(next.correct).filter(f=>!distractors.includes(f))
+        while(distractors.length<2 && foils.length>0){
+          const v = foils.splice(Math.floor(Math.random()*foils.length),1)[0]
+          if(!distractors.includes(v)) distractors.push(v)
+        }
       }
-      while(distractors.length<2 && candidatesOtherTense.length>0){
-        const idx = Math.floor(Math.random()*candidatesOtherTense.length)
-        const v = candidatesOtherTense.splice(idx,1)[0]
-        if(!distractors.includes(v)) distractors.push(v)
-      }
-      const foils = orthoFoils(next.correct).filter(f=>!distractors.includes(f))
-      while(distractors.length<2 && foils.length>0){
-        const v = foils.splice(Math.floor(Math.random()*foils.length),1)[0]
-        if(!distractors.includes(v)) distractors.push(v)
+      if(next.kind==='topic'){
+        for(const opt of next.options){ if(opt!==next.correct && !distractors.includes(opt)) distractors.push(opt) }
       }
       const all = [next.correct,...distractors.slice(0,2)]
       for(let i=all.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [all[i],all[j]]=[all[j],all[i]] }
@@ -1569,7 +1717,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       setCard({ cur:next, options:all })
       // triggerPick: advance after answer timeout. fullPool: run when data first loads.
       // Do NOT depend on pickNext (it changes when stats changes and would wipe feedback).
-    },[triggerPick,fullPool])
+    },[triggerPick,scopedConjugationPool,scopedTopicPool,pickNext])
 
     function answer(guess:string){
       if(!cur) return
@@ -1590,11 +1738,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const pct = stats.total>0 ? Math.round(100*stats.correct/stats.total) : 0
 
     if(!grammarData) return <div className="card"><div className="h1">Grammar</div><div className="h2">Loading…</div></div>
-    if(fullPool.length===0) return <div className="card"><div className="h1">Grammar</div><div className="h2">No verb data.</div></div>
+    if(conjugationPool.length===0 && topicPool.length===0) return <div className="card"><div className="h1">Grammar</div><div className="h2">No grammar data.</div></div>
     if(activePool.length===0) return (
       <div className="card">
         <div className="h1">Grammar</div>
-        <div className="h2">All conjugated forms mastered!</div>
+        <div className="h2">All exercises mastered for this book and theme.</div>
         <div className="sep" />
         <div className="deofhetStats">
           <span className="deofhetStatPill correct">{stats.correct} correct</span>
@@ -1609,26 +1757,42 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         <div className="card deofhetCard">
           <div className="deofhetHeader">
             <div className="h1">Grammar</div>
-            <div className="h2">Verb conjugation</div>
+            <div className="h2">Book and chapter based progression</div>
             <div className="row" style={{flexWrap:'wrap',gap:8,alignItems:'center'}}>
             <div className="deofhetStats">
               <span className="deofhetStatPill correct">{stats.correct} correct</span>
               <span className="deofhetStatPill total">{stats.total} total</span>
               <span className="deofhetStatPill pct">{pct}%</span>
             </div>
+            <select value={selectedBookId} onChange={e=>setSelectedBookId(e.target.value)}>
+              {bookIds.map(id=><option key={id} value={id}>{id==='klimop'?'Klim Op':'Wind mee'}</option>)}
+            </select>
+            <select value={selectedThemeId} onChange={e=>setSelectedThemeId(Number(e.target.value))}>
+              {(GRAMMAR_BOOK_THEMES[selectedBookId]||[]).map(t=><option key={t.id} value={t.id}>Theme {t.id}: {t.title}</option>)}
+            </select>
+            <select value={track} onChange={e=>setTrack(e.target.value as 'conjugation'|'topics')}>
+              <option value="conjugation">Conjugation drills</option>
+              <option value="topics">Grammar nuance drills</option>
+            </select>
             <button
               className="pill"
               onClick={()=>setStats(s=>({...s,mode:s.mode==='mc'?'typing':'mc'}))}
+              disabled={track!=='conjugation'}
             >
               {stats.mode==='mc' ? 'Switch to typing' : 'Switch to multiple choice'}
             </button>
           </div>
           </div>
           <div className="sep" />
+          <div className="small" style={{marginBottom:10}}>
+            {(GRAMMAR_BOOK_THEMES[selectedBookId]||[]).find(t=>t.id===selectedThemeId)?.subjects.join(' • ')}
+          </div>
           {cur && (
             <div key={triggerPick} className="grammarCardContent">
               <div className="h2" style={{marginBottom:8}}>
-                {cur.verb.en} — {cur.tense}{cur.person ? ` — ${cur.person}` : ''}
+                {cur.kind==='conjugation'
+                  ? `${cur.verb.en} — ${cur.tense}${cur.person ? ` — ${cur.person}` : ''}`
+                  : `${cur.themeTitle} — ${cur.subject}`}
               </div>
               {feedback && (
                 <div className={`deofhetWord feedback-${feedback}`} style={{fontSize:28}}>
@@ -1640,7 +1804,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
                   {feedback==='correct' ? <span>✓ Correct — {cur.correct}</span> : <span>✗ The answer is <strong>{cur.correct}</strong></span>}
                 </div>
               )}
-              {stats.mode==='mc' ? (
+              {stats.mode==='mc' || cur.kind==='topic' ? (
                 <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
                   {options.map(opt=>{
                     const norm = (s:string)=>s.toLowerCase().trim()
@@ -1681,7 +1845,9 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
                   </button>
                 </div>
               )}
-              <button className="deofhetSpeak" onClick={()=>speak(cur.person ? `${cur.person} ${cur.correct}` : cur.correct)}>🔊 Hear it</button>
+              {cur.kind==='conjugation' && (
+                <button className="deofhetSpeak" onClick={()=>speak(cur.person ? `${cur.person} ${cur.correct}` : cur.correct)}>🔊 Hear it</button>
+              )}
             </div>
           )}
         </div>
@@ -1710,7 +1876,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         {route==='progress' && <div className="pagePane"><Progress /></div>}
         {route==='tts' && <div className="pagePane"><TTS /></div>}
         {route==='deofhet' && <div className="pagePane"><DeOfHet currentUserId={currentUserId} coursesByBookId={coursesByBookId} reviewsMap={reviewsMap} difficultMap={difficultMap} speak={speak} /></div>}
-        {route==='grammar' && <div className="pagePane"><Grammar currentUserId={currentUserId} speak={speak} /></div>}
+        {route==='grammar' && <div className="pagePane"><Grammar currentUserId={currentUserId} currentBookId={currentBookId} speak={speak} /></div>}
       </div>
       <div className="sep appFooterSep" />
       <div className="small appFooterText">MVP • local-only • calm UI • private</div>
