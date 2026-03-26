@@ -210,6 +210,10 @@ body::before{
 .sep{height:1px;background:var(--border);margin:12px 0}
 .pill{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.08);border:1px solid var(--border);font-size:12px;color:var(--muted)}
 button,select,input{font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 12px;max-width:100%}
+button,select,input{
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
 /* Keep keyboard open on iOS: uncontrolled inputs + no zoom on focus */
 .ttsUrlInput,.iosInputFix{font-size:16px;transform:translateZ(0)}
 button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor:pointer}
