@@ -278,6 +278,10 @@ function DailyPractice({
   const [grammarFeedback,setGrammarFeedback]=useState<'correct'|'wrong'|null>(null)
   const [grammarChosen,setGrammarChosen]=useState<string | null>(null)
   const grammarTypedInputRef = useRef<HTMLInputElement>(null)
+  const [dailyGrammarData,setDailyGrammarData]=useState<GrammarData|null>(null)
+  useEffect(()=>{
+    fetchJSON<GrammarData>('content/grammar.json').then(setDailyGrammarData).catch(()=>{})
+  },[])
   const buildDailyTopicExercise = (themeTitle:string, subject:string, keyBase:string)=>{
     const s = subject.toLowerCase()
     const subjectSlug = s.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'topic'
@@ -382,13 +386,30 @@ function DailyPractice({
     [course,themesInScope,currentBookId]
   )
   const grammarDeck = useMemo<StudyCard[]>(()=>{
+    const DAILY_GRAMMAR_TARGET_PER_THEME = 50
     const plans = GRAMMAR_BOOK_THEMES[currentBookId] || []
+    const verbs = dailyGrammarData?.verbs || []
+    const zullen = dailyGrammarData?.zullen
     const out:StudyCard[] = []
+    const localHash = (x:string)=>{
+      let h = 2166136261
+      for(let i=0;i<x.length;i++){
+        h ^= x.charCodeAt(i)
+        h = Math.imul(h, 16777619)
+      }
+      return h >>> 0
+    }
+    const uniq = (arr:string[])=>[...new Set(arr)]
+    const pickWrong = (pool:string[], correct:string, count:number)=>{
+      const all = uniq(pool.filter(v=>v && v!==correct))
+      return all.slice(0, count)
+    }
     for(const p of plans){
       if(!themesInScope.includes(p.id)) continue
+      const themeCards:StudyCard[] = []
       for(const subject of p.subjects){
-          const ex = buildDailyTopicExercise(p.title, subject, `${currentBookId}:${p.id}`)
-        out.push({
+        const ex = buildDailyTopicExercise(p.title, subject, `${currentBookId}:${p.id}`)
+        themeCards.push({
           kind:'grammar',
           id:`grammar:${currentBookId}:${p.id}:${ex.key}`,
           theme:p.id,
@@ -399,9 +420,115 @@ function DailyPractice({
           subject,
         })
       }
+      const lowerSubjects = p.subjects.map(s=>s.toLowerCase())
+      const allowPast = lowerSubjects.some(s=>s.includes('verleden tijd') || s.includes('toen'))
+      const allowFuture = lowerSubjects.some(s=>s.includes('zullen'))
+      const allowConditional = allowFuture
+      const persons = ['ik','jij','hij','wij','jullie','zij'] as const
+      const presentPool = verbs.flatMap(v=>Object.values(v.present).filter(Boolean))
+      const pastPool = verbs.flatMap(v=>[v.past.singular, v.past.plural].filter(Boolean))
+      const perfectPool = verbs.map(v=>v.perfect).filter(Boolean)
+      const futureAux = zullen ? Object.values(zullen.present).filter(Boolean) : []
+      const conditionalAux = zullen ? [zullen.past.singular, zullen.past.plural].filter(Boolean) : []
+      const conjCandidates:StudyCard[] = []
+      for(const v of verbs){
+        for(const person of persons){
+          const correct = v.present[person]
+          if(!correct) continue
+          conjCandidates.push({
+            kind:'grammar',
+            id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:present:${person}`,
+            theme:p.id,
+            title:`${p.title} - vervoeging`,
+            prompt:`Vul de tegenwoordige tijd in — "${person} ___ (${v.infinitive})"`,
+            correct,
+            options:uniq([correct, ...pickWrong(presentPool, correct, 2)]),
+            subject:'vervoeging',
+          })
+        }
+        if(allowPast){
+          const pastSing = v.past.singular
+          if(pastSing){
+            conjCandidates.push({
+              kind:'grammar',
+              id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:past:sing`,
+              theme:p.id,
+              title:`${p.title} - vervoeging`,
+              prompt:`Vul de verleden tijd in — "gisteren ik ___ (${v.infinitive})"`,
+              correct:pastSing,
+              options:uniq([pastSing, ...pickWrong(pastPool, pastSing, 2)]),
+              subject:'vervoeging',
+            })
+          }
+          const pastPlural = v.past.plural
+          if(pastPlural){
+            conjCandidates.push({
+              kind:'grammar',
+              id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:past:pl`,
+              theme:p.id,
+              title:`${p.title} - vervoeging`,
+              prompt:`Vul de verleden tijd in — "gisteren wij ___ (${v.infinitive})"`,
+              correct:pastPlural,
+              options:uniq([pastPlural, ...pickWrong(pastPool, pastPlural, 2)]),
+              subject:'vervoeging',
+            })
+          }
+        }
+        const perfect = v.perfect
+        if(perfect){
+          conjCandidates.push({
+            kind:'grammar',
+            id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:perfect`,
+            theme:p.id,
+            title:`${p.title} - vervoeging`,
+            prompt:`Vul het voltooid deelwoord in — "ik heb ___"`,
+            correct:perfect,
+            options:uniq([perfect, ...pickWrong(perfectPool, perfect, 2)]),
+            subject:'vervoeging',
+          })
+        }
+        if(allowFuture && zullen?.present){
+          for(const person of persons){
+            const aux = zullen.present[person]
+            if(!aux) continue
+            const correct = `${aux} ${v.infinitive}`
+            conjCandidates.push({
+              kind:'grammar',
+              id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:future:${person}`,
+              theme:p.id,
+              title:`${p.title} - vervoeging`,
+              prompt:`Vul de toekomende tijd in — "${person} ___"`,
+              correct,
+              options:uniq([correct, ...pickWrong(futureAux.map(a=>`${a} ${v.infinitive}`), correct, 2)]),
+              subject:'vervoeging',
+            })
+          }
+        }
+        if(allowConditional && zullen?.past){
+          for(const person of persons){
+            const aux = (person==='wij' || person==='jullie' || person==='zij') ? zullen.past.plural : zullen.past.singular
+            if(!aux) continue
+            const correct = `${aux} ${v.infinitive}`
+            conjCandidates.push({
+              kind:'grammar',
+              id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:cond:${person}`,
+              theme:p.id,
+              title:`${p.title} - vervoeging`,
+              prompt:`Vul de voorwaardelijke vorm in — "${person} ___"`,
+              correct,
+              options:uniq([correct, ...pickWrong(conditionalAux.map(a=>`${a} ${v.infinitive}`), correct, 2)]),
+              subject:'vervoeging',
+            })
+          }
+        }
+      }
+      conjCandidates.sort((a,b)=>localHash(a.id)-localHash(b.id))
+      const needed = Math.max(0, DAILY_GRAMMAR_TARGET_PER_THEME - themeCards.length)
+      themeCards.push(...conjCandidates.slice(0, needed))
+      out.push(...themeCards)
     }
     return out
-  },[currentBookId,themesInScope])
+  },[currentBookId,themesInScope,dailyGrammarData])
   const activeDeck = useMemo(()=>{
     if(practiceMode==='vocab') return vocabDeck
     if(practiceMode==='grammar') return grammarDeck
@@ -521,6 +648,7 @@ function DailyPractice({
     const rest = word.slice(1).split('').map(() => '_').join(' ')
     return `${first} ${rest}`
   }
+  const capitalizeFirst = (text:string) => text ? `${text[0].toUpperCase()}${text.slice(1)}` : text
   function answerGrammar(guess:string){
     if(!cur || cur.kind!=='grammar') return
     const norm = (v:string)=>v.toLowerCase().trim()
@@ -596,7 +724,7 @@ function DailyPractice({
         ) : (
           <>
             <div className="h2" style={{textAlign:'center', marginBottom:8}}>{cur.title}</div>
-            <div className="bigword" style={{fontSize:34}}>{cur.prompt}</div>
+            <div className="bigword" style={{fontSize:34}}>{capitalizeFirst(cur.prompt)}</div>
             {grammarFeedback && (
               <div className={`deofhetFeedback feedback-${grammarFeedback}`}>
                 {grammarFeedback==='correct' ? <span>✓ Correct</span> : <span>✗ The answer is <strong>{cur.correct}</strong></span>}
