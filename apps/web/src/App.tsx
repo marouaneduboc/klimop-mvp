@@ -46,7 +46,7 @@ const GRAMMAR_BOOK_THEMES:Record<string,GrammarThemePlan[]> = {
     { id:10, title:'Gezondheid', subjects:['meervoud','dus','advies met moeten','oorzaak en gevolg met want','verleden tijd'] },
   ],
   windmee: [
-    { id:1, title:'Wonen', subjects:['niet en geen','meervoud','er als onbepaald onderwerp','er als plaats','verleden tijd','inversie','verwijswoorden','scheidbare werkwoorden'] },
+    { id:1, title:'Wonen', subjects:['niet en geen','meervoud','er als onbepaald onderwerp','er als plaats','verleden tijd','inversie','verwijswoorden','scheidbare werkwoorden','voorzetsels van plaats en positiewerkwoorden'] },
     { id:2, title:'Sociale contacten', subjects:['verleden tijd','om...te','persoonlijke voornaamwoorden','scheidbare werkwoorden'] },
     { id:3, title:'Onderwijs', subjects:['verleden tijd','inversie','scheidbare werkwoorden'] },
     { id:4, title:'Werk zoeken', subjects:['omdat','scheidbare werkwoorden'] },
@@ -1513,6 +1513,19 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     }
     if(s.includes('er als plaats') || s.includes('er + getal') || s.includes('er als onbepaald onderwerp')){
       return { ...common, key:`${keyBase}:${subjectSlug}:er`, prompt:`${themeTitle}: kies de juiste zin met "er"`, correct:'Er staan drie fietsen buiten.', options:shuffle(['Er staan drie fietsen buiten.','Staan er drie fietsen buiten er.','Er drie fietsen staan buiten.']) }
+    }
+    if(s.includes('voorzetsels van plaats') || s.includes('positiewerkwoorden')){
+      return {
+        ...common,
+        key:`${keyBase}:${subjectSlug}:plaats`,
+        prompt:`${themeTitle}: kies de correcte zin (plaats + positiewerkwoord)`,
+        correct:'De lamp hangt boven de tafel.',
+        options:shuffle([
+          'De lamp hangt boven de tafel.',
+          'De lamp ligt boven de tafel.',
+          'De lamp staat boven de tafel.'
+        ])
+      }
     }
     if(s.includes('bijvoeglijk') || s.includes('vergelijken')){
       return { ...common, key:`${keyBase}:${subjectSlug}:adj`, prompt:`${themeTitle}: kies de juiste vergelijking`, correct:'Deze jas is goedkoper dan die jas.', options:shuffle(['Deze jas is goedkoper dan die jas.','Deze jas is goedkoopste dan die jas.','Deze jas is meest goedkoop dan die jas.']) }

@@ -649,3 +649,45 @@ button.grammarOptionBtn.is-wrong:disabled{
   margin-top:6px;
 }
 .themeStatCard .themeNumbers span strong{ color:var(--text); font-weight:600; }
+
+@media (max-width: 720px){
+  .container{
+    padding:14px 10px 18px 10px;
+  }
+  .topBar{
+    gap:6px;
+  }
+  .topBarRowNav,.topBarRowBooks,.topBarRowTools,.topBarRow2{
+    gap:6px;
+  }
+  .topBarNavBtn{
+    padding:7px 9px;
+    font-size:12px;
+  }
+  .topBarBookPill{
+    padding:8px 10px;
+    font-size:12px;
+    border-radius:12px;
+  }
+  .profilePillName{
+    max-width:96px;
+  }
+  .pill{
+    font-size:11px;
+    padding:5px 8px;
+  }
+  .studyTopActions{
+    width:100%;
+    justify-content:flex-start;
+    gap:8px;
+  }
+  .studyTopActions > div{
+    min-width:140px;
+  }
+  .h1{
+    font-size:26px;
+  }
+  .bigword{
+    font-size:34px;
+  }
+}
