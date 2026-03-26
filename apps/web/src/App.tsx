@@ -440,10 +440,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     return (
       <header className="topBar">
         <div className="topBarRowNav">
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('home')} onTouchEnd={(e)=>{ e.preventDefault(); goRoute('home') }} style={{fontWeight:route==='home'?700:400}}>Home</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('study')} onTouchEnd={(e)=>{ e.preventDefault(); goRoute('study') }} style={{fontWeight:route==='study'?700:400}}>Daily</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('progress')} onTouchEnd={(e)=>{ e.preventDefault(); goRoute('progress') }} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('tts')} onTouchEnd={(e)=>{ e.preventDefault(); goRoute('tts') }} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
         </div>
         <div className="topBarRowBooks">
           {books.map(b=>(
@@ -526,7 +526,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           </div>
           <div className="topBarRow2Right">
             <div className="pill">Streak {stats.streak}🔥</div>
-            <div className="pill">Today {dueCount}</div>
+            <div className="pill">Today vocab {dueCount}</div>
           </div>
         </div>
       </header>
@@ -564,13 +564,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           <div className="sep" />
           <div className="grid">
             {byTheme.map(t=>(
-              <div
+              <button
                 key={t.id}
-                role="button"
-                tabIndex={0}
                 onClick={()=>startTheme(t.id)}
-                onTouchEnd={(e)=>{ e.preventDefault(); startTheme(t.id) }}
-                onKeyDown={e=>{ if(e.key==='Enter' || e.key===' ') startTheme(t.id) }}
+                type="button"
                 className="card"
                 style={{padding:12, textAlign:'left', width:'100%', cursor:'pointer'}}
                 title={`Start theme ${t.title}`}
@@ -579,7 +576,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
                 <div className="small" style={{marginTop:6}}>Due reviews: {t.dueReview}</div>
                 <div className="small">Unseen: {t.unseen}</div>
                 <div className="small">Total: {t.total}</div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -790,18 +787,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             </div>
             <div className="studyTopActions">
               {cur.kind==='vocab' && <button onClick={()=>speak(cur.vocab.article ? `${cur.vocab.article} ${cur.vocab.nl}` : cur.vocab.nl)} title="Hear the Dutch word">🔊</button>}
-              <div>
-                <div className="small">Practice</div>
-                <select
-                  value={practiceMode}
-                  onChange={e=>setPractice(e.target.value as 'mixed'|'vocab'|'grammar')}
-                  onInput={e=>setPractice((e.target as HTMLSelectElement).value as 'mixed'|'vocab'|'grammar')}
-                >
-                  <option value="mixed">Mixed: Vocabulary + Grammar</option>
-                  <option value="vocab">Vocabulary only</option>
-                  <option value="grammar">Grammar only</option>
-                </select>
-              </div>
               <button onClick={()=>setStudyContinueMode(v=>!v)}>{studyContinueMode ? 'Planned only' : 'Continue'}</button>
             </div>
           </div>
@@ -1012,22 +997,22 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           </div>
           <div className="cockpitMetric">
             <span className="cockpitMetricValue">{dueCount}</span>
-            <span className="cockpitMetricLabel">Due now</span>
+            <span className="cockpitMetricLabel">Due vocab now</span>
           </div>
           <div className="cockpitMetric">
             <span className="cockpitMetricValue">{stats.newToday}</span>
-            <span className="cockpitMetricLabel">New today</span>
+            <span className="cockpitMetricLabel">New vocab today</span>
           </div>
         </div>
 
         <div className="cockpitGrid">
           <div className="card cockpitCard">
             <div className="cockpitCardTitle">Daily Practice</div>
-            <div className="cockpitCardSubtitle">Reviews & new cards</div>
+            <div className="cockpitCardSubtitle">Mixed practice (vocabulary + grammar)</div>
             <div className="themeBarTrack" style={{marginTop:12,marginBottom:8}}>
               <div className="themeBarSegment mastered" style={{width:`${Math.min(100, Math.round(100*stats.reviewsToday/Math.max(1,settings.dailyTarget)))}%`}} />
             </div>
-            <div className="small">Today: <strong>{stats.reviewsToday}</strong> reviews · <strong>{stats.newToday}</strong> new</div>
+            <div className="small">Today: <strong>{stats.reviewsToday}</strong> answers · <strong>{stats.newToday}</strong> new vocabulary</div>
             <div className="targetGrid" style={{marginTop:12}}>
               <div>
                 <div className="small">Daily target</div>
@@ -1054,7 +1039,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
 
           <div className="card cockpitCard">
             <div className="cockpitCardTitle">De of Het</div>
-            <div className="cockpitCardSubtitle">Article practice</div>
+            <div className="cockpitCardSubtitle">Standalone drill</div>
             <div className="cockpitStatRow">
               <span className="cockpitStatBig">{deofhetPct}%</span>
               <span className="small"><strong>{deofhetData.stats.correct}</strong> / {deofhetData.stats.total} correct · <strong>{Object.keys(deofhetData.stats.mastered||{}).length}</strong> mastered</span>
@@ -1079,7 +1064,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
 
           <div className="card cockpitCard">
             <div className="cockpitCardTitle">Grammar</div>
-            <div className="cockpitCardSubtitle">Verb conjugation</div>
+            <div className="cockpitCardSubtitle">Standalone drill</div>
             <div className="cockpitStatRow">
               <span className="cockpitStatBig">{grammarPct}%</span>
               <span className="small"><strong>{grammarData.stats.correct}</strong> / {grammarData.stats.total} correct · <strong>{Object.keys(grammarData.stats.mastered||{}).length}</strong> mastered</span>
