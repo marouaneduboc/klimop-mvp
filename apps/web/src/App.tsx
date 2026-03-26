@@ -807,35 +807,35 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               </div>
             </div>
             <div className="studyTopActions">
-              {cur.kind==='vocab' && <button onClick={()=>runPress(()=>speak(cur.vocab.article ? `${cur.vocab.article} ${cur.vocab.nl}` : cur.vocab.nl))} onPointerUp={()=>runPress(()=>speak(cur.vocab.article ? `${cur.vocab.article} ${cur.vocab.nl}` : cur.vocab.nl))} title="Hear the Dutch word">🔊</button>}
-              <button onClick={()=>runPress(()=>setStudyContinueMode(v=>!v))} onPointerUp={()=>runPress(()=>setStudyContinueMode(v=>!v))}>{studyContinueMode ? 'Planned only' : 'Continue'}</button>
+              {cur.kind==='vocab' && <button onClick={()=>runPress(()=>speak(cur.vocab.article ? `${cur.vocab.article} ${cur.vocab.nl}` : cur.vocab.nl))} title="Hear the Dutch word">🔊</button>}
+              <button onClick={()=>runPress(()=>setStudyContinueMode(v=>!v))}>{studyContinueMode ? 'Planned only' : 'Continue'}</button>
             </div>
           </div>
           <div className="row practiceModeQuick">
-            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='mixed'?700:500}} onClick={()=>runPress(()=>setPractice('mixed'))} onPointerUp={()=>runPress(()=>setPractice('mixed'))}>Both</button>
-            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='vocab'?700:500}} onClick={()=>runPress(()=>setPractice('vocab'))} onPointerUp={()=>runPress(()=>setPractice('vocab'))}>Vocabulary</button>
-            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='grammar'?700:500}} onClick={()=>runPress(()=>setPractice('grammar'))} onPointerUp={()=>runPress(()=>setPractice('grammar'))}>Grammar</button>
+            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='mixed'?700:500}} onClick={()=>runPress(()=>setPractice('mixed'))}>Both</button>
+            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='vocab'?700:500}} onClick={()=>runPress(()=>setPractice('vocab'))}>Vocabulary</button>
+            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='grammar'?700:500}} onClick={()=>runPress(()=>setPractice('grammar'))}>Grammar</button>
           </div>
 
           <div className="sep" />
           {cur.kind==='vocab' ? (
             <>
               <div className="bigword">{cur.vocab.en ?? '—'}</div>
-              <button type="button" className="flipCard" onClick={()=>runPress(()=>setShowTranslation(v=>!v))} onPointerUp={()=>runPress(()=>setShowTranslation(v=>!v))}>
+              <button type="button" className="flipCard" onClick={()=>runPress(()=>setShowTranslation(v=>!v))}>
                 <div className="small">Flip card</div>
                 <div style={{marginTop:6, textAlign:'center'}}>
                   {showTranslation ? (cur.vocab.article ? `${cur.vocab.article} ` : '') + cur.vocab.nl : 'Tap to reveal Dutch'}
                 </div>
               </button>
-              <button type="button" className="clueCard" onClick={()=>runPress(()=>setShowClue(v=>!v))} onPointerUp={()=>runPress(()=>setShowClue(v=>!v))}>
+              <button type="button" className="clueCard" onClick={()=>runPress(()=>setShowClue(v=>!v))}>
                 {!showClue && <div style={{textAlign:'center'}}>Tap to reveal clue</div>}
                 {showClue && <div style={{textAlign:'center', fontSize:'2rem', fontWeight:'bold'}}>{generateClue(cur.vocab.nl)}</div>}
               </button>
               <div className="studyBottom">
                 <div className="row" style={{justifyContent:'center'}}>
-                  <button onClick={()=>runPress(toggleDifficult)} onPointerUp={()=>runPress(toggleDifficult)} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
-                  <button onClick={()=>runPress(()=>advance(cur,false))} onPointerUp={()=>runPress(()=>advance(cur,false))}>Incorrect</button>
-                  <button onClick={()=>runPress(()=>advance(cur,true))} onPointerUp={()=>runPress(()=>advance(cur,true))}>Correct</button>
+                  <button onClick={()=>runPress(toggleDifficult)} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
+                  <button onClick={()=>runPress(()=>advance(cur,false))}>Incorrect</button>
+                  <button onClick={()=>runPress(()=>advance(cur,true))}>Correct</button>
                 </div>
               </div>
             </>
@@ -849,7 +849,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
                 </div>
               )}
               <div className="row" style={{justifyContent:'center', marginBottom:10}}>
-                <button onClick={()=>runPress(toggleDifficult)} onPointerUp={()=>runPress(toggleDifficult)} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
+                <button onClick={()=>runPress(toggleDifficult)} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
               </div>
               <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
                 {cur.options.map(opt=>{
@@ -863,7 +863,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
                       key={opt}
                       className={`grammarOptionBtn${showGreen ? ' is-correct' : ''}${showRed ? ' is-wrong' : ''}`}
                       onClick={()=>runPress(()=>answerGrammar(opt))}
-                      onPointerUp={()=>runPress(()=>answerGrammar(opt))}
                       disabled={!!grammarFeedback}
                     >
                       {opt}
