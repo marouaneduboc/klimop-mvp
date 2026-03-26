@@ -465,7 +465,22 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         </div>
         <div className="topBarRowTools">
           <button type="button" onClick={()=>setRoute('deofhet')} className="pill topBarBookPill" style={{ fontWeight:route==='deofhet'?700:500, background:route==='deofhet'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}>De of Het</button>
-          <button type="button" onClick={()=>setRoute('grammar')} className="pill topBarBookPill" style={{ fontWeight:route==='grammar'?700:500, background:route==='grammar'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}>Grammar</button>
+          <button
+            type="button"
+            onClick={()=>{ setCurrentBookId('klimop'); setRoute('grammar') }}
+            className="pill topBarBookPill"
+            style={{ fontWeight:route==='grammar'&&currentBookId==='klimop'?700:500, background:route==='grammar'&&currentBookId==='klimop'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}
+          >
+            Grammar Klim Op
+          </button>
+          <button
+            type="button"
+            onClick={()=>{ setCurrentBookId('windmee'); setRoute('grammar') }}
+            className="pill topBarBookPill"
+            style={{ fontWeight:route==='grammar'&&currentBookId==='windmee'?700:500, background:route==='grammar'&&currentBookId==='windmee'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}
+          >
+            Grammar Wind mee
+          </button>
         </div>
         <div className="topBarRow2">
           <div className="profilePillWrap" ref={profileWrapRef}>
@@ -1440,47 +1455,48 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   }
   function topicExercise(themeTitle:string, subject:string, keyBase:string):GrammarTopicItem{
     const s = subject.toLowerCase()
+    const subjectSlug = s.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'topic'
     const common = { kind:'topic' as const, themeTitle, subject, bookId:keyBase.split(':')[0], themeId:Number(keyBase.split(':')[1]) }
     if(s.includes('niet') && s.includes('geen')){
-      return { ...common, key:`${keyBase}:niet-geen`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Ik heb geen geld.', options:shuffle(['Ik heb geen geld.','Ik heb niet geld.','Ik niet heb geld.']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:niet-geen`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Ik heb geen geld.', options:shuffle(['Ik heb geen geld.','Ik heb niet geld.','Ik niet heb geld.']) }
     }
     if(s.includes('inversie')){
-      return { ...common, key:`${keyBase}:inversie`, prompt:`${themeTitle}: vul in (inversie) — "___ je morgen naar school?"`, correct:'Ga', options:shuffle(['Ga','Gaat','Gaan']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:inversie`, prompt:`${themeTitle}: vul in (inversie) — "___ je morgen naar school?"`, correct:'Ga', options:shuffle(['Ga','Gaat','Gaan']) }
     }
     if(s.includes('om...te') || s.includes('om') && s.includes('te')){
-      return { ...common, key:`${keyBase}:om-te`, prompt:`${themeTitle}: vul in — "Ik probeer Nederlands ___ leren."`, correct:'te', options:shuffle(['te','om','naar']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:om-te`, prompt:`${themeTitle}: vul in — "Ik probeer Nederlands ___ leren."`, correct:'te', options:shuffle(['te','om','naar']) }
     }
     if(s.includes('scheidbare')){
-      return { ...common, key:`${keyBase}:scheidbaar`, prompt:`${themeTitle}: welke zin is correct?`, correct:'Ik sta om zeven uur op.', options:shuffle(['Ik sta om zeven uur op.','Ik op sta om zeven uur.','Ik sta op om zeven uur ik.']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:scheidbaar`, prompt:`${themeTitle}: welke zin is correct?`, correct:'Ik sta om zeven uur op.', options:shuffle(['Ik sta om zeven uur op.','Ik op sta om zeven uur.','Ik sta op om zeven uur ik.']) }
     }
     if(s.includes('de/het/een') || s.includes('de/het')){
-      return { ...common, key:`${keyBase}:dehet`, prompt:`${themeTitle}: kies het juiste lidwoord`, correct:'de tafel', options:shuffle(['de tafel','het tafel','een tafel het']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:dehet`, prompt:`${themeTitle}: kies het juiste lidwoord`, correct:'de tafel', options:shuffle(['de tafel','het tafel','een tafel het']) }
     }
     if(s.includes('verleden tijd')){
-      return { ...common, key:`${keyBase}:past`, prompt:`${themeTitle}: kies de juiste vorm — "Gisteren ___ ik thuis."`, correct:'was', options:shuffle(['was','ben','is']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:past`, prompt:`${themeTitle}: kies de juiste vorm — "Gisteren ___ ik thuis."`, correct:'was', options:shuffle(['was','ben','is']) }
     }
     if(s.includes('zullen')){
-      return { ...common, key:`${keyBase}:zullen`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Zullen we morgen afspreken?', options:shuffle(['Zullen we morgen afspreken?','Zullen we afspreken morgen we?','Zult we morgen afspreken?']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:zullen`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Zullen we morgen afspreken?', options:shuffle(['Zullen we morgen afspreken?','Zullen we afspreken morgen we?','Zult we morgen afspreken?']) }
     }
     if(s.includes('want') || s.includes('maar') || s.includes('dus') || s.includes('omdat')){
-      return { ...common, key:`${keyBase}:conj`, prompt:`${themeTitle}: kies de beste voegwoord-zin`, correct:'Ik blijf thuis, omdat ik moe ben.', options:shuffle(['Ik blijf thuis, omdat ik moe ben.','Ik blijf thuis omdat ben ik moe.','Ik blijf thuis, omdat moe ik ben.']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:conj`, prompt:`${themeTitle}: kies de beste voegwoord-zin`, correct:'Ik blijf thuis, omdat ik moe ben.', options:shuffle(['Ik blijf thuis, omdat ik moe ben.','Ik blijf thuis omdat ben ik moe.','Ik blijf thuis, omdat moe ik ben.']) }
     }
     if(s.includes('er als plaats') || s.includes('er + getal') || s.includes('er als onbepaald onderwerp')){
-      return { ...common, key:`${keyBase}:er`, prompt:`${themeTitle}: kies de juiste zin met "er"`, correct:'Er staan drie fietsen buiten.', options:shuffle(['Er staan drie fietsen buiten.','Staan er drie fietsen buiten er.','Er drie fietsen staan buiten.']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:er`, prompt:`${themeTitle}: kies de juiste zin met "er"`, correct:'Er staan drie fietsen buiten.', options:shuffle(['Er staan drie fietsen buiten.','Staan er drie fietsen buiten er.','Er drie fietsen staan buiten.']) }
     }
     if(s.includes('bijvoeglijk') || s.includes('vergelijken')){
-      return { ...common, key:`${keyBase}:adj`, prompt:`${themeTitle}: kies de juiste vergelijking`, correct:'Deze jas is goedkoper dan die jas.', options:shuffle(['Deze jas is goedkoper dan die jas.','Deze jas is goedkoopste dan die jas.','Deze jas is meest goedkoop dan die jas.']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:adj`, prompt:`${themeTitle}: kies de juiste vergelijking`, correct:'Deze jas is goedkoper dan die jas.', options:shuffle(['Deze jas is goedkoper dan die jas.','Deze jas is goedkoopste dan die jas.','Deze jas is meest goedkoop dan die jas.']) }
     }
     if(s.includes('persoonlijk voornaamwoord')){
-      return { ...common, key:`${keyBase}:pron`, prompt:`${themeTitle}: kies het juiste voornaamwoord`, correct:'Wij gaan naar school.', options:shuffle(['Wij gaan naar school.','Ons gaan naar school.','Wij gaat naar school.']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:pron`, prompt:`${themeTitle}: kies het juiste voornaamwoord`, correct:'Wij gaan naar school.', options:shuffle(['Wij gaan naar school.','Ons gaan naar school.','Wij gaat naar school.']) }
     }
     if(s.includes('meervoud')){
-      return { ...common, key:`${keyBase}:plural`, prompt:`${themeTitle}: kies het meervoud`, correct:'de kinderen', options:shuffle(['de kinderen','de kinderens','het kinderen']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:plural`, prompt:`${themeTitle}: kies het meervoud`, correct:'de kinderen', options:shuffle(['de kinderen','de kinderens','het kinderen']) }
     }
     if(s.includes('als') || s.includes('dat') || s.includes('toen')){
-      return { ...common, key:`${keyBase}:alsdat`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Ik denk dat hij morgen komt.', options:shuffle(['Ik denk dat hij morgen komt.','Ik denk als hij morgen komt.','Ik denk dat komt hij morgen.']) }
+      return { ...common, key:`${keyBase}:${subjectSlug}:alsdat`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Ik denk dat hij morgen komt.', options:shuffle(['Ik denk dat hij morgen komt.','Ik denk als hij morgen komt.','Ik denk dat komt hij morgen.']) }
     }
-    return { ...common, key:`${keyBase}:focus`, prompt:`${themeTitle}: welke grammaticale focus hoort bij deze les?`, correct:subject, options:shuffle([subject,'werkwoordvolgorde in bijzin','bezittelijk voornaamwoord']) }
+    return { ...common, key:`${keyBase}:${subjectSlug}:focus`, prompt:`${themeTitle}: welke grammaticale focus hoort bij deze les?`, correct:subject, options:shuffle([subject,'werkwoordvolgorde in bijzin','bezittelijk voornaamwoord']) }
   }
 
   function Grammar({ currentUserId, currentBookId, speak }:{ currentUserId:string; currentBookId:string; speak:(t:string)=>Promise<void> }){
@@ -1488,10 +1504,9 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const [grammarData,setGrammarData]=useState<GrammarData|null>(null)
     useEffect(()=>{ fetchJSON<GrammarData>('content/grammar.json').then(setGrammarData).catch(()=>{}) },[])
     const bookIds = useMemo(()=>Object.keys(GRAMMAR_BOOK_THEMES),[])
-    const [selectedBookId,setSelectedBookId]=useState<string>(bookIds.includes(currentBookId) ? currentBookId : bookIds[0])
+    const selectedBookId = useMemo(()=>bookIds.includes(currentBookId) ? currentBookId : bookIds[0],[bookIds,currentBookId])
     const [selectedThemeId,setSelectedThemeId]=useState<number>(1)
     const [track,setTrack]=useState<'conjugation'|'topics'>('conjugation')
-    useEffect(()=>{ if(bookIds.includes(currentBookId)) setSelectedBookId(currentBookId) },[currentBookId,bookIds])
     useEffect(()=>{
       const themes = GRAMMAR_BOOK_THEMES[selectedBookId]||[]
       if(!themes.some(t=>t.id===selectedThemeId)) setSelectedThemeId(themes[0]?.id ?? 1)
@@ -1678,7 +1693,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       setCard({ cur:next, options:all })
       // triggerPick: advance after answer timeout. fullPool: run when data first loads.
       // Do NOT depend on pickNext (it changes when stats changes and would wipe feedback).
-    },[triggerPick,scopedConjugationPool,scopedTopicPool,pickNext])
+    },[triggerPick,track,selectedBookId,selectedThemeId,scopedConjugationPool,scopedTopicPool])
 
     function answer(guess:string){
       if(!cur) return
@@ -1693,7 +1708,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       setFeedback(correct?'correct':'wrong')
       if(!correct) setSessionWrong(w=>w.includes(cur.key)?w:[...w,cur.key])
       else setPicksSinceWrong(p=>p+1)
-      setTimeout(()=>setTriggerPick(t=>t+1),correct?800:1400)
+      setTimeout(()=>setTriggerPick(t=>t+1),correct?1200:1800)
     }
 
     const pct = stats.total>0 ? Math.round(100*stats.correct/stats.total) : 0
@@ -1718,16 +1733,13 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         <div className="card deofhetCard">
           <div className="deofhetHeader">
             <div className="h1">Grammar</div>
-            <div className="h2">Book and chapter based progression</div>
+            <div className="h2">{selectedBookId==='klimop' ? 'Klim Op' : 'Wind mee'} - book and chapter based progression</div>
             <div className="row" style={{flexWrap:'wrap',gap:8,alignItems:'center'}}>
             <div className="deofhetStats">
               <span className="deofhetStatPill correct">{stats.correct} correct</span>
               <span className="deofhetStatPill total">{stats.total} total</span>
               <span className="deofhetStatPill pct">{pct}%</span>
             </div>
-            <select value={selectedBookId} onChange={e=>setSelectedBookId(e.target.value)}>
-              {bookIds.map(id=><option key={id} value={id}>{id==='klimop'?'Klim Op':'Wind mee'}</option>)}
-            </select>
             <select value={selectedThemeId} onChange={e=>setSelectedThemeId(Number(e.target.value))}>
               {(GRAMMAR_BOOK_THEMES[selectedBookId]||[]).map(t=><option key={t.id} value={t.id}>Theme {t.id}: {t.title}</option>)}
             </select>
@@ -1746,14 +1758,14 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           </div>
           <div className="sep" />
           <div className="small" style={{marginBottom:10}}>
-            {(GRAMMAR_BOOK_THEMES[selectedBookId]||[]).find(t=>t.id===selectedThemeId)?.subjects.join(' • ')}
+            Focus: {cur?.kind==='topic' ? cur.subject : 'Conjugation'}
           </div>
           {cur && (
             <div key={triggerPick} className="grammarCardContent">
               <div className="h2" style={{marginBottom:8}}>
                 {cur.kind==='conjugation'
                   ? `${cur.verb.en} — ${cur.tense}${cur.person ? ` — ${cur.person}` : ''}`
-                  : `${cur.themeTitle} — ${cur.subject}`}
+                  : `${cur.themeTitle}`}
               </div>
               {feedback && (
                 <div className={`deofhetWord feedback-${feedback}`} style={{fontSize:28}}>
