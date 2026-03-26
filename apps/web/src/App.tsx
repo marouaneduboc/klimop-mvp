@@ -435,9 +435,12 @@ function DailyPractice({
       .sort((a,b)=>(reviewsMap[a.id]?.due||Number.MAX_SAFE_INTEGER)-(reviewsMap[b.id]?.due||Number.MAX_SAFE_INTEGER))
     const unseenVocab = activeDeck.filter(c=>c.kind==='vocab' && !reviewsMap[c.id] && !studySeenSession[c.id] && !sessionWrongIds.has(c.id))
     const unseenGrammar = activeDeck.filter(c=>c.kind==='grammar' && !reviewsMap[c.id] && !studySeenSession[c.id] && !sessionWrongIds.has(c.id))
-    const newSlotsVocab = Math.max(0, settings.newPerDay - stats.newToday)
-    const newVocabPart = studyContinueMode ? unseenVocab : unseenVocab.slice(0,newSlotsVocab)
-    const newPart = [...newVocabPart, ...unseenGrammar]
+    const unseenCombined =
+      practiceMode==='vocab' ? unseenVocab :
+      practiceMode==='grammar' ? unseenGrammar :
+      interleaveAlternating(unseenVocab, unseenGrammar)
+    const newSlots = Math.max(0, settings.newPerDay - stats.newToday)
+    const newPart = studyContinueMode ? unseenCombined : unseenCombined.slice(0,newSlots)
     const seen = new Set<string>()
     const main = [...difficultPart, ...dueReviews, ...newPart].filter(c=>{
       if(seen.has(c.id)) return false
@@ -784,18 +787,27 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     if(!course) return 0
     const now=Date.now()
     const sk=(id:string)=>scopedKey(currentBookId,id)
-    const dueReviews = course.vocab.filter(v=>{
+    const dueVocab = course.vocab.filter(v=>{
       const r = reviewsMap[sk(v.id)]
       return !!r && r.due<=now
     })
-    const difficultRepeat = course.vocab.filter(v=>{
+    const difficultVocab = course.vocab.filter(v=>{
       if(!difficultMap[sk(v.id)]) return false
       const r = reviewsMap[sk(v.id)]
       return !r || r.due>now
     }).length
-    const unseen = course.vocab.filter(v=>!reviewsMap[sk(v.id)]).length
+    const grammarTotal = (GRAMMAR_BOOK_THEMES[currentBookId] || []).reduce((n,t)=>n+t.subjects.length,0)
+    const grammarReviewKeys = Object.keys(reviewsMap).filter(id=>id.startsWith(`grammar:${currentBookId}:`))
+    const dueGrammar = grammarReviewKeys.filter(id=>(reviewsMap[id]?.due ?? Number.MAX_SAFE_INTEGER)<=now).length
+    const unseenGrammar = Math.max(0, grammarTotal - grammarReviewKeys.length)
+    const difficultGrammar = Object.keys(difficultMap).filter(id=>{
+      if(!id.startsWith(`grammar:${currentBookId}:`) || !difficultMap[id]) return false
+      const r = reviewsMap[id]
+      return !r || r.due>now
+    }).length
+    const unseen = course.vocab.filter(v=>!reviewsMap[sk(v.id)]).length + unseenGrammar
     const newSlots = Math.max(0, settings.newPerDay - stats.newToday)
-    return Math.min(settings.dailyTarget, dueReviews.length + difficultRepeat + Math.min(unseen, newSlots))
+    return Math.min(settings.dailyTarget, dueVocab.length + dueGrammar + difficultVocab + difficultGrammar + Math.min(unseen, newSlots))
   },[course,currentBookId,reviewsMap,difficultMap,stats.newToday,settings.dailyTarget,settings.newPerDay])
 
   function refreshVoices(){
@@ -985,7 +997,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           </div>
           <div className="topBarRow2Right">
             <div className="pill">Streak {stats.streak}🔥</div>
-            <div className="pill">Today vocab {dueCount}</div>
+            <div className="pill">Today cards {dueCount}</div>
           </div>
         </div>
       </header>
@@ -1167,11 +1179,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           </div>
           <div className="cockpitMetric">
             <span className="cockpitMetricValue">{dueCount}</span>
-            <span className="cockpitMetricLabel">Due vocab now</span>
+            <span className="cockpitMetricLabel">Due cards now</span>
           </div>
           <div className="cockpitMetric">
             <span className="cockpitMetricValue">{stats.newToday}</span>
-            <span className="cockpitMetricLabel">New vocab today</span>
+            <span className="cockpitMetricLabel">New cards today</span>
           </div>
         </div>
 
@@ -1182,7 +1194,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <div className="themeBarTrack" style={{marginTop:12,marginBottom:8}}>
               <div className="themeBarSegment mastered" style={{width:`${Math.min(100, Math.round(100*stats.reviewsToday/Math.max(1,settings.dailyTarget)))}%`}} />
             </div>
-            <div className="small">Today: <strong>{stats.reviewsToday}</strong> answers · <strong>{stats.newToday}</strong> new vocabulary</div>
+            <div className="small">Today: <strong>{stats.reviewsToday}</strong> answers · <strong>{stats.newToday}</strong> new cards</div>
             <div className="targetGrid" style={{marginTop:12}}>
               <div>
                 <div className="small">Daily target</div>
