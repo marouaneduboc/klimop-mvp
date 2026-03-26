@@ -224,7 +224,351 @@ export default function App(){
   },[currentUserId,users])
   useEffect(()=>{ saveJSON(USERS_LIST_KEY,users) },[users])
 
-  return <AppContent key={currentUserId} currentUserId={currentUserId} users={users} setUsers={setUsers} setCurrentUserId={setCurrentUserId} />
+  return <AppContent currentUserId={currentUserId} users={users} setUsers={setUsers} setCurrentUserId={setCurrentUserId} />
+}
+
+function DailyPractice({
+  course,
+  currentUserId,
+  currentBookId,
+  studyTheme,
+  setStudyTheme,
+  settings,
+  stats,
+  setStats,
+  reviewsMap,
+  setReviewsMap,
+  difficultMap,
+  setDifficultMap,
+  studySeenSession,
+  setStudySeenSession,
+  studyContinueMode,
+  setStudyContinueMode,
+  speak,
+}:{
+  course:Course
+  currentUserId:string
+  currentBookId:string
+  studyTheme:number
+  setStudyTheme:(v:number)=>void
+  settings:Settings
+  stats:Stats
+  setStats:(s:Stats)=>void
+  reviewsMap:Record<string,Review>
+  setReviewsMap:(m:Record<string,Review>)=>void
+  difficultMap:Record<string,boolean>
+  setDifficultMap:(m:Record<string,boolean>|((p:Record<string,boolean>)=>Record<string,boolean>))=>void
+  studySeenSession:Record<string,boolean>
+  setStudySeenSession:(m:Record<string,boolean>|((p:Record<string,boolean>)=>Record<string,boolean>))=>void
+  studyContinueMode:boolean
+  setStudyContinueMode:(v:boolean|((p:boolean)=>boolean))=>void
+  speak:(t:string)=>Promise<void>
+}){
+  type StudyCard =
+    | { kind:'vocab'; id:string; theme:number; title:string; vocab:Vocab }
+    | { kind:'grammar'; id:string; theme:number; title:string; prompt:string; correct:string; options:string[]; subject:string }
+  const [practiceMode,setPracticeMode]=useState<'mixed'|'vocab'|'grammar'>('mixed')
+  const [showTranslation,setShowTranslation]=useState(false)
+  const [showClue,setShowClue]=useState(false)
+  const [sessionWrongIds,setSessionWrongIds]=useState<Set<string>>(new Set())
+  const [skipWrongCardId,setSkipWrongCardId]=useState<string | null>(null)
+  const [grammarFeedback,setGrammarFeedback]=useState<'correct'|'wrong'|null>(null)
+  const [grammarChosen,setGrammarChosen]=useState<string | null>(null)
+  const buildDailyTopicExercise = (themeTitle:string, subject:string, keyBase:string)=>{
+    const s = subject.toLowerCase()
+    const subjectSlug = s.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'topic'
+    if(s.includes('niet') && s.includes('geen')){
+      return { key:`${keyBase}:${subjectSlug}:niet-geen`, prompt:`${themeTitle}: kies de juiste zin`, correct:'Ik heb geen geld.', options:['Ik heb geen geld.','Ik heb niet geld.','Ik niet heb geld.'] }
+    }
+    if(s.includes('inversie')){
+      return { key:`${keyBase}:${subjectSlug}:inversie`, prompt:`${themeTitle}: vul in (inversie) — "___ je morgen naar school?"`, correct:'Ga', options:['Ga','Gaat','Gaan'] }
+    }
+    if(s.includes('voorzetsels van plaats') || s.includes('positiewerkwoorden')){
+      return { key:`${keyBase}:${subjectSlug}:plaats`, prompt:`${themeTitle}: kies de correcte zin (plaats + positiewerkwoord)`, correct:'De lamp hangt boven de tafel.', options:['De lamp hangt boven de tafel.','De lamp ligt boven de tafel.','De lamp staat boven de tafel.'] }
+    }
+    return { key:`${keyBase}:${subjectSlug}:focus`, prompt:`${themeTitle}: welke grammaticale focus hoort bij deze les?`, correct:subject, options:[subject,'werkwoordvolgorde in bijzin','bezittelijk voornaamwoord'] }
+  }
+  const setPractice = (next:'mixed'|'vocab'|'grammar')=>{
+    setPracticeMode(next)
+    setSessionWrongIds(new Set())
+    setSkipWrongCardId(null)
+    setStudySeenSession({})
+    setGrammarFeedback(null)
+    setGrammarChosen(null)
+  }
+  const sk=(id:string)=>scopedKey(currentBookId,id)
+  const themesInScope = useMemo(
+    ()=> studyTheme===0 ? course.themes.map(t=>t.id) : [studyTheme],
+    [studyTheme, course]
+  )
+
+  const vocabDeck = useMemo<StudyCard[]>(
+    ()=>course.vocab
+      .filter(v=>themesInScope.includes(v.theme))
+      .map(v=>({ kind:'vocab', id:sk(v.id), theme:v.theme, title:v.en ?? v.nl, vocab:v })),
+    [course,themesInScope,currentBookId]
+  )
+  const grammarDeck = useMemo<StudyCard[]>(()=>{
+    const plans = GRAMMAR_BOOK_THEMES[currentBookId] || []
+    const out:StudyCard[] = []
+    for(const p of plans){
+      if(!themesInScope.includes(p.id)) continue
+      for(const subject of p.subjects){
+          const ex = buildDailyTopicExercise(p.title, subject, `${currentBookId}:${p.id}`)
+        out.push({
+          kind:'grammar',
+          id:`grammar:${currentBookId}:${p.id}:${ex.key}`,
+          theme:p.id,
+          title:`${p.title} - ${subject}`,
+          prompt:ex.prompt,
+          correct:ex.correct,
+          options:ex.options,
+          subject,
+        })
+      }
+    }
+    return out
+  },[currentBookId,themesInScope])
+  const activeDeck = useMemo(()=>{
+    if(practiceMode==='vocab') return vocabDeck
+    if(practiceMode==='grammar') return grammarDeck
+    return interleaveAlternating(vocabDeck, grammarDeck)
+  },[practiceMode,vocabDeck,grammarDeck])
+
+  const queue = useMemo(()=>{
+    const now = Date.now()
+    const sessionWrongRetry = activeDeck.filter(c=>sessionWrongIds.has(c.id))
+    const dueReviews = activeDeck
+      .filter(c=>{
+        if(sessionWrongIds.has(c.id)) return false
+        const r=reviewsMap[c.id]
+        if(!r || r.due>now) return false
+        const step = r.learningStep ?? 0
+        if(step>0) return true
+        return !studySeenSession[c.id]
+      })
+      .sort((a,b)=>{
+        const ra=reviewsMap[a.id], rb=reviewsMap[b.id]
+        const sa=ra?.learningStep??0, sb=rb?.learningStep??0
+        if((sa>0)!==(sb>0)) return sa>0?-1:1
+        return (ra?.due??0)-(rb?.due??0)
+      })
+    const difficultPart = activeDeck
+      .filter(c=>{
+        if(sessionWrongIds.has(c.id)) return false
+        if(!difficultMap[c.id]) return false
+        if(studySeenSession[c.id]) return false
+        const r = reviewsMap[c.id]
+        if(r && (r.learningStep ?? 0) > 0) return false
+        return !r || r.due>now
+      })
+      .sort((a,b)=>(reviewsMap[a.id]?.due||Number.MAX_SAFE_INTEGER)-(reviewsMap[b.id]?.due||Number.MAX_SAFE_INTEGER))
+    const unseenVocab = activeDeck.filter(c=>c.kind==='vocab' && !reviewsMap[c.id] && !studySeenSession[c.id] && !sessionWrongIds.has(c.id))
+    const unseenGrammar = activeDeck.filter(c=>c.kind==='grammar' && !reviewsMap[c.id] && !studySeenSession[c.id] && !sessionWrongIds.has(c.id))
+    const newSlotsVocab = Math.max(0, settings.newPerDay - stats.newToday)
+    const newVocabPart = studyContinueMode ? unseenVocab : unseenVocab.slice(0,newSlotsVocab)
+    const newPart = [...newVocabPart, ...unseenGrammar]
+    const seen = new Set<string>()
+    const main = [...difficultPart, ...dueReviews, ...newPart].filter(c=>{
+      if(seen.has(c.id)) return false
+      seen.add(c.id)
+      return true
+    })
+    const wrongList = sessionWrongRetry.filter(c=>!seen.has(c.id))
+    const mainWithoutSkip = skipWrongCardId ? main.filter(c=>c.id!==skipWrongCardId) : main
+    const shouldSkip = !!skipWrongCardId && mainWithoutSkip.length>0
+    const effectiveMain = shouldSkip ? mainWithoutSkip : main
+    const effectiveWrongList = shouldSkip && skipWrongCardId ? wrongList.filter(c=>c.id!==skipWrongCardId) : wrongList
+    const merged = interleaveAfter(effectiveMain,effectiveWrongList,3)
+    return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
+  },[activeDeck,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
+
+  const cur=queue[0]
+  const answeredSessionCount = Object.keys(studySeenSession).length
+  const plannedTotal = answeredSessionCount + queue.length
+  const currentPos = plannedTotal===0 ? 0 : Math.min(plannedTotal, answeredSessionCount + 1)
+
+  useEffect(()=>{
+    setShowTranslation(false)
+    setShowClue(false)
+    setGrammarFeedback(null)
+    setGrammarChosen(null)
+    if(skipWrongCardId && cur?.id !== skipWrongCardId) setSkipWrongCardId(null)
+  },[cur?.id, skipWrongCardId])
+  useEffect(()=>{
+    setSessionWrongIds(new Set())
+    setSkipWrongCardId(null)
+    setStudySeenSession({})
+    setGrammarFeedback(null)
+    setGrammarChosen(null)
+  },[studyTheme,practiceMode,currentBookId])
+  useEffect(()=>{
+    if(cur?.kind==='vocab' && settings.autoSpeak) speak(cur.vocab.nl)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[settings.autoSpeak,cur?.id])
+
+  function advance(card:StudyCard, correct:boolean){
+    const map={...reviewsMap}
+    const wasNew = !map[card.id]
+    const r=upsertReview(map,card.id)
+    gradeBinary(r,correct,difficultMap[card.id])
+    setReviewsMap(map)
+    const s={...stats}
+    s.reviewsToday+=1
+    if(correct) s.correctToday+=1
+    if(wasNew) s.newToday+=1
+    setStats(s)
+    saveJSON(userScopedKey(LS.stats,currentUserId),s)
+    const graduated = (r.learningStep ?? 0) === 0
+    if(correct){
+      if(graduated) setStudySeenSession(prev=>({ ...prev, [card.id]: true }))
+      setSessionWrongIds(prev=>{ const n=new Set(prev); n.delete(card.id); return n })
+    } else {
+      setSessionWrongIds(prev=>new Set(prev).add(card.id))
+    }
+    setSkipWrongCardId(card.id)
+  }
+  function toggleDifficult(){
+    if(!cur) return
+    setDifficultMap(m=>({ ...m, [cur.id]: !m[cur.id] }))
+  }
+  const generateClue = (word: string) => {
+    if (!word) return ''
+    const first = word[0].toUpperCase()
+    const rest = word.slice(1).split('').map(() => '_').join(' ')
+    return `${first} ${rest}`
+  }
+  function answerGrammar(guess:string){
+    if(!cur || cur.kind!=='grammar') return
+    const norm = (v:string)=>v.toLowerCase().trim()
+    const correct = norm(guess)===norm(cur.correct)
+    setGrammarChosen(guess)
+    setGrammarFeedback(correct?'correct':'wrong')
+    advance(cur, correct)
+    setTimeout(()=>{ setGrammarFeedback(null); setGrammarChosen(null) }, correct ? 1100 : 1700)
+  }
+
+  if(!cur){
+    return (
+      <div className="card">
+        <div className="h1">No cards in this plan</div>
+        <div className="h2">You reached today&apos;s target for this chapter selection.</div>
+        <div className="sep" />
+        <div className="row">
+          <button onClick={()=>setStudyContinueMode(true)}>Continue beyond target</button>
+          <button onClick={()=>setStudyTheme(0)}>Switch to all themes</button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="studyShell">
+      <div className="card studyMain">
+        <div className="row" style={{justifyContent:'space-between', alignItems:'flex-end'}}>
+          <div>
+            <div className="h1">Daily Practice</div>
+            <div className="h2">
+              {currentPos} / {plannedTotal} planned today
+              {studyTheme!==0 ? ` - ${course.themes.find(t=>t.id===studyTheme)?.title ?? ''}` : ' - All themes'}
+            </div>
+          </div>
+          <div className="studyTopActions">
+            {cur.kind==='vocab' && <button onClick={()=>{ void speak(cur.vocab.article ? `${cur.vocab.article} ${cur.vocab.nl}` : cur.vocab.nl) }} title="Hear the Dutch word">🔊</button>}
+            <button onClick={()=>setStudyContinueMode(v=>!v)}>{studyContinueMode ? 'Planned only' : 'Continue'}</button>
+          </div>
+        </div>
+        <div className="row practiceModeQuick">
+          <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='mixed'?700:500}} onClick={()=>setPractice('mixed')}>Both</button>
+          <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='vocab'?700:500}} onClick={()=>setPractice('vocab')}>Vocabulary</button>
+          <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='grammar'?700:500}} onClick={()=>setPractice('grammar')}>Grammar</button>
+        </div>
+
+        <div className="sep" />
+        {cur.kind==='vocab' ? (
+          <>
+            <div className="bigword">{cur.vocab.en ?? '—'}</div>
+            <button type="button" className="flipCard" onClick={()=>setShowTranslation(v=>!v)}>
+              <div className="small">Flip card</div>
+              <div style={{marginTop:6, textAlign:'center'}}>
+                {showTranslation ? (cur.vocab.article ? `${cur.vocab.article} ` : '') + cur.vocab.nl : 'Tap to reveal Dutch'}
+              </div>
+            </button>
+            <button type="button" className="clueCard" onClick={()=>setShowClue(v=>!v)}>
+              {!showClue && <div style={{textAlign:'center'}}>Tap to reveal clue</div>}
+              {showClue && <div style={{textAlign:'center', fontSize:'2rem', fontWeight:'bold'}}>{generateClue(cur.vocab.nl)}</div>}
+            </button>
+            <div className="studyBottom">
+              <div className="row" style={{justifyContent:'center'}}>
+                <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
+                <button onClick={()=>advance(cur,false)}>Incorrect</button>
+                <button onClick={()=>advance(cur,true)}>Correct</button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="h2" style={{textAlign:'center', marginBottom:8}}>{cur.title}</div>
+            <div className="bigword" style={{fontSize:34}}>{cur.prompt}</div>
+            {grammarFeedback && (
+              <div className={`deofhetFeedback feedback-${grammarFeedback}`}>
+                {grammarFeedback==='correct' ? <span>✓ Correct</span> : <span>✗ The answer is <strong>{cur.correct}</strong></span>}
+              </div>
+            )}
+            <div className="row" style={{justifyContent:'center', marginBottom:10}}>
+              <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
+            </div>
+            <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
+              {cur.options.map(opt=>{
+                const norm = (s:string)=>s.toLowerCase().trim()
+                const isCorrect = norm(opt)===norm(cur.correct)
+                const isChosenWrong = grammarFeedback&&grammarChosen!==null&&norm(grammarChosen)===norm(opt)&&!isCorrect
+                const showGreen = grammarFeedback&&isCorrect
+                const showRed = grammarFeedback&&!!isChosenWrong
+                return (
+                  <button
+                    key={opt}
+                    className={`grammarOptionBtn${showGreen ? ' is-correct' : ''}${showRed ? ' is-wrong' : ''}`}
+                    onClick={()=>answerGrammar(opt)}
+                    disabled={!!grammarFeedback}
+                  >
+                    {opt}
+                  </button>
+                )
+              })}
+            </div>
+          </>
+        )}
+      </div>
+
+      <div className="card studyQueue">
+        <div className="h1">Queue</div>
+        <div className="h2">Planned now: {queue.length} - {practiceMode==='mixed' ? 'Mixed' : (practiceMode==='vocab' ? 'Vocabulary' : 'Grammar')}</div>
+        <div className="sep" />
+        <div className="row" style={{marginBottom:8}}>
+          <button onClick={()=>setStudyTheme(0)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:studyTheme===0?'rgba(255,255,255,0.14)':'var(--panel)'}}>All themes</button>
+        </div>
+        <div className="small" style={{maxHeight:'clamp(260px, 34vh, 420px)',overflow:'auto'}}>
+          {course.themes.map(t=>{
+            const active = studyTheme===t.id
+            const count = activeDeck.filter(c=>c.theme===t.id).length
+            return (
+              <div key={t.id} style={{padding:'6px 0',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>
+                <button onClick={()=>setStudyTheme(t.id)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:active?'rgba(255,255,255,0.14)':'var(--panel)'}}>
+                  {t.title}
+                </button>
+                <div className="small" style={{marginTop:4}}>Cards in chapter: {count}</div>
+              </div>
+            )
+          })}
+        </div>
+        <div className="sep" />
+        <div className="small" style={{maxHeight:'clamp(260px, 34vh, 420px)',overflow:'auto'}}>
+          {queue.slice(0,20).map(v=><div key={v.id} style={{padding:'6px 0',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>{v.title}</div>)}
+        </div>
+      </div>
+    </div>
+  )
 }
 
 function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { currentUserId:string; users:string[]; setUsers:(u:string[]|((p:string[])=>string[]))=>void; setCurrentUserId:(u:string)=>void }){
@@ -606,302 +950,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <div className="pill">Reviews today {stats.reviewsToday}</div>
             <div className="pill">Correct {stats.correctToday}</div>
             <div className="pill">New {stats.newToday}</div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  function Study(){
-    if(!course) return null
-    type StudyCard =
-      | { kind:'vocab'; id:string; theme:number; title:string; vocab:Vocab }
-      | { kind:'grammar'; id:string; theme:number; title:string; prompt:string; correct:string; options:string[]; subject:string }
-    const [practiceMode,setPracticeMode]=useState<'mixed'|'vocab'|'grammar'>('mixed')
-    const [showTranslation,setShowTranslation]=useState(false)
-    const [showClue,setShowClue]=useState(false)
-    const [sessionWrongIds,setSessionWrongIds]=useState<Set<string>>(new Set())
-    const [skipWrongCardId,setSkipWrongCardId]=useState<string | null>(null)
-    const [grammarFeedback,setGrammarFeedback]=useState<'correct'|'wrong'|null>(null)
-    const [grammarChosen,setGrammarChosen]=useState<string | null>(null)
-    const setPractice = (next:'mixed'|'vocab'|'grammar')=>{
-      setPracticeMode(next)
-      setSessionWrongIds(new Set())
-      setSkipWrongCardId(null)
-      setStudySeenSession({})
-      setGrammarFeedback(null)
-      setGrammarChosen(null)
-    }
-    const sk=(id:string)=>scopedKey(currentBookId,id)
-    const themesInScope = useMemo(
-      ()=> studyTheme===0 ? course.themes.map(t=>t.id) : [studyTheme],
-      [studyTheme, course]
-    )
-
-    const vocabDeck = useMemo<StudyCard[]>(
-      ()=>course.vocab
-        .filter(v=>themesInScope.includes(v.theme))
-        .map(v=>({ kind:'vocab', id:sk(v.id), theme:v.theme, title:v.en ?? v.nl, vocab:v })),
-      [course,themesInScope,currentBookId]
-    )
-    const grammarDeck = useMemo<StudyCard[]>(()=>{
-      const plans = GRAMMAR_BOOK_THEMES[currentBookId] || []
-      const out:StudyCard[] = []
-      for(const p of plans){
-        if(!themesInScope.includes(p.id)) continue
-        for(const subject of p.subjects){
-          const ex = topicExercise(p.title, subject, `${currentBookId}:${p.id}`)
-          out.push({
-            kind:'grammar',
-            id:`grammar:${currentBookId}:${p.id}:${ex.key}`,
-            theme:p.id,
-            title:`${p.title} - ${subject}`,
-            prompt:ex.prompt,
-            correct:ex.correct,
-            options:ex.options,
-            subject,
-          })
-        }
-      }
-      return out
-    },[currentBookId,themesInScope])
-    const activeDeck = useMemo(()=>{
-      if(practiceMode==='vocab') return vocabDeck
-      if(practiceMode==='grammar') return grammarDeck
-      return interleaveAlternating(vocabDeck, grammarDeck)
-    },[practiceMode,vocabDeck,grammarDeck])
-
-    const queue = useMemo(()=>{
-      const now = Date.now()
-      const sessionWrongRetry = activeDeck.filter(c=>sessionWrongIds.has(c.id))
-      const dueReviews = activeDeck
-        .filter(c=>{
-          if(sessionWrongIds.has(c.id)) return false
-          const r=reviewsMap[c.id]
-          if(!r || r.due>now) return false
-          const step = r.learningStep ?? 0
-          if(step>0) return true
-          return !studySeenSession[c.id]
-        })
-        .sort((a,b)=>{
-          const ra=reviewsMap[a.id], rb=reviewsMap[b.id]
-          const sa=ra?.learningStep??0, sb=rb?.learningStep??0
-          if((sa>0)!==(sb>0)) return sa>0?-1:1
-          return (ra?.due??0)-(rb?.due??0)
-        })
-      const difficultPart = activeDeck
-        .filter(c=>{
-          if(sessionWrongIds.has(c.id)) return false
-          if(!difficultMap[c.id]) return false
-          if(studySeenSession[c.id]) return false
-          const r = reviewsMap[c.id]
-          if(r && (r.learningStep ?? 0) > 0) return false
-          return !r || r.due>now
-        })
-        .sort((a,b)=>(reviewsMap[a.id]?.due||Number.MAX_SAFE_INTEGER)-(reviewsMap[b.id]?.due||Number.MAX_SAFE_INTEGER))
-      const unseenVocab = activeDeck.filter(c=>c.kind==='vocab' && !reviewsMap[c.id] && !studySeenSession[c.id] && !sessionWrongIds.has(c.id))
-      const unseenGrammar = activeDeck.filter(c=>c.kind==='grammar' && !reviewsMap[c.id] && !studySeenSession[c.id] && !sessionWrongIds.has(c.id))
-      const newSlotsVocab = Math.max(0, settings.newPerDay - stats.newToday)
-      const newVocabPart = studyContinueMode ? unseenVocab : unseenVocab.slice(0,newSlotsVocab)
-      // Grammar items are exercise drills; they should not be blocked by vocab new-card caps.
-      const newPart = [...newVocabPart, ...unseenGrammar]
-      const seen = new Set<string>()
-      const main = [...difficultPart, ...dueReviews, ...newPart].filter(c=>{
-        if(seen.has(c.id)) return false
-        seen.add(c.id)
-        return true
-      })
-      const wrongList = sessionWrongRetry.filter(c=>!seen.has(c.id))
-      const mainWithoutSkip = skipWrongCardId ? main.filter(c=>c.id!==skipWrongCardId) : main
-      const shouldSkip = !!skipWrongCardId && mainWithoutSkip.length>0
-      const effectiveMain = shouldSkip ? mainWithoutSkip : main
-      const effectiveWrongList = shouldSkip && skipWrongCardId ? wrongList.filter(c=>c.id!==skipWrongCardId) : wrongList
-      const merged = interleaveAfter(effectiveMain,effectiveWrongList,3)
-      return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
-    },[activeDeck,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
-
-    const cur=queue[0]
-    const answeredSessionCount = Object.keys(studySeenSession).length
-    const plannedTotal = answeredSessionCount + queue.length
-    const currentPos = plannedTotal===0 ? 0 : Math.min(plannedTotal, answeredSessionCount + 1)
-
-    useEffect(()=>{
-      setShowTranslation(false)
-      setShowClue(false)
-      setGrammarFeedback(null)
-      setGrammarChosen(null)
-      if(skipWrongCardId && cur?.id !== skipWrongCardId) setSkipWrongCardId(null)
-    },[cur?.id, skipWrongCardId])
-    useEffect(()=>{
-      setSessionWrongIds(new Set())
-      setSkipWrongCardId(null)
-      setStudySeenSession({})
-      setGrammarFeedback(null)
-      setGrammarChosen(null)
-    },[studyTheme,practiceMode,currentBookId])
-    useEffect(()=>{
-      if(cur?.kind==='vocab' && settings.autoSpeak) speak(cur.vocab.nl)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[settings.autoSpeak,cur?.id])
-
-    function advance(card:StudyCard, correct:boolean){
-      const map={...reviewsMap}
-      const wasNew = !map[card.id]
-      const r=upsertReview(map,card.id)
-      gradeBinary(r,correct,difficultMap[card.id])
-      setReviewsMap(map)
-      const s={...stats}
-      s.reviewsToday+=1
-      if(correct) s.correctToday+=1
-      if(wasNew) s.newToday+=1
-      setStats(s)
-      saveJSON(sk(LS.stats),s)
-      const graduated = (r.learningStep ?? 0) === 0
-      if(correct){
-        if(graduated) setStudySeenSession(prev=>({ ...prev, [card.id]: true }))
-        setSessionWrongIds(prev=>{ const n=new Set(prev); n.delete(card.id); return n })
-      } else {
-        setSessionWrongIds(prev=>new Set(prev).add(card.id))
-      }
-      setSkipWrongCardId(card.id)
-    }
-    function toggleDifficult(){
-      if(!cur) return
-      setDifficultMap(m=>({ ...m, [cur.id]: !m[cur.id] }))
-    }
-    const generateClue = (word: string) => {
-      if (!word) return ''
-      const first = word[0].toUpperCase()
-      const rest = word.slice(1).split('').map(() => '_').join(' ')
-      return `${first} ${rest}`
-    }
-    function answerGrammar(guess:string){
-      if(!cur || cur.kind!=='grammar') return
-      const norm = (v:string)=>v.toLowerCase().trim()
-      const correct = norm(guess)===norm(cur.correct)
-      setGrammarChosen(guess)
-      setGrammarFeedback(correct?'correct':'wrong')
-      advance(cur, correct)
-      setTimeout(()=>{ setGrammarFeedback(null); setGrammarChosen(null) }, correct ? 1100 : 1700)
-    }
-
-    if(!cur){
-      return (
-        <div className="card">
-          <div className="h1">No cards in this plan</div>
-          <div className="h2">You reached today&apos;s target for this chapter selection.</div>
-          <div className="sep" />
-          <div className="row">
-            <button onClick={()=>setStudyContinueMode(true)}>Continue beyond target</button>
-            <button onClick={()=>setStudyTheme(0)}>Switch to all themes</button>
-          </div>
-        </div>
-      )
-    }
-
-    return (
-      <div className="studyShell">
-        <div className="card studyMain">
-          <div className="row" style={{justifyContent:'space-between', alignItems:'flex-end'}}>
-            <div>
-              <div className="h1">Daily Practice</div>
-              <div className="h2">
-                {currentPos} / {plannedTotal} planned today
-                {studyTheme!==0 ? ` - ${course.themes.find(t=>t.id===studyTheme)?.title ?? ''}` : ' - All themes'}
-              </div>
-            </div>
-            <div className="studyTopActions">
-              {cur.kind==='vocab' && <button onClick={()=>{ void speak(cur.vocab.article ? `${cur.vocab.article} ${cur.vocab.nl}` : cur.vocab.nl) }} title="Hear the Dutch word">🔊</button>}
-              <button onClick={()=>setStudyContinueMode(v=>!v)}>{studyContinueMode ? 'Planned only' : 'Continue'}</button>
-            </div>
-          </div>
-          <div className="row practiceModeQuick">
-            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='mixed'?700:500}} onClick={()=>setPractice('mixed')}>Both</button>
-            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='vocab'?700:500}} onClick={()=>setPractice('vocab')}>Vocabulary</button>
-            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='grammar'?700:500}} onClick={()=>setPractice('grammar')}>Grammar</button>
-          </div>
-
-          <div className="sep" />
-          {cur.kind==='vocab' ? (
-            <>
-              <div className="bigword">{cur.vocab.en ?? '—'}</div>
-              <button type="button" className="flipCard" onClick={()=>setShowTranslation(v=>!v)}>
-                <div className="small">Flip card</div>
-                <div style={{marginTop:6, textAlign:'center'}}>
-                  {showTranslation ? (cur.vocab.article ? `${cur.vocab.article} ` : '') + cur.vocab.nl : 'Tap to reveal Dutch'}
-                </div>
-              </button>
-              <button type="button" className="clueCard" onClick={()=>setShowClue(v=>!v)}>
-                {!showClue && <div style={{textAlign:'center'}}>Tap to reveal clue</div>}
-                {showClue && <div style={{textAlign:'center', fontSize:'2rem', fontWeight:'bold'}}>{generateClue(cur.vocab.nl)}</div>}
-              </button>
-              <div className="studyBottom">
-                <div className="row" style={{justifyContent:'center'}}>
-                  <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
-                  <button onClick={()=>advance(cur,false)}>Incorrect</button>
-                  <button onClick={()=>advance(cur,true)}>Correct</button>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="h2" style={{textAlign:'center', marginBottom:8}}>{cur.title}</div>
-              <div className="bigword" style={{fontSize:34}}>{cur.prompt}</div>
-              {grammarFeedback && (
-                <div className={`deofhetFeedback feedback-${grammarFeedback}`}>
-                  {grammarFeedback==='correct' ? <span>✓ Correct</span> : <span>✗ The answer is <strong>{cur.correct}</strong></span>}
-                </div>
-              )}
-              <div className="row" style={{justifyContent:'center', marginBottom:10}}>
-                <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
-              </div>
-              <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
-                {cur.options.map(opt=>{
-                  const norm = (s:string)=>s.toLowerCase().trim()
-                  const isCorrect = norm(opt)===norm(cur.correct)
-                  const isChosenWrong = grammarFeedback && grammarChosen!==null && norm(grammarChosen)===norm(opt) && !isCorrect
-                  const showGreen = grammarFeedback && isCorrect
-                  const showRed = grammarFeedback && !!isChosenWrong
-                  return (
-                    <button
-                      key={opt}
-                      className={`grammarOptionBtn${showGreen ? ' is-correct' : ''}${showRed ? ' is-wrong' : ''}`}
-                      onClick={()=>answerGrammar(opt)}
-                      disabled={!!grammarFeedback}
-                    >
-                      {opt}
-                    </button>
-                  )
-                })}
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className="card studyQueue">
-          <div className="h1">Queue</div>
-          <div className="h2">Planned now: {queue.length} - {practiceMode==='mixed' ? 'Mixed' : (practiceMode==='vocab' ? 'Vocabulary' : 'Grammar')}</div>
-          <div className="sep" />
-          <div className="row" style={{marginBottom:8}}>
-            <button onClick={()=>setStudyTheme(0)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:studyTheme===0?'rgba(255,255,255,0.14)':'var(--panel)'}}>All themes</button>
-          </div>
-          <div className="small" style={{maxHeight:'clamp(260px, 34vh, 420px)',overflow:'auto'}}>
-            {course.themes.map(t=>{
-              const active = studyTheme===t.id
-              const count = activeDeck.filter(c=>c.theme===t.id).length
-              return (
-                <div key={t.id} style={{padding:'6px 0',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>
-                  <button onClick={()=>setStudyTheme(t.id)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:active?'rgba(255,255,255,0.14)':'var(--panel)'}}>
-                    {t.title}
-                  </button>
-                  <div className="small" style={{marginTop:4}}>Cards in chapter: {count}</div>
-                </div>
-              )
-            })}
-          </div>
-          <div className="sep" />
-          <div className="small" style={{maxHeight:'clamp(260px, 34vh, 420px)',overflow:'auto'}}>
-            {queue.slice(0,20).map(v=><div key={v.id} style={{padding:'6px 0',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>{v.title}</div>)}
           </div>
         </div>
       </div>
@@ -1917,7 +1965,29 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       <div className="sep" />
       <div className="pageContent">
         {route==='home' && <div className="pagePane"><Home /></div>}
-        {route==='study' && <div className="pagePane"><Study /></div>}
+        {route==='study' && course && (
+          <div className="pagePane">
+            <DailyPractice
+              course={course}
+              currentUserId={currentUserId}
+              currentBookId={currentBookId}
+              studyTheme={studyTheme}
+              setStudyTheme={setStudyTheme}
+              settings={settings}
+              stats={stats}
+              setStats={setStats}
+              reviewsMap={reviewsMap}
+              setReviewsMap={setReviewsMap}
+              difficultMap={difficultMap}
+              setDifficultMap={setDifficultMap}
+              studySeenSession={studySeenSession}
+              setStudySeenSession={setStudySeenSession}
+              studyContinueMode={studyContinueMode}
+              setStudyContinueMode={setStudyContinueMode}
+              speak={speak}
+            />
+          </div>
+        )}
         {route==='progress' && <div className="pagePane"><Progress /></div>}
         {route==='tts' && <div className="pagePane"><TTS /></div>}
         {route==='deofhet' && <div className="pagePane"><DeOfHet currentUserId={currentUserId} coursesByBookId={coursesByBookId} reviewsMap={reviewsMap} difficultMap={difficultMap} speak={speak} /></div>}
