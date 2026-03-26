@@ -419,6 +419,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const [editingName,setEditingName]=useState(false)
     const [showUserList,setShowUserList]=useState(false)
     const profileWrapRef = useRef<HTMLDivElement>(null)
+    const goRoute = (next:'home'|'study'|'progress'|'tts')=>{
+      setRoute(next)
+      window.scrollTo({ top:0, behavior:'auto' })
+    }
     useEffect(()=>{
       if(!showUserList) return
       const onDocClick = (e:MouseEvent)=>{
@@ -436,10 +440,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     return (
       <header className="topBar">
         <div className="topBarRowNav">
-          <button type="button" className="topBarNavBtn" onClick={()=>setRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>setRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>setRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>setRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('home')} onTouchEnd={(e)=>{ e.preventDefault(); goRoute('home') }} style={{fontWeight:route==='home'?700:400}}>Home</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('study')} onTouchEnd={(e)=>{ e.preventDefault(); goRoute('study') }} style={{fontWeight:route==='study'?700:400}}>Daily</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('progress')} onTouchEnd={(e)=>{ e.preventDefault(); goRoute('progress') }} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
+          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('tts')} onTouchEnd={(e)=>{ e.preventDefault(); goRoute('tts') }} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
         </div>
         <div className="topBarRowBooks">
           {books.map(b=>(
