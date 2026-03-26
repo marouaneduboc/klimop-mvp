@@ -379,9 +379,15 @@ function DailyPractice({
     const shouldSkip = !!skipWrongCardId && mainWithoutSkip.length>0
     const effectiveMain = shouldSkip ? mainWithoutSkip : main
     const effectiveWrongList = shouldSkip && skipWrongCardId ? wrongList.filter(c=>c.id!==skipWrongCardId) : wrongList
-    const merged = interleaveAfter(effectiveMain,effectiveWrongList,3)
+    const mixedMain = practiceMode==='mixed'
+      ? interleaveAlternating<StudyCard>(
+        effectiveMain.filter(c=>c.kind==='vocab') as StudyCard[],
+        effectiveMain.filter(c=>c.kind==='grammar') as StudyCard[]
+      )
+      : effectiveMain
+    const merged = interleaveAfter(mixedMain,effectiveWrongList,3)
     return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
-  },[activeDeck,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
+  },[activeDeck,practiceMode,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
 
   const cur=queue[0]
   const answeredSessionCount = Object.keys(studySeenSession).length
