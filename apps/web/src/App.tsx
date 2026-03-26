@@ -145,8 +145,8 @@ function upsertReview(map:Record<string,Review>, id:string):Review{
 
 const LEARNING_STEP_1_MS = 60*1000
 const LEARNING_STEP_2_MS = 10*60*1000
-const FEEDBACK_CORRECT_MS = 1400
-const FEEDBACK_WRONG_MS = 2200
+const FEEDBACK_CORRECT_MS = 2200
+const FEEDBACK_WRONG_MS = 3200
 
 function interleaveAfter<T>(main:T[], wrong:T[], everyN:number):T[]{
   if(wrong.length===0) return main
@@ -282,7 +282,10 @@ function DailyPractice({
     const s = subject.toLowerCase()
     const subjectSlug = s.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'topic'
     const uniq = (opts:string[])=>[...new Set(opts)]
-    const mc = (key:string,prompt:string,correct:string,opts:string[])=>({ key:`${keyBase}:${subjectSlug}:${key}`, prompt, correct, options:uniq([correct,...opts]) })
+    const mc = (key:string,prompt:string,correct:string,opts:string[])=>{
+      const cleanPrompt = prompt.startsWith(`${themeTitle}: `) ? prompt.slice(themeTitle.length + 2) : prompt
+      return { key:`${keyBase}:${subjectSlug}:${key}`, prompt:cleanPrompt, correct, options:uniq([correct,...opts]) }
+    }
     if(s.includes('niet') && s.includes('geen')){
       return mc('niet-geen',`${themeTitle}: kies de juiste zin`,'Ik heb geen geld.',['Ik heb niet geld.','Ik niet heb geld.'])
     }
@@ -1674,7 +1677,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const subjectSlug = s.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'topic'
     const common = { kind:'topic' as const, themeTitle, subject, bookId:keyBase.split(':')[0], themeId:Number(keyBase.split(':')[1]) }
     const uniq = (opts:string[])=>[...new Set(opts)]
-    const mc = (key:string,prompt:string,correct:string,opts:string[])=>({ ...common, key:`${keyBase}:${subjectSlug}:${key}`, prompt, correct, options:shuffle(uniq([correct,...opts])) })
+    const mc = (key:string,prompt:string,correct:string,opts:string[])=>{
+      const cleanPrompt = prompt.startsWith(`${themeTitle}: `) ? prompt.slice(themeTitle.length + 2) : prompt
+      return { ...common, key:`${keyBase}:${subjectSlug}:${key}`, prompt:cleanPrompt, correct, options:shuffle(uniq([correct,...opts])) }
+    }
     if(s.includes('niet') && s.includes('geen')){
       return mc('niet-geen',`${themeTitle}: kies de juiste zin`,'Ik heb geen geld.',['Ik heb niet geld.','Ik niet heb geld.'])
     }
