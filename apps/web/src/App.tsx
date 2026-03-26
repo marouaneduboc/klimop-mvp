@@ -609,6 +609,14 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const [skipWrongCardId,setSkipWrongCardId]=useState<string | null>(null)
     const [grammarFeedback,setGrammarFeedback]=useState<'correct'|'wrong'|null>(null)
     const [grammarChosen,setGrammarChosen]=useState<string | null>(null)
+    const setPractice = (next:'mixed'|'vocab'|'grammar')=>{
+      setPracticeMode(next)
+      setSessionWrongIds(new Set())
+      setSkipWrongCardId(null)
+      setStudySeenSession({})
+      setGrammarFeedback(null)
+      setGrammarChosen(null)
+    }
     const sk=(id:string)=>scopedKey(currentBookId,id)
     const now = Date.now()
     const themesInScope = studyTheme===0 ? course.themes.map(t=>t.id) : [studyTheme]
@@ -784,7 +792,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               {cur.kind==='vocab' && <button onClick={()=>speak(cur.vocab.article ? `${cur.vocab.article} ${cur.vocab.nl}` : cur.vocab.nl)} title="Hear the Dutch word">🔊</button>}
               <div>
                 <div className="small">Practice</div>
-                <select value={practiceMode} onChange={e=>setPracticeMode(e.target.value as 'mixed'|'vocab'|'grammar')}>
+                <select
+                  value={practiceMode}
+                  onChange={e=>setPractice(e.target.value as 'mixed'|'vocab'|'grammar')}
+                  onInput={e=>setPractice((e.target as HTMLSelectElement).value as 'mixed'|'vocab'|'grammar')}
+                >
                   <option value="mixed">Mixed: Vocabulary + Grammar</option>
                   <option value="vocab">Vocabulary only</option>
                   <option value="grammar">Grammar only</option>
@@ -792,6 +804,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               </div>
               <button onClick={()=>setStudyContinueMode(v=>!v)}>{studyContinueMode ? 'Planned only' : 'Continue'}</button>
             </div>
+          </div>
+          <div className="row practiceModeQuick">
+            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='mixed'?700:500}} onClick={()=>setPractice('mixed')}>Both</button>
+            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='vocab'?700:500}} onClick={()=>setPractice('vocab')}>Vocabulary</button>
+            <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='grammar'?700:500}} onClick={()=>setPractice('grammar')}>Grammar</button>
           </div>
 
           <div className="sep" />

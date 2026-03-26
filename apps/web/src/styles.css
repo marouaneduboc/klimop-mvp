@@ -276,6 +276,13 @@ button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor
 }
 .studyTopActions > div{min-width:0}
 .studyTopActions select{width:100%}
+.practiceModeQuick{
+  margin-top:8px;
+  gap:8px;
+}
+.practiceModeQuick .topBarNavBtn{
+  flex:1 1 120px;
+}
 .flipCard{
   margin:14px auto 0 auto;
   max-width:560px;
