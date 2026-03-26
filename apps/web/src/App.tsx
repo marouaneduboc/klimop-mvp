@@ -619,9 +619,15 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const [skipWrongCardId,setSkipWrongCardId]=useState<string | null>(null)
     const [grammarFeedback,setGrammarFeedback]=useState<'correct'|'wrong'|null>(null)
     const [grammarChosen,setGrammarChosen]=useState<string | null>(null)
+    const lastTouchActionAtRef = useRef(0)
     const pressOnly = (fn:()=>void)=>({
-      onPointerUp: (e:React.PointerEvent)=>{
-        e.preventDefault()
+      onTouchEnd: ()=>{
+        lastTouchActionAtRef.current = Date.now()
+        fn()
+      },
+      onClick: ()=>{
+        // iOS often emits click after touchend; dedupe by time window.
+        if(Date.now() - lastTouchActionAtRef.current < 700) return
         fn()
       },
       onKeyDown: (e:React.KeyboardEvent)=>{
