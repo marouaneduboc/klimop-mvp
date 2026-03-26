@@ -241,13 +241,18 @@ button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor
   display: flex;
   flex-direction: column;
   min-width:0;
+  width:100%;
 }
-.studyQueue{min-width:0}
+.studyQueue{
+  min-width:0;
+  width:100%;
+}
 .studyShell{
   display:grid;
   grid-template-columns:minmax(0,2fr) minmax(0,1fr);
   gap:12px;
   align-items:stretch;
+  width:100%;
 }
 .studyLayout{flex:1;min-height:0}
 .studyLayout > .card{min-height:0}
@@ -664,7 +669,11 @@ button.grammarOptionBtn.is-wrong:disabled{
 
 @media (max-width: 720px){
   .container{
-    padding:14px 10px 18px 10px;
+    padding:14px 12px 18px 12px;
+  }
+  .card{
+    border-radius:16px;
+    padding:14px;
   }
   .topBar{
     gap:6px;
@@ -681,12 +690,23 @@ button.grammarOptionBtn.is-wrong:disabled{
     font-size:12px;
     border-radius:12px;
   }
+  .topBarRow2{
+    align-items:flex-start;
+  }
+  .topBarRow2Right{
+    justify-content:flex-start;
+    width:100%;
+  }
   .profilePillName{
     max-width:96px;
   }
   .pill{
     font-size:11px;
     padding:5px 8px;
+  }
+  button,select,input{
+    padding:9px 10px;
+    border-radius:11px;
   }
   .studyTopActions{
     width:100%;
@@ -699,11 +719,20 @@ button.grammarOptionBtn.is-wrong:disabled{
   }
   .studyShell{
     grid-template-columns:1fr;
+    gap:10px;
+  }
+  .studyMain,.studyQueue{
+    width:100%;
   }
   .h1{
-    font-size:26px;
+    font-size:24px;
   }
   .bigword{
-    font-size:34px;
+    font-size:32px;
+  }
+  .deofhetBtn,button.grammarOptionBtn{
+    font-size:20px;
+    padding:14px 18px;
+    border-radius:14px;
   }
 }
