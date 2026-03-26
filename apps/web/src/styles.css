@@ -204,7 +204,7 @@ body::before{
   transition:background 0.15s;
 }
 .profileUserItem:hover{background:rgba(255,255,255,0.1)}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:16px;backdrop-filter:blur(10px)}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:16px}
 .h1{font-size:28px;margin:0 0 10px 0}
 .h2{font-size:16px;color:var(--muted);margin:0}
 .sep{height:1px;background:var(--border);margin:12px 0}
@@ -267,6 +267,17 @@ button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor
   gap:12px;
   align-items:stretch;
   width:100%;
+  position:relative;
+  isolation:isolate;
+}
+.studyMain,.studyQueue{
+  position:relative;
+  z-index:1;
+}
+/* Prevent compositor hit-testing glitches inside Daily cards (Safari/WebKit). */
+.studyMain.card,.studyQueue.card{
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
 }
 .studyLayout{
   flex:1;

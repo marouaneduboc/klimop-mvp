@@ -381,14 +381,19 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       })
       const candidates = dutch.length>0 ? dutch : available
       const names = [...new Set(candidates.map(v=>v.name).filter((n): n is string => !!n))]
-      setVoices(names)
-      setSettings(s=>({
-        ...s,
-        voice: names.includes(s.voice) ? s.voice : (names[0] || '')
-      }))
+      setVoices(prev=>{
+        if(prev.length===names.length && prev.every((v,i)=>v===names[i])) return prev
+        return names
+      })
+      setSettings(s=>{
+        const nextVoice = names.includes(s.voice) ? s.voice : (names[0] || '')
+        if(nextVoice===s.voice) return s
+        return { ...s, voice: nextVoice }
+      })
     }catch(e:any){ setErr(String(e?.message??e)) }
   }
   useEffect(()=>{
+    return
     // Device voices can load async (especially on iOS Safari). Re-run when they change.
     if(typeof window === 'undefined' || !('speechSynthesis' in window)) return
     refreshVoices()
@@ -401,7 +406,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       return ()=> anySynth.removeEventListener('voiceschanged', refreshVoices)
     }
     return
-  },[])
+  },[route])
 
   async function speak(text:string){
     setErr('')
