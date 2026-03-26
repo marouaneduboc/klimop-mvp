@@ -533,6 +533,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     if(!course) return null
     const now = Date.now()
     const sk=(id:string)=>scopedKey(currentBookId,id)
+    const startTheme = (themeId:number)=>{
+      setStudyTheme(themeId)
+      setRoute('study')
+      window.scrollTo({ top:0, behavior:'auto' })
+    }
     const byTheme = course.themes.map(t=>{
       const cards = course.vocab.filter(v=>v.theme===t.id)
       const dueReview = cards.filter(v=>{const r=reviewsMap[sk(v.id)]; return !!r && r.due<=now}).length
@@ -555,19 +560,22 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           <div className="sep" />
           <div className="grid">
             {byTheme.map(t=>(
-              <button
+              <div
                 key={t.id}
-                type="button"
-                onClick={()=>{ setStudyTheme(t.id); setRoute('study') }}
+                role="button"
+                tabIndex={0}
+                onClick={()=>startTheme(t.id)}
+                onTouchEnd={(e)=>{ e.preventDefault(); startTheme(t.id) }}
+                onKeyDown={e=>{ if(e.key==='Enter' || e.key===' ') startTheme(t.id) }}
                 className="card"
-                style={{padding:12, textAlign:'left', width:'100%'}}
+                style={{padding:12, textAlign:'left', width:'100%', cursor:'pointer'}}
                 title={`Start theme ${t.title}`}
               >
                 <div style={{fontWeight:700}}>{t.title}</div>
                 <div className="small" style={{marginTop:6}}>Due reviews: {t.dueReview}</div>
                 <div className="small">Unseen: {t.unseen}</div>
                 <div className="small">Total: {t.total}</div>
-              </button>
+              </div>
             ))}
           </div>
         </div>
