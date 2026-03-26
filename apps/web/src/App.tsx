@@ -482,6 +482,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         </div>
         <div className="topBarRowTools">
           <button type="button" onClick={()=>setRoute('deofhet')} className="pill topBarBookPill" style={{ fontWeight:route==='deofhet'?700:500, background:route==='deofhet'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}>De of Het</button>
+          <button type="button" onClick={()=>setRoute('grammar')} className="pill topBarBookPill" style={{ fontWeight:route==='grammar'?700:500, background:route==='grammar'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}>Grammar</button>
         </div>
         <div className="topBarRow2">
           <div className="profilePillWrap" ref={profileWrapRef}>
@@ -628,7 +629,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       setGrammarChosen(null)
     }
     const sk=(id:string)=>scopedKey(currentBookId,id)
-    const themesInScope = studyTheme===0 ? course.themes.map(t=>t.id) : [studyTheme]
+    const themesInScope = useMemo(
+      ()=> studyTheme===0 ? course.themes.map(t=>t.id) : [studyTheme],
+      [studyTheme, course]
+    )
 
     const vocabDeck = useMemo<StudyCard[]>(
       ()=>course.vocab
@@ -691,9 +695,12 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           return !r || r.due>now
         })
         .sort((a,b)=>(reviewsMap[a.id]?.due||Number.MAX_SAFE_INTEGER)-(reviewsMap[b.id]?.due||Number.MAX_SAFE_INTEGER))
-      const unseen = activeDeck.filter(c=>!reviewsMap[c.id] && !studySeenSession[c.id] && !sessionWrongIds.has(c.id))
-      const newSlots = Math.max(0, settings.newPerDay - stats.newToday)
-      const newPart = studyContinueMode ? unseen : unseen.slice(0,newSlots)
+      const unseenVocab = activeDeck.filter(c=>c.kind==='vocab' && !reviewsMap[c.id] && !studySeenSession[c.id] && !sessionWrongIds.has(c.id))
+      const unseenGrammar = activeDeck.filter(c=>c.kind==='grammar' && !reviewsMap[c.id] && !studySeenSession[c.id] && !sessionWrongIds.has(c.id))
+      const newSlotsVocab = Math.max(0, settings.newPerDay - stats.newToday)
+      const newVocabPart = studyContinueMode ? unseenVocab : unseenVocab.slice(0,newSlotsVocab)
+      // Grammar items are exercise drills; they should not be blocked by vocab new-card caps.
+      const newPart = [...newVocabPart, ...unseenGrammar]
       const seen = new Set<string>()
       const main = [...difficultPart, ...dueReviews, ...newPart].filter(c=>{
         if(seen.has(c.id)) return false
