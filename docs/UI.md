@@ -15,6 +15,7 @@ This document describes how the top bar and navigation are structured so the app
 3. **Row 3 – Tools / modules**  
    De of Het, Grammar, and future modules (e.g. listening, writing, conversation).  
    - **Adding modules:** New sectors go here, next to De of Het and Grammar. Add a route and a pill in `topBarRowTools`; the row wraps as needed. This is the expansion area for extra practice sectors to support fluency.
+   - **Grammar is now book/chapter-linked:** Grammar practice is split by selected book and chapter/theme to keep progression homogeneous with vocabulary themes.
 
 4. **Row 4 – User and stats**  
    Profile (name + chevron for switch/edit user) on the left; Streak and Today on the right.
@@ -23,6 +24,9 @@ This document describes how the top bar and navigation are structured so the app
 
 - **Books (and placeholders):** `public/content/books.json` → `books[]` and `placeholders`.  
 - **Routes:** `home` | `study` | `progress` | `tts` | `deofhet` | `grammar`. New modules = new route + pill in row 3.
+- **Grammar tracks:** In Grammar, learners can switch between:
+  - `Conjugation drills` (verb forms), and
+  - `Grammar nuance drills` (theme-linked topics such as inversion, om...te, niet/geen, de/het/een, etc.).
 
 ## Summary
 
