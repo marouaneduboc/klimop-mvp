@@ -267,7 +267,7 @@ function DailyPractice({
   type StudyCard =
     | { kind:'vocab'; id:string; theme:number; title:string; vocab:Vocab }
     | { kind:'grammar'; id:string; theme:number; title:string; prompt:string; correct:string; options:string[]; subject:string }
-  const [practiceMode,setPracticeMode]=useState<'mixed'|'vocab'|'grammar'>('mixed')
+  const [practiceMode,setPracticeMode]=useState<'mixed'|'vocab'|'grammar'>('vocab')
   const [showTranslation,setShowTranslation]=useState(false)
   const [showClue,setShowClue]=useState(false)
   const [sessionWrongIds,setSessionWrongIds]=useState<Set<string>>(new Set())
@@ -485,7 +485,6 @@ function DailyPractice({
           </div>
         </div>
         <div className="row practiceModeQuick">
-          <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='mixed'?700:500}} onClick={()=>setPractice('mixed')}>Both</button>
           <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='vocab'?700:500}} onClick={()=>setPractice('vocab')}>Vocabulary</button>
           <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='grammar'?700:500}} onClick={()=>setPractice('grammar')}>Grammar</button>
         </div>
