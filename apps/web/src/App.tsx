@@ -465,22 +465,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         </div>
         <div className="topBarRowTools">
           <button type="button" onClick={()=>setRoute('deofhet')} className="pill topBarBookPill" style={{ fontWeight:route==='deofhet'?700:500, background:route==='deofhet'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}>De of Het</button>
-          <button
-            type="button"
-            onClick={()=>{ setCurrentBookId('klimop'); setRoute('grammar') }}
-            className="pill topBarBookPill"
-            style={{ fontWeight:route==='grammar'&&currentBookId==='klimop'?700:500, background:route==='grammar'&&currentBookId==='klimop'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}
-          >
-            Grammar Klim Op
-          </button>
-          <button
-            type="button"
-            onClick={()=>{ setCurrentBookId('windmee'); setRoute('grammar') }}
-            className="pill topBarBookPill"
-            style={{ fontWeight:route==='grammar'&&currentBookId==='windmee'?700:500, background:route==='grammar'&&currentBookId==='windmee'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}
-          >
-            Grammar Wind mee
-          </button>
         </div>
         <div className="topBarRow2">
           <div className="profilePillWrap" ref={profileWrapRef}>
