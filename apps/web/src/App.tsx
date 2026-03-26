@@ -555,12 +555,19 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           <div className="sep" />
           <div className="grid">
             {byTheme.map(t=>(
-              <div key={t.id} className="card" style={{padding:12}}>
+              <button
+                key={t.id}
+                type="button"
+                onClick={()=>{ setStudyTheme(t.id); setRoute('study') }}
+                className="card"
+                style={{padding:12, textAlign:'left', width:'100%'}}
+                title={`Start theme ${t.title}`}
+              >
                 <div style={{fontWeight:700}}>{t.title}</div>
                 <div className="small" style={{marginTop:6}}>Due reviews: {t.dueReview}</div>
                 <div className="small">Unseen: {t.unseen}</div>
                 <div className="small">Total: {t.total}</div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -756,21 +763,17 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           <div className="row" style={{justifyContent:'space-between', alignItems:'flex-end'}}>
             <div>
               <div className="h1">Daily Practice</div>
-              <div className="h2">{currentPos} / {plannedTotal} planned today</div>
+              <div className="h2">
+                {currentPos} / {plannedTotal} planned today
+                {studyTheme!==0 ? ` - ${course.themes.find(t=>t.id===studyTheme)?.title ?? ''}` : ' - All themes'}
+              </div>
             </div>
             <div className="studyTopActions">
               {cur.kind==='vocab' && <button onClick={()=>speak(cur.vocab.article ? `${cur.vocab.article} ${cur.vocab.nl}` : cur.vocab.nl)} title="Hear the Dutch word">🔊</button>}
               <div>
-                <div className="small">Chapter</div>
-                <select value={studyTheme} onChange={e=>setStudyTheme(Number(e.target.value))}>
-                  <option value={0}>All themes</option>
-                  {course.themes.map(t=><option key={t.id} value={t.id}>{t.title}</option>)}
-                </select>
-              </div>
-              <div>
                 <div className="small">Practice</div>
                 <select value={practiceMode} onChange={e=>setPracticeMode(e.target.value as 'mixed'|'vocab'|'grammar')}>
-                  <option value="mixed">Vocabulary + Grammar</option>
+                  <option value="mixed">Mixed: Vocabulary + Grammar</option>
                   <option value="vocab">Vocabulary only</option>
                   <option value="grammar">Grammar only</option>
                 </select>
@@ -838,8 +841,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
 
         <div className="card studyQueue">
           <div className="h1">Queue</div>
-          <div className="h2">Planned now: {queue.length}</div>
+          <div className="h2">Planned now: {queue.length} - {practiceMode==='mixed' ? 'Mixed' : (practiceMode==='vocab' ? 'Vocabulary' : 'Grammar')}</div>
           <div className="sep" />
+          <div className="row" style={{marginBottom:8}}>
+            <button onClick={()=>setStudyTheme(0)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:studyTheme===0?'rgba(255,255,255,0.14)':'var(--panel)'}}>All themes</button>
+          </div>
           <div className="small" style={{maxHeight:'clamp(260px, 34vh, 420px)',overflow:'auto'}}>
             {course.themes.map(t=>{
               const active = studyTheme===t.id

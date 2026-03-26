@@ -254,7 +254,14 @@ button:hover{border-color:rgba(255,255,255,0.20);background:var(--panel2);cursor
   align-items:stretch;
   width:100%;
 }
-.studyLayout{flex:1;min-height:0}
+.studyLayout{
+  flex:1;
+  min-height:0;
+  width:100%;
+  display:grid;
+  grid-template-columns:minmax(0,2fr) minmax(0,1fr);
+  gap:12px;
+}
 .studyLayout > .card{min-height:0}
 .studyTopActions{
   display:flex;
@@ -720,6 +727,9 @@ button.grammarOptionBtn.is-wrong:disabled{
   .studyShell{
     grid-template-columns:1fr;
     gap:10px;
+  }
+  .studyLayout{
+    grid-template-columns:1fr;
   }
   .studyMain,.studyQueue{
     width:100%;
