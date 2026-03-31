@@ -172,6 +172,23 @@ function interleaveAlternating<T>(a:T[], b:T[]):T[]{
   return out
 }
 
+function strHash(x:string):number{
+  let h=2166136261
+  for(let i=0;i<x.length;i++){h^=x.charCodeAt(i);h=Math.imul(h,16777619)}
+  return h>>>0
+}
+function seededShuffle<T>(arr:T[], seed:number):T[]{
+  const a=[...arr]
+  let s=seed>>>0
+  for(let i=a.length-1;i>0;i--){
+    s=(Math.imul(s^(s>>>16),0x45d9f3b)>>>0)^(s>>>4)
+    s=s>>>0
+    const j=s%(i+1)
+    ;[a[i],a[j]]=[a[j],a[i]]
+  }
+  return a
+}
+
 function gradeBinary(r:Review, correct:boolean, isDifficult?:boolean){
   r.reps += 1
   const now = Date.now()
@@ -288,7 +305,9 @@ function DailyPractice({
     const uniq = (opts:string[])=>[...new Set(opts)]
     const mc = (key:string,prompt:string,correct:string,opts:string[])=>{
       const cleanPrompt = prompt.startsWith(`${themeTitle}: `) ? prompt.slice(themeTitle.length + 2) : prompt
-      return { key:`${keyBase}:${subjectSlug}:${key}`, prompt:cleanPrompt, correct, options:uniq([correct,...opts]) }
+      const fullKey = `${keyBase}:${subjectSlug}:${key}`
+      const allOpts = uniq([correct,...opts])
+      return { key:fullKey, prompt:cleanPrompt, correct, options:seededShuffle(allOpts, strHash(fullKey)) }
     }
     if(s.includes('niet') && s.includes('geen')){
       return mc('niet-geen',`${themeTitle}: kies de juiste zin`,'Ik heb geen geld.',['Ik heb niet geld.','Ik niet heb geld.'])
@@ -391,18 +410,11 @@ function DailyPractice({
     const verbs = dailyGrammarData?.verbs || []
     const zullen = dailyGrammarData?.zullen
     const out:StudyCard[] = []
-    const localHash = (x:string)=>{
-      let h = 2166136261
-      for(let i=0;i<x.length;i++){
-        h ^= x.charCodeAt(i)
-        h = Math.imul(h, 16777619)
-      }
-      return h >>> 0
-    }
     const uniq = (arr:string[])=>[...new Set(arr)]
-    const pickWrong = (pool:string[], correct:string, count:number)=>{
+    // Pick wrong options from pool, shuffled deterministically so we don't always get the same first-N verbs
+    const pickWrong = (pool:string[], correct:string, count:number, seed:number)=>{
       const all = uniq(pool.filter(v=>v && v!==correct))
-      return all.slice(0, count)
+      return seededShuffle(all, seed).slice(0, count)
     }
     for(const p of plans){
       if(!themesInScope.includes(p.id)) continue
@@ -432,58 +444,98 @@ function DailyPractice({
       const conditionalAux = zullen ? [zullen.past.singular, zullen.past.plural].filter(Boolean) : []
       const conjCandidates:StudyCard[] = []
       for(const v of verbs){
+        // Same-verb form pools — these make the best distractors because they look plausible
+        const sameVerbPresent = uniq(Object.values(v.present).filter(Boolean))
+        const sameVerbPast = uniq([v.past.singular, v.past.plural].filter(Boolean))
+
         for(const person of persons){
           const correct = v.present[person]
           if(!correct) continue
+          const cardId = `grammar:${currentBookId}:${p.id}:conj:${v.id}:present:${person}`
+          const seed = strHash(cardId)
+          // Prefer same-verb distractors (different person = same verb, different ending → good challenge)
+          const sameVerbWrong = uniq(sameVerbPresent.filter(f=>f!==correct))
+          const extras = sameVerbWrong.length < 2
+            ? pickWrong(presentPool, correct, 2 - sameVerbWrong.length, seed)
+            : []
+          const wrongOpts = uniq([...sameVerbWrong, ...extras]).slice(0, 2)
           conjCandidates.push({
             kind:'grammar',
-            id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:present:${person}`,
+            id:cardId,
             theme:p.id,
             title:`${p.title} - vervoeging`,
             prompt:`Vul de tegenwoordige tijd in — "${person} ___ (${v.infinitive})"`,
             correct,
-            options:uniq([correct, ...pickWrong(presentPool, correct, 2)]),
+            options:seededShuffle(uniq([correct, ...wrongOpts]), seed),
             subject:'vervoeging',
           })
         }
         if(allowPast){
           const pastSing = v.past.singular
           if(pastSing){
+            const cardId = `grammar:${currentBookId}:${p.id}:conj:${v.id}:past:sing`
+            const seed = strHash(cardId)
+            // Wrong: same verb's plural past + a present form (very plausible distractors)
+            const sameVerbWrong = uniq(
+              [v.past.plural, v.present['ik'], v.present['jij']].filter((f):f is string => !!f && f !== pastSing)
+            ).slice(0, 2)
+            const extras = sameVerbWrong.length < 2
+              ? pickWrong(pastPool, pastSing, 2 - sameVerbWrong.length, seed)
+              : []
+            const wrongOpts = uniq([...sameVerbWrong, ...extras]).slice(0, 2)
             conjCandidates.push({
               kind:'grammar',
-              id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:past:sing`,
+              id:cardId,
               theme:p.id,
               title:`${p.title} - vervoeging`,
               prompt:`Vul de verleden tijd in — "gisteren ik ___ (${v.infinitive})"`,
               correct:pastSing,
-              options:uniq([pastSing, ...pickWrong(pastPool, pastSing, 2)]),
+              options:seededShuffle(uniq([pastSing, ...wrongOpts]), seed),
               subject:'vervoeging',
             })
           }
           const pastPlural = v.past.plural
           if(pastPlural){
+            const cardId = `grammar:${currentBookId}:${p.id}:conj:${v.id}:past:pl`
+            const seed = strHash(cardId)
+            // Wrong: same verb's singular past + a plural present form
+            const sameVerbWrong = uniq(
+              [v.past.singular, v.present['wij'], v.present['zij']].filter((f):f is string => !!f && f !== pastPlural)
+            ).slice(0, 2)
+            const extras = sameVerbWrong.length < 2
+              ? pickWrong(pastPool, pastPlural, 2 - sameVerbWrong.length, seed)
+              : []
+            const wrongOpts = uniq([...sameVerbWrong, ...extras]).slice(0, 2)
             conjCandidates.push({
               kind:'grammar',
-              id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:past:pl`,
+              id:cardId,
               theme:p.id,
               title:`${p.title} - vervoeging`,
               prompt:`Vul de verleden tijd in — "gisteren wij ___ (${v.infinitive})"`,
               correct:pastPlural,
-              options:uniq([pastPlural, ...pickWrong(pastPool, pastPlural, 2)]),
+              options:seededShuffle(uniq([pastPlural, ...wrongOpts]), seed),
               subject:'vervoeging',
             })
           }
         }
         const perfect = v.perfect
         if(perfect){
+          const cardId = `grammar:${currentBookId}:${p.id}:conj:${v.id}:perfect`
+          const seed = strHash(cardId)
+          // Wrong: same verb's past tense forms (look very similar to the perfect, excellent distractors)
+          const sameVerbWrong = uniq(sameVerbPast.filter(f => f !== perfect)).slice(0, 2)
+          const extras = sameVerbWrong.length < 2
+            ? pickWrong(perfectPool, perfect, 2 - sameVerbWrong.length, seed)
+            : []
+          const wrongOpts = uniq([...sameVerbWrong, ...extras]).slice(0, 2)
           conjCandidates.push({
             kind:'grammar',
-            id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:perfect`,
+            id:cardId,
             theme:p.id,
             title:`${p.title} - vervoeging`,
             prompt:`Vul het voltooid deelwoord in — "ik heb ___"`,
             correct:perfect,
-            options:uniq([perfect, ...pickWrong(perfectPool, perfect, 2)]),
+            options:seededShuffle(uniq([perfect, ...wrongOpts]), seed),
             subject:'vervoeging',
           })
         }
@@ -492,14 +544,17 @@ function DailyPractice({
             const aux = zullen.present[person]
             if(!aux) continue
             const correct = `${aux} ${v.infinitive}`
+            const cardId = `grammar:${currentBookId}:${p.id}:conj:${v.id}:future:${person}`
+            const seed = strHash(cardId)
+            const wrongOpts = pickWrong(futureAux.map(a=>`${a} ${v.infinitive}`), correct, 2, seed)
             conjCandidates.push({
               kind:'grammar',
-              id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:future:${person}`,
+              id:cardId,
               theme:p.id,
               title:`${p.title} - vervoeging`,
               prompt:`Vul de toekomende tijd in — "${person} ___"`,
               correct,
-              options:uniq([correct, ...pickWrong(futureAux.map(a=>`${a} ${v.infinitive}`), correct, 2)]),
+              options:seededShuffle(uniq([correct, ...wrongOpts]), seed),
               subject:'vervoeging',
             })
           }
@@ -509,20 +564,23 @@ function DailyPractice({
             const aux = (person==='wij' || person==='jullie' || person==='zij') ? zullen.past.plural : zullen.past.singular
             if(!aux) continue
             const correct = `${aux} ${v.infinitive}`
+            const cardId = `grammar:${currentBookId}:${p.id}:conj:${v.id}:cond:${person}`
+            const seed = strHash(cardId)
+            const wrongOpts = pickWrong(conditionalAux.map(a=>`${a} ${v.infinitive}`), correct, 2, seed)
             conjCandidates.push({
               kind:'grammar',
-              id:`grammar:${currentBookId}:${p.id}:conj:${v.id}:cond:${person}`,
+              id:cardId,
               theme:p.id,
               title:`${p.title} - vervoeging`,
               prompt:`Vul de voorwaardelijke vorm in — "${person} ___"`,
               correct,
-              options:uniq([correct, ...pickWrong(conditionalAux.map(a=>`${a} ${v.infinitive}`), correct, 2)]),
+              options:seededShuffle(uniq([correct, ...wrongOpts]), seed),
               subject:'vervoeging',
             })
           }
         }
       }
-      conjCandidates.sort((a,b)=>localHash(a.id)-localHash(b.id))
+      conjCandidates.sort((a,b)=>strHash(a.id)-strHash(b.id))
       const needed = Math.max(0, DAILY_GRAMMAR_TARGET_PER_THEME - themeCards.length)
       themeCards.push(...conjCandidates.slice(0, needed))
       out.push(...themeCards)
