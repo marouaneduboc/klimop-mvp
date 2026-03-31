@@ -313,10 +313,10 @@ function DailyPractice({
       return mc('niet-geen',`${themeTitle}: kies de juiste zin`,'Ik heb geen geld.',['Ik heb niet geld.','Ik niet heb geld.'])
     }
     if(s.includes('inversie')){
-      return mc('inversie',`${themeTitle}: vul in (inversie) — "___ je morgen naar school?"`,'Ga',['Gaat','Gaan'])
+      return mc('inversie',`${themeTitle}: vul in (inversie): "… je morgen naar school?"`,'Ga',['Gaat','Gaan'])
     }
     if(s.includes('om...te') || (s.includes('om') && s.includes('te'))){
-      return mc('om-te',`${themeTitle}: vul in — "Ik probeer Nederlands ___ leren."`,'te',['om','naar'])
+      return mc('om-te',`${themeTitle}: vul in: "Ik probeer Nederlands … leren."`,'te',['om','naar'])
     }
     if(s.includes('scheidbare')){
       return mc('scheidbaar',`${themeTitle}: welke zin is correct?`,'Ik sta om zeven uur op.',['Ik op sta om zeven uur.','Ik sta op om zeven uur ik.'])
@@ -325,7 +325,7 @@ function DailyPractice({
       return mc('dehet',`${themeTitle}: kies het juiste lidwoord`,'de tafel',['het tafel','een tafel het'])
     }
     if(s.includes('verleden tijd')){
-      return mc('past',`${themeTitle}: kies de juiste vorm — "Gisteren ___ ik thuis."`,'was',['ben','is'])
+      return mc('past',`${themeTitle}: kies de juiste vorm: "Gisteren … ik thuis."`,'was',['ben','is'])
     }
     if(s.includes('zullen')){
       return mc('zullen',`${themeTitle}: kies de juiste zin`,'Zullen we morgen afspreken?',['Zullen we afspreken morgen we?','Zult we morgen afspreken?'])
@@ -464,7 +464,7 @@ function DailyPractice({
             id:cardId,
             theme:p.id,
             title:`${p.title} - vervoeging`,
-            prompt:`Vul de tegenwoordige tijd in — "${person} ___ (${v.infinitive})"`,
+            prompt:`Vul de tegenwoordige tijd in: "${person} … (${v.infinitive})"`,
             correct,
             options:seededShuffle(uniq([correct, ...wrongOpts]), seed),
             subject:'vervoeging',
@@ -488,7 +488,7 @@ function DailyPractice({
               id:cardId,
               theme:p.id,
               title:`${p.title} - vervoeging`,
-              prompt:`Vul de verleden tijd in — "gisteren ik ___ (${v.infinitive})"`,
+              prompt:`Vul de verleden tijd in: "gisteren ik … (${v.infinitive})"`,
               correct:pastSing,
               options:seededShuffle(uniq([pastSing, ...wrongOpts]), seed),
               subject:'vervoeging',
@@ -511,7 +511,7 @@ function DailyPractice({
               id:cardId,
               theme:p.id,
               title:`${p.title} - vervoeging`,
-              prompt:`Vul de verleden tijd in — "gisteren wij ___ (${v.infinitive})"`,
+              prompt:`Vul de verleden tijd in: "gisteren wij … (${v.infinitive})"`,
               correct:pastPlural,
               options:seededShuffle(uniq([pastPlural, ...wrongOpts]), seed),
               subject:'vervoeging',
@@ -533,7 +533,7 @@ function DailyPractice({
             id:cardId,
             theme:p.id,
             title:`${p.title} - vervoeging`,
-            prompt:`Vul het voltooid deelwoord in — "ik heb ___"`,
+            prompt:`Vul het voltooid deelwoord in: "ik heb …"`,
             correct:perfect,
             options:seededShuffle(uniq([perfect, ...wrongOpts]), seed),
             subject:'vervoeging',
@@ -552,7 +552,7 @@ function DailyPractice({
               id:cardId,
               theme:p.id,
               title:`${p.title} - vervoeging`,
-              prompt:`Vul de toekomende tijd in — "${person} ___"`,
+              prompt:`Vul de toekomende tijd in: "${person} …"`,
               correct,
               options:seededShuffle(uniq([correct, ...wrongOpts]), seed),
               subject:'vervoeging',
@@ -572,7 +572,7 @@ function DailyPractice({
               id:cardId,
               theme:p.id,
               title:`${p.title} - vervoeging`,
-              prompt:`Vul de voorwaardelijke vorm in — "${person} ___"`,
+              prompt:`Vul de voorwaardelijke vorm in: "${person} …"`,
               correct,
               options:seededShuffle(uniq([correct, ...wrongOpts]), seed),
               subject:'vervoeging',
@@ -757,7 +757,7 @@ function DailyPractice({
           )}
         </div>
 
-        <div className="sep" />
+        <div style={{textAlign:'center',color:'rgba(255,255,255,0.2)',letterSpacing:8,margin:'6px 0',fontSize:16}}>···</div>
         {cur.kind==='vocab' ? (
           <>
             <div className="bigword">{cur.vocab.en ?? '—'}</div>
@@ -788,9 +788,6 @@ function DailyPractice({
                 {grammarFeedback==='correct' ? <span>✓ Correct</span> : <span>✗ The answer is <strong>{cur.correct}</strong></span>}
               </div>
             )}
-            <div className="row" style={{justifyContent:'center', marginBottom:10}}>
-              <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
-            </div>
             {grammarAnswerMode==='mc' ? (
               <div className="deofhetActions" style={{flexDirection:'column',gap:8}}>
                 {cur.options.map(opt=>{
@@ -826,6 +823,9 @@ function DailyPractice({
                 </button>
               </div>
             )}
+            <div className="row" style={{justifyContent:'center', marginTop:10}}>
+              <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
+            </div>
           </>
         )}
       </div>
@@ -1871,10 +1871,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       return mc('niet-geen',`${themeTitle}: kies de juiste zin`,'Ik heb geen geld.',['Ik heb niet geld.','Ik niet heb geld.'])
     }
     if(s.includes('inversie')){
-      return mc('inversie',`${themeTitle}: vul in (inversie) — "___ je morgen naar school?"`,'Ga',['Gaat','Gaan'])
+      return mc('inversie',`${themeTitle}: vul in (inversie): "… je morgen naar school?"`,'Ga',['Gaat','Gaan'])
     }
     if(s.includes('om...te') || s.includes('om') && s.includes('te')){
-      return mc('om-te',`${themeTitle}: vul in — "Ik probeer Nederlands ___ leren."`,'te',['om','naar'])
+      return mc('om-te',`${themeTitle}: vul in: "Ik probeer Nederlands … leren."`,'te',['om','naar'])
     }
     if(s.includes('scheidbare')){
       return mc('scheidbaar',`${themeTitle}: welke zin is correct?`,'Ik sta om zeven uur op.',['Ik op sta om zeven uur.','Ik sta op om zeven uur ik.'])
@@ -1883,7 +1883,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       return mc('dehet',`${themeTitle}: kies het juiste lidwoord`,'de tafel',['het tafel','een tafel het'])
     }
     if(s.includes('verleden tijd')){
-      return mc('past',`${themeTitle}: kies de juiste vorm — "Gisteren ___ ik thuis."`,'was',['ben','is'])
+      return mc('past',`${themeTitle}: kies de juiste vorm: "Gisteren … ik thuis."`,'was',['ben','is'])
     }
     if(s.includes('zullen')){
       return mc('zullen',`${themeTitle}: kies de juiste zin`,'Zullen we morgen afspreken?',['Zullen we afspreken morgen we?','Zult we morgen afspreken?'])
