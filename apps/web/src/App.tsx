@@ -57,6 +57,24 @@ const GRAMMAR_BOOK_THEMES:Record<string,GrammarThemePlan[]> = {
     { id:9, title:'Geschiedenis', subjects:['verleden tijd','toen','scheidbare werkwoorden'] },
     { id:10, title:'Samen leven', subjects:['als','dat'] },
   ],
+  blinkuit: [
+    { id:1, title:'Relaties', subjects:['wederkerend werkwoord', 'voegwoorden', "'er' met voorzetsel", "'zou / zouden'"] },
+    { id:2, title:'Mijn buurt', subjects:['verwijswoorden voor dingen', "'om te' met het hele werkwoord", 'voegwoorden', "'er' met voorzetsel", 'voltooid tegenwoordige tijd', "'zijn aan het' met het hele werkwoord"] },
+    { id:3, title:'Vrije tijd', subjects:["'zullen'", "'zijn aan het' met het hele werkwoord", "'om te' met het hele werkwoord", 'voltooid tegenwoordige tijd', 'voegwoorden', "'er' met voorzetsel"] },
+    { id:4, title:'Vervoer', subjects:["'er' met voorzetsel", 'voltooid tegenwoordige tijd', 'voegwoorden', "'zijn aan het' met het hele werkwoord"] },
+    { id:5, title:'Vakantie', subjects:["'zitten / staan / liggen / lopen'", "'te' met het hele werkwoord", "'er' met voorzetsel", 'voltooid tegenwoordige tijd', "passief met 'er'", 'voegwoorden', "'zijn aan het' met het hele werkwoord"] },
+    { id:6, title:'Natuur', subjects:["'zouden' voor dromen", 'vergelijken', "'hoe ..., hoe ...'", "'er' met voorzetsel", 'voegwoorden'] },
+    { id:7, title:'Gezondheid', subjects:["'om te' met het hele werkwoord", "'zouden' voor adviezen", 'voegwoorden', "'er' met voorzetsel"] },
+    { id:8, title:'Veiligheid', subjects:["'niet'", "'mogen / moeten / hoeven'", 'onvoltooid verleden tijd', 'voegwoorden', "'er' met voorzetsel"] },
+    { id:9, title:'Onderwijs organisatie', subjects:['indirecte vragen', 'voegwoorden', "'er' met voorzetsel"] },
+    { id:10, title:'Onderwijs inhoud', subjects:["werkwoorden met 'te'", "'zou / zouden' voor adviezen", 'voegwoorden', "'er' met voorzetsel"] },
+    { id:11, title:'Stage', subjects:["'om te' met het hele werkwoord", 'inversie', "'zou / zouden' voor beleefde vragen", 'voltooid tegenwoordige tijd', 'voegwoorden', "'er' met voorzetsel"] },
+    { id:12, title:'Werk organisatie', subjects:['passief (vandaag en gisteren)', 'voegwoorden', "'er' met voorzetsel"] },
+    { id:13, title:'Werk inhoud', subjects:["'om te' met het hele werkwoord", "'als ..., dan ...'", "'zou / zouden' voor beleefde vragen", 'inversie', 'voltooid tegenwoordige tijd', 'voegwoorden', "'er' met voorzetsel"] },
+    { id:14, title:'Media', subjects:["'om te' met het hele werkwoord", '(in)directe vragen', 'betrekkelijke bijzin', 'voegwoorden', "'er' met voorzetsel"] },
+    { id:15, title:'Geschiedenis', subjects:['voltooid tegenwoordige tijd', 'onvoltooid verleden tijd', 'voltooid verleden tijd', "'moest / wilde / kon / mocht'", 'vergelijken', 'voegwoorden', "'er' met voorzetsel"] },
+    { id:16, title:'De samenleving', subjects:["voltooid verleden tijd met 'als'", "vragen met 'wat' en 'waar'", 'betrekkelijke bijzin', 'voegwoorden', "'er' met voorzetsel"] },
+  ],
 }
 
 function userScopedKey(base:string, userId:string):string { return `${base}:u:${userId}` }
@@ -324,16 +342,16 @@ function DailyPractice({
     if(s.includes('de/het/een') || s.includes('de/het')){
       return mc('dehet',`${themeTitle}: kies het juiste lidwoord`,'de tafel',['het tafel','een tafel het'])
     }
-    if(s.includes('verleden tijd')){
+    if(s.includes('verleden tijd') && !s.includes('voltooid verleden')){
       return mc('past',`${themeTitle}: kies de juiste vorm: "Gisteren … ik thuis."`,'was',['ben','is'])
     }
-    if(s.includes('zullen')){
+    if(s.includes('zullen') || s.includes('zouden') || s.includes('zou ')){
       return mc('zullen',`${themeTitle}: kies de juiste zin`,'Zullen we morgen afspreken?',['Zullen we afspreken morgen we?','Zult we morgen afspreken?'])
     }
-    if(s.includes('want') || s.includes('maar') || s.includes('dus') || s.includes('omdat')){
+    if(s.includes('want') || s.includes('maar') || s.includes('dus') || s.includes('omdat') || s.includes('voegwoord')){
       return mc('conj',`${themeTitle}: kies de beste voegwoord-zin`,'Ik blijf thuis, omdat ik moe ben.',['Ik blijf thuis omdat ben ik moe.','Ik blijf thuis, omdat moe ik ben.'])
     }
-    if(s.includes('er als plaats') || s.includes('er + getal') || s.includes('er als onbepaald onderwerp')){
+    if(s.includes('er als plaats') || s.includes('er + getal') || s.includes('er als onbepaald onderwerp') || s.includes("'er' met") || s.includes("passief met 'er'")){
       return mc('er',`${themeTitle}: kies de juiste zin met "er"`,'Er staan drie fietsen buiten.',['Staan er drie fietsen buiten er.','Er drie fietsen staan buiten.'])
     }
     if(s.includes('voorzetsels van plaats') || s.includes('positiewerkwoorden')){
@@ -435,7 +453,7 @@ function DailyPractice({
       const lowerSubjects = p.subjects.map(s=>s.toLowerCase())
       const allowPast = lowerSubjects.some(s=>s.includes('verleden tijd') || s.includes('toen'))
       const allowFuture = lowerSubjects.some(s=>s.includes('zullen'))
-      const allowConditional = allowFuture
+      const allowConditional = lowerSubjects.some(s=>s.includes('zou') || s.includes('conditional') || s.includes('zullen'))
       const persons = ['ik','jij','hij','wij','jullie','zij'] as const
       const presentPool = verbs.flatMap(v=>Object.values(v.present).filter(Boolean))
       const pastPool = verbs.flatMap(v=>[v.past.singular, v.past.plural].filter(Boolean))

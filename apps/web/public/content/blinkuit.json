@@ -1,0 +1,1991 @@
+{
+  "version": "blinkuit-0.1",
+  "themes": [
+    {
+      "id": 1,
+      "title": "Relaties"
+    },
+    {
+      "id": 2,
+      "title": "Mijn buurt"
+    },
+    {
+      "id": 3,
+      "title": "Vrije tijd"
+    },
+    {
+      "id": 4,
+      "title": "Vervoer"
+    },
+    {
+      "id": 5,
+      "title": "Vakantie"
+    },
+    {
+      "id": 6,
+      "title": "Natuur"
+    },
+    {
+      "id": 7,
+      "title": "Gezondheid"
+    },
+    {
+      "id": 8,
+      "title": "Veiligheid"
+    },
+    {
+      "id": 9,
+      "title": "Onderwijs organisatie"
+    },
+    {
+      "id": 10,
+      "title": "Onderwijs inhoud"
+    },
+    {
+      "id": 11,
+      "title": "Stage"
+    },
+    {
+      "id": 12,
+      "title": "Werk organisatie"
+    },
+    {
+      "id": 13,
+      "title": "Werk inhoud"
+    },
+    {
+      "id": 14,
+      "title": "Media"
+    },
+    {
+      "id": 15,
+      "title": "Geschiedenis"
+    },
+    {
+      "id": 16,
+      "title": "De samenleving"
+    }
+  ],
+  "vocab": [
+    {
+      "id": "b01_0000",
+      "theme": 1,
+      "nl": "relatie",
+      "article": "de",
+      "en": "the relationship",
+      "tags": []
+    },
+    {
+      "id": "b01_0001",
+      "theme": 1,
+      "nl": "gevoel",
+      "article": "het",
+      "en": "the feeling",
+      "tags": []
+    },
+    {
+      "id": "b01_0002",
+      "theme": 1,
+      "nl": "wensen",
+      "article": null,
+      "en": "to wish",
+      "tags": []
+    },
+    {
+      "id": "b01_0003",
+      "theme": 1,
+      "nl": "advies",
+      "article": "het",
+      "en": "the advice",
+      "tags": []
+    },
+    {
+      "id": "b01_0004",
+      "theme": 1,
+      "nl": "afspreken",
+      "article": null,
+      "en": "to meet up / arrange",
+      "tags": []
+    },
+    {
+      "id": "b01_0005",
+      "theme": 1,
+      "nl": "zich excuseren",
+      "article": null,
+      "en": "to apologize",
+      "tags": []
+    },
+    {
+      "id": "b01_0006",
+      "theme": 1,
+      "nl": "praatje",
+      "article": "het",
+      "en": "the chat / small talk",
+      "tags": []
+    },
+    {
+      "id": "b01_0007",
+      "theme": 1,
+      "nl": "verliefd",
+      "article": null,
+      "en": "in love",
+      "tags": []
+    },
+    {
+      "id": "b01_0008",
+      "theme": 1,
+      "nl": "ruzie",
+      "article": "de",
+      "en": "the argument",
+      "tags": []
+    },
+    {
+      "id": "b01_0009",
+      "theme": 1,
+      "nl": "blij",
+      "article": null,
+      "en": "happy",
+      "tags": []
+    },
+    {
+      "id": "b01_0010",
+      "theme": 1,
+      "nl": "verdrietig",
+      "article": null,
+      "en": "sad",
+      "tags": []
+    },
+    {
+      "id": "b01_0011",
+      "theme": 1,
+      "nl": "eerlijk",
+      "article": null,
+      "en": "honest",
+      "tags": []
+    },
+    {
+      "id": "b01_0012",
+      "theme": 1,
+      "nl": "missen",
+      "article": null,
+      "en": "to miss",
+      "tags": []
+    },
+    {
+      "id": "b01_0013",
+      "theme": 1,
+      "nl": "vriendschap",
+      "article": "de",
+      "en": "the friendship",
+      "tags": []
+    },
+    {
+      "id": "b01_0014",
+      "theme": 1,
+      "nl": "partner",
+      "article": "de",
+      "en": "the partner",
+      "tags": []
+    },
+    {
+      "id": "b02_0000",
+      "theme": 2,
+      "nl": "inrichting",
+      "article": "de",
+      "en": "the furnishing / interior",
+      "tags": []
+    },
+    {
+      "id": "b02_0001",
+      "theme": 2,
+      "nl": "huishouden",
+      "article": "het",
+      "en": "the household",
+      "tags": []
+    },
+    {
+      "id": "b02_0002",
+      "theme": 2,
+      "nl": "stofzuiger",
+      "article": "de",
+      "en": "the vacuum cleaner",
+      "tags": []
+    },
+    {
+      "id": "b02_0003",
+      "theme": 2,
+      "nl": "wasmachine",
+      "article": "de",
+      "en": "the washing machine",
+      "tags": []
+    },
+    {
+      "id": "b02_0004",
+      "theme": 2,
+      "nl": "buurman",
+      "article": "de",
+      "en": "the male neighbor",
+      "tags": []
+    },
+    {
+      "id": "b02_0005",
+      "theme": 2,
+      "nl": "buurvrouw",
+      "article": "de",
+      "en": "the female neighbor",
+      "tags": []
+    },
+    {
+      "id": "b02_0006",
+      "theme": 2,
+      "nl": "schoonmaken",
+      "article": null,
+      "en": "to clean",
+      "tags": []
+    },
+    {
+      "id": "b02_0007",
+      "theme": 2,
+      "nl": "uitleggen",
+      "article": null,
+      "en": "to explain",
+      "tags": []
+    },
+    {
+      "id": "b02_0008",
+      "theme": 2,
+      "nl": "overtuigen",
+      "article": null,
+      "en": "to convince",
+      "tags": []
+    },
+    {
+      "id": "b02_0009",
+      "theme": 2,
+      "nl": "beschrijven",
+      "article": null,
+      "en": "to describe",
+      "tags": []
+    },
+    {
+      "id": "b02_0010",
+      "theme": 2,
+      "nl": "nieuws",
+      "article": "het",
+      "en": "the news",
+      "tags": []
+    },
+    {
+      "id": "b02_0011",
+      "theme": 2,
+      "nl": "gezellig",
+      "article": null,
+      "en": "cozy / sociable",
+      "tags": []
+    },
+    {
+      "id": "b02_0012",
+      "theme": 2,
+      "nl": "rommel",
+      "article": "de",
+      "en": "the mess",
+      "tags": []
+    },
+    {
+      "id": "b02_0013",
+      "theme": 2,
+      "nl": "opruimen",
+      "article": null,
+      "en": "to tidy up",
+      "tags": []
+    },
+    {
+      "id": "b02_0014",
+      "theme": 2,
+      "nl": "lenen",
+      "article": null,
+      "en": "to borrow",
+      "tags": []
+    },
+    {
+      "id": "b03_0000",
+      "theme": 3,
+      "nl": "hobby",
+      "article": "de",
+      "en": "the hobby",
+      "tags": []
+    },
+    {
+      "id": "b03_0001",
+      "theme": 3,
+      "nl": "voorkeur",
+      "article": "de",
+      "en": "the preference",
+      "tags": []
+    },
+    {
+      "id": "b03_0002",
+      "theme": 3,
+      "nl": "vragen",
+      "article": null,
+      "en": "to ask",
+      "tags": []
+    },
+    {
+      "id": "b03_0003",
+      "theme": 3,
+      "nl": "vertellen",
+      "article": null,
+      "en": "to tell",
+      "tags": []
+    },
+    {
+      "id": "b03_0004",
+      "theme": 3,
+      "nl": "uitje",
+      "article": "het",
+      "en": "the outing / trip",
+      "tags": []
+    },
+    {
+      "id": "b03_0005",
+      "theme": 3,
+      "nl": "organiseren",
+      "article": null,
+      "en": "to organize",
+      "tags": []
+    },
+    {
+      "id": "b03_0006",
+      "theme": 3,
+      "nl": "weekend",
+      "article": "het",
+      "en": "the weekend",
+      "tags": []
+    },
+    {
+      "id": "b03_0007",
+      "theme": 3,
+      "nl": "vrij",
+      "article": null,
+      "en": "free",
+      "tags": []
+    },
+    {
+      "id": "b03_0008",
+      "theme": 3,
+      "nl": "museum",
+      "article": "het",
+      "en": "the museum",
+      "tags": []
+    },
+    {
+      "id": "b03_0009",
+      "theme": 3,
+      "nl": "bioscoop",
+      "article": "de",
+      "en": "the cinema",
+      "tags": []
+    },
+    {
+      "id": "b03_0010",
+      "theme": 3,
+      "nl": "wandelen",
+      "article": null,
+      "en": "to walk",
+      "tags": []
+    },
+    {
+      "id": "b03_0011",
+      "theme": 3,
+      "nl": "ontspannen",
+      "article": null,
+      "en": "to relax",
+      "tags": []
+    },
+    {
+      "id": "b03_0012",
+      "theme": 3,
+      "nl": "sport",
+      "article": "de",
+      "en": "the sport",
+      "tags": []
+    },
+    {
+      "id": "b03_0013",
+      "theme": 3,
+      "nl": "voetballen",
+      "article": null,
+      "en": "to play soccer",
+      "tags": []
+    },
+    {
+      "id": "b03_0014",
+      "theme": 3,
+      "nl": "leuk",
+      "article": null,
+      "en": "fun / nice",
+      "tags": []
+    },
+    {
+      "id": "b04_0000",
+      "theme": 4,
+      "nl": "verkeer",
+      "article": "het",
+      "en": "the traffic",
+      "tags": []
+    },
+    {
+      "id": "b04_0001",
+      "theme": 4,
+      "nl": "ongeluk",
+      "article": "het",
+      "en": "the accident",
+      "tags": []
+    },
+    {
+      "id": "b04_0002",
+      "theme": 4,
+      "nl": "veiligheid",
+      "article": "de",
+      "en": "the safety",
+      "tags": []
+    },
+    {
+      "id": "b04_0003",
+      "theme": 4,
+      "nl": "weg wijzen",
+      "article": "de",
+      "en": "to show the way",
+      "tags": []
+    },
+    {
+      "id": "b04_0004",
+      "theme": 4,
+      "nl": "instructie",
+      "article": "de",
+      "en": "the instruction",
+      "tags": []
+    },
+    {
+      "id": "b04_0005",
+      "theme": 4,
+      "nl": "deelnemen",
+      "article": null,
+      "en": "to participate",
+      "tags": []
+    },
+    {
+      "id": "b04_0006",
+      "theme": 4,
+      "nl": "kruispunt",
+      "article": "het",
+      "en": "the intersection",
+      "tags": []
+    },
+    {
+      "id": "b04_0007",
+      "theme": 4,
+      "nl": "rechtdoor",
+      "article": null,
+      "en": "straight ahead",
+      "tags": []
+    },
+    {
+      "id": "b04_0008",
+      "theme": 4,
+      "nl": "linksaf",
+      "article": null,
+      "en": "turn left",
+      "tags": []
+    },
+    {
+      "id": "b04_0009",
+      "theme": 4,
+      "nl": "rechtsaf",
+      "article": null,
+      "en": "turn right",
+      "tags": []
+    },
+    {
+      "id": "b04_0010",
+      "theme": 4,
+      "nl": "stoplicht",
+      "article": "het",
+      "en": "the traffic light",
+      "tags": []
+    },
+    {
+      "id": "b04_0011",
+      "theme": 4,
+      "nl": "snel",
+      "article": null,
+      "en": "fast",
+      "tags": []
+    },
+    {
+      "id": "b04_0012",
+      "theme": 4,
+      "nl": "langzaam",
+      "article": null,
+      "en": "slow",
+      "tags": []
+    },
+    {
+      "id": "b04_0013",
+      "theme": 4,
+      "nl": "gevaarlijk",
+      "article": null,
+      "en": "dangerous",
+      "tags": []
+    },
+    {
+      "id": "b04_0014",
+      "theme": 4,
+      "nl": "waarschuwen",
+      "article": null,
+      "en": "to warn",
+      "tags": []
+    },
+    {
+      "id": "b05_0000",
+      "theme": 5,
+      "nl": "vakantie",
+      "article": "de",
+      "en": "the vacation / holiday",
+      "tags": []
+    },
+    {
+      "id": "b05_0001",
+      "theme": 5,
+      "nl": "strand",
+      "article": "het",
+      "en": "the beach",
+      "tags": []
+    },
+    {
+      "id": "b05_0002",
+      "theme": 5,
+      "nl": "koffer",
+      "article": "de",
+      "en": "the suitcase",
+      "tags": []
+    },
+    {
+      "id": "b05_0003",
+      "theme": 5,
+      "nl": "pakken",
+      "article": null,
+      "en": "to pack",
+      "tags": []
+    },
+    {
+      "id": "b05_0004",
+      "theme": 5,
+      "nl": "klagen",
+      "article": null,
+      "en": "to complain",
+      "tags": []
+    },
+    {
+      "id": "b05_0005",
+      "theme": 5,
+      "nl": "pech",
+      "article": "de",
+      "en": "the bad luck / breakdown",
+      "tags": []
+    },
+    {
+      "id": "b05_0006",
+      "theme": 5,
+      "nl": "hulp vragen",
+      "article": null,
+      "en": "to ask for help",
+      "tags": []
+    },
+    {
+      "id": "b05_0007",
+      "theme": 5,
+      "nl": "huisje",
+      "article": "het",
+      "en": "the cottage",
+      "tags": []
+    },
+    {
+      "id": "b05_0008",
+      "theme": 5,
+      "nl": "huren",
+      "article": null,
+      "en": "to rent",
+      "tags": []
+    },
+    {
+      "id": "b05_0009",
+      "theme": 5,
+      "nl": "kamperen",
+      "article": null,
+      "en": "to camp",
+      "tags": []
+    },
+    {
+      "id": "b05_0010",
+      "theme": 5,
+      "nl": "tent",
+      "article": "de",
+      "en": "the tent",
+      "tags": []
+    },
+    {
+      "id": "b05_0011",
+      "theme": 5,
+      "nl": "zon",
+      "article": "de",
+      "en": "the sun",
+      "tags": []
+    },
+    {
+      "id": "b05_0012",
+      "theme": 5,
+      "nl": "buitenland",
+      "article": null,
+      "en": "abroad",
+      "tags": []
+    },
+    {
+      "id": "b05_0013",
+      "theme": 5,
+      "nl": "reserveren",
+      "article": null,
+      "en": "to book / reserve",
+      "tags": []
+    },
+    {
+      "id": "b05_0014",
+      "theme": 5,
+      "nl": "boeken",
+      "article": null,
+      "en": "to book",
+      "tags": []
+    },
+    {
+      "id": "b06_0000",
+      "theme": 6,
+      "nl": "natuur",
+      "article": "de",
+      "en": "the nature",
+      "tags": []
+    },
+    {
+      "id": "b06_0001",
+      "theme": 6,
+      "nl": "mening",
+      "article": "de",
+      "en": "the opinion",
+      "tags": []
+    },
+    {
+      "id": "b06_0002",
+      "theme": 6,
+      "nl": "vergelijken",
+      "article": null,
+      "en": "to compare",
+      "tags": []
+    },
+    {
+      "id": "b06_0003",
+      "theme": 6,
+      "nl": "afval",
+      "article": "het",
+      "en": "the waste / rubbish",
+      "tags": []
+    },
+    {
+      "id": "b06_0004",
+      "theme": 6,
+      "nl": "scheiden",
+      "article": null,
+      "en": "to separate",
+      "tags": []
+    },
+    {
+      "id": "b06_0005",
+      "theme": 6,
+      "nl": "zuinig",
+      "article": null,
+      "en": "economical",
+      "tags": []
+    },
+    {
+      "id": "b06_0006",
+      "theme": 6,
+      "nl": "energie",
+      "article": "de",
+      "en": "the energy",
+      "tags": []
+    },
+    {
+      "id": "b06_0007",
+      "theme": 6,
+      "nl": "dier",
+      "article": "het",
+      "en": "the animal",
+      "tags": []
+    },
+    {
+      "id": "b06_0008",
+      "theme": 6,
+      "nl": "bos",
+      "article": "het",
+      "en": "the forest",
+      "tags": []
+    },
+    {
+      "id": "b06_0009",
+      "theme": 6,
+      "nl": "zee",
+      "article": "de",
+      "en": "the sea",
+      "tags": []
+    },
+    {
+      "id": "b06_0010",
+      "theme": 6,
+      "nl": "boom",
+      "article": "de",
+      "en": "the tree",
+      "tags": []
+    },
+    {
+      "id": "b06_0011",
+      "theme": 6,
+      "nl": "milieu",
+      "article": "het",
+      "en": "the environment",
+      "tags": []
+    },
+    {
+      "id": "b06_0012",
+      "theme": 6,
+      "nl": "beschermen",
+      "article": null,
+      "en": "to protect",
+      "tags": []
+    },
+    {
+      "id": "b06_0013",
+      "theme": 6,
+      "nl": "duurzaam",
+      "article": null,
+      "en": "sustainable",
+      "tags": []
+    },
+    {
+      "id": "b06_0014",
+      "theme": 6,
+      "nl": "groeien",
+      "article": null,
+      "en": "to grow",
+      "tags": []
+    },
+    {
+      "id": "b07_0000",
+      "theme": 7,
+      "nl": "gezondheid",
+      "article": "de",
+      "en": "the health",
+      "tags": []
+    },
+    {
+      "id": "b07_0001",
+      "theme": 7,
+      "nl": "klacht",
+      "article": "de",
+      "en": "the complaint",
+      "tags": []
+    },
+    {
+      "id": "b07_0002",
+      "theme": 7,
+      "nl": "beweging",
+      "article": "de",
+      "en": "the movement / exercise",
+      "tags": []
+    },
+    {
+      "id": "b07_0003",
+      "theme": 7,
+      "nl": "gezondheidszorg",
+      "article": "de",
+      "en": "the healthcare",
+      "tags": []
+    },
+    {
+      "id": "b07_0004",
+      "theme": 7,
+      "nl": "gezond",
+      "article": null,
+      "en": "healthy",
+      "tags": []
+    },
+    {
+      "id": "b07_0005",
+      "theme": 7,
+      "nl": "geluk",
+      "article": "het",
+      "en": "the happiness",
+      "tags": []
+    },
+    {
+      "id": "b07_0006",
+      "theme": 7,
+      "nl": "ziek",
+      "article": null,
+      "en": "sick",
+      "tags": []
+    },
+    {
+      "id": "b07_0007",
+      "theme": 7,
+      "nl": "dokter",
+      "article": "de",
+      "en": "the doctor",
+      "tags": []
+    },
+    {
+      "id": "b07_0008",
+      "theme": 7,
+      "nl": "recept",
+      "article": "het",
+      "en": "the prescription",
+      "tags": []
+    },
+    {
+      "id": "b07_0009",
+      "theme": 7,
+      "nl": "pijn",
+      "article": "de",
+      "en": "the pain",
+      "tags": []
+    },
+    {
+      "id": "b07_0010",
+      "theme": 7,
+      "nl": "medicijn",
+      "article": "het",
+      "en": "the medicine",
+      "tags": []
+    },
+    {
+      "id": "b07_0011",
+      "theme": 7,
+      "nl": "beter worden",
+      "article": null,
+      "en": "to get better",
+      "tags": []
+    },
+    {
+      "id": "b07_0012",
+      "theme": 7,
+      "nl": "bewegen",
+      "article": null,
+      "en": "to exercise / move",
+      "tags": []
+    },
+    {
+      "id": "b07_0013",
+      "theme": 7,
+      "nl": "apotheek",
+      "article": "de",
+      "en": "the pharmacy",
+      "tags": []
+    },
+    {
+      "id": "b07_0014",
+      "theme": 7,
+      "nl": "afspraak",
+      "article": "de",
+      "en": "the appointment",
+      "tags": []
+    },
+    {
+      "id": "b08_0000",
+      "theme": 8,
+      "nl": "veiligheidsregel",
+      "article": "de",
+      "en": "the safety rule",
+      "tags": []
+    },
+    {
+      "id": "b08_0001",
+      "theme": 8,
+      "nl": "diefstal",
+      "article": "de",
+      "en": "the theft",
+      "tags": []
+    },
+    {
+      "id": "b08_0002",
+      "theme": 8,
+      "nl": "melden",
+      "article": null,
+      "en": "to report",
+      "tags": []
+    },
+    {
+      "id": "b08_0003",
+      "theme": 8,
+      "nl": "bekeuring",
+      "article": "de",
+      "en": "the fine",
+      "tags": []
+    },
+    {
+      "id": "b08_0004",
+      "theme": 8,
+      "nl": "werkplek",
+      "article": "de",
+      "en": "the workplace",
+      "tags": []
+    },
+    {
+      "id": "b08_0005",
+      "theme": 8,
+      "nl": "onveilig",
+      "article": null,
+      "en": "unsafe",
+      "tags": []
+    },
+    {
+      "id": "b08_0006",
+      "theme": 8,
+      "nl": "voorzichtig",
+      "article": null,
+      "en": "careful",
+      "tags": []
+    },
+    {
+      "id": "b08_0007",
+      "theme": 8,
+      "nl": "politie",
+      "article": "de",
+      "en": "the police",
+      "tags": []
+    },
+    {
+      "id": "b08_0008",
+      "theme": 8,
+      "nl": "let op",
+      "article": null,
+      "en": "pay attention (command)",
+      "tags": []
+    },
+    {
+      "id": "b08_0009",
+      "theme": 8,
+      "nl": "helm",
+      "article": "de",
+      "en": "the helmet",
+      "tags": []
+    },
+    {
+      "id": "b08_0010",
+      "theme": 8,
+      "nl": "verboden",
+      "article": null,
+      "en": "forbidden",
+      "tags": []
+    },
+    {
+      "id": "b08_0011",
+      "theme": 8,
+      "nl": "verplicht",
+      "article": null,
+      "en": "mandatory",
+      "tags": []
+    },
+    {
+      "id": "b08_0012",
+      "theme": 8,
+      "nl": "gevaar",
+      "article": "het",
+      "en": "the danger",
+      "tags": []
+    },
+    {
+      "id": "b08_0013",
+      "theme": 8,
+      "nl": "voorkomen",
+      "article": null,
+      "en": "to prevent",
+      "tags": []
+    },
+    {
+      "id": "b08_0014",
+      "theme": 8,
+      "nl": "schade",
+      "article": null,
+      "en": "damage",
+      "tags": []
+    },
+    {
+      "id": "b09_0000",
+      "theme": 9,
+      "nl": "onderwijs",
+      "article": "het",
+      "en": "the education",
+      "tags": []
+    },
+    {
+      "id": "b09_0001",
+      "theme": 9,
+      "nl": "organisatie",
+      "article": "de",
+      "en": "the organization",
+      "tags": []
+    },
+    {
+      "id": "b09_0002",
+      "theme": 9,
+      "nl": "workshop",
+      "article": "de",
+      "en": "the workshop",
+      "tags": []
+    },
+    {
+      "id": "b09_0003",
+      "theme": 9,
+      "nl": "opleiding",
+      "article": "de",
+      "en": "the training / education",
+      "tags": []
+    },
+    {
+      "id": "b09_0004",
+      "theme": 9,
+      "nl": "informeren",
+      "article": null,
+      "en": "to inquire / inform",
+      "tags": []
+    },
+    {
+      "id": "b09_0005",
+      "theme": 9,
+      "nl": "schoolherinneringen",
+      "article": null,
+      "en": "school memories",
+      "tags": []
+    },
+    {
+      "id": "b09_0006",
+      "theme": 9,
+      "nl": "student",
+      "article": "de",
+      "en": "the student",
+      "tags": []
+    },
+    {
+      "id": "b09_0007",
+      "theme": 9,
+      "nl": "docent",
+      "article": "de",
+      "en": "the teacher",
+      "tags": []
+    },
+    {
+      "id": "b09_0008",
+      "theme": 9,
+      "nl": "leraar",
+      "article": "de",
+      "en": "the teacher (male)",
+      "tags": []
+    },
+    {
+      "id": "b09_0009",
+      "theme": 9,
+      "nl": "school",
+      "article": "de",
+      "en": "the school",
+      "tags": []
+    },
+    {
+      "id": "b09_0010",
+      "theme": 9,
+      "nl": "universiteit",
+      "article": "de",
+      "en": "the university",
+      "tags": []
+    },
+    {
+      "id": "b09_0011",
+      "theme": 9,
+      "nl": "vak",
+      "article": "het",
+      "en": "the subject",
+      "tags": []
+    },
+    {
+      "id": "b09_0012",
+      "theme": 9,
+      "nl": "lokaal",
+      "article": "het",
+      "en": "the classroom",
+      "tags": []
+    },
+    {
+      "id": "b09_0013",
+      "theme": 9,
+      "nl": "kiezen",
+      "article": null,
+      "en": "to choose",
+      "tags": []
+    },
+    {
+      "id": "b09_0014",
+      "theme": 9,
+      "nl": "studeren",
+      "article": null,
+      "en": "to study",
+      "tags": []
+    },
+    {
+      "id": "b10_0000",
+      "theme": 10,
+      "nl": "inhoud",
+      "article": "de",
+      "en": "the content",
+      "tags": []
+    },
+    {
+      "id": "b10_0001",
+      "theme": 10,
+      "nl": "adviseren",
+      "article": null,
+      "en": "to advise",
+      "tags": []
+    },
+    {
+      "id": "b10_0002",
+      "theme": 10,
+      "nl": "schooltijd",
+      "article": "de",
+      "en": "the school time",
+      "tags": []
+    },
+    {
+      "id": "b10_0003",
+      "theme": 10,
+      "nl": "examen",
+      "article": "het",
+      "en": "the exam",
+      "tags": []
+    },
+    {
+      "id": "b10_0004",
+      "theme": 10,
+      "nl": "doen",
+      "article": null,
+      "en": "to do / take (an exam)",
+      "tags": []
+    },
+    {
+      "id": "b10_0005",
+      "theme": 10,
+      "nl": "cijfer",
+      "article": "het",
+      "en": "the grade",
+      "tags": []
+    },
+    {
+      "id": "b10_0006",
+      "theme": 10,
+      "nl": "zakken",
+      "article": null,
+      "en": "to fail (exam)",
+      "tags": []
+    },
+    {
+      "id": "b10_0007",
+      "theme": 10,
+      "nl": "slagen",
+      "article": null,
+      "en": "to pass (exam)",
+      "tags": []
+    },
+    {
+      "id": "b10_0008",
+      "theme": 10,
+      "nl": "moeilijk",
+      "article": null,
+      "en": "difficult",
+      "tags": []
+    },
+    {
+      "id": "b10_0009",
+      "theme": 10,
+      "nl": "makkelijk",
+      "article": null,
+      "en": "easy",
+      "tags": []
+    },
+    {
+      "id": "b10_0010",
+      "theme": 10,
+      "nl": "leren",
+      "article": null,
+      "en": "to learn",
+      "tags": []
+    },
+    {
+      "id": "b10_0011",
+      "theme": 10,
+      "nl": "huiswerk",
+      "article": "het",
+      "en": "the homework",
+      "tags": []
+    },
+    {
+      "id": "b10_0012",
+      "theme": 10,
+      "nl": "begrijpen",
+      "article": null,
+      "en": "to understand",
+      "tags": []
+    },
+    {
+      "id": "b10_0013",
+      "theme": 10,
+      "nl": "uitleg",
+      "article": "de",
+      "en": "the explanation",
+      "tags": []
+    },
+    {
+      "id": "b10_0014",
+      "theme": 10,
+      "nl": "diploma",
+      "article": "het",
+      "en": "the diploma",
+      "tags": []
+    },
+    {
+      "id": "b11_0000",
+      "theme": 11,
+      "nl": "stage",
+      "article": "de",
+      "en": "the internship",
+      "tags": []
+    },
+    {
+      "id": "b11_0001",
+      "theme": 11,
+      "nl": "beroep",
+      "article": "het",
+      "en": "the profession",
+      "tags": []
+    },
+    {
+      "id": "b11_0002",
+      "theme": 11,
+      "nl": "activiteit",
+      "article": "de",
+      "en": "the activity",
+      "tags": []
+    },
+    {
+      "id": "b11_0003",
+      "theme": 11,
+      "nl": "object",
+      "article": "het",
+      "en": "the object",
+      "tags": []
+    },
+    {
+      "id": "b11_0004",
+      "theme": 11,
+      "nl": "opdracht",
+      "article": "de",
+      "en": "the assignment / task",
+      "tags": []
+    },
+    {
+      "id": "b11_0005",
+      "theme": 11,
+      "nl": "rapporteren",
+      "article": null,
+      "en": "to report",
+      "tags": []
+    },
+    {
+      "id": "b11_0006",
+      "theme": 11,
+      "nl": "aanvragen",
+      "article": null,
+      "en": "to apply for / request",
+      "tags": []
+    },
+    {
+      "id": "b11_0007",
+      "theme": 11,
+      "nl": "evalueren",
+      "article": null,
+      "en": "to evaluate",
+      "tags": []
+    },
+    {
+      "id": "b11_0008",
+      "theme": 11,
+      "nl": "plannen",
+      "article": null,
+      "en": "to plan",
+      "tags": []
+    },
+    {
+      "id": "b11_0009",
+      "theme": 11,
+      "nl": "ervaring",
+      "article": "de",
+      "en": "the experience",
+      "tags": []
+    },
+    {
+      "id": "b11_0010",
+      "theme": 11,
+      "nl": "formulier",
+      "article": "het",
+      "en": "the form",
+      "tags": []
+    },
+    {
+      "id": "b11_0011",
+      "theme": 11,
+      "nl": "stagebegeleider",
+      "article": "de",
+      "en": "the internship supervisor",
+      "tags": []
+    },
+    {
+      "id": "b11_0012",
+      "theme": 11,
+      "nl": "solliciteren",
+      "article": null,
+      "en": "to apply for a job",
+      "tags": []
+    },
+    {
+      "id": "b11_0013",
+      "theme": 11,
+      "nl": "ontwikkelen",
+      "article": null,
+      "en": "to develop",
+      "tags": []
+    },
+    {
+      "id": "b11_0014",
+      "theme": 11,
+      "nl": "verslag",
+      "article": "het",
+      "en": "the report",
+      "tags": []
+    },
+    {
+      "id": "b12_0000",
+      "theme": 12,
+      "nl": "collega",
+      "article": "de",
+      "en": "the colleague",
+      "tags": []
+    },
+    {
+      "id": "b12_0001",
+      "theme": 12,
+      "nl": "leidinggevende",
+      "article": "de",
+      "en": "the manager / supervisor",
+      "tags": []
+    },
+    {
+      "id": "b12_0002",
+      "theme": 12,
+      "nl": "overleg",
+      "article": "het",
+      "en": "the meeting",
+      "tags": []
+    },
+    {
+      "id": "b12_0003",
+      "theme": 12,
+      "nl": "bedrijfsuitje",
+      "article": "het",
+      "en": "the company outing",
+      "tags": []
+    },
+    {
+      "id": "b12_0004",
+      "theme": 12,
+      "nl": "arbeidsvoorwaarden",
+      "article": "de",
+      "en": "the terms of employment",
+      "tags": []
+    },
+    {
+      "id": "b12_0005",
+      "theme": 12,
+      "nl": "vakantierooster",
+      "article": "het",
+      "en": "the holiday schedule",
+      "tags": []
+    },
+    {
+      "id": "b12_0006",
+      "theme": 12,
+      "nl": "privé",
+      "article": null,
+      "en": "private",
+      "tags": []
+    },
+    {
+      "id": "b12_0007",
+      "theme": 12,
+      "nl": "gesprek",
+      "article": "het",
+      "en": "the conversation",
+      "tags": []
+    },
+    {
+      "id": "b12_0008",
+      "theme": 12,
+      "nl": "klagen",
+      "article": null,
+      "en": "to complain",
+      "tags": []
+    },
+    {
+      "id": "b12_0009",
+      "theme": 12,
+      "nl": "nieuw",
+      "article": null,
+      "en": "new",
+      "tags": []
+    },
+    {
+      "id": "b12_0010",
+      "theme": 12,
+      "nl": "contract",
+      "article": "het",
+      "en": "the contract",
+      "tags": []
+    },
+    {
+      "id": "b12_0011",
+      "theme": 12,
+      "nl": "salaris",
+      "article": "het",
+      "en": "the salary",
+      "tags": []
+    },
+    {
+      "id": "b12_0012",
+      "theme": 12,
+      "nl": "verdienen",
+      "article": null,
+      "en": "to earn",
+      "tags": []
+    },
+    {
+      "id": "b12_0013",
+      "theme": 12,
+      "nl": "overwerken",
+      "article": null,
+      "en": "to work overtime",
+      "tags": []
+    },
+    {
+      "id": "b12_0014",
+      "theme": 12,
+      "nl": "samenwerken",
+      "article": null,
+      "en": "to collaborate / work together",
+      "tags": []
+    },
+    {
+      "id": "b13_0000",
+      "theme": 13,
+      "nl": "verdelen",
+      "article": null,
+      "en": "to divide / distribute",
+      "tags": []
+    },
+    {
+      "id": "b13_0001",
+      "theme": 13,
+      "nl": "inwerken",
+      "article": null,
+      "en": "to onboard / train (staff)",
+      "tags": []
+    },
+    {
+      "id": "b13_0002",
+      "theme": 13,
+      "nl": "overdragen",
+      "article": null,
+      "en": "to hand over (work)",
+      "tags": []
+    },
+    {
+      "id": "b13_0003",
+      "theme": 13,
+      "nl": "werkdag",
+      "article": "de",
+      "en": "the workday",
+      "tags": []
+    },
+    {
+      "id": "b13_0004",
+      "theme": 13,
+      "nl": "functioneringsgesprek",
+      "article": "het",
+      "en": "the performance review",
+      "tags": []
+    },
+    {
+      "id": "b13_0005",
+      "theme": 13,
+      "nl": "werkervaring",
+      "article": "de",
+      "en": "the work experience",
+      "tags": []
+    },
+    {
+      "id": "b13_0006",
+      "theme": 13,
+      "nl": "ambitie",
+      "article": "de",
+      "en": "the ambition",
+      "tags": []
+    },
+    {
+      "id": "b13_0007",
+      "theme": 13,
+      "nl": "werkrooster",
+      "article": "het",
+      "en": "the work schedule",
+      "tags": []
+    },
+    {
+      "id": "b13_0008",
+      "theme": 13,
+      "nl": "helpen",
+      "article": null,
+      "en": "to help",
+      "tags": []
+    },
+    {
+      "id": "b13_0009",
+      "theme": 13,
+      "nl": "taak",
+      "article": "de",
+      "en": "the task",
+      "tags": []
+    },
+    {
+      "id": "b13_0010",
+      "theme": 13,
+      "nl": "project",
+      "article": "het",
+      "en": "the project",
+      "tags": []
+    },
+    {
+      "id": "b13_0011",
+      "theme": 13,
+      "nl": "verantwoordelijk",
+      "article": null,
+      "en": "responsible",
+      "tags": []
+    },
+    {
+      "id": "b13_0012",
+      "theme": 13,
+      "nl": "vergadering",
+      "article": "de",
+      "en": "the meeting",
+      "tags": []
+    },
+    {
+      "id": "b13_0013",
+      "theme": 13,
+      "nl": "presentatie",
+      "article": "de",
+      "en": "the presentation",
+      "tags": []
+    },
+    {
+      "id": "b13_0014",
+      "theme": 13,
+      "nl": "doel",
+      "article": "het",
+      "en": "the goal",
+      "tags": []
+    },
+    {
+      "id": "b14_0000",
+      "theme": 14,
+      "nl": "media",
+      "article": "de",
+      "en": "the media",
+      "tags": []
+    },
+    {
+      "id": "b14_0001",
+      "theme": 14,
+      "nl": "interview",
+      "article": "het",
+      "en": "the interview",
+      "tags": []
+    },
+    {
+      "id": "b14_0002",
+      "theme": 14,
+      "nl": "weersvoorspelling",
+      "article": "de",
+      "en": "the weather forecast",
+      "tags": []
+    },
+    {
+      "id": "b14_0003",
+      "theme": 14,
+      "nl": "telefoneren",
+      "article": null,
+      "en": "to phone / call",
+      "tags": []
+    },
+    {
+      "id": "b14_0004",
+      "theme": 14,
+      "nl": "schermtijd",
+      "article": "de",
+      "en": "the screen time",
+      "tags": []
+    },
+    {
+      "id": "b14_0005",
+      "theme": 14,
+      "nl": "social media",
+      "article": null,
+      "en": "social media",
+      "tags": []
+    },
+    {
+      "id": "b14_0006",
+      "theme": 14,
+      "nl": "krant",
+      "article": "de",
+      "en": "the newspaper",
+      "tags": []
+    },
+    {
+      "id": "b14_0007",
+      "theme": 14,
+      "nl": "journaal",
+      "article": "het",
+      "en": "the news broadcast",
+      "tags": []
+    },
+    {
+      "id": "b14_0008",
+      "theme": 14,
+      "nl": "kijken",
+      "article": null,
+      "en": "to watch",
+      "tags": []
+    },
+    {
+      "id": "b14_0009",
+      "theme": 14,
+      "nl": "lezen",
+      "article": null,
+      "en": "to read",
+      "tags": []
+    },
+    {
+      "id": "b14_0010",
+      "theme": 14,
+      "nl": "telefoon",
+      "article": "de",
+      "en": "the phone",
+      "tags": []
+    },
+    {
+      "id": "b14_0011",
+      "theme": 14,
+      "nl": "sturen",
+      "article": null,
+      "en": "to send (e.g. an email/text)",
+      "tags": []
+    },
+    {
+      "id": "b14_0012",
+      "theme": 14,
+      "nl": "bericht",
+      "article": "het",
+      "en": "the message",
+      "tags": []
+    },
+    {
+      "id": "b14_0013",
+      "theme": 14,
+      "nl": "computer",
+      "article": "de",
+      "en": "the computer",
+      "tags": []
+    },
+    {
+      "id": "b14_0014",
+      "theme": 14,
+      "nl": "online",
+      "article": null,
+      "en": "online",
+      "tags": []
+    },
+    {
+      "id": "b15_0000",
+      "theme": 15,
+      "nl": "geschiedenis",
+      "article": "de",
+      "en": "the history",
+      "tags": []
+    },
+    {
+      "id": "b15_0001",
+      "theme": 15,
+      "nl": "verleden",
+      "article": "het",
+      "en": "the past",
+      "tags": []
+    },
+    {
+      "id": "b15_0002",
+      "theme": 15,
+      "nl": "vroeger",
+      "article": null,
+      "en": "in the past / formally",
+      "tags": []
+    },
+    {
+      "id": "b15_0003",
+      "theme": 15,
+      "nl": "nu",
+      "article": null,
+      "en": "now",
+      "tags": []
+    },
+    {
+      "id": "b15_0004",
+      "theme": 15,
+      "nl": "kindertijd",
+      "article": "de",
+      "en": "the childhood",
+      "tags": []
+    },
+    {
+      "id": "b15_0005",
+      "theme": 15,
+      "nl": "levensloop",
+      "article": "de",
+      "en": "the course of life",
+      "tags": []
+    },
+    {
+      "id": "b15_0006",
+      "theme": 15,
+      "nl": "Nederlandse",
+      "article": null,
+      "en": "Dutch (adj)",
+      "tags": []
+    },
+    {
+      "id": "b15_0007",
+      "theme": 15,
+      "nl": "emigratie",
+      "article": "de",
+      "en": "the emigration",
+      "tags": []
+    },
+    {
+      "id": "b15_0008",
+      "theme": 15,
+      "nl": "generatie",
+      "article": "de",
+      "en": "the generation",
+      "tags": []
+    },
+    {
+      "id": "b15_0009",
+      "theme": 15,
+      "nl": "toen",
+      "article": null,
+      "en": "then / back when",
+      "tags": []
+    },
+    {
+      "id": "b15_0010",
+      "theme": 15,
+      "nl": "veranderen",
+      "article": null,
+      "en": "to change",
+      "tags": []
+    },
+    {
+      "id": "b15_0011",
+      "theme": 15,
+      "nl": "gebeuren",
+      "article": null,
+      "en": "to happen",
+      "tags": []
+    },
+    {
+      "id": "b15_0012",
+      "theme": 15,
+      "nl": "verhaal",
+      "article": "het",
+      "en": "the story",
+      "tags": []
+    },
+    {
+      "id": "b15_0013",
+      "theme": 15,
+      "nl": "oorlog",
+      "article": "de",
+      "en": "the war",
+      "tags": []
+    },
+    {
+      "id": "b15_0014",
+      "theme": 15,
+      "nl": "vrede",
+      "article": "de",
+      "en": "the peace",
+      "tags": []
+    },
+    {
+      "id": "b16_0000",
+      "theme": 16,
+      "nl": "samenleving",
+      "article": "de",
+      "en": "the society",
+      "tags": []
+    },
+    {
+      "id": "b16_0001",
+      "theme": 16,
+      "nl": "politiek",
+      "article": null,
+      "en": "political",
+      "tags": []
+    },
+    {
+      "id": "b16_0002",
+      "theme": 16,
+      "nl": "thema",
+      "article": "het",
+      "en": "the theme / topic",
+      "tags": []
+    },
+    {
+      "id": "b16_0003",
+      "theme": 16,
+      "nl": "partij",
+      "article": "de",
+      "en": "the party (political)",
+      "tags": []
+    },
+    {
+      "id": "b16_0004",
+      "theme": 16,
+      "nl": "perfect",
+      "article": null,
+      "en": "perfect",
+      "tags": []
+    },
+    {
+      "id": "b16_0005",
+      "theme": 16,
+      "nl": "ding",
+      "article": "het",
+      "en": "the thing",
+      "tags": []
+    },
+    {
+      "id": "b16_0006",
+      "theme": 16,
+      "nl": "tweedehands",
+      "article": null,
+      "en": "second-hand",
+      "tags": []
+    },
+    {
+      "id": "b16_0007",
+      "theme": 16,
+      "nl": "verkopen",
+      "article": null,
+      "en": "to sell",
+      "tags": []
+    },
+    {
+      "id": "b16_0008",
+      "theme": 16,
+      "nl": "kopen",
+      "article": null,
+      "en": "to buy",
+      "tags": []
+    },
+    {
+      "id": "b16_0009",
+      "theme": 16,
+      "nl": "typisch",
+      "article": null,
+      "en": "typical",
+      "tags": []
+    },
+    {
+      "id": "b16_0010",
+      "theme": 16,
+      "nl": "evaluatie",
+      "article": "de",
+      "en": "the evaluation",
+      "tags": []
+    },
+    {
+      "id": "b16_0011",
+      "theme": 16,
+      "nl": "burger",
+      "article": "de",
+      "en": "the citizen",
+      "tags": []
+    },
+    {
+      "id": "b16_0012",
+      "theme": 16,
+      "nl": "stemmen",
+      "article": null,
+      "en": "to vote",
+      "tags": []
+    },
+    {
+      "id": "b16_0013",
+      "theme": 16,
+      "nl": "verkiezingen",
+      "article": "de",
+      "en": "the elections",
+      "tags": []
+    },
+    {
+      "id": "b16_0014",
+      "theme": 16,
+      "nl": "overheid",
+      "article": "de",
+      "en": "the government",
+      "tags": []
+    }
+  ]
+}
