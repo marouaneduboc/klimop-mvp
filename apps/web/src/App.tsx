@@ -1,4 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  CelebrateArt,
+  DailyHeaderArt,
+  DeHetTagsArt,
+  EmptyQueueArt,
+  GrammarNotebookArt,
+  HomeHeaderArt,
+  IvyMark,
+  MASCOT_NAME,
+  OnboardArt,
+  ProgressHeaderArt,
+} from './assets/illustrations'
 
 type Vocab = { id:string; theme:number; nl:string; en?:string|null; article?:'de'|'het'|null }
 type Review = { id:string; due:number; interval:number; ease:number; reps:number; lapses:number; learningStep?:number }
@@ -119,7 +131,7 @@ const MAX_NEW_PER_DAY = 80
 const clamp = (n:number, min:number, max:number)=>Math.min(max, Math.max(min, n))
 function normalizeSettings(raw:any):Settings{
   const base = {
-    ttsBaseUrl:'http://192.168.68.107:8000',
+    ttsBaseUrl:'http://localhost:8000',
     autoSpeak:false,
     voice:'',
     speed:1.0,
@@ -191,79 +203,8 @@ function exampleForVocab(v:Vocab):string{
   return `Kun je "${v.nl}" gebruiken in een zin?`
 }
 
-function IvyMark({size=26}:{size?:number}){
-  return (
-    <svg className="topBarBrandMark illustration" width={size} height={size} viewBox="0 0 64 64" aria-hidden>
-      <path d="M32 58c-2-14 4-22 12-30-8 2-14 8-16 16-2-10-8-16-16-18 10 6 14 16 12 32z" fill="#2F9E6B"/>
-      <path d="M34 28c6-8 14-12 20-12-8 4-12 10-14 16-1-6-4-10-10-12 4 2 6 6 4 8z" fill="#E36A1E"/>
-      <circle cx="22" cy="22" r="3" fill="#F0B429"/>
-    </svg>
-  )
-}
-function HomeHeaderArt(){
-  return (
-    <svg className="homeHeroArt illustration" viewBox="0 0 200 120" aria-hidden>
-      <rect x="0" y="78" width="200" height="42" fill="#DCEBFA"/>
-      <path d="M0 78h200" stroke="#3B82C4" strokeWidth="2" opacity="0.35"/>
-      <path d="M118 78 L150 34 L182 78 Z" fill="#FFF8F0" stroke="#1C2430" strokeWidth="2"/>
-      <rect x="142" y="52" width="16" height="26" fill="#E36A1E"/>
-      <circle cx="150" cy="30" r="7" fill="#F0B429"/>
-      <circle cx="48" cy="78" r="18" fill="none" stroke="#1C2430" strokeWidth="3"/>
-      <circle cx="88" cy="78" r="18" fill="none" stroke="#1C2430" strokeWidth="3"/>
-      <path d="M48 78h40M66 60h28" stroke="#1C2430" strokeWidth="3" strokeLinecap="round"/>
-      <circle cx="28" cy="28" r="10" fill="#F0B429" opacity="0.85"/>
-    </svg>
-  )
-}
-function DailyHeaderArt(){
-  return (
-    <svg className="illustration" width="72" height="48" viewBox="0 0 120 80" aria-hidden>
-      <circle cx="34" cy="28" r="14" fill="#F0B429"/>
-      <path d="M70 50c0-14 10-24 24-26-2 18-10 28-24 32-6-2-10-4-12-8 4 0 8-2 12 2z" fill="#E36A1E"/>
-      <rect x="78" y="42" width="28" height="20" rx="4" fill="#FFF8F0" stroke="#1C2430" strokeWidth="2"/>
-      <path d="M84 42c0-6 4-10 8-10s8 4 8 10" fill="none" stroke="#1C2430" strokeWidth="2"/>
-    </svg>
-  )
-}
-function ProgressHeaderArt(){
-  return (
-    <svg className="progressHeroArt illustration" viewBox="0 0 220 80" aria-hidden>
-      <path d="M20 70h180" stroke="#3B82C4" strokeWidth="3" opacity="0.35" strokeLinecap="round"/>
-      <path d="M40 70 V48 M70 70 V36 M100 70 V28 M130 70 V40 M160 70 V22 M190 70 V34" stroke="#E36A1E" strokeWidth="8" strokeLinecap="round"/>
-      <path d="M168 22c8-14 22-18 34-14-10 6-16 14-18 24-4-6-10-10-18-10 2 0 4 0 2 0z" fill="#2F9E6B"/>
-      <circle cx="176" cy="18" r="3" fill="#F0B429"/>
-    </svg>
-  )
-}
-function EmptyQueueArt(){
-  return (
-    <svg className="emptyStateArt illustration" viewBox="0 0 160 100" aria-hidden>
-      <ellipse cx="80" cy="78" rx="48" ry="10" fill="rgba(59,130,196,0.15)"/>
-      <path d="M50 70c10-28 30-40 50-42-12 10-20 24-22 42-8-8-18-10-28 0z" fill="#2F9E6B"/>
-      <circle cx="118" cy="28" r="12" fill="#F0B429"/>
-      <path d="M36 58h20M40 64h12" stroke="#E36A1E" strokeWidth="3" strokeLinecap="round"/>
-    </svg>
-  )
-}
-function GrammarNotebookArt(){
-  return (
-    <svg className="illustration" width="56" height="44" viewBox="0 0 90 70" aria-hidden>
-      <rect x="18" y="10" width="54" height="50" rx="6" fill="#FFF8F0" stroke="#1C2430" strokeWidth="2"/>
-      <path d="M28 10v50" stroke="#E36A1E" strokeWidth="3"/>
-      <path d="M36 24h28M36 34h28M36 44h18" stroke="#5B6675" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  )
-}
-function DeHetTagsArt(){
-  return (
-    <svg className="deofhetArt illustration" viewBox="0 0 120 64" aria-hidden>
-      <rect x="8" y="16" width="48" height="32" rx="16" fill="rgba(227,106,30,0.14)" stroke="#E36A1E" strokeWidth="2"/>
-      <text x="32" y="38" textAnchor="middle" fontSize="16" fontWeight="800" fill="#E36A1E">de</text>
-      <rect x="64" y="16" width="48" height="32" rx="16" fill="rgba(59,130,196,0.14)" stroke="#3B82C4" strokeWidth="2"/>
-      <text x="88" y="38" textAnchor="middle" fontSize="16" fontWeight="800" fill="#3B82C4">het</text>
-    </svg>
-  )
-}
+// Illustrated assets (Klimmie mascot + scenes) live in ./assets/illustrations
+
 function ConfettiBurst(){
   const bits = Array.from({length:14},(_,i)=>({
     left: 6 + (i*7)%88,
@@ -897,10 +838,11 @@ function DailyPractice({
       <div className="card emptyState">
         <EmptyQueueArt />
         <div className="h1">{goalDone ? 'Goal gehaald!' : 'Even pauze'}</div>
-        <div className="h2">{goalDone ? 'Today\'s daily target is done — lekker bezig.' : 'No cards left in this plan right now.'}</div>
+        <div className="h2">{goalDone ? 'Today\'s daily target is done — lekker bezig.' : 'Klimmie is resting — no cards left in this plan right now.'}</div>
         {goalDone && (
           <div className="celebrateBanner" style={{marginTop:14}}>
-            <ConfettiBurst />
+                        <ConfettiBurst />
+            <CelebrateArt />
             <div className="title">Goed zo!</div>
             <div className="small" style={{marginTop:4}}>Streak {stats.streak} · {stats.reviewsToday}/{settings.dailyTarget} today</div>
           </div>
@@ -953,7 +895,8 @@ function DailyPractice({
         </div>
         {showCelebrate && (
           <div className="celebrateBanner">
-            <ConfettiBurst />
+                        <ConfettiBurst />
+            <CelebrateArt />
             <div className="title">Goed zo — daily goal done!</div>
             <div className="small" style={{marginTop:4}}>Keep the streak warm ☀️</div>
           </div>
@@ -1355,7 +1298,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     return (
       <header className="topBar">
         <div className="topBarRowNav">
-          <div className="topBarBrand" aria-label="Klimop">
+          <div className="topBarBrand" aria-label={`Klimop · ${MASCOT_NAME}`}>
             <IvyMark />
             <span className="topBarBrandName">Klimop</span>
           </div>
@@ -1479,7 +1422,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <HomeHeaderArt />
             <div style={{flex:1, minWidth:200}}>
               <div className="h1" style={{marginBottom:4}}>Lichte Klimop</div>
-              <div className="h2">Modern Dutch practice — bikes, light, and a calm queue.</div>
+              <div className="h2">Modern Dutch practice with Klimmie — bikes, light, and a calm queue.</div>
               <div className="homeCoachLine">{greeting}</div>
               {weak && weak.weakness > 0 && (
                 <button type="button" className="weakThemeChip" onClick={()=>startTheme(weak.id)}>
@@ -1496,7 +1439,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           </div>
           {goalDone && (
             <div className="celebrateBanner" style={{marginTop:14}}>
-              <ConfettiBurst />
+                            <ConfettiBurst />
+              <CelebrateArt />
               <div className="title">Today&apos;s goal is done — goed zo!</div>
             </div>
           )}
@@ -2604,15 +2548,18 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         {route==='grammar' && <div className="pagePane"><Grammar currentUserId={currentUserId} currentBookId={currentBookId} speak={speak} /></div>}
       </div>
       <div className="sep appFooterSep" />
-      <div className="small appFooterText">Lichte Klimop • local-only • warm Dutch practice</div>
+      <div className="small appFooterText">Lichte Klimop • {MASCOT_NAME} the ivy • local-only • warm Dutch practice</div>
       {onboardStep>0 && (
         <div className="onboardOverlay" role="dialog" aria-modal="true" aria-label="Welcome to Klimop">
           <div className="onboardCard">
-            <div className="row" style={{alignItems:'center', gap:10}}>
-              <IvyMark size={32} />
+            <div className="onboardHero">
+              <OnboardArt />
               <div>
-                <div className="h1" style={{fontSize:22, marginBottom:0}}>Welkom bij Klimop</div>
-                <div className="h2">Three soft steps to start</div>
+                <div className="row" style={{alignItems:'center', gap:8, marginBottom:4}}>
+                  <IvyMark size={28} />
+                  <div className="h1" style={{fontSize:22, marginBottom:0}}>Welkom bij Klimop</div>
+                </div>
+                <div className="h2">Meet Klimmie — three soft steps to start</div>
               </div>
             </div>
             <div className="onboardSteps" aria-hidden>
