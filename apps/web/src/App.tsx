@@ -490,6 +490,19 @@ function DailyPractice({
     setGrammarFeedback(null)
     setGrammarChosen(null)
   }
+  /** Clear chapter filter so the session uses the full theme pool. */
+  const selectAllThemes = ()=>{
+    const wasFiltered = studyTheme !== 0
+    setStudyTheme(0)
+    // Theme-scoped practice often burns newPerDay slots; without continue the expanded
+    // pool still yields an empty queue and the control looks dead.
+    if (wasFiltered) setStudyContinueMode(true)
+    setSessionWrongIds(new Set())
+    setSkipWrongCardId(null)
+    setStudySeenSession({})
+    setGrammarFeedback(null)
+    setGrammarChosen(null)
+  }
   const sk=(id:string)=>scopedKey(currentBookId,id)
   const themesInScope = useMemo(
     ()=> studyTheme===0 ? course.themes.map(t=>t.id) : [studyTheme],
@@ -888,7 +901,7 @@ function DailyPractice({
         <div className="sep" />
         <div className="row" style={{justifyContent:'center'}}>
           <button className="btn-primary" onClick={()=>setStudyContinueMode(true)}>Continue beyond target</button>
-          <button onClick={()=>setStudyTheme(0)}>All themes</button>
+          <button type="button" onClick={selectAllThemes}>All themes</button>
         </div>
       </div>
     )
@@ -1075,7 +1088,7 @@ function DailyPractice({
         <div className="h2">Planned now: {queue.length} - {practiceMode==='mixed' ? 'Retention mix' : (practiceMode==='vocab' ? 'Vocabulary' : 'Grammar')}</div>
         <div className="sep" />
         <div className="row" style={{marginBottom:8}}>
-          <button onClick={()=>setStudyTheme(0)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:studyTheme===0?'var(--primary-soft)':'var(--panel)'}}>All themes</button>
+          <button type="button" onClick={selectAllThemes} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:studyTheme===0?'var(--primary-soft)':'var(--panel)'}}>All themes</button>
         </div>
         <div className="small" style={{maxHeight:'clamp(260px, 34vh, 420px)',overflow:'auto'}}>
           {course.themes.map(t=>{
@@ -1083,7 +1096,7 @@ function DailyPractice({
             const count = activeDeck.filter(c=>c.theme===t.id).length
             return (
               <div key={t.id} style={{padding:'6px 0',borderBottom:'1px solid var(--border)'}}>
-                <button onClick={()=>setStudyTheme(t.id)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:active?'var(--primary-soft)':'var(--panel)'}}>
+                <button type="button" onClick={()=>setStudyTheme(t.id)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:active?'var(--primary-soft)':'var(--panel)'}}>
                   {t.title}
                 </button>
                 <div className="small" style={{marginTop:4}}>Cards in chapter: {count}</div>
@@ -1510,7 +1523,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           </div>
           <div className="sep" />
           <div className="row homeToolRow" style={{flexWrap:'wrap'}}>
-            <button className="btn-primary" onClick={()=>setRoute('study')}>Start Daily</button>
+            <button type="button" className="btn-primary" onClick={()=>{ setStudyTheme(0); setRoute('study'); window.scrollTo({ top:0, behavior:'auto' }) }}>Start Daily</button>
             <button className="homeToolBtn" onClick={()=>setRoute('listening')}><img className="homeToolIcon" src="./assets/listen-icon.png" alt="" width={22} height={22} />Listening</button>
             <button className="homeToolBtn" onClick={()=>setRoute('speaking')}><img className="homeToolIcon" src="./assets/speak-icon.png" alt="" width={22} height={22} />Speaking</button>
             <button className="homeToolBtn" onClick={()=>setRoute('stories')}><img className="homeToolIcon" src="./assets/story-icon.png" alt="" width={22} height={22} />Stories</button>
@@ -2733,7 +2746,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         {route==='listening' && <div className="pagePane"><Listening course={course} speak={speak} /></div>}
         {route==='speaking' && <div className="pagePane"><Speaking course={course} speak={speak} /></div>}
         {route==='stories' && <div className="pagePane"><Stories speak={speak} /></div>}
-        {route==='sync' && <div className="pagePane"><AccountSync currentUserId={currentUserId} displayName={displayNames[currentUserId] ?? (currentUserId==='default'?'Guest':currentUserId.replace(/_/g,' '))} /></div>}
+        {route==='sync' && <div className="pagePane"><AccountSync currentUserId={currentUserId} displayName={displayNames[currentUserId] ?? (currentUserId==='default'?'Guest':currentUserId.replace(/_/g,' '))} onIdentityApplied={(identity)=>{ setUsers(identity.users); setCurrentUserId(identity.userId); setDisplayNames(identity.displayNames) }} /></div>}
       </div>
       <div className="sep appFooterSep" />
       <div className="small appFooterText">Lichte Klimop • Dutch lion • tulips & molens • local-first LAN</div>

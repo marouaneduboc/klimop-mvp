@@ -123,6 +123,8 @@ class PairJoinReq(BaseModel):
 class ProgressPut(BaseModel):
     profile_id: str
     progress: dict[str, Any]
+    display_name: str | None = None
+    local_user_id: str | None = None
 
 
 @app.get("/health")
@@ -209,13 +211,15 @@ def progress_put(req: ProgressPut, authorization: str | None = Header(default=No
         raise HTTPException(status_code=403, detail="Token/profile mismatch")
     now = time.time()
     blob = json.dumps(req.progress)
-    # Keep profiles.display_name / local_user_id in sync with the progress blob when present
-    cur_user = req.progress.get("klimop.currentUser")
-    if not isinstance(cur_user, str) or not cur_user.strip():
-        cur_user = None
+    # Keep profiles.display_name / local_user_id in sync: explicit PUT fields, then blob
+    cur_user = req.local_user_id if isinstance(req.local_user_id, str) and req.local_user_id.strip() else None
+    if not cur_user:
+        blob_user = req.progress.get("klimop.currentUser")
+        if isinstance(blob_user, str) and blob_user.strip():
+            cur_user = blob_user.strip()
     names = req.progress.get("klimop.userDisplayNames") or {}
-    disp = None
-    if cur_user and isinstance(names, dict):
+    disp = req.display_name.strip() if isinstance(req.display_name, str) and req.display_name.strip() else None
+    if not disp and cur_user and isinstance(names, dict):
         n = names.get(cur_user)
         if isinstance(n, str) and n.strip():
             disp = n.strip()
@@ -229,6 +233,16 @@ def progress_put(req: ProgressPut, authorization: str | None = Header(default=No
             conn.execute(
                 "UPDATE profiles SET display_name=?, local_user_id=?, updated_at=? WHERE id=?",
                 (disp, cur_user, now, pid),
+            )
+        elif cur_user:
+            conn.execute(
+                "UPDATE profiles SET local_user_id=?, updated_at=? WHERE id=?",
+                (cur_user, now, pid),
+            )
+        elif disp:
+            conn.execute(
+                "UPDATE profiles SET display_name=?, updated_at=? WHERE id=?",
+                (disp, now, pid),
             )
         else:
             conn.execute("UPDATE profiles SET updated_at=? WHERE id=?", (now, pid))

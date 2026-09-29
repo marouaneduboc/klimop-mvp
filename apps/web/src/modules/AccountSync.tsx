@@ -63,35 +63,79 @@ function applyBlob(blob: Record<string, unknown>) {
   }
 }
 
-/** After pull/join: ensure active user + display name land even if blob was incomplete. */
+export type SyncedIdentity = {
+  userId: string
+  displayName: string
+  users: string[]
+  displayNames: Record<string, string>
+}
+
+/** After pull/join: always land users / currentUser / displayNames from server + blob. */
 function applyProfileIdentity(opts: {
   localUserId?: string | null
   displayName?: string | null
   progress?: Record<string, unknown> | null
-}) {
+}): SyncedIdentity | null {
   const progress = opts.progress || {}
-  const fromBlobUser = typeof progress['klimop.currentUser'] === 'string' ? (progress['klimop.currentUser'] as string) : null
-  const userId = (opts.localUserId || fromBlobUser || '').trim()
-  if (userId) {
-    try { localStorage.setItem('klimop.currentUser', JSON.stringify(userId)) } catch { /* */ }
-    try {
+
+  const blobUsersRaw = progress['klimop.users']
+  const blobUsers = Array.isArray(blobUsersRaw) ? (blobUsersRaw as unknown[]).filter((u): u is string => typeof u === 'string' && !!u.trim()) : []
+
+  const blobNamesRaw = progress['klimop.userDisplayNames']
+  const blobNames: Record<string, string> =
+    blobNamesRaw && typeof blobNamesRaw === 'object' && !Array.isArray(blobNamesRaw)
+      ? Object.fromEntries(
+          Object.entries(blobNamesRaw as Record<string, unknown>)
+            .filter(([, v]) => typeof v === 'string' && !!(v as string).trim())
+            .map(([k, v]) => [k, String(v).trim()])
+        )
+      : {}
+
+  const fromBlobUser = typeof progress['klimop.currentUser'] === 'string' ? (progress['klimop.currentUser'] as string).trim() : ''
+  let existingUser = ''
+  try {
+    const raw = localStorage.getItem('klimop.currentUser')
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      if (typeof parsed === 'string') existingUser = parsed.trim()
+    }
+  } catch { /* */ }
+
+  const userId = (opts.localUserId || fromBlobUser || existingUser || blobUsers[0] || '').trim()
+  if (!userId) return null
+
+  let users = blobUsers.length ? [...blobUsers] : []
+  try {
+    if (!users.length) {
       const raw = localStorage.getItem('klimop.users')
-      let users: string[] = raw ? JSON.parse(raw) : []
-      if (!Array.isArray(users)) users = []
-      if (!users.includes(userId)) users = [...users, userId]
-      localStorage.setItem('klimop.users', JSON.stringify(users.length ? users : [userId]))
-    } catch { /* */ }
-  }
-  const name = (opts.displayName || '').trim()
-  if (userId && name) {
-    try {
-      const raw = localStorage.getItem('klimop.userDisplayNames')
-      const names: Record<string, string> = raw ? JSON.parse(raw) : {}
-      const next = names && typeof names === 'object' && !Array.isArray(names) ? { ...names } : {}
-      next[userId] = name
-      localStorage.setItem('klimop.userDisplayNames', JSON.stringify(next))
-    } catch { /* */ }
-  }
+      const parsed = raw ? JSON.parse(raw) : []
+      if (Array.isArray(parsed)) users = parsed.filter((u: unknown): u is string => typeof u === 'string' && !!u.trim())
+    }
+  } catch { /* */ }
+  if (!users.includes(userId)) users = [...users, userId]
+  if (!users.length) users = [userId]
+
+  const names: Record<string, string> = { ...blobNames }
+  try {
+    const raw = localStorage.getItem('klimop.userDisplayNames')
+    const parsed = raw ? JSON.parse(raw) : {}
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      for (const [k, v] of Object.entries(parsed as Record<string, unknown>)) {
+        if (!(k in names) && typeof v === 'string' && v.trim()) names[k] = v.trim()
+      }
+    }
+  } catch { /* */ }
+
+  const fromServer = (opts.displayName || '').trim()
+  const fromBlobName = (blobNames[userId] || '').trim()
+  const name = fromServer || fromBlobName || (names[userId] || '').trim()
+  if (name) names[userId] = name
+
+  try { localStorage.setItem('klimop.currentUser', JSON.stringify(userId)) } catch { /* */ }
+  try { localStorage.setItem('klimop.users', JSON.stringify(users)) } catch { /* */ }
+  try { localStorage.setItem('klimop.userDisplayNames', JSON.stringify(names)) } catch { /* */ }
+
+  return { userId, displayName: names[userId] || name || userId, users, displayNames: names }
 }
 
 function formatSyncTime(iso: string | null): string {
@@ -139,9 +183,12 @@ async function copyText(text: string): Promise<boolean> {
 export default function AccountSync({
   currentUserId,
   displayName,
+  onIdentityApplied,
 }: {
   currentUserId: string
   displayName: string
+  /** Force App profile pill / user list to refresh after Join or Pull (localStorage alone is not enough). */
+  onIdentityApplied?: (identity: SyncedIdentity) => void
 }) {
   const [apiBase, setApiBase] = useState(defaultApiBase())
   const [status, setStatus] = useState('')
@@ -226,11 +273,12 @@ export default function AccountSync({
       localStorage.setItem(SYNC_PROFILE_KEY, j.profile_id)
       localStorage.setItem(PAIR_TOKEN_KEY, j.token)
       if (j.progress) applyBlob(j.progress)
-      applyProfileIdentity({
+      const identity = applyProfileIdentity({
         localUserId: j.local_user_id,
         displayName: j.display_name,
         progress: j.progress,
       })
+      if (identity) onIdentityApplied?.(identity)
       const now = new Date().toISOString()
       localStorage.setItem(LAST_PULL_KEY, now)
       setLastPull(now)
@@ -251,7 +299,12 @@ export default function AccountSync({
       const r = await apiFetch('/sync/progress', {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ profile_id: pid, progress: blob }),
+        body: JSON.stringify({
+          profile_id: pid,
+          progress: blob,
+          display_name: displayName || currentUserId,
+          local_user_id: currentUserId,
+        }),
       })
       if (!r.ok) throw new Error(await r.text())
       const now = new Date().toISOString()
@@ -275,15 +328,18 @@ export default function AccountSync({
       if (!r.ok) throw new Error(await r.text())
       const j = await r.json()
       if (j.progress) applyBlob(j.progress)
-      applyProfileIdentity({
+      const identity = applyProfileIdentity({
         localUserId: j.local_user_id,
         displayName: j.display_name,
         progress: j.progress,
       })
+      if (identity) onIdentityApplied?.(identity)
       const now = new Date().toISOString()
       localStorage.setItem(LAST_PULL_KEY, now)
       setLastPull(now)
-      showToast('ok', 'Progress pulled. Reloading…')
+      showToast('ok', identity?.displayName
+        ? `Progress pulled — signed in as ${identity.displayName}. Reloading…`
+        : 'Progress pulled. Reloading…')
       setTimeout(() => window.location.reload(), 900)
     } catch (e: any) {
       showToast('err', String(e?.message || e))
