@@ -188,8 +188,18 @@ def pair_join(req: PairJoinReq):
             "SELECT blob_json FROM progress WHERE profile_id=?",
             (profile_id,),
         ).fetchone()
+        prof = conn.execute(
+            "SELECT display_name, local_user_id FROM profiles WHERE id=?",
+            (profile_id,),
+        ).fetchone()
     progress = json.loads(prog["blob_json"]) if prog else {}
-    return {"profile_id": profile_id, "token": device_token, "progress": progress}
+    return {
+        "profile_id": profile_id,
+        "token": device_token,
+        "progress": progress,
+        "display_name": (prof["display_name"] if prof else None),
+        "local_user_id": (prof["local_user_id"] if prof else None),
+    }
 
 
 @app.put("/sync/progress")
@@ -199,13 +209,29 @@ def progress_put(req: ProgressPut, authorization: str | None = Header(default=No
         raise HTTPException(status_code=403, detail="Token/profile mismatch")
     now = time.time()
     blob = json.dumps(req.progress)
+    # Keep profiles.display_name / local_user_id in sync with the progress blob when present
+    cur_user = req.progress.get("klimop.currentUser")
+    if not isinstance(cur_user, str) or not cur_user.strip():
+        cur_user = None
+    names = req.progress.get("klimop.userDisplayNames") or {}
+    disp = None
+    if cur_user and isinstance(names, dict):
+        n = names.get(cur_user)
+        if isinstance(n, str) and n.strip():
+            disp = n.strip()
     with _db() as conn:
         conn.execute(
             "INSERT INTO progress(profile_id, blob_json, updated_at) VALUES (?,?,?) "
             "ON CONFLICT(profile_id) DO UPDATE SET blob_json=excluded.blob_json, updated_at=excluded.updated_at",
             (pid, blob, now),
         )
-        conn.execute("UPDATE profiles SET updated_at=? WHERE id=?", (now, pid))
+        if disp and cur_user:
+            conn.execute(
+                "UPDATE profiles SET display_name=?, local_user_id=?, updated_at=? WHERE id=?",
+                (disp, cur_user, now, pid),
+            )
+        else:
+            conn.execute("UPDATE profiles SET updated_at=? WHERE id=?", (now, pid))
     (DATA_DIR / f"{pid}.json").write_text(json.dumps(req.progress, indent=2), encoding="utf-8")
     return {"ok": True, "updated_at": now}
 
@@ -220,9 +246,19 @@ def progress_get(profile_id: str, authorization: str | None = Header(default=Non
             "SELECT blob_json, updated_at FROM progress WHERE profile_id=?",
             (profile_id,),
         ).fetchone()
+        prof = conn.execute(
+            "SELECT display_name, local_user_id FROM profiles WHERE id=?",
+            (profile_id,),
+        ).fetchone()
     if not row:
         raise HTTPException(status_code=404, detail="No progress")
-    return {"profile_id": profile_id, "progress": json.loads(row["blob_json"]), "updated_at": row["updated_at"]}
+    return {
+        "profile_id": profile_id,
+        "progress": json.loads(row["blob_json"]),
+        "updated_at": row["updated_at"],
+        "display_name": (prof["display_name"] if prof else None),
+        "local_user_id": (prof["local_user_id"] if prof else None),
+    }
 
 
 @app.get("/sync/profiles")

@@ -22,7 +22,7 @@ const MIGRATE_KEYS = [
   'klimop.remind.v1',
 ]
 
-function collectLocalBlob(userId: string): Record<string, unknown> {
+function collectLocalBlob(userId: string, displayName?: string): Record<string, unknown> {
   const out: Record<string, unknown> = {}
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i)
@@ -40,12 +40,57 @@ function collectLocalBlob(userId: string): Record<string, unknown> {
       try { out[scoped] = JSON.parse(localStorage.getItem(scoped)!) } catch { out[scoped] = localStorage.getItem(scoped) }
     }
   }
+  // Always include active user profile + display name so phone shows the same name after Join/Pull
+  let users: string[] = Array.isArray(out['klimop.users']) ? [...(out['klimop.users'] as string[])] : []
+  if (!users.includes(userId)) users = [...users, userId]
+  if (users.length === 0) users = [userId]
+  out['klimop.users'] = users
+  out['klimop.currentUser'] = userId
+  const names: Record<string, string> =
+    out['klimop.userDisplayNames'] && typeof out['klimop.userDisplayNames'] === 'object' && !Array.isArray(out['klimop.userDisplayNames'])
+      ? { ...(out['klimop.userDisplayNames'] as Record<string, string>) }
+      : {}
+  const name = (displayName || '').trim()
+  if (name) names[userId] = name
+  out['klimop.userDisplayNames'] = names
   return out
 }
 
+/** Apply progress blob. Values were JSON.parsed on collect — always re-stringify so App loadJSON works (esp. string keys like klimop.currentUser). */
 function applyBlob(blob: Record<string, unknown>) {
   for (const [k, v] of Object.entries(blob || {})) {
-    try { localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v)) } catch { /* */ }
+    try { localStorage.setItem(k, JSON.stringify(v)) } catch { /* */ }
+  }
+}
+
+/** After pull/join: ensure active user + display name land even if blob was incomplete. */
+function applyProfileIdentity(opts: {
+  localUserId?: string | null
+  displayName?: string | null
+  progress?: Record<string, unknown> | null
+}) {
+  const progress = opts.progress || {}
+  const fromBlobUser = typeof progress['klimop.currentUser'] === 'string' ? (progress['klimop.currentUser'] as string) : null
+  const userId = (opts.localUserId || fromBlobUser || '').trim()
+  if (userId) {
+    try { localStorage.setItem('klimop.currentUser', JSON.stringify(userId)) } catch { /* */ }
+    try {
+      const raw = localStorage.getItem('klimop.users')
+      let users: string[] = raw ? JSON.parse(raw) : []
+      if (!Array.isArray(users)) users = []
+      if (!users.includes(userId)) users = [...users, userId]
+      localStorage.setItem('klimop.users', JSON.stringify(users.length ? users : [userId]))
+    } catch { /* */ }
+  }
+  const name = (opts.displayName || '').trim()
+  if (userId && name) {
+    try {
+      const raw = localStorage.getItem('klimop.userDisplayNames')
+      const names: Record<string, string> = raw ? JSON.parse(raw) : {}
+      const next = names && typeof names === 'object' && !Array.isArray(names) ? { ...names } : {}
+      next[userId] = name
+      localStorage.setItem('klimop.userDisplayNames', JSON.stringify(next))
+    } catch { /* */ }
   }
 }
 
@@ -144,7 +189,7 @@ export default function AccountSync({
   const createPair = async () => {
     setBusy(true); setErr('')
     try {
-      const blob = collectLocalBlob(currentUserId)
+      const blob = collectLocalBlob(currentUserId, displayName)
       const r = await apiFetch('/sync/pair/create', {
         method: 'POST',
         body: JSON.stringify({
@@ -181,6 +226,11 @@ export default function AccountSync({
       localStorage.setItem(SYNC_PROFILE_KEY, j.profile_id)
       localStorage.setItem(PAIR_TOKEN_KEY, j.token)
       if (j.progress) applyBlob(j.progress)
+      applyProfileIdentity({
+        localUserId: j.local_user_id,
+        displayName: j.display_name,
+        progress: j.progress,
+      })
       const now = new Date().toISOString()
       localStorage.setItem(LAST_PULL_KEY, now)
       setLastPull(now)
@@ -197,7 +247,7 @@ export default function AccountSync({
     if (!token || !pid) { showToast('err', 'Pair first (create or join).'); return }
     setBusy(true); setErr('')
     try {
-      const blob = collectLocalBlob(currentUserId)
+      const blob = collectLocalBlob(currentUserId, displayName)
       const r = await apiFetch('/sync/progress', {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
@@ -225,6 +275,11 @@ export default function AccountSync({
       if (!r.ok) throw new Error(await r.text())
       const j = await r.json()
       if (j.progress) applyBlob(j.progress)
+      applyProfileIdentity({
+        localUserId: j.local_user_id,
+        displayName: j.display_name,
+        progress: j.progress,
+      })
       const now = new Date().toISOString()
       localStorage.setItem(LAST_PULL_KEY, now)
       setLastPull(now)
