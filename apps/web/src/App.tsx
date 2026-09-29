@@ -1,4 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  BRAND_NAME,
+  CelebrateArt,
+  DailyHeaderArt,
+  DeHetTagsArt,
+  EmptyQueueArt,
+  GrammarNotebookArt,
+  HomeHeaderArt,
+  IvyMark,
+  OnboardArt,
+  ProgressHeaderArt,
+} from './assets/illustrations'
 
 type Vocab = { id:string; theme:number; nl:string; en?:string|null; article?:'de'|'het'|null }
 type Review = { id:string; due:number; interval:number; ease:number; reps:number; lapses:number; learningStep?:number }
@@ -119,7 +131,7 @@ const MAX_NEW_PER_DAY = 80
 const clamp = (n:number, min:number, max:number)=>Math.min(max, Math.max(min, n))
 function normalizeSettings(raw:any):Settings{
   const base = {
-    ttsBaseUrl:'http://192.168.68.107:8000',
+    ttsBaseUrl:'http://localhost:8000',
     autoSpeak:false,
     voice:'',
     speed:1.0,
@@ -165,6 +177,34 @@ const LEARNING_STEP_1_MS = 60*1000
 const LEARNING_STEP_2_MS = 10*60*1000
 const FEEDBACK_CORRECT_MS = 2200
 const FEEDBACK_WRONG_MS = 3200
+
+
+const ONBOARDING_KEY = 'klimop.onboarding.v1'
+const CULTURE_TIP_SESSION_KEY = 'klimop.cultureTip.session'
+
+const CULTURE_TIPS = [
+  { word:'gezellig', tip:'Gezellig is that warm, welcome feeling — a cozy café, friends around the table, soft light.' },
+  { word:'fiets', tip:'The fiets is everyday freedom. In Dutch towns, bikes outnumber cars — and that\'s the point.' },
+  { word:'doe normaal', tip:'Doe normaal: keep it grounded. Dutch culture likes straightforward and unpretentious.' },
+]
+
+function srsFeedbackLabel(r:Review):{kind:'soon'|'tomorrow'|'later'; text:string}{
+  const step = r.learningStep ?? 0
+  if(step>0 || r.interval===0) return { kind:'soon', text:'Again soon' }
+  if(r.interval<=1) return { kind:'tomorrow', text:'Tomorrow' }
+  if(r.interval<=3) return { kind:'later', text:'In a few days' }
+  return { kind:'later', text:`Later · ${r.interval}d` }
+}
+
+function exampleForVocab(v:Vocab):string{
+  const word = v.article ? `${v.article} ${v.nl}` : v.nl
+  if(v.article==='de') return `Ik zie ${word} vandaag.`
+  if(v.article==='het') return `Waar is ${word}?`
+  return `Kun je "${v.nl}" gebruiken in een zin?`
+}
+
+// Illustrated assets (Dutch motifs) live in ./assets/illustrations
+
 
 function interleaveAfter<T>(main:T[], wrong:T[], everyN:number):T[]{
   if(wrong.length===0) return main
@@ -312,6 +352,12 @@ function DailyPractice({
   const [skipWrongCardId,setSkipWrongCardId]=useState<string | null>(null)
   const [grammarFeedback,setGrammarFeedback]=useState<'correct'|'wrong'|null>(null)
   const [grammarChosen,setGrammarChosen]=useState<string | null>(null)
+  const [vocabFeedback,setVocabFeedback]=useState<'correct'|'wrong'|null>(null)
+  const [srsHint,setSrsHint]=useState<{kind:'soon'|'tomorrow'|'later'; text:string}|null>(null)
+  const [teachTip,setTeachTip]=useState<{nl:string; example:string}|null>(null)
+  const [showCelebrate,setShowCelebrate]=useState(false)
+  const [cultureTip,setCultureTip]=useState<(typeof CULTURE_TIPS)[number]|null>(null)
+  const cultureShownRef = useRef(false)
   const grammarTypedInputRef = useRef<HTMLInputElement>(null)
   const [dailyGrammarData,setDailyGrammarData]=useState<GrammarData|null>(null)
   useEffect(()=>{
@@ -678,6 +724,9 @@ function DailyPractice({
     setShowClue(false)
     setGrammarFeedback(null)
     setGrammarChosen(null)
+    setVocabFeedback(null)
+    setSrsHint(null)
+    setTeachTip(null)
     if(grammarTypedInputRef.current) grammarTypedInputRef.current.value = ''
     if(skipWrongCardId && cur?.id !== skipWrongCardId) setSkipWrongCardId(null)
   },[cur?.id, skipWrongCardId])
@@ -693,6 +742,14 @@ function DailyPractice({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[settings.autoSpeak,cur?.id])
 
+  function maybeShowCultureTip(){
+    if(cultureShownRef.current) return
+    if(sessionStorage.getItem(CULTURE_TIP_SESSION_KEY)) return
+    cultureShownRef.current = true
+    sessionStorage.setItem(CULTURE_TIP_SESSION_KEY,'1')
+    const tip = CULTURE_TIPS[Math.floor(Math.random()*CULTURE_TIPS.length)]
+    setCultureTip(tip)
+  }
   function advance(card:StudyCard, correct:boolean){
     const map={...reviewsMap}
     const wasNew = !map[card.id]
@@ -706,6 +763,20 @@ function DailyPractice({
     setStats(s)
     saveJSON(userScopedKey(LS.stats,currentUserId),s)
     const graduated = (r.learningStep ?? 0) === 0
+    setSrsHint(srsFeedbackLabel(r))
+    if(card.kind==='vocab'){
+      setVocabFeedback(correct?'correct':'wrong')
+      if(!correct){
+        setTeachTip({ nl: card.vocab.article ? `${card.vocab.article} ${card.vocab.nl}` : card.vocab.nl, example: exampleForVocab(card.vocab) })
+      } else {
+        setTeachTip(null)
+      }
+    }
+    const hitGoal = s.reviewsToday >= settings.dailyTarget && stats.reviewsToday < settings.dailyTarget
+    if(hitGoal){
+      setShowCelebrate(true)
+      maybeShowCultureTip()
+    }
     if(correct){
       if(graduated) setStudySeenSession(prev=>({ ...prev, [card.id]: true }))
       setSessionWrongIds(prev=>{ const n=new Set(prev); n.delete(card.id); return n })
@@ -713,6 +784,14 @@ function DailyPractice({
       setSessionWrongIds(prev=>new Set(prev).add(card.id))
     }
     setSkipWrongCardId(card.id)
+    if(card.kind==='vocab'){
+      const delay = correct ? FEEDBACK_CORRECT_MS : FEEDBACK_WRONG_MS
+      setTimeout(()=>{
+        setVocabFeedback(null)
+        setSrsHint(null)
+        if(correct) setTeachTip(null)
+      }, delay)
+    }
   }
   function toggleDifficult(){
     if(!cur) return
@@ -732,32 +811,56 @@ function DailyPractice({
     setGrammarChosen(guess)
     setGrammarFeedback(correct?'correct':'wrong')
     advance(cur, correct)
-    setTimeout(()=>{ setGrammarFeedback(null); setGrammarChosen(null) }, correct ? FEEDBACK_CORRECT_MS : FEEDBACK_WRONG_MS)
+    if(!correct){
+      setTeachTip({ nl: cur.correct, example: cur.correct })
+    }
+    setTimeout(()=>{ setGrammarFeedback(null); setGrammarChosen(null); setSrsHint(null); if(correct) setTeachTip(null) }, correct ? FEEDBACK_CORRECT_MS : FEEDBACK_WRONG_MS)
   }
 
   if(!cur){
+    const goalDone = stats.reviewsToday >= settings.dailyTarget
     return (
-      <div className="card">
-        <div className="h1">No cards in this plan</div>
-        <div className="h2">You reached today&apos;s target for this chapter selection.</div>
+      <div className="card emptyState">
+        <EmptyQueueArt />
+        <div className="h1">{goalDone ? 'Goal gehaald!' : 'Even pauze'}</div>
+        <div className="h2">{goalDone ? 'Today\'s daily target is done — lekker bezig.' : 'Nothing left in this plan right now — even pauze.'}</div>
+        {goalDone && (
+          <div className="celebrateBanner" style={{marginTop:14}}>
+            <CelebrateArt />
+            <div className="title">Goed zo!</div>
+            <div className="small" style={{marginTop:4}}>Streak {stats.streak} · {stats.reviewsToday}/{settings.dailyTarget} today</div>
+          </div>
+        )}
         <div className="sep" />
-        <div className="row">
-          <button onClick={()=>setStudyContinueMode(true)}>Continue beyond target</button>
-          <button onClick={()=>setStudyTheme(0)}>Switch to all themes</button>
+        <div className="row" style={{justifyContent:'center'}}>
+          <button className="btn-primary" onClick={()=>setStudyContinueMode(true)}>Continue beyond target</button>
+          <button onClick={()=>setStudyTheme(0)}>All themes</button>
         </div>
       </div>
     )
   }
+
+  const progressPct = Math.min(100, Math.round((stats.reviewsToday / Math.max(1, settings.dailyTarget)) * 100))
+  const framingLine = studyTheme!==0
+    ? (course.themes.find(t=>t.id===studyTheme)?.title ?? 'Theme')
+    : 'All themes · calm daily queue'
 
   return (
     <div className="studyShell">
       <div className="card studyMain">
         <div className="row" style={{justifyContent:'space-between', alignItems:'flex-end'}}>
           <div>
-            <div className="h1">Daily Practice</div>
-            <div className="h2">
-              {currentPos} / {plannedTotal} planned today
-              {studyTheme!==0 ? ` - ${course.themes.find(t=>t.id===studyTheme)?.title ?? ''}` : ' - All themes'}
+            <div className="row" style={{gap:10, alignItems:'center', marginBottom:4}}>
+              <DailyHeaderArt />
+              <div>
+                <div className="h1" style={{marginBottom:0}}>Daily Practice</div>
+                <div className="h2">{framingLine}</div>
+              </div>
+            </div>
+            <div className="row" style={{gap:8, marginTop:8}}>
+              <span className="pill pill-progress">{currentPos} / {plannedTotal} planned</span>
+              <span className="pill">{stats.reviewsToday}/{settings.dailyTarget} today</span>
+              {stats.streak>0 && <span className="pill pill-streak">Streak {stats.streak}</span>}
             </div>
           </div>
           <div className="studyTopActions">
@@ -765,23 +868,48 @@ function DailyPractice({
             <button onClick={()=>setStudyContinueMode(v=>!v)}>{studyContinueMode ? 'Planned only' : 'Continue'}</button>
           </div>
         </div>
+        <div className="dailyProgressWrap">
+          <div className="dailyProgressMeta">
+            <span>Today&apos;s goal</span>
+            <span>{progressPct}%</span>
+          </div>
+          <div className="dailyProgressTrack" aria-hidden>
+            <div className="dailyProgressFill" style={{width:`${progressPct}%`}} />
+          </div>
+        </div>
+        {showCelebrate && (
+          <div className="celebrateBanner">
+            <CelebrateArt />
+            <div className="title">Goed zo — daily goal done!</div>
+            <div className="small" style={{marginTop:4}}>Keep the streak warm ☀️</div>
+          </div>
+        )}
+        {cultureTip && (
+          <div className="cultureTip">
+            <strong>Culture tip · {cultureTip.word}</strong>
+            <div style={{marginTop:4}}>{cultureTip.tip}</div>
+          </div>
+        )}
         <div className="row practiceModeQuick">
-          <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='vocab'?700:500}} onClick={()=>setPractice('vocab')}>Vocabulary</button>
-          <button type="button" className="topBarNavBtn" style={{fontWeight:practiceMode==='grammar'?700:500}} onClick={()=>setPractice('grammar')}>Grammar</button>
+          <button type="button" className={`topBarNavBtn${practiceMode==='vocab'?' is-active':''}`} onClick={()=>setPractice('vocab')}>Vocabulary</button>
+          <button type="button" className={`topBarNavBtn${practiceMode==='grammar'?' is-active':''}`} onClick={()=>setPractice('grammar')}>Grammar</button>
           {cur.kind==='grammar' && (
-            <button type="button" className="topBarNavBtn" style={{fontWeight:700}} onClick={()=>setGrammarAnswerMode(m=>m==='mc'?'typing':'mc')}>
+            <button type="button" className="topBarNavBtn is-active" onClick={()=>setGrammarAnswerMode(m=>m==='mc'?'typing':'mc')}>
               {grammarAnswerMode==='mc' ? 'Typing mode' : 'Multiple choice'}
             </button>
           )}
         </div>
 
-        <div style={{textAlign:'center',color:'rgba(255,255,255,0.2)',letterSpacing:8,margin:'6px 0',fontSize:16}}>···</div>
+        <div style={{textAlign:'center',color:'var(--muted)',letterSpacing:8,margin:'6px 0',fontSize:16,opacity:0.45}}>···</div>
         {cur.kind==='vocab' ? (
           <>
-            <div className="bigword">{cur.vocab.en ?? '—'}</div>
-            <button type="button" className="flipCard" onClick={()=>setShowTranslation(v=>!v)}>
+            <div className={`bigword${vocabFeedback==='correct'?' feedbackPulse':''}${vocabFeedback==='wrong'?' feedbackShake':''}`}>
+              {cur.vocab.en ?? '—'}
+              {vocabFeedback==='correct' && <span className="goedZo">goed zo</span>}
+            </div>
+            <button type="button" className={`flipCard${showTranslation?' is-revealed':''}`} onClick={()=>setShowTranslation(v=>!v)}>
               <div className="small">Flip card</div>
-              <div style={{marginTop:6, textAlign:'center'}}>
+              <div style={{marginTop:6, textAlign:'center', fontWeight:showTranslation?700:500}}>
                 {showTranslation ? (cur.vocab.article ? `${cur.vocab.article} ` : '') + cur.vocab.nl : 'Tap to reveal Dutch'}
               </div>
             </button>
@@ -789,21 +917,41 @@ function DailyPractice({
               {!showClue && <div style={{textAlign:'center'}}>Tap to reveal clue</div>}
               {showClue && <div style={{textAlign:'center', fontSize:'2rem', fontWeight:'bold'}}>{generateClue(cur.vocab.nl)}</div>}
             </button>
+            {teachTip && (
+              <div className="teachPanel">
+                <div><strong>Tip:</strong> {teachTip.nl}</div>
+                <div className="small" style={{marginTop:6}}>Example: {teachTip.example}</div>
+                <div className="row" style={{marginTop:8, justifyContent:'center'}}>
+                  <button type="button" className="deofhetSpeak" onClick={()=>{ void speak(teachTip.nl) }}>🔊 Hear word</button>
+                  <button type="button" className="deofhetSpeak" onClick={()=>{ void speak(teachTip.example) }}>🔊 Hear example</button>
+                </div>
+              </div>
+            )}
+            {srsHint && (
+              <div style={{textAlign:'center'}}>
+                <span className={`srsChip ${srsHint.kind}`}>{srsHint.text}</span>
+              </div>
+            )}
             <div className="studyBottom">
               <div className="row" style={{justifyContent:'center'}}>
-                <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
-                <button onClick={()=>advance(cur,false)}>Incorrect</button>
-                <button onClick={()=>advance(cur,true)}>Correct</button>
+                <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'var(--gold-soft)', borderColor:'rgba(240,180,41,0.45)', color:'#8a6200' } : undefined}>Difficult</button>
+                <button onClick={()=>!vocabFeedback && advance(cur,false)} disabled={!!vocabFeedback}>Incorrect</button>
+                <button className="btn-primary" onClick={()=>!vocabFeedback && advance(cur,true)} disabled={!!vocabFeedback}>Correct</button>
               </div>
             </div>
           </>
         ) : (
           <>
             <div className="h2" style={{textAlign:'center', marginBottom:8}}>{cur.title}</div>
-            <div className="bigword" style={{fontSize:34}}>{capitalizeFirst(cur.prompt)}</div>
+            <div className={`bigword${grammarFeedback==='correct'?' feedbackPulse':''}${grammarFeedback==='wrong'?' feedbackShake':''}`} style={{fontSize:34}}>
+              {capitalizeFirst(cur.prompt)}
+              {grammarFeedback==='correct' && <span className="goedZo">goed zo</span>}
+            </div>
             {grammarFeedback && (
               <div className={`deofhetFeedback feedback-${grammarFeedback}`}>
-                {grammarFeedback==='correct' ? <span>✓ Correct</span> : <span>✗ The answer is <strong>{cur.correct}</strong></span>}
+                {grammarFeedback==='correct'
+                  ? <span>✓ Correct · {srsHint ? srsHint.text : 'saved'}</span>
+                  : <span>✗ The answer is <strong>{cur.correct}</strong>{srsHint ? ` · ${srsHint.text}` : ''}</span>}
               </div>
             )}
             {grammarAnswerMode==='mc' ? (
@@ -842,7 +990,7 @@ function DailyPractice({
               </div>
             )}
             <div className="row" style={{justifyContent:'center', marginTop:10}}>
-              <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'rgba(245, 158, 11, 0.18)', borderColor:'rgba(245, 158, 11, 0.45)', color:'rgba(255, 244, 214, 0.96)' } : undefined}>Difficult</button>
+              <button onClick={toggleDifficult} style={difficultMap[cur.id] ? { background:'var(--gold-soft)', borderColor:'rgba(240,180,41,0.45)', color:'#8a6200' } : undefined}>Difficult</button>
             </div>
           </>
         )}
@@ -853,15 +1001,15 @@ function DailyPractice({
         <div className="h2">Planned now: {queue.length} - {practiceMode==='mixed' ? 'Mixed' : (practiceMode==='vocab' ? 'Vocabulary' : 'Grammar')}</div>
         <div className="sep" />
         <div className="row" style={{marginBottom:8}}>
-          <button onClick={()=>setStudyTheme(0)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:studyTheme===0?'rgba(255,255,255,0.14)':'var(--panel)'}}>All themes</button>
+          <button onClick={()=>setStudyTheme(0)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:studyTheme===0?'var(--primary-soft)':'var(--panel)'}}>All themes</button>
         </div>
         <div className="small" style={{maxHeight:'clamp(260px, 34vh, 420px)',overflow:'auto'}}>
           {course.themes.map(t=>{
             const active = studyTheme===t.id
             const count = activeDeck.filter(c=>c.theme===t.id).length
             return (
-              <div key={t.id} style={{padding:'6px 0',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>
-                <button onClick={()=>setStudyTheme(t.id)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:active?'rgba(255,255,255,0.14)':'var(--panel)'}}>
+              <div key={t.id} style={{padding:'6px 0',borderBottom:'1px solid var(--border)'}}>
+                <button onClick={()=>setStudyTheme(t.id)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:active?'var(--primary-soft)':'var(--panel)'}}>
                   {t.title}
                 </button>
                 <div className="small" style={{marginTop:4}}>Cards in chapter: {count}</div>
@@ -871,7 +1019,7 @@ function DailyPractice({
         </div>
         <div className="sep" />
         <div className="small" style={{maxHeight:'clamp(260px, 34vh, 420px)',overflow:'auto'}}>
-          {queue.slice(0,20).map(v=><div key={v.id} style={{padding:'6px 0',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>{v.title}</div>)}
+          {queue.slice(0,20).map(v=><div key={v.id} style={{padding:'6px 0',borderBottom:'1px solid var(--border)'}}>{v.title}</div>)}
         </div>
       </div>
     </div>
@@ -902,6 +1050,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   const [settings,setSettings]=useState<Settings>(()=>normalizeSettings(loadJSON(sk(LS.settings),null)))
   const [voices,setVoices]=useState<string[]>([])
   const [err,setErr]=useState('')
+  const [onboardStep,setOnboardStep]=useState<0|1|2|3>(()=> loadJSON<any>(userScopedKey(ONBOARDING_KEY,currentUserId),null)?.done ? 0 : 1)
   const [displayNames,setDisplayNames]=useState<Record<string,string>>(()=>loadJSON(USER_DISPLAY_NAMES_KEY,{}))
   const ttsUrlRef = useRef<HTMLInputElement>(null)
   const dailyTargetRef = useRef<HTMLInputElement>(null)
@@ -909,6 +1058,20 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   const speedRef = useRef<HTMLInputElement>(null)
   const profileNameInputRef = useRef<HTMLInputElement>(null)
   useEffect(()=>saveJSON(USER_DISPLAY_NAMES_KEY,displayNames),[displayNames])
+  useEffect(()=>{
+    const ob = loadJSON<any>(userScopedKey(ONBOARDING_KEY,currentUserId),null)
+    setOnboardStep(ob?.done ? 0 : 1)
+  },[currentUserId])
+  const finishOnboarding = ()=>{
+    saveJSON(userScopedKey(ONBOARDING_KEY,currentUserId), {done:true, at:todayISO()})
+    setOnboardStep(0)
+  }
+  const completeOnboardAndStudy = ()=>{
+    finishOnboarding()
+    setStudyTheme(0)
+    setRoute('study')
+    window.scrollTo({ top:0, behavior:'auto' })
+  }
   const commitDailyTarget = ()=>{
     const el = dailyTargetRef.current
     if(!el) return
@@ -1118,10 +1281,14 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     return (
       <header className="topBar">
         <div className="topBarRowNav">
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('home')} style={{fontWeight:route==='home'?700:400}}>Home</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('study')} style={{fontWeight:route==='study'?700:400}}>Daily</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('progress')} style={{fontWeight:route==='progress'?700:400}}>Progress</button>
-          <button type="button" className="topBarNavBtn" onClick={()=>goRoute('tts')} style={{fontWeight:route==='tts'?700:400}}>TTS</button>
+          <div className="topBarBrand" aria-label={`Klimop · ${BRAND_NAME}`}>
+            <IvyMark />
+            <span className="topBarBrandName">Klimop</span>
+          </div>
+          <button type="button" className={`topBarNavBtn${route==='home'?' is-active':''}`} onClick={()=>goRoute('home')}>Home</button>
+          <button type="button" className={`topBarNavBtn${route==='study'?' is-active':''}`} onClick={()=>goRoute('study')}>Daily</button>
+          <button type="button" className={`topBarNavBtn${route==='progress'?' is-active':''}`} onClick={()=>goRoute('progress')}>Progress</button>
+          <button type="button" className={`topBarNavBtn${route==='tts'?' is-active':''}`} onClick={()=>goRoute('tts')}>TTS</button>
         </div>
         <div className="topBarRowBooks">
           {books.map(b=>(
@@ -1129,12 +1296,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               key={b.id}
               type="button"
               onClick={()=>{ setCurrentBookId(b.id); setRoute('home') }}
-              className="pill topBarBookPill"
-              style={{
-                fontWeight:currentBookId===b.id?700:400,
-                background:currentBookId===b.id?'rgba(255,255,255,0.14)':'var(--panel)',
-                border:'1px solid rgba(255,255,255,0.12)',
-              }}
+              className={`pill topBarBookPill book-${b.id}${currentBookId===b.id?' is-active':''}`}
             >
               {b.title}
             </button>
@@ -1146,7 +1308,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           ))}
         </div>
         <div className="topBarRowTools">
-          <button type="button" onClick={()=>setRoute('deofhet')} className="pill topBarBookPill" style={{ fontWeight:route==='deofhet'?700:500, background:route==='deofhet'?'rgba(255,255,255,0.14)':'var(--panel)', border:'1px solid rgba(255,255,255,0.12)' }}>De of Het</button>
+          <button type="button" onClick={()=>setRoute('deofhet')} className={`pill topBarBookPill${route==='deofhet'?' is-active':''}`}>De of Het</button>
+          <button type="button" onClick={()=>setRoute('grammar')} className={`pill topBarBookPill${route==='grammar'?' is-active':''}`}>Grammar</button>
         </div>
         <div className="topBarRow2">
           <div className="profilePillWrap" ref={profileWrapRef}>
@@ -1203,8 +1366,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             )}
           </div>
           <div className="topBarRow2Right">
-            <div className="pill">Streak {stats.streak}🔥</div>
-            <div className="pill">Today cards {dueCount}</div>
+            <div className="pill pill-streak">Streak {stats.streak}</div>
+            <div className="pill pill-progress">Today {dueCount}</div>
           </div>
         </div>
       </header>
@@ -1224,21 +1387,47 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       const cards = course.vocab.filter(v=>v.theme===t.id)
       const dueReview = cards.filter(v=>{const r=reviewsMap[sk(v.id)]; return !!r && r.due<=now}).length
       const unseen = cards.filter(v=>!reviewsMap[sk(v.id)]).length
-      return {id:t.id,title:t.title,dueReview,unseen,total:cards.length}
+      const difficult = cards.filter(v=>!!difficultMap[sk(v.id)]).length
+      const seen = cards.filter(v=>!!reviewsMap[sk(v.id)]).length
+      const weakness = dueReview * 2 + difficult * 3 + Math.min(unseen, 8)
+      return {id:t.id,title:t.title,dueReview,unseen,total:cards.length,difficult,seen,weakness}
     })
+    const weak = [...byTheme].sort((a,b)=>b.weakness-a.weakness)[0]
+    const goalDone = stats.reviewsToday >= settings.dailyTarget
+    const greeting = stats.streak > 1
+      ? `Streak ${stats.streak} — keep the light on.`
+      : 'Warm up with a short Daily. Small steps, gezellig pace.'
 
     return (
       <div className="row studyLayout" style={{alignItems:'stretch'}}>
         <div className="card" style={{flex:2}}>
-          <div className="h1">Daily calm practice</div>
-          <div className="h2">Binary checks, theme-based, capped daily queue.</div>
-          <div className="sep" />
-          <div className="row">
-            <button onClick={()=>setRoute('study')}>Start Daily</button>
-            <button onClick={()=>speak('Hallo! Hoe gaat het?')}>🔊 Test Speak</button>
+          <div className="homeHero">
+            <HomeHeaderArt />
+            <div style={{flex:1, minWidth:200}}>
+              <div className="h1" style={{marginBottom:4}}>Lichte Klimop</div>
+              <div className="h2">Modern Dutch practice — a calm lion, bikes, tulips, and molens.</div>
+              <div className="homeCoachLine">{greeting}</div>
+              {weak && weak.weakness > 0 && (
+                <button type="button" className="weakThemeChip" onClick={()=>startTheme(weak.id)}>
+                  Weak theme · {weak.title} ({weak.dueReview} due)
+                </button>
+              )}
+            </div>
           </div>
           <div className="sep" />
-          <div className="small">Daily target: {settings.dailyTarget} cards • New cards/day: {settings.newPerDay}</div>
+          <div className="row">
+            <button className="btn-primary" onClick={()=>setRoute('study')}>Start Daily</button>
+            <button onClick={()=>speak('Hallo! Hoe gaat het?')}>🔊 Test Speak</button>
+            <button onClick={()=>setRoute('progress')}>Progress</button>
+          </div>
+          {goalDone && (
+            <div className="celebrateBanner" style={{marginTop:14}}>
+                  <CelebrateArt />
+              <div className="title">Today&apos;s goal is done — goed zo!</div>
+            </div>
+          )}
+          <div className="sep" />
+          <div className="small">Daily target: {settings.dailyTarget} cards • New cards/day: {settings.newPerDay} • Book: {currentBook?.title ?? currentBookId}</div>
           <div className="sep" />
           <div className="grid">
             {byTheme.map(t=>(
@@ -1247,7 +1436,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
                 onClick={()=>startTheme(t.id)}
                 type="button"
                 className="card"
-                style={{padding:12, textAlign:'left', width:'100%', cursor:'pointer'}}
+                style={{padding:12, textAlign:'left', width:'100%', cursor:'pointer', boxShadow:'var(--shadow-soft)'}}
                 title={`Start theme ${t.title}`}
               >
                 <div style={{fontWeight:700}}>{t.title}</div>
@@ -1259,14 +1448,17 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           </div>
         </div>
         <div className="card" style={{flex:1}}>
-          <div className="h1">Status</div>
-          <div className="h2">Local-only progress.</div>
+          <div className="h1">Coach</div>
+          <div className="h2">Local-only · private on this device.</div>
           <div className="sep" />
           <div className="row">
-            <div className="pill">Reviews today {stats.reviewsToday}</div>
-            <div className="pill">Correct {stats.correctToday}</div>
+            <div className="pill pill-streak">Streak {stats.streak}</div>
+            <div className="pill pill-progress">Today {stats.reviewsToday}/{settings.dailyTarget}</div>
+            <div className="pill pill-ok">Correct {stats.correctToday}</div>
             <div className="pill">New {stats.newToday}</div>
           </div>
+          <div className="sep" />
+          <div className="small">Tip: flip a card, listen once, then mark Correct / Incorrect. Misses come back again soon.</div>
         </div>
       </div>
     )
@@ -1367,8 +1559,9 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     return (
       <div className="progressLayout">
         <header className="cockpitHeader">
-          <div className="cockpitTitle">Mission control</div>
-          <div className="cockpitSubtitle">All app metrics in one place</div>
+          <ProgressHeaderArt />
+          <div className="cockpitTitle">Progress</div>
+          <div className="cockpitSubtitle">Plant your steps — streak, accuracy, and themes</div>
         </header>
 
         <div className="cockpitMetrics">
@@ -1785,6 +1978,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       <div className="deofhetLayout">
         <div className="card deofhetCard">
           <div className="deofhetHeader">
+            <DeHetTagsArt />
             <div className="h1">De of Het</div>
             <div className="h2">Choose the correct article</div>
             <div className="deofhetStats">
@@ -1815,14 +2009,14 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
                   onClick={()=>feedback===null&&answer('de')}
                   disabled={feedback!==null}
                 >
-                  De
+                  <span className="deofhetTag de">de</span>
                 </button>
                 <button
                   className={`deofhetBtn het${feedback&&cur.article==='het' ? ' feedback-correct' : ''}${feedback&&chosenArticle==='het'&&cur.article==='de' ? ' feedback-wrong' : ''}`}
                   onClick={()=>feedback===null&&answer('het')}
                   disabled={feedback!==null}
                 >
-                  Het
+                  <span className="deofhetTag het">het</span>
                 </button>
               </div>
               <button
@@ -2193,8 +2387,9 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       <div className="deofhetLayout">
         <div className="card deofhetCard">
           <div className="deofhetHeader">
+            <GrammarNotebookArt />
             <div className="h1">Grammar</div>
-            <div className="h2">{selectedBookId==='klimop' ? 'Klim Op' : 'Wind mee'} - book and chapter based progression</div>
+            <div className="h2">{(selectedBookId==='klimop' ? 'Klim Op' : selectedBookId==='blinkuit' ? 'Blink uit' : 'Wind mee')} — book and chapter based progression</div>
             <div className="row" style={{flexWrap:'wrap',gap:8,alignItems:'center'}}>
             <div className="deofhetStats">
               <span className="deofhetStatPill correct">{stats.correct} correct</span>
@@ -2335,7 +2530,65 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         {route==='grammar' && <div className="pagePane"><Grammar currentUserId={currentUserId} currentBookId={currentBookId} speak={speak} /></div>}
       </div>
       <div className="sep appFooterSep" />
-      <div className="small appFooterText">MVP • local-only • calm UI • private</div>
+      <div className="small appFooterText">Lichte Klimop • Dutch lion • tulips & molens • local-only</div>
+      {onboardStep>0 && (
+        <div className="onboardOverlay" role="dialog" aria-modal="true" aria-label="Welcome to Klimop">
+          <div className="onboardCard">
+            <div className="onboardHero">
+              <OnboardArt />
+              <div>
+                <div className="row" style={{alignItems:'center', gap:8, marginBottom:4}}>
+                  <IvyMark size={28} />
+                  <div className="h1" style={{fontSize:22, marginBottom:0}}>Welkom bij Klimop</div>
+                </div>
+                <div className="h2">Three soft steps to start</div>
+              </div>
+            </div>
+            <div className="onboardSteps" aria-hidden>
+              <div className={`onboardStepDot${onboardStep>=1?' on':''}`} />
+              <div className={`onboardStepDot${onboardStep>=2?' on':''}`} />
+              <div className={`onboardStepDot${onboardStep>=3?' on':''}`} />
+            </div>
+            {onboardStep===1 && (
+              <>
+                <div style={{fontWeight:700, marginBottom:6}}>1 · Pick your book</div>
+                <div className="small">Klim Op (A0–A1), Wind mee (A1–A2), or Blink uit (A2–B1). You can switch anytime.</div>
+                <div className="row" style={{marginTop:12}}>
+                  {books.map(b=>(
+                    <button key={b.id} type="button" className={`topBarBookPill book-${b.id}${currentBookId===b.id?' is-active':''}`} onClick={()=>setCurrentBookId(b.id)}>
+                      {b.title}
+                    </button>
+                  ))}
+                </div>
+                <div className="row" style={{marginTop:16, justifyContent:'flex-end'}}>
+                  <button type="button" onClick={finishOnboarding}>Skip</button>
+                  <button type="button" className="btn-primary" onClick={()=>setOnboardStep(2)}>Next</button>
+                </div>
+              </>
+            )}
+            {onboardStep===2 && (
+              <>
+                <div style={{fontWeight:700, marginBottom:6}}>2 · Try five cards</div>
+                <div className="small">Daily keeps a short queue. Flip, listen, mark Correct or Incorrect — misses return again soon.</div>
+                <div className="row" style={{marginTop:16, justifyContent:'space-between'}}>
+                  <button type="button" onClick={()=>setOnboardStep(1)}>Back</button>
+                  <button type="button" className="btn-primary" onClick={()=>setOnboardStep(3)}>Next</button>
+                </div>
+              </>
+            )}
+            {onboardStep===3 && (
+              <>
+                <div style={{fontWeight:700, marginBottom:6}}>3 · Grow your streak</div>
+                <div className="small">Come back tomorrow. A little light each day beats a long grind — doe normaal, stay steady.</div>
+                <div className="row" style={{marginTop:16, justifyContent:'space-between'}}>
+                  <button type="button" onClick={()=>setOnboardStep(2)}>Back</button>
+                  <button type="button" className="btn-primary" onClick={completeOnboardAndStudy}>Start Daily</button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

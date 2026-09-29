@@ -16,8 +16,15 @@ apps/web/dist/
 .env
 .env.*
 
-# Local artifacts
+# Local runtime artifacts (run-local.sh)
 __api.log
+__api.pid
+__web.log
+__web.pid
+apps/**/__*.log
+apps/**/__*.pid
+
+# Misc local
 klimop-mvp/
 apps/web/public/images/
 

@@ -1,0 +1,10 @@
+<!-- Lichte Klimop original geometric mark — CC0 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect x="28" y="30" width="8" height="28" rx="2" fill="#5B6675"/>
+  <path d="M18 58h28" stroke="#1C2430" stroke-width="3" stroke-linecap="round" opacity=".35"/>
+  <circle cx="32" cy="28" r="5" fill="#E36A1E"/>
+  <path d="M32 28 L48 12 L52 16 L36 30 Z" fill="#3B82C4"/>
+  <path d="M32 28 L48 44 L44 48 L28 32 Z" fill="#F0B429"/>
+  <path d="M32 28 L16 44 L12 40 L28 24 Z" fill="#3B82C4"/>
+  <path d="M32 28 L16 12 L20 8 L36 24 Z" fill="#F0B429"/>
+</svg>
