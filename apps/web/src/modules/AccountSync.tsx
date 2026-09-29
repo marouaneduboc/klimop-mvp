@@ -162,47 +162,100 @@ export default function AccountSync({
     } finally { setBusy(false) }
   }
 
+  const host = typeof window !== 'undefined' ? window.location.hostname : ''
+  const onThisMac = host === 'localhost' || host === '127.0.0.1' || host === '[::1]'
+  const pageUrl = typeof window !== 'undefined' ? window.location.origin : ''
+
+  const copy = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setStatus(`Copied ${label}`)
+      setErr('')
+    } catch {
+      setErr(`Could not copy. Select and copy this: ${text}`)
+    }
+  }
+
   return (
     <div className="card syncCard">
       <img className="listenToolIcon" src="./assets/sync-icon.png" width={36} height={36} alt="" />
-        <div className="h1">Account sync</div>
-      <div className="h2">Local-first · pair phone ↔ Mac on your LAN</div>
+      <div className="h1">Pair your phone</div>
+      <div className="h2">Same Wi‑Fi · Mac makes a code · phone types it</div>
       <div className="sep" />
-      <div className="small">API: <code>{apiBase}</code></div>
-      <div className="row" style={{ marginTop: 8, flexWrap: 'wrap', gap: 8 }}>
-        <button type="button" onClick={health}>Check API</button>
-        <button type="button" className="btn-primary" disabled={busy} onClick={createPair}>Create pairing code (this Mac)</button>
+
+      <div className="syncUrlBox">
+        <div className="small">Open this page on the phone (not “localhost”)</div>
+        <div className="syncUrl">{pageUrl || '—'}</div>
+        <button type="button" onClick={() => { void copy(pageUrl, 'page link') }} disabled={!pageUrl}>Copy page link</button>
+        <div className="small" style={{ marginTop: 10 }}>API the app talks to</div>
+        <div className="syncUrl">{apiBase}</div>
+        <button type="button" onClick={() => { void copy(apiBase, 'API URL') }}>Copy API URL</button>
+        <div className="small" style={{ marginTop: 8 }}>
+          {onThisMac
+            ? 'You are on the Mac. After ./run-local.sh, the terminal prints a http://192.168… link — use that on the phone.'
+            : 'You are on another device. Stay on this link, then join with the code from the Mac.'}
+        </div>
       </div>
+
+      <ol className="syncSteps">
+        <li>
+          <div className="syncStepTitle">On the Mac</div>
+          <div className="small">1. Same Wi‑Fi as the phone.</div>
+          <div className="small">2. In the project folder, run <code>./run-local.sh</code>.</div>
+          <div className="small">3. Open Sync and tap the button below. A big code appears.</div>
+          <button type="button" className="btn-primary" style={{ marginTop: 8 }} disabled={busy} onClick={createPair}>
+            {busy ? 'Working…' : 'Create pairing code'}
+          </button>
+        </li>
+        <li>
+          <div className="syncStepTitle">On the phone</div>
+          <div className="small">1. Same Wi‑Fi. Do not use localhost.</div>
+          <div className="small">2. Open the page link above (the 192.168… address).</div>
+          <div className="small">3. Tap Sync, type the code, then Join.</div>
+        </li>
+      </ol>
+
       {pairCode && (
         <div className="pairCodeBox" aria-live="polite">
-          <div className="small">Enter on phone</div>
+          <div className="small">Pairing code — type this on the phone</div>
           <div className="pairCode">{pairCode}</div>
-          {profileId && <div className="small">Profile {profileId}</div>}
+          <button type="button" onClick={() => { void copy(pairCode, 'pairing code') }}>Copy code</button>
+          {profileId && <div className="small" style={{ marginTop: 8 }}>Profile {profileId}</div>}
         </div>
       )}
+
       <div className="sep" />
-      <div className="h2">Join from phone</div>
-      <div className="row" style={{ flexWrap: 'wrap', gap: 8 }}>
+      <div className="h2">Join with a code</div>
+      <div className="small">On the phone, type the code from the Mac. Letters become capitals automatically.</div>
+      <form
+        className="syncJoin"
+        onSubmit={e => { e.preventDefault(); if (joinCode.trim().length >= 4) void joinPair() }}
+      >
         <input
-          className="iosInputFix listenTypeInput"
+          className="iosInputFix syncJoinInput"
           value={joinCode}
-          onChange={e => setJoinCode(e.target.value.toUpperCase())}
-          placeholder="ABCD12"
+          onChange={e => setJoinCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))}
+          placeholder="CODE"
           maxLength={8}
           autoCapitalize="characters"
+          autoCorrect="off"
+          inputMode="text"
+          aria-label="Pairing code"
         />
-        <button type="button" className="btn-primary" disabled={busy || joinCode.trim().length < 4} onClick={joinPair}>Join & migrate</button>
+        <button type="submit" className="btn-primary" disabled={busy || joinCode.trim().length < 4}>Join</button>
+      </form>
+      <div className="row" style={{ marginTop: 8, gap: 8, flexWrap: 'wrap' }}>
+        <button type="button" onClick={() => { void health() }}>Check API</button>
       </div>
+
       <div className="sep" />
-      <div className="row" style={{ flexWrap: 'wrap', gap: 8 }}>
+      <div className="small">Already paired? Push or pull progress.</div>
+      <div className="row" style={{ flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
         <button type="button" disabled={busy || !profileId} onClick={pushProgress}>Push progress</button>
         <button type="button" disabled={busy || !profileId} onClick={pullProgress}>Pull progress</button>
       </div>
       {status && <div className="okBanner" style={{ marginTop: 12 }}>{status}</div>}
-      {err && <div className="teachBanner" style={{ marginTop: 12 }}>{err}</div>}
-      <div className="small" style={{ marginTop: 12 }}>
-        On join, this device imports the Mac profile blob (reviews, stats, settings). Keep both on the same Wi‑Fi.
-      </div>
+      {err && <div className="teachBanner" style={{ marginTop: 12 }} role="alert">{err}</div>}
     </div>
   )
 }

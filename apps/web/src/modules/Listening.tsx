@@ -5,10 +5,11 @@ type Vocab = { id: string; theme: number; nl: string; en?: string | null; articl
 type Course = { themes: { id: number; title: string }[]; vocab: Vocab[] }
 
 type Mode = 'mc' | 'type' | 'order'
+type OrderChip = { id: string; text: string }
 type Q =
   | { mode: 'mc'; vocab: Vocab; options: string[] }
   | { mode: 'type'; vocab: Vocab }
-  | { mode: 'order'; vocab: Vocab; words: string[]; shuffled: string[] }
+  | { mode: 'order'; vocab: Vocab; words: string[]; shuffled: OrderChip[]; hearText: string }
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
@@ -24,16 +25,42 @@ function pickOptions(correct: Vocab, pool: Vocab[]): string[] {
   return shuffle([correct.nl, ...distractors])
 }
 
+/** Dutch-only order tokens — never inject English (that broke Check for single-word vocab). */
+function orderTokensFor(vocab: Vocab): { words: string[]; hearText: string } | null {
+  const raw = (vocab.nl || '').trim()
+  if (!raw) return null
+  if (/\//.test(raw)) return null // skip "zij / ze"
+  const parts = raw.split(/\s+/).map(p => p.trim()).filter(Boolean)
+  if (parts.length >= 2 && parts.length <= 6) {
+    return { words: parts, hearText: parts.join(' ') }
+  }
+  if (parts.length === 1 && vocab.article) {
+    return { words: [vocab.article, parts[0]], hearText: `${vocab.article} ${parts[0]}` }
+  }
+  return null
+}
+
+function normAns(s: string): string {
+  return s.trim().toLowerCase().replace(/\s+/g, ' ')
+}
+
 export default function Listening({ course, speak }: { course: Course | null; speak: (t: string) => Promise<void> }) {
   const pool = useMemo(() => {
     if (!course) return [] as Vocab[]
-    return course.vocab.filter(v => v.nl && v.nl.split(/\s+/).length <= 6).slice(0, 400)
+    return course.vocab.filter(v => v.nl && v.nl.split(/\s+/).length <= 6)
   }, [course])
+
+  const orderPool = useMemo(() => {
+    const usable = pool.filter(v => orderTokensFor(v))
+    const multi = usable.filter(v => (v.nl || '').trim().split(/\s+/).length >= 2)
+    const base = multi.length >= 12 ? multi : usable
+    return shuffle(base).slice(0, 400)
+  }, [pool])
 
   const [mode, setMode] = useState<Mode>('mc')
   const [q, setQ] = useState<Q | null>(null)
   const [typed, setTyped] = useState('')
-  const [picked, setPicked] = useState<string[]>([])
+  const [pickedIds, setPickedIds] = useState<string[]>([])
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null)
   const [source, setSource] = useState<'mp3' | 'tts' | null>(null)
   const [score, setScore] = useState({ ok: 0, n: 0 })
@@ -41,27 +68,30 @@ export default function Listening({ course, speak }: { course: Course | null; sp
   const next = (m: Mode = mode) => {
     setFeedback(null)
     setTyped('')
-    setPicked([])
+    setPickedIds([])
     setSource(null)
-    if (!pool.length) { setQ(null); return }
-    const vocab = pool[Math.floor(Math.random() * pool.length)]
-    if (m === 'mc') setQ({ mode: 'mc', vocab, options: pickOptions(vocab, pool) })
-    else if (m === 'type') setQ({ mode: 'type', vocab })
-    else {
-      const words = vocab.nl.split(/\s+/).filter(Boolean)
-      const base = words.length >= 2 ? words : (vocab.en ? `${vocab.nl} — ${vocab.en}`.split(/\s+/) : words)
-      // Prefer short phrases: if single word, build from article+word or use example-like 2-3 tokens
-      const tokens = base.length >= 2 ? base : [vocab.article, vocab.nl].filter(Boolean) as string[]
-      const finalTokens = tokens.length >= 2 ? tokens : [vocab.nl, '?']
-      setQ({ mode: 'order', vocab, words: finalTokens, shuffled: shuffle(finalTokens) })
+    if (m === 'order') {
+      if (!orderPool.length) { setQ(null); return }
+      const vocab = orderPool[Math.floor(Math.random() * orderPool.length)]
+      const built = orderTokensFor(vocab)
+      if (!built) { setQ(null); return }
+      const shuffled = shuffle(built.words.map((text, i) => ({ id: `${vocab.id}-${i}-${text}`, text })))
+      setQ({ mode: 'order', vocab, words: built.words, shuffled, hearText: built.hearText })
+      return
     }
+    if (!pool.length) { setQ(null); return }
+    const vocab = pool[Math.floor(Math.random() * Math.min(pool.length, 500))]
+    if (m === 'mc') setQ({ mode: 'mc', vocab, options: pickOptions(vocab, pool) })
+    else setQ({ mode: 'type', vocab })
   }
 
   useEffect(() => { next(mode) }, [course, mode])
 
   const play = async () => {
     if (!q) return
-    const text = q.vocab.article ? `${q.vocab.article} ${q.vocab.nl}` : q.vocab.nl
+    const text = q.mode === 'order'
+      ? q.hearText
+      : (q.vocab.article ? `${q.vocab.article} ${q.vocab.nl}` : q.vocab.nl)
     try {
       const kind = await playListenClip(q.vocab.id, text)
       setSource(kind)
@@ -72,17 +102,25 @@ export default function Listening({ course, speak }: { course: Course | null; sp
   }
 
   useEffect(() => {
-    if (q) play()
+    if (q) void play()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q?.vocab.id, q?.mode])
 
   const grade = (answer: string) => {
     if (!q || feedback) return
-    const ok = answer.trim().toLowerCase() === q.vocab.nl.trim().toLowerCase()
-      || (q.mode === 'order' && answer.trim().toLowerCase() === q.words.join(' ').toLowerCase())
+    const ok = q.mode === 'order'
+      ? normAns(answer) === normAns(q.words.join(' '))
+      : normAns(answer) === normAns(q.vocab.nl)
     setFeedback(ok ? 'correct' : 'wrong')
     setScore(s => ({ ok: s.ok + (ok ? 1 : 0), n: s.n + 1 }))
   }
+
+  const pickedTexts = q?.mode === 'order'
+    ? pickedIds.map(id => q.shuffled.find(c => c.id === id)?.text).filter((t): t is string => !!t)
+    : []
+  const availableOrder = q?.mode === 'order'
+    ? q.shuffled.filter(c => !pickedIds.includes(c.id))
+    : []
 
   if (!course) return <div className="card">Loading course…</div>
 
@@ -107,16 +145,17 @@ export default function Listening({ course, speak }: { course: Course | null; sp
       </div>
       <div className="sep" />
       {!q ? (
-        <div className="small">No vocab loaded.</div>
+        <div className="small">{mode === 'order' ? 'No phrases available for ordering in this book.' : 'No vocab loaded.'}</div>
       ) : (
         <>
           <div className="listenPlayRow">
-            <button type="button" className="btn-primary listenPlayBtn" onClick={play} aria-label="Play audio">▶ Hear again</button>
+            <button type="button" className="btn-primary listenPlayBtn" onClick={() => { void play() }} aria-label="Play audio">▶ Hear again</button>
             <span className="small">{source === 'mp3' ? 'Audio file' : source === 'tts' ? 'Browser voice (drop MP3s in public/audio/listen/)' : '…'}</span>
           </div>
           {feedback === 'wrong' && (
             <div className="teachBanner" style={{ marginTop: 12 }}>
-              <strong>Heard:</strong> {q.vocab.article ? `${q.vocab.article} ` : ''}{q.vocab.nl}
+              <strong>Heard:</strong>{' '}
+              {q.mode === 'order' ? q.words.join(' ') : `${q.vocab.article ? `${q.vocab.article} ` : ''}${q.vocab.nl}`}
               {q.vocab.en ? <span className="small"> · {q.vocab.en}</span> : null}
             </div>
           )}
@@ -128,7 +167,7 @@ export default function Listening({ course, speak }: { course: Course | null; sp
                 <button
                   key={o}
                   type="button"
-                  className={`listenOpt${feedback && o === q.vocab.nl ? ' is-correct' : ''}${feedback === 'wrong' && o !== q.vocab.nl ? '' : ''}`}
+                  className={`listenOpt${feedback && o === q.vocab.nl ? ' is-correct' : ''}`}
                   disabled={!!feedback}
                   onClick={() => grade(o)}
                 >{o}</button>
@@ -143,20 +182,49 @@ export default function Listening({ course, speak }: { course: Course | null; sp
           )}
           {q.mode === 'order' && (
             <div>
-              <div className="orderPicked">{picked.length ? picked.join(' ') : <span className="small">Tap words in order</span>}</div>
-              <div className="orderBank">
-                {q.shuffled.map((w, i) => {
-                  const countInPicked = picked.filter(p => p === w).length
-                  const countInWords = q.words.filter(x => x === w).length
-                  const disabled = !!feedback || countInPicked >= countInWords
-                  return (
-                    <button key={`${w}-${i}`} type="button" className="orderChip" disabled={disabled} onClick={() => setPicked(p => [...p, w])}>{w}</button>
-                  )
-                })}
+              <div className="small" style={{ marginBottom: 4 }}>
+                Tap words in the right order{pickedTexts.length ? ' · tap a chosen word to undo' : ''}
               </div>
-              <div className="row" style={{ marginTop: 10 }}>
-                <button type="button" onClick={() => setPicked([])} disabled={!!feedback}>Clear</button>
-                <button type="button" className="btn-primary" disabled={!!feedback || picked.length !== q.words.length} onClick={() => grade(picked.join(' '))}>Check</button>
+              <div className="orderPicked" aria-live="polite">
+                {pickedTexts.length ? (
+                  <div className="orderBank" style={{ margin: 0 }}>
+                    {pickedIds.map(id => {
+                      const chip = q.shuffled.find(c => c.id === id)
+                      if (!chip) return null
+                      return (
+                        <button
+                          key={`picked-${id}`}
+                          type="button"
+                          className="orderChip is-picked"
+                          disabled={!!feedback}
+                          onClick={() => setPickedIds(ids => ids.filter(x => x !== id))}
+                        >{chip.text}</button>
+                      )
+                    })}
+                  </div>
+                ) : (
+                  <span className="small">Tap words below…</span>
+                )}
+              </div>
+              <div className="orderBank">
+                {availableOrder.map(chip => (
+                  <button
+                    key={chip.id}
+                    type="button"
+                    className="orderChip"
+                    disabled={!!feedback}
+                    onClick={() => setPickedIds(ids => [...ids, chip.id])}
+                  >{chip.text}</button>
+                ))}
+              </div>
+              <div className="row" style={{ marginTop: 10, gap: 8, flexWrap: 'wrap' }}>
+                <button type="button" onClick={() => setPickedIds([])} disabled={!!feedback || !pickedIds.length}>Clear</button>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  disabled={!!feedback || pickedIds.length !== q.words.length}
+                  onClick={() => grade(pickedTexts.join(' '))}
+                >Check</button>
               </div>
             </div>
           )}

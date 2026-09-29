@@ -1,162 +1,206 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "stories": [
     {
       "id": "s01_markt",
-      "level": "A0",
+      "level": "A2",
       "theme": "culture",
-      "title": "Op de markt",
-      "titleEn": "At the market",
+      "title": "Zaterdag op de Albert Cuyp",
+      "titleEn": "Saturday at the Albert Cuyp",
       "lines": [
-        "Het is zaterdag.",
-        "Lisa gaat naar de markt.",
-        "Ze koopt verse kaas en bloemen.",
-        "De verkoper zegt: \"Dank je wel!\"",
-        "Lisa is blij. Gezellig!"
+        "Het is zaterdag en Amsterdam is al vroeg wakker. Lisa fietst naar de Albert Cuypmarkt met een lege fietstas en een lijstje op haar telefoon. Onderweg ruikt ze vers brood, gebakken kibbeling en zoete stroopwafels. Bij de kaaskraam staat een korte rij. Een verkoper snijdt proefstukjes oude kaas. \"Mag ik een stukje belegen?\" vraagt Lisa. Hij knikt: \"Natuurlijk, proef maar.\"",
+        "Daarna koopt ze een bos tulpen voor haar moeder en een zakje verse kruiden. Een toerist vraagt in het Engels de weg naar het museum. Lisa antwoordt eerst in het Nederlands en daarna kort in het Engels. Ze betaalt met haar pinpas en stopt alles zorgvuldig in de fietstas. Op het plein speelt iemand accordeon. Mensen klappen mee op de maat. Lisa denkt: dit is precies waarom ze van markten houdt.",
+        "Thuis zet ze de tulpen in een vaas bij het raam. Haar moeder ruikt meteen de kaas en zet koffie. Ze praten over prijzen, over de drukte en over een nieuwe kraam met Surinaamse hapjes. Lisa noteert twee nieuwe woorden in haar schriftje: belegen en kibbeling. Buiten breekt de zon door de wolken. De stad voelt gezellig en vol leven.",
+        "Later die middag stuurt Lisa een foto naar haar taalmaatje. \"Wat betekent belegen precies?\" vraagt ze. Haar maatje antwoordt: \"Niet jong, niet oud — een kaas met karakter.\" Lisa lacht hardop. Ze oefent de zin nog een keer: \"Mag ik een stukje belegen kaas, alstublieft?\" Zo wordt een gewone zaterdag ook een taalles."
       ],
       "glossary": [
         {
-          "nl": "markt",
-          "en": "market"
+          "nl": "Albert Cuypmarkt",
+          "en": "famous Amsterdam street market"
         },
         {
-          "nl": "kaas",
-          "en": "cheese"
+          "nl": "belegen",
+          "en": "medium-aged cheese"
         },
         {
-          "nl": "bloemen",
-          "en": "flowers"
+          "nl": "kibbeling",
+          "en": "battered fried fish"
+        },
+        {
+          "nl": "fietstas",
+          "en": "bike bag"
         }
       ],
       "questions": [
         {
-          "q": "Welke dag is het?",
+          "q": "Waar fietst Lisa naartoe?",
           "options": [
-            "zaterdag",
-            "maandag",
-            "vrijdag"
+            "naar de Albert Cuypmarkt",
+            "naar het strand",
+            "naar de luchthaven"
           ],
-          "correct": "zaterdag"
+          "correct": "naar de Albert Cuypmarkt",
+          "explanation": "De eerste alinea noemt de Albert Cuypmarkt."
         },
         {
-          "q": "Wat koopt Lisa?",
+          "q": "Wat vraagt Lisa bij de kaaskraam?",
           "options": [
-            "kaas en bloemen",
-            "brood en melk",
-            "fietsen"
+            "een stukje belegen kaas",
+            "alleen water",
+            "een fietsband"
           ],
-          "correct": "kaas en bloemen"
+          "correct": "een stukje belegen kaas",
+          "explanation": "Ze vraagt: Mag ik een stukje belegen?"
+        },
+        {
+          "q": "Welke woorden noteert ze?",
+          "options": [
+            "belegen en kibbeling",
+            "paspoort en visum",
+            "motor en benzine"
+          ],
+          "correct": "belegen en kibbeling",
+          "explanation": "Thuis noteert ze belegen en kibbeling."
         }
       ]
     },
     {
       "id": "s02_fiets",
-      "level": "A0",
+      "level": "A2",
       "theme": "culture",
-      "title": "Naar school op de fiets",
-      "titleEn": "To school by bike",
+      "title": "Regen, bel en fietspad",
+      "titleEn": "Rain, bell and cycle path",
       "lines": [
-        "Tom heeft een rode fiets.",
-        "Hij fietst elke dag naar school.",
-        "Onderweg groet hij zijn buurvrouw.",
-        "\"Goedemorgen!\" zegt hij.",
-        "Op school zet hij zijn fiets in het rek."
+        "Tom heeft een rode fiets met een heldere bel en twee goede lampen. Elke ochtend fietst hij naar school, ook als het grijs is. Hij checkt snel de banden en doet zijn regenbroek aan. Op straat groet hij zijn buurvrouw die de hond uitlaat. \"Goedemorgen!\" roept hij. Zij zwaait terug: \"Fiets voorzichtig, hè?\"",
+        "Bij het stoplicht wacht hij achter een bakfiets met kinderen. Op het fietspad houdt hij rechts. Hij belt vriendelijk als hij wil inhalen. Een bezorger scheurt voorbij en Tom schudt zijn hoofd. Bij school zet hij de fiets in het rek. Hij doet het slot om en hangt zijn jas te drogen. Noor zegt dat fietsen haar elke dag energie geeft.",
+        "In de pauze praten ze over veilige routes en over een nieuw fietspad bij het park. Tom legt uit dat hij ’s winters extra vroeg vertrekt vanwege gladheid. De leraar spaart bonuspunten voor wie lampen serieus neemt. Tom glimlacht. In Nederland is de fiets geen hobby, maar een manier van leven.",
+        "Na school fietst hij terug met wind in zijn gezicht. Thuis schrijft hij drie zinnen voor zijn huiswerk. \"Ik fiets elke dag. Ik bel als ik inhaal. Ik zet mijn fiets in het rek.\" Zijn vader leest mee en verbetert één woord. Tom is niet boos. Hij vindt het fijn als iemand meeluistert."
       ],
       "glossary": [
         {
-          "nl": "fiets",
-          "en": "bike"
+          "nl": "fietspad",
+          "en": "cycle path"
         },
         {
-          "nl": "buurvrouw",
-          "en": "neighbour (f)"
+          "nl": "bakfiets",
+          "en": "cargo bike"
         },
         {
-          "nl": "rek",
-          "en": "rack"
+          "nl": "inhalen",
+          "en": "to overtake"
+        },
+        {
+          "nl": "gladheid",
+          "en": "slippery roads"
         }
       ],
       "questions": [
         {
-          "q": "Welke kleur heeft de fiets?",
+          "q": "Wat checkt Tom voor hij vertrekt?",
           "options": [
-            "rood",
-            "blauw",
-            "groen"
+            "zijn banden",
+            "zijn paspoort",
+            "zijn vliegtickets"
           ],
-          "correct": "rood"
+          "correct": "zijn banden",
+          "explanation": "Hij checkt de banden en doet zijn regenbroek aan."
         },
         {
-          "q": "Waar zet Tom zijn fiets?",
+          "q": "Waar zet hij zijn fiets?",
           "options": [
-            "in het rek",
-            "in de auto",
-            "op tafel"
+            "in het rek met slot",
+            "in de klas",
+            "op het dak"
           ],
-          "correct": "in het rek"
+          "correct": "in het rek met slot",
+          "explanation": "Bij school zet hij de fiets in het rek en doet het slot om."
+        },
+        {
+          "q": "Waarom vertrekt hij ’s winters eerder?",
+          "options": [
+            "vanwege gladheid",
+            "om te zwemmen",
+            "om te vliegen"
+          ],
+          "correct": "vanwege gladheid",
+          "explanation": "Hij vertrekt extra vroeg vanwege gladheid."
         }
       ]
     },
     {
       "id": "s03_koffie",
-      "level": "A1",
+      "level": "A2",
       "theme": "culture",
-      "title": "Koffie met een koekje",
-      "titleEn": "Coffee with a biscuit",
+      "title": "Koffie, koekje, gesprek",
+      "titleEn": "Coffee, biscuit, conversation",
       "lines": [
-        "In Nederland drinken mensen vaak koffie.",
-        "Bij de koffie krijg je soms een koekje.",
-        "Anna bezoekt haar oma.",
-        "Oma zet koffie en zet een koekje op tafel.",
-        "Ze praten over het weer. Heel gezellig."
+        "In veel Nederlandse huizen is koffie meer dan een drankje. Het is een moment samen. Anna belt aan bij haar oma op dinsdagmiddag. Oma opent de deur met een schort en de geur van verse koffie. \"Melk of suiker?\" vraagt ze. Anna lacht: \"Melk, graag. Geen suiker.\" Op tafel staan kopjes, een kannetje melk en stroopwafels.",
+        "Ze praten eerst over het weer. Daarna gaat het over de buren en over Anna’s nieuwe baan. Oma vertelt hoe de markt vroeger rook naar verse vis en bloemen. Anna luistert en schrijft stiekem één zin op: gezelligheid zit in kleine dingen. Als de klok drie slaat, schenkt oma nog een rondje. Buiten regent het zacht. Binnen is het warm.",
+        "Voor Anna vertrekt, stopt oma twee stroopwafels in een zakje. \"Voor onderweg,\" zegt ze vriendelijk. Op de fiets denkt Anna aan woorden als kannetje en schort. Ze stuurt haar moeder een bericht: koffie bij oma blijft de beste les Nederlands. Thuis zet ze zelf water op.",
+        "Hardop oefent ze: \"Mag ik nog een koekje?\" Ze herhaalt de zin langzaam en daarna op normaal tempo. Daarna stuurt ze een spraakbericht naar haar taalmaatje. Die antwoordt met een lach: \"Bijna perfect, alleen de r van graag.\" Anna probeert het nog een keer. Kleine correcties voelen hier veilig."
       ],
       "glossary": [
         {
-          "nl": "koekje",
-          "en": "biscuit / cookie"
+          "nl": "stroopwafel",
+          "en": "syrup waffle"
         },
         {
-          "nl": "oma",
-          "en": "grandma"
+          "nl": "kannetje",
+          "en": "small jug"
         },
         {
-          "nl": "weer",
-          "en": "weather"
+          "nl": "schort",
+          "en": "apron"
+        },
+        {
+          "nl": "gezelligheid",
+          "en": "cosy togetherness"
         }
       ],
       "questions": [
         {
-          "q": "Wat drinkt Anna bij oma?",
+          "q": "Hoe drinkt Anna haar koffie?",
           "options": [
-            "koffie",
-            "thee",
-            "sap"
+            "met melk, zonder suiker",
+            "zwart met veel suiker",
+            "alleen limonade"
           ],
-          "correct": "koffie"
+          "correct": "met melk, zonder suiker",
+          "explanation": "Anna zegt: melk graag, geen suiker."
         },
         {
-          "q": "Wat staat er bij de koffie?",
+          "q": "Wat ligt er bij de koffie?",
           "options": [
-            "een koekje",
-            "een boek",
-            "een fiets"
+            "stroopwafels",
+            "pizza",
+            "soep"
           ],
-          "correct": "een koekje"
+          "correct": "stroopwafels",
+          "explanation": "Op tafel staan stroopwafels."
+        },
+        {
+          "q": "Wat krijgt Anna mee?",
+          "options": [
+            "twee stroopwafels",
+            "een fiets",
+            "een krant"
+          ],
+          "correct": "twee stroopwafels",
+          "explanation": "Oma stopt twee stroopwafels in een zakje."
         }
       ]
     },
     {
       "id": "s04_oranje",
-      "level": "A1",
+      "level": "A2",
       "theme": "culture",
-      "title": "Oranje boven!",
-      "titleEn": "Orange on top!",
+      "title": "Oranje op het plein",
+      "titleEn": "Orange on the square",
       "lines": [
-        "Vandaag speelt het Nederlands elftal.",
-        "Overal zie je oranje vlaggen.",
-        "Sam draagt een oranje sjaal.",
-        "Op het plein kijken mensen samen naar het scherm.",
-        "Als Nederland scoort, juichen ze hard."
+        "Als het Nederlands elftal speelt, kleurt de stad oranje. Sam trekt een oranje sjaal aan en loopt naar het plein. Daar hangt een groot scherm. Overal wapperen vlaggen. Iemand deelt plastic kroontjes uit. \"Denk je dat we winnen?\" vraagt zijn nichtje. Sam haalt zijn schouders op: \"Winnen of niet, we juichen toch.\"",
+        "Voor de aftrap kopen ze friet met mayonaise. Supporters zingen mee, soms vals, altijd luid. Als Nederland scoort, springt de menigte op. Sam belt zijn vader: \"Goal! Heb je het gezien?\" Na een tegengoal wordt het even stil. Daarna begint het zingen opnieuw. Een agent glimlacht: feest mag, maar veilig blijven is belangrijker.",
+        "Na de wedstrijd blijft het plein nog lang vol. Sommige fans zijn euforisch. Anderen zijn teleurgesteld. Bijna iedereen blijft beleefd. Sam hangt thuis zijn sjaal over de stoel. Hij schrijft drie woorden op: juichen, tegengoal, supporter. Sport is in Nederland ook een taal van samen horen.",
+        "De volgende ochtend leest Sam een kort artikel over de wedstrijd. Hij markeert woorden die hij nog niet kent. Daarna vertelt hij het verhaal opnieuw aan zijn nichtje, nu langzamer. Zij vult een zin aan die hij was vergeten. Samen lachen ze. Herhalen is geen straf als het over oranje gaat."
       ],
       "glossary": [
         {
@@ -164,128 +208,174 @@
           "en": "national team"
         },
         {
-          "nl": "sjaal",
-          "en": "scarf"
+          "nl": "aftrap",
+          "en": "kick-off"
         },
         {
-          "nl": "juichen",
-          "en": "to cheer"
+          "nl": "tegengoal",
+          "en": "goal conceded"
+        },
+        {
+          "nl": "euforisch",
+          "en": "euphoric"
         }
       ],
       "questions": [
         {
-          "q": "Welke kleur zie je overal?",
+          "q": "Waar kijken ze de wedstrijd?",
           "options": [
-            "oranje",
-            "blauw",
-            "rood"
+            "op een groot scherm op het plein",
+            "alleen in stilte zonder scherm",
+            "in een vliegtuig"
           ],
-          "correct": "oranje"
+          "correct": "op een groot scherm op het plein",
+          "explanation": "Op het plein hangt een groot scherm."
         },
         {
-          "q": "Wat draagt Sam?",
+          "q": "Wat doen ze als Nederland scoort?",
           "options": [
-            "een oranje sjaal",
-            "een groene jas",
-            "een zwarte hoed"
+            "ze springen op en juichen",
+            "ze gaan meteen slapen",
+            "ze zetten alles uit"
           ],
-          "correct": "een oranje sjaal"
+          "correct": "ze springen op en juichen",
+          "explanation": "De menigte springt op en Sam belt over de goal."
+        },
+        {
+          "q": "Welke woorden noteert Sam?",
+          "options": [
+            "juichen, tegengoal, supporter",
+            "kaas, tulp, molen",
+            "paspoort, visum, grens"
+          ],
+          "correct": "juichen, tegengoal, supporter",
+          "explanation": "Hij schrijft juichen, tegengoal en supporter op."
         }
       ]
     },
     {
       "id": "s05_regen",
-      "level": "A1",
+      "level": "A2",
       "theme": "daily",
-      "title": "Regen in april",
-      "titleEn": "Rain in April",
+      "title": "Aprilse grillen in de Jordaan",
+      "titleEn": "April weather in the Jordaan",
       "lines": [
-        "Het regent zachtjes in Amsterdam.",
-        "Mila neemt haar paraplu mee.",
-        "Ze loopt naar de bakker.",
-        "Daar koopt ze een warm broodje.",
-        "Thuis drinkt ze thee bij het raam."
+        "April in Amsterdam betekent zon, bui, wind en opnieuw zon. Mila woont in de Jordaan en pakt haar paraplu plus een dunne regenjas. Op de brug kijkt ze naar fietsers zonder jas. \"Jullie zijn dapper,\" mompelt ze, \"of nat.\" Bij de bakker geurt het naar warme croissants. De rij is kort maar geduldig.",
+        "Ze bestelt een broodje kaas en een koffie om mee te nemen. Buiten waait de regen bijna horizontaal. Ze schuilt onder de luifel van een boekhandel. In de etalage ligt een boek over Nederlandse spreekwoorden. Een voorbijganger vraagt: \"Is dit de weg naar de Westerkerk?\" Mila wijst en zegt de route in eenvoudige zinnen.",
+        "Thuis hangt ze haar jas bij de verwarming en zet thee. Bij het raam ziet ze plassen spiegelen in het licht. Ze opent het spreekwoordenboek en lacht om \"na regen komt zonneschijn\". Op haar telefoon stuurt ze een foto van de natte straat. Regen is lastig, denkt ze, maar daarna ruikt de stad schoon.",
+        "’s Avonds schrijft Mila een kort dagboekje in het Nederlands. Ze gebruikt de woorden paraplu, luifel en etalage in echte zinnen. Haar leraar had gevraagd om een scène, geen woordenlijst. Dit telt. Morgen controleert ze of de Westerkerk-route klopte. Helpen op straat is ook oefenen."
       ],
       "glossary": [
         {
-          "nl": "paraplu",
-          "en": "umbrella"
+          "nl": "aprilse grillen",
+          "en": "changeable April weather"
         },
         {
-          "nl": "bakker",
-          "en": "baker"
+          "nl": "luifel",
+          "en": "awning"
         },
         {
-          "nl": "broodje",
-          "en": "roll / sandwich"
+          "nl": "etalage",
+          "en": "shop window"
+        },
+        {
+          "nl": "Jordaan",
+          "en": "Amsterdam neighbourhood"
         }
       ],
       "questions": [
         {
-          "q": "Wat neemt Mila mee?",
+          "q": "Wat neemt Mila mee tegen buien?",
           "options": [
-            "haar paraplu",
-            "haar fiets",
-            "haar boek"
+            "paraplu en regenjas",
+            "alleen een zonnebril",
+            "ski’s"
           ],
-          "correct": "haar paraplu"
+          "correct": "paraplu en regenjas",
+          "explanation": "Ze pakt haar paraplu en een dunne regenjas."
         },
         {
-          "q": "Wat koopt ze bij de bakker?",
+          "q": "Waar schuilt ze?",
           "options": [
-            "een broodje",
-            "kaas",
-            "bloemen"
+            "onder de luifel van een boekhandel",
+            "in een vliegtuig",
+            "op een open boot"
           ],
-          "correct": "een broodje"
+          "correct": "onder de luifel van een boekhandel",
+          "explanation": "Ze schuilt onder de luifel van een boekhandel."
+        },
+        {
+          "q": "Welk spreekwoord past bij het eind?",
+          "options": [
+            "na regen komt zonneschijn",
+            "de appel valt ver van de boom",
+            "haastige spoed is zelden goed"
+          ],
+          "correct": "na regen komt zonneschijn",
+          "explanation": "Ze lacht om dat spreekwoord in het boek."
         }
       ]
     },
     {
       "id": "s06_tram",
-      "level": "A1",
+      "level": "A2",
       "theme": "daily",
-      "title": "Met de tram",
-      "titleEn": "By tram",
+      "title": "Op tijd met de tram",
+      "titleEn": "On time by tram",
       "lines": [
-        "Joris neemt de tram naar het centrum.",
-        "Hij checkt in met zijn OV-chipkaart.",
-        "In de tram leest hij een korte krant.",
-        "Bij de Dam stapt hij uit.",
-        "Hij is net op tijd voor zijn afspraak."
+        "Joris heeft om tien uur een afspraak bij de huisarts en laat de fiets staan. Bij de halte checkt hij in met zijn OV-chipkaart. De tram komt met twee minuten vertraging. Een omroepstem verontschuldigt zich beleefd. Binnen is het rustig. Joris leest een kort bericht over een nieuwe fietsbrug.",
+        "Een conducteur vraagt vriendelijk om zijn kaart. \"Alles in orde,\" zegt ze na het piepje. Bij de Dam stapt Joris uit en checkt hij uit. Hij loopt door een smalle straat met cafeetjes. In de wachtkamer zitten al twee mensen. Hij is net op tijd. De assistente roept: \"Goedemorgen, komt u binnen?\"",
+        "Na de controle vraagt Joris hoe hij een herhaalrecept digitaal aanvraagt. De assistente legt het in korte stappen uit. Terug in de tram noteert hij: inchecken, uitchecken, herhaalrecept. Regen tikt tegen de ruiten. Hij is tevreden. Openbaar vervoer is handig als je hoofd vol plannen zit.",
+        "Thuis opent hij de app van de huisarts en volgt de stappen nog een keer. Hij typt de datum en controleert zijn naam. Daarna stuurt hij een bericht naar zijn partner: \"Afspraak gelukt, recept aangevraagd.\" Zij antwoordt met een duimpje en de vraag: \"Wil je vanavond soep?\" Joris lacht. Een gewone dag kan toch een overwinning zijn."
       ],
       "glossary": [
-        {
-          "nl": "tram",
-          "en": "tram"
-        },
         {
           "nl": "OV-chipkaart",
           "en": "public transport card"
         },
         {
-          "nl": "afspraak",
-          "en": "appointment"
+          "nl": "vertraging",
+          "en": "delay"
+        },
+        {
+          "nl": "herhaalrecept",
+          "en": "repeat prescription"
+        },
+        {
+          "nl": "conducteur",
+          "en": "conductor"
         }
       ],
       "questions": [
         {
-          "q": "Waarmee checkt Joris in?",
+          "q": "Waarom neemt Joris de tram?",
           "options": [
-            "OV-chipkaart",
-            "paspoort",
-            "sleutel"
+            "voor een afspraak bij de huisarts",
+            "om te skiën",
+            "omdat zijn kaart kapot is"
           ],
-          "correct": "OV-chipkaart"
+          "correct": "voor een afspraak bij de huisarts",
+          "explanation": "Hij heeft om tien uur een afspraak bij de huisarts."
         },
         {
           "q": "Waar stapt hij uit?",
           "options": [
             "bij de Dam",
-            "bij de school",
-            "bij de markt"
+            "bij Schiphol",
+            "bij het strand"
           ],
-          "correct": "bij de Dam"
+          "correct": "bij de Dam",
+          "explanation": "Bij de Dam stapt hij uit."
+        },
+        {
+          "q": "Wat vraagt hij digitaal aan?",
+          "options": [
+            "een herhaalrecept",
+            "een vliegticket",
+            "een hond"
+          ],
+          "correct": "een herhaalrecept",
+          "explanation": "Hij vraagt hoe hij een herhaalrecept digitaal aanvraagt."
         }
       ]
     },
@@ -293,27 +383,30 @@
       "id": "s07_koningsdag",
       "level": "A2",
       "theme": "culture",
-      "title": "Koningsdag",
-      "titleEn": "King's Day",
+      "title": "Vrijmarkt in oranje",
+      "titleEn": "Flea market in orange",
       "lines": [
-        "Op Koningsdag viert Nederland de verjaardag van de koning.",
-        "Mensen verkopen spullen op de vrijmarkt.",
-        "De straten zijn oranje en vol muziek.",
-        "Nora verkoopt oude boeken en speelgoed.",
-        "Aan het eind van de dag is ze moe, maar gelukkig."
+        "Op Koningsdag viert Nederland de verjaardag van de koning. De straten worden een vrijmarkt. Nora legt een kleedje neer met oude boeken, een lamp en speelgoed. Ze draagt een oranje T-shirt en een gekke hoed. Een kind vraagt: \"Mag dit boek voor één euro?\" Nora onderhandelt lachend: \"Voor twee, met een sticker erbij.\"",
+        "Muziek klinkt uit een open raam. Iemand deelt oranje cupcakes uit. Nora verkoopt bijna alles voor de middag voorbij is. Zelf koopt ze een tweedehands lampenkap voor haar kamer. Een buurman fotografeert de drukte voor de wijkkrant. \"Dit is ons nationale rommelparade,\" grapt hij, \"maar wel met hart.\"",
+        "Tegen de avond telt Nora haar muntjes op de bank. Ze is moe en een beetje schor van het praten. Toch is ze tevreden. In haar aantekeningen staan: vrijmarkt, onderhandelen, tweedehands. Koningsdag voelt minder als een geschiedenisles. Het voelt als een feest waar iedereen meedoet.",
+        "De volgende dag is de straat weer stil. Nora zet de lampenkap op haar lamp en stuurt een foto naar haar zus. \"Gekocht voor drie euro,\" schrijft ze. Haar zus antwoordt: \"Mooi, en je hebt de hele dag Nederlands gesproken.\" Nora knikt naar het scherm. Feest en taal kunnen dezelfde dag zijn."
       ],
       "glossary": [
         {
           "nl": "vrijmarkt",
-          "en": "free market / flea market"
+          "en": "King’s Day flea market"
         },
         {
-          "nl": "spullen",
-          "en": "stuff / things"
+          "nl": "onderhandelen",
+          "en": "to negotiate"
         },
         {
-          "nl": "koning",
-          "en": "king"
+          "nl": "tweedehands",
+          "en": "second-hand"
+        },
+        {
+          "nl": "wijkkrant",
+          "en": "neighbourhood paper"
         }
       ],
       "questions": [
@@ -321,67 +414,346 @@
           "q": "Wat viert Nederland op Koningsdag?",
           "options": [
             "de verjaardag van de koning",
-            "Kerst",
-            "Pasen"
+            "Halloween",
+            "het einde van de zomer"
           ],
-          "correct": "de verjaardag van de koning"
+          "correct": "de verjaardag van de koning",
+          "explanation": "De eerste zin zegt dat Koningsdag de verjaardag van de koning is."
         },
         {
           "q": "Wat verkoopt Nora?",
           "options": [
-            "boeken en speelgoed",
-            "fietsen",
-            "kaas"
+            "boeken, een lamp en speelgoed",
+            "nieuwe auto’s",
+            "vliegtickets"
           ],
-          "correct": "boeken en speelgoed"
+          "correct": "boeken, een lamp en speelgoed",
+          "explanation": "Op haar kleedje liggen oude boeken, een lamp en speelgoed."
+        },
+        {
+          "q": "Wat koopt ze zelf?",
+          "options": [
+            "een tweedehands lampenkap",
+            "een motorboot",
+            "een kantoorpand"
+          ],
+          "correct": "een tweedehands lampenkap",
+          "explanation": "Ze koopt een tweedehands lampenkap voor haar kamer."
         }
       ]
     },
     {
       "id": "s08_polder",
-      "level": "A2",
+      "level": "B1",
       "theme": "culture",
-      "title": "In de polder",
-      "titleEn": "In the polder",
+      "title": "Langs de dijk door de polder",
+      "titleEn": "Along the dike",
       "lines": [
-        "Nederland heeft veel polders: land onder zeeniveau.",
-        "Een molen hielp vroeger water weg te pompen.",
-        "Nu doen pompen dat werk vaak.",
-        "Lotte fietst langs een dijk.",
-        "Ze ziet koeien, water en een oude molen."
+        "Nederland heeft polders: land dat vaak lager ligt dan de zee. Lotte fietst op een winderige zondag langs een dijk. Ze kijkt uit over weilanden en sloten. Vroeger hielpen molens water weg te pompen. Nu doen gemalen dat sneller. Op een bord leest ze over waterveiligheid. \"Zonder dijken,\" fluistert ze, \"zag dit landschap er anders uit.\"",
+        "Ze stopt bij een bankje, eet een appel en maakt foto’s van een oude molen. Een fietser groet: \"Hoi, harde wind vandaag!\" Koeien kijken lui toe. Lotte noteert woorden voor haar taalles: dijk, polder, gemaal, peil. Ze denkt aan klimaat. Ze merkt hoe gewoon Nederlanders over water praten.",
+        "Op de terugweg koopt ze bij een boerderijwinkel kaas en melk. De verkoopster vraagt of ze het fietsknooppuntennetwerk volgt. Lotte knikt en laat haar kaart zien. Thuis zoekt ze een kort filmpje over de geschiedenis van de polder. Het landschap voelt niet saai meer. Het voelt als een slim, nat systeem.",
+        "In de les vertelt Lotte het verhaal in vijf zinnen. Haar docent vraagt: \"Waarom zijn dijken belangrijk?\" Lotte antwoordt zonder papier. De klas stelt nog twee vragen over koeien en wind. Lotte lacht. Een fietstocht werd huiswerk, en het huiswerk werd een gesprek."
       ],
       "glossary": [
         {
           "nl": "polder",
-          "en": "reclaimed land"
+          "en": "reclaimed low land"
         },
         {
           "nl": "dijk",
           "en": "dike"
         },
         {
-          "nl": "molen",
-          "en": "windmill"
+          "nl": "gemaal",
+          "en": "pumping station"
+        },
+        {
+          "nl": "fietsknooppuntennetwerk",
+          "en": "numbered cycle routes"
         }
       ],
       "questions": [
         {
-          "q": "Wat is een polder?",
+          "q": "Wat is een polder in dit verhaal?",
           "options": [
-            "land onder zeeniveau",
-            "een berg",
-            "een bos"
-          ],
-          "correct": "land onder zeeniveau"
-        },
-        {
-          "q": "Wat ziet Lotte?",
-          "options": [
-            "koeien, water en een molen",
-            "bergen",
+            "land dat lager kan liggen dan de zee",
+            "een bergketen",
             "een woestijn"
           ],
-          "correct": "koeien, water en een molen"
+          "correct": "land dat lager kan liggen dan de zee",
+          "explanation": "De opening legt uit dat polders vaak lager liggen dan de zee."
+        },
+        {
+          "q": "Welke woorden noteert Lotte?",
+          "options": [
+            "dijk, polder, gemaal, peil",
+            "ski, berg, sneeuw",
+            "surf, golf, strand"
+          ],
+          "correct": "dijk, polder, gemaal, peil",
+          "explanation": "Ze noteert dijk, polder, gemaal en peil."
+        },
+        {
+          "q": "Wat koopt ze bij de boerderij?",
+          "options": [
+            "kaas en melk",
+            "een piano",
+            "vliegtickets"
+          ],
+          "correct": "kaas en melk",
+          "explanation": "Op de terugweg koopt ze kaas en melk."
+        }
+      ]
+    },
+    {
+      "id": "s09_sinterklaas",
+      "level": "A2",
+      "theme": "culture",
+      "title": "Schoen zetten en gedichten",
+      "titleEn": "Shoes and poems",
+      "lines": [
+        "In december leeft Sinterklaas in veel gezinnen. Het is spannend, zoet en vol tradities. Amira zet haar schoen bij de deur met een wortel voor het paard. Ze legt er ook een tekening bij. ’s Avonds drinkt de familie warme chocolademelk. Er klinkt geklop. Iedereen wordt stil. Buiten ligt een zak met presentjes en een gedicht op de mat.",
+        "Amira leest het gedicht hardop voor. Er zitten milde grappen in over haar rommelige kamer. Haar broertje krijgt een spel. Zij krijgt een boek over Amsterdam. Ze zingen twee Sinterklaasliedjes mee met een filmpje. Papa zegt: \"De sint is streng, maar eerlijk.\" Amira rolt met haar ogen en lacht toch.",
+        "Later ruimen ze papier op en zetten de schoen weer weg. Amira schrijft in haar dagboek: schoen zetten, gedicht, pepernoot. Of je het sprookje letterlijk gelooft of niet, de avond voelt warm. Voor het slapen fluistert ze: \"Tot volgend jaar, Sint.\" Buiten waait de decemberwind langs de ramen.",
+        "De volgende ochtend legt ze het gedicht in haar taalschrift. Ze onderstreept woorden die rijmen. Haar leraar had gezegd: tradities zijn goede teksten, want ze herhalen. Amira leest het gedicht nog een keer voor de spiegel. Ze struikelt één keer over een lange zin. Daarna lukt het. Ze voelt zich een beetje trots."
+      ],
+      "glossary": [
+        {
+          "nl": "schoen zetten",
+          "en": "put out a shoe for Sinterklaas"
+        },
+        {
+          "nl": "gedicht",
+          "en": "poem, often teasing"
+        },
+        {
+          "nl": "pepernoot",
+          "en": "tiny spiced biscuit"
+        },
+        {
+          "nl": "presentjes",
+          "en": "little gifts"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Wat legt Amira bij de schoen voor het paard?",
+          "options": [
+            "een wortel",
+            "een pizza",
+            "een skateboard"
+          ],
+          "correct": "een wortel",
+          "explanation": "Ze zet een schoen met een wortel voor het paard."
+        },
+        {
+          "q": "Wat ligt er op de mat?",
+          "options": [
+            "presentjes en een gedicht",
+            "alleen natte bladeren",
+            "een wegafzetting"
+          ],
+          "correct": "presentjes en een gedicht",
+          "explanation": "Buiten ligt een zak met presentjes en een gedicht."
+        },
+        {
+          "q": "Wat krijgt Amira zelf?",
+          "options": [
+            "een boek",
+            "een auto",
+            "een boot"
+          ],
+          "correct": "een boek",
+          "explanation": "Zij krijgt een boek over Amsterdam."
+        }
+      ]
+    },
+    {
+      "id": "s10_bibliotheek",
+      "level": "B1",
+      "theme": "daily",
+      "title": "Lid worden van de bieb",
+      "titleEn": "Joining the library",
+      "lines": [
+        "Youssef wil zijn Nederlands naar B1 tillen en stapt de bibliotheek binnen. Aan de balie vraagt hij hoe een lidmaatschap werkt. \"Met deze pas,\" legt de medewerker uit, \"leen je boeken, e-books en soms films.\" Youssef laat zijn identiteitsbewijs zien. Hij krijgt uitleg over inleverdata. Daarna zoekt hij in de catalogus naar eenvoudige romans.",
+        "In een stille hoek leest hij veertig minuten zonder telefoon. De medewerker tipt een taalcafé op donderdagavond. \"Daar oefenen buren gesprekken over werk en wonen,\" zegt ze. Youssef noteert: catalogus, inleveren, taalcafé. Hij levert een oud boek in. Hij reserveert ook een luisterboek voor de fietsrit.",
+        "Donderdagavond zegt hij in het taalcafé hardop drie zinnen over zijn week. Een oudere man corrigeert vriendelijk één voorzetsel. Youssef bedankt hem. Fouten horen erbij, denkt hij. Op weg naar huis voelt hij zich lichter. Leren mag rustig, lokaal en samen. Het hoeft niet alleen met apps.",
+        "Thuis plant hij de volgende donderdag meteen in zijn agenda. Hij schrijft één doel: een verhaal van zes zinnen vertellen zonder te stoppen. Hij legt het luisterboek klaar bij zijn fietshelm. Kleine afspraken maken een grote taal minder eng. De bibliotheek werd opeens een vaste plek, niet een eenmalig bezoek."
+      ],
+      "glossary": [
+        {
+          "nl": "lidmaatschap",
+          "en": "membership"
+        },
+        {
+          "nl": "catalogus",
+          "en": "catalogue"
+        },
+        {
+          "nl": "taalcafé",
+          "en": "language café"
+        },
+        {
+          "nl": "inleverdata",
+          "en": "due dates"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Wat wil Youssef verbeteren?",
+          "options": [
+            "zijn Nederlands",
+            "alleen zijn rijbewijs",
+            "alleen piano"
+          ],
+          "correct": "zijn Nederlands",
+          "explanation": "Hij wil zijn Nederlands naar B1 tillen."
+        },
+        {
+          "q": "Welke tip krijgt hij?",
+          "options": [
+            "het taalcafé op donderdagavond",
+            "stoppen met lezen",
+            "alleen gamen"
+          ],
+          "correct": "het taalcafé op donderdagavond",
+          "explanation": "De medewerker tipt een taalcafé op donderdagavond."
+        },
+        {
+          "q": "Wat gebeurt er in het taalcafé?",
+          "options": [
+            "hij oefent zinnen en krijgt een correctie",
+            "hij koopt een auto",
+            "hij zwijgt de hele avond"
+          ],
+          "correct": "hij oefent zinnen en krijgt een correctie",
+          "explanation": "Hij zegt drie zinnen; een man corrigeert een voorzetsel."
+        }
+      ]
+    },
+    {
+      "id": "s11_stage",
+      "level": "B1",
+      "theme": "work",
+      "title": "Eerste stagedag in de zorg",
+      "titleEn": "First day in care work",
+      "lines": [
+        "Sara heeft haar eerste stagedag bij een zorginstelling en komt tien minuten te vroeg. Bij de receptie meldt ze zich. Haar begeleider geeft haar een badge en een korte rondleiding. \"Luister eerst veel,\" adviseert hij, \"en vraag door als iets onduidelijk is.\" Samen begroeten ze bewoners en brengen koffie rond. Sara hoort woorden als zorgplan, overdracht en medicatieronde.",
+        "In de pauze eet ze een boterham in de personeelskamer. Een collega legt uit hoe je een incident netjes meldt. Sara stelt beleefde vragen en schrijft steekwoorden op. ’s Middags helpt ze bij een activiteit in de huiskamer: kaarten, muziek en een praatje. Een bewoonster knijpt haar hand. \"Fijn dat je er bent,\" zegt ze zacht.",
+        "Aan het eind evalueert de begeleider vijf minuten met haar. \"Je was aandachtig,\" zegt hij. \"Morgen mag je zelfstandiger een taak afronden.\" Thuis belt Sara haar moeder. Ze is moe, maar trots. In haar stageboek staan dialogen en twijfels. Stage voelt als echt werk. De taal doet ertoe.",
+        "Voor het slapen leest Sara haar steekwoorden nog een keer hardop. Zorgplan. Overdracht. Incident melden. Ze maakt van elk woord een zin. Daarna zet ze een wekker tien minuten vroeger, niet uit angst, maar uit respect. Morgen wil ze één vraag stellen zonder eerst in het Engels te denken. Dat is haar stille doel."
+      ],
+      "glossary": [
+        {
+          "nl": "stage",
+          "en": "internship"
+        },
+        {
+          "nl": "overdracht",
+          "en": "handover"
+        },
+        {
+          "nl": "zorgplan",
+          "en": "care plan"
+        },
+        {
+          "nl": "incident melden",
+          "en": "to report an incident"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Waar loopt Sara stage?",
+          "options": [
+            "bij een zorginstelling",
+            "op een zeilschip",
+            "in een mijn"
+          ],
+          "correct": "bij een zorginstelling",
+          "explanation": "Haar eerste stagedag is bij een zorginstelling."
+        },
+        {
+          "q": "Welk advies geeft de begeleider?",
+          "options": [
+            "luister eerst veel en vraag door",
+            "zeg nooit iets",
+            "negeer bewoners"
+          ],
+          "correct": "luister eerst veel en vraag door",
+          "explanation": "Hij zegt: luister eerst veel en vraag door."
+        },
+        {
+          "q": "Hoe voelt Sara zich ’s avonds?",
+          "options": [
+            "moe maar trots",
+            "boos zonder reden",
+            "onverschillig"
+          ],
+          "correct": "moe maar trots",
+          "explanation": "Ze belt haar moeder: moe, maar trots."
+        }
+      ]
+    },
+    {
+      "id": "s12_nieuws",
+      "level": "B1",
+      "theme": "media",
+      "title": "Nieuws volgen zonder paniek",
+      "titleEn": "News without panic",
+      "lines": [
+        "Omar wil het nieuws in het Nederlands volgen zonder overspoeld te raken. Hij begint met een korte lokale podcast. Eerst luistert hij zonder tekst. Daarna zet hij het transcript aan. Hij markeert woorden als gemeente, verkiezing en duurzaam. \"Eerst de hoofdlijn,\" zegt hij hardop, \"dan de details.\" Op de bank bespreekt hij één item met zijn huisgenoot.",
+        "Soms kijken ze een langzame journaalclip met ondertiteling. Omar let op signaalwoorden: eerst, daarna, daarom, toch, echter. Hij checkt een twijfelachtige claim met een tweede bron. Na twee weken begrijpt hij de hoofdlijnen vaker zonder paniek. In de taalgroep deelt hij een neutraal bericht. Hij stelt ook een open vraag.",
+        "Een klasgenoot reageert met een andere invalshoek. Zo wordt nieuws een gesprek, geen muur. Omar schrijft in zijn logboek: transcript, signaalwoord, factchecken. Hij zet notificaties van schreeuwerige apps uit. Informatie blijft belangrijk. Tempo en keuze ook. \"Ik leer Nederlands,\" glimlacht hij, \"én ik leer filteren.\"",
+        "Op zondag kiest hij één onderwerp en schrijft er een samenvatting van acht zinnen over. Hij leest die voor aan zijn huisgenoot. Die stelt één lastige vraag: \"Wat is de bron?\" Omar wijst naar twee links. Ze zijn het niet helemaal eens, en dat is prima. Begrijpen is niet hetzelfde als alles geloven. Dat verschil voelt volwassen, en precies op zijn niveau."
+      ],
+      "glossary": [
+        {
+          "nl": "transcript",
+          "en": "transcript"
+        },
+        {
+          "nl": "signaalwoord",
+          "en": "linking word"
+        },
+        {
+          "nl": "factchecken",
+          "en": "to fact-check"
+        },
+        {
+          "nl": "hoofdlijn",
+          "en": "main point"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Hoe begint Omar met luisteren?",
+          "options": [
+            "korte podcast, eerst zonder tekst",
+            "meteen een dik wetboek",
+            "alleen muziek"
+          ],
+          "correct": "korte podcast, eerst zonder tekst",
+          "explanation": "Hij begint met een korte podcast en luistert eerst zonder tekst."
+        },
+        {
+          "q": "Waar let hij op bij clips?",
+          "options": [
+            "signaalwoorden zoals eerst en daarom",
+            "alleen emoji’s",
+            "alleen reclame"
+          ],
+          "correct": "signaalwoorden zoals eerst en daarom",
+          "explanation": "Hij let op eerst, daarna, daarom, toch en echter."
+        },
+        {
+          "q": "Wat zet hij uit?",
+          "options": [
+            "notificaties van schreeuwerige apps",
+            "zijn bibliotheekpas",
+            "zijn fietslichten"
+          ],
+          "correct": "notificaties van schreeuwerige apps",
+          "explanation": "Hij zet notificaties van schreeuwerige apps uit."
         }
       ]
     }

@@ -17,6 +17,7 @@ import Stories from './modules/Stories'
 import AccountSync from './modules/AccountSync'
 import { SessionTip, CelebrateTip } from './modules/SessionTip'
 import { loadRemindPrefs, saveRemindPrefs, ensureNotifyPermission, maybeNudge, registerServiceWorker } from './lib/reminders'
+import { speakDutch } from './lib/speech'
 
 
 type Vocab = { id:string; theme:number; nl:string; en?:string|null; article?:'de'|'het'|null }
@@ -95,6 +96,24 @@ const GRAMMAR_BOOK_THEMES:Record<string,GrammarThemePlan[]> = {
     { id:14, title:'Media', subjects:["'om te' met het hele werkwoord", '(in)directe vragen', 'betrekkelijke bijzin', 'voegwoorden', "'er' met voorzetsel"] },
     { id:15, title:'Geschiedenis', subjects:['voltooid tegenwoordige tijd', 'onvoltooid verleden tijd', 'voltooid verleden tijd', "'moest / wilde / kon / mocht'", 'vergelijken', 'voegwoorden', "'er' met voorzetsel"] },
     { id:16, title:'De samenleving', subjects:["voltooid verleden tijd met 'als'", "vragen met 'wat' en 'waar'", 'betrekkelijke bijzin', 'voegwoorden', "'er' met voorzetsel"] },
+  ],
+  defineale: [
+    { id:1, title:'Werk en carrière', subjects:['betrekkelijke bijzin','passief','voegwoorden','zou/zouden voor beleefdheid'] },
+    { id:2, title:'Studie en opleiding', subjects:['om te','indirecte vragen','voltooid tegenwoordige tijd','voegwoorden'] },
+    { id:3, title:'Media en informatie', subjects:['betrekkelijke bijzin','indirecte rede','er + voorzetsel','voegwoorden'] },
+    { id:4, title:'Samenleving en politiek', subjects:['als/wanneer','passief','argumenterende voegwoorden','zou/zouden'] },
+    { id:5, title:'Gezondheid en zorg', subjects:['moeten/mogen/hoeven','om te','adviezen met zouden','voegwoorden'] },
+    { id:6, title:'Veiligheid en regels', subjects:['passief met er','geboden en verboden','voltooid tegenwoordige tijd','voegwoorden'] },
+    { id:7, title:'Wonen en milieu', subjects:['vergelijkingen','er als plaats','om te','voegwoorden'] },
+    { id:8, title:'Geld en consumeren', subjects:['er + getal','om te','voorwaardelijke zinnen','voegwoorden'] },
+    { id:9, title:'Cultuur en vrije tijd', subjects:['betrekkelijke bijzin','zitten/staan/liggen + te','voegwoorden'] },
+    { id:10, title:'Technologie en digitaal', subjects:['passief','instructies','om te','voegwoorden'] },
+    { id:11, title:'Reizen en mobiliteit', subjects:['tijdsvoegwoorden','passief','er + voorzetsel','voegwoorden'] },
+    { id:12, title:'Formele communicatie', subjects:['beleefde verzoeken','zou/zouden','indirecte vragen','voegwoorden'] },
+    { id:13, title:'Conflicten oplossen', subjects:['als..., dan...','wederkerende werkwoorden','voegwoorden','zou/zouden'] },
+    { id:14, title:'Nieuws begrijpen', subjects:['passief','voltooid verleden tijd','betrekkelijke bijzin','voegwoorden'] },
+    { id:15, title:'Duurzaamheid', subjects:['vergelijkingen','voorwaardelijke zinnen','om te','voegwoorden'] },
+    { id:16, title:'Toekomstplannen', subjects:['zullen','gaan + infinitief','voorwaardelijke zinnen','voegwoorden'] },
   ],
 }
 
@@ -1290,7 +1309,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     }catch(e:any){ setErr(String(e?.message??e)) }
   }
   useEffect(()=>{
-    return
     // Device voices can load async (especially on iOS Safari). Re-run when they change.
     if(typeof window === 'undefined' || !('speechSynthesis' in window)) return
     refreshVoices()
@@ -1308,23 +1326,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   async function speak(text:string){
     setErr('')
     try{
-      if(typeof window === 'undefined' || !('speechSynthesis' in window)){
-        setErr('Browser TTS is not supported on this device.')
-        return
-      }
-      const synth = window.speechSynthesis
-      const utter = new SpeechSynthesisUtterance(text)
-      utter.lang = 'nl-NL'
-      // UI speed is already clamped between 0.6..1.4.
-      utter.rate = Math.min(1.4, Math.max(0.6, settings.speed))
-
-      const all = synth.getVoices() || []
-      const byName = all.find(v=>v.name===settings.voice)
-      const byNl = all.find(v=>v.lang && v.lang.toLowerCase().startsWith('nl'))
-      utter.voice = byName || byNl || all[0] || null
-
-      synth.cancel()
-      synth.speak(utter)
+      // Await utterance end so callers (and sequential speak) do not cancel mid-speech.
+      await speakDutch(text, {
+        rate: Math.min(1.4, Math.max(0.6, settings.speed)),
+        voiceName: settings.voice || undefined,
+      })
     }catch(e:any){ setErr(String(e?.message??e)) }
   }
 
@@ -2583,7 +2589,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           <div className="deofhetHeader">
             <GrammarNotebookArt />
             <div className="h1">Grammar</div>
-            <div className="h2">{(selectedBookId==='klimop' ? 'Klim Op' : selectedBookId==='blinkuit' ? 'Blink uit' : 'Wind mee')} — book and chapter based progression</div>
+            <div className="h2">{(selectedBookId==='klimop' ? 'Klim Op' : selectedBookId==='windmee' ? 'Wind mee' : selectedBookId==='blinkuit' ? 'Blink uit' : selectedBookId==='defineale' ? 'De Finale' : selectedBookId)} — book and chapter based progression</div>
             <div className="row" style={{flexWrap:'wrap',gap:8,alignItems:'center'}}>
             <div className="deofhetStats">
               <span className="deofhetStatPill correct">{stats.correct} correct</span>
