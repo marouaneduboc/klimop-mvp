@@ -1,0 +1,389 @@
+{
+  "version": "1.0",
+  "stories": [
+    {
+      "id": "s01_markt",
+      "level": "A0",
+      "theme": "culture",
+      "title": "Op de markt",
+      "titleEn": "At the market",
+      "lines": [
+        "Het is zaterdag.",
+        "Lisa gaat naar de markt.",
+        "Ze koopt verse kaas en bloemen.",
+        "De verkoper zegt: \"Dank je wel!\"",
+        "Lisa is blij. Gezellig!"
+      ],
+      "glossary": [
+        {
+          "nl": "markt",
+          "en": "market"
+        },
+        {
+          "nl": "kaas",
+          "en": "cheese"
+        },
+        {
+          "nl": "bloemen",
+          "en": "flowers"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Welke dag is het?",
+          "options": [
+            "zaterdag",
+            "maandag",
+            "vrijdag"
+          ],
+          "correct": "zaterdag"
+        },
+        {
+          "q": "Wat koopt Lisa?",
+          "options": [
+            "kaas en bloemen",
+            "brood en melk",
+            "fietsen"
+          ],
+          "correct": "kaas en bloemen"
+        }
+      ]
+    },
+    {
+      "id": "s02_fiets",
+      "level": "A0",
+      "theme": "culture",
+      "title": "Naar school op de fiets",
+      "titleEn": "To school by bike",
+      "lines": [
+        "Tom heeft een rode fiets.",
+        "Hij fietst elke dag naar school.",
+        "Onderweg groet hij zijn buurvrouw.",
+        "\"Goedemorgen!\" zegt hij.",
+        "Op school zet hij zijn fiets in het rek."
+      ],
+      "glossary": [
+        {
+          "nl": "fiets",
+          "en": "bike"
+        },
+        {
+          "nl": "buurvrouw",
+          "en": "neighbour (f)"
+        },
+        {
+          "nl": "rek",
+          "en": "rack"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Welke kleur heeft de fiets?",
+          "options": [
+            "rood",
+            "blauw",
+            "groen"
+          ],
+          "correct": "rood"
+        },
+        {
+          "q": "Waar zet Tom zijn fiets?",
+          "options": [
+            "in het rek",
+            "in de auto",
+            "op tafel"
+          ],
+          "correct": "in het rek"
+        }
+      ]
+    },
+    {
+      "id": "s03_koffie",
+      "level": "A1",
+      "theme": "culture",
+      "title": "Koffie met een koekje",
+      "titleEn": "Coffee with a biscuit",
+      "lines": [
+        "In Nederland drinken mensen vaak koffie.",
+        "Bij de koffie krijg je soms een koekje.",
+        "Anna bezoekt haar oma.",
+        "Oma zet koffie en zet een koekje op tafel.",
+        "Ze praten over het weer. Heel gezellig."
+      ],
+      "glossary": [
+        {
+          "nl": "koekje",
+          "en": "biscuit / cookie"
+        },
+        {
+          "nl": "oma",
+          "en": "grandma"
+        },
+        {
+          "nl": "weer",
+          "en": "weather"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Wat drinkt Anna bij oma?",
+          "options": [
+            "koffie",
+            "thee",
+            "sap"
+          ],
+          "correct": "koffie"
+        },
+        {
+          "q": "Wat staat er bij de koffie?",
+          "options": [
+            "een koekje",
+            "een boek",
+            "een fiets"
+          ],
+          "correct": "een koekje"
+        }
+      ]
+    },
+    {
+      "id": "s04_oranje",
+      "level": "A1",
+      "theme": "culture",
+      "title": "Oranje boven!",
+      "titleEn": "Orange on top!",
+      "lines": [
+        "Vandaag speelt het Nederlands elftal.",
+        "Overal zie je oranje vlaggen.",
+        "Sam draagt een oranje sjaal.",
+        "Op het plein kijken mensen samen naar het scherm.",
+        "Als Nederland scoort, juichen ze hard."
+      ],
+      "glossary": [
+        {
+          "nl": "elftal",
+          "en": "national team"
+        },
+        {
+          "nl": "sjaal",
+          "en": "scarf"
+        },
+        {
+          "nl": "juichen",
+          "en": "to cheer"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Welke kleur zie je overal?",
+          "options": [
+            "oranje",
+            "blauw",
+            "rood"
+          ],
+          "correct": "oranje"
+        },
+        {
+          "q": "Wat draagt Sam?",
+          "options": [
+            "een oranje sjaal",
+            "een groene jas",
+            "een zwarte hoed"
+          ],
+          "correct": "een oranje sjaal"
+        }
+      ]
+    },
+    {
+      "id": "s05_regen",
+      "level": "A1",
+      "theme": "daily",
+      "title": "Regen in april",
+      "titleEn": "Rain in April",
+      "lines": [
+        "Het regent zachtjes in Amsterdam.",
+        "Mila neemt haar paraplu mee.",
+        "Ze loopt naar de bakker.",
+        "Daar koopt ze een warm broodje.",
+        "Thuis drinkt ze thee bij het raam."
+      ],
+      "glossary": [
+        {
+          "nl": "paraplu",
+          "en": "umbrella"
+        },
+        {
+          "nl": "bakker",
+          "en": "baker"
+        },
+        {
+          "nl": "broodje",
+          "en": "roll / sandwich"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Wat neemt Mila mee?",
+          "options": [
+            "haar paraplu",
+            "haar fiets",
+            "haar boek"
+          ],
+          "correct": "haar paraplu"
+        },
+        {
+          "q": "Wat koopt ze bij de bakker?",
+          "options": [
+            "een broodje",
+            "kaas",
+            "bloemen"
+          ],
+          "correct": "een broodje"
+        }
+      ]
+    },
+    {
+      "id": "s06_tram",
+      "level": "A1",
+      "theme": "daily",
+      "title": "Met de tram",
+      "titleEn": "By tram",
+      "lines": [
+        "Joris neemt de tram naar het centrum.",
+        "Hij checkt in met zijn OV-chipkaart.",
+        "In de tram leest hij een korte krant.",
+        "Bij de Dam stapt hij uit.",
+        "Hij is net op tijd voor zijn afspraak."
+      ],
+      "glossary": [
+        {
+          "nl": "tram",
+          "en": "tram"
+        },
+        {
+          "nl": "OV-chipkaart",
+          "en": "public transport card"
+        },
+        {
+          "nl": "afspraak",
+          "en": "appointment"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Waarmee checkt Joris in?",
+          "options": [
+            "OV-chipkaart",
+            "paspoort",
+            "sleutel"
+          ],
+          "correct": "OV-chipkaart"
+        },
+        {
+          "q": "Waar stapt hij uit?",
+          "options": [
+            "bij de Dam",
+            "bij de school",
+            "bij de markt"
+          ],
+          "correct": "bij de Dam"
+        }
+      ]
+    },
+    {
+      "id": "s07_koningsdag",
+      "level": "A2",
+      "theme": "culture",
+      "title": "Koningsdag",
+      "titleEn": "King's Day",
+      "lines": [
+        "Op Koningsdag viert Nederland de verjaardag van de koning.",
+        "Mensen verkopen spullen op de vrijmarkt.",
+        "De straten zijn oranje en vol muziek.",
+        "Nora verkoopt oude boeken en speelgoed.",
+        "Aan het eind van de dag is ze moe, maar gelukkig."
+      ],
+      "glossary": [
+        {
+          "nl": "vrijmarkt",
+          "en": "free market / flea market"
+        },
+        {
+          "nl": "spullen",
+          "en": "stuff / things"
+        },
+        {
+          "nl": "koning",
+          "en": "king"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Wat viert Nederland op Koningsdag?",
+          "options": [
+            "de verjaardag van de koning",
+            "Kerst",
+            "Pasen"
+          ],
+          "correct": "de verjaardag van de koning"
+        },
+        {
+          "q": "Wat verkoopt Nora?",
+          "options": [
+            "boeken en speelgoed",
+            "fietsen",
+            "kaas"
+          ],
+          "correct": "boeken en speelgoed"
+        }
+      ]
+    },
+    {
+      "id": "s08_polder",
+      "level": "A2",
+      "theme": "culture",
+      "title": "In de polder",
+      "titleEn": "In the polder",
+      "lines": [
+        "Nederland heeft veel polders: land onder zeeniveau.",
+        "Een molen hielp vroeger water weg te pompen.",
+        "Nu doen pompen dat werk vaak.",
+        "Lotte fietst langs een dijk.",
+        "Ze ziet koeien, water en een oude molen."
+      ],
+      "glossary": [
+        {
+          "nl": "polder",
+          "en": "reclaimed land"
+        },
+        {
+          "nl": "dijk",
+          "en": "dike"
+        },
+        {
+          "nl": "molen",
+          "en": "windmill"
+        }
+      ],
+      "questions": [
+        {
+          "q": "Wat is een polder?",
+          "options": [
+            "land onder zeeniveau",
+            "een berg",
+            "een bos"
+          ],
+          "correct": "land onder zeeniveau"
+        },
+        {
+          "q": "Wat ziet Lotte?",
+          "options": [
+            "koeien, water en een molen",
+            "bergen",
+            "een woestijn"
+          ],
+          "correct": "koeien, water en een molen"
+        }
+      ]
+    }
+  ]
+}

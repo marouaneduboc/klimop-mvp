@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Starts the web dev server, and the local API when the venv is usable.
+# Starts API + Vite bound to 0.0.0.0 so phones on the same LAN can connect.
 # Usage: ./run-local.sh
-# Frontend is started even if the API venv is missing or broken.
+# Frontend starts even if the API venv is missing or broken.
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 API_DIR="$ROOT/apps/api"
 WEB_DIR="$ROOT/apps/web"
 PROJECT_ROOT="$ROOT"
-HOST="localhost"
+HOST="0.0.0.0"
 API_PID=""
 WEB_PID=""
 
@@ -17,13 +17,24 @@ VENV_PY="$PROJECT_ROOT/.venv/bin/python"
 API_LOG="$API_DIR/__api.log"
 WEB_LOG="$WEB_DIR/__web.log"
 
-# Detach a command into its own session so it survives the parent shell exiting
-# (and tooling that tears down the script's process group).
+lan_ip() {
+  # Prefer en0 (Wi-Fi / Ethernet on Mac), fall back to first non-loopback IPv4
+  local ip=""
+  if command -v ipconfig >/dev/null 2>&1; then
+    ip="$(ipconfig getifaddr en0 2>/dev/null || true)"
+    if [[ -z "$ip" ]]; then
+      ip="$(ipconfig getifaddr en1 2>/dev/null || true)"
+    fi
+  fi
+  if [[ -z "$ip" ]] && command -v ifconfig >/dev/null 2>&1; then
+    ip="$(ifconfig 2>/dev/null | awk '/inet / && $2 != "127.0.0.1" { print $2; exit }')"
+  fi
+  echo "${ip:-127.0.0.1}"
+}
+
 detach_run() {
-  # Args: cwd  logfile  pidfile  cmd...
   local cwd="$1" logfile="$2" pidfile="$3"
   shift 3
-  # Prefer python for start_new_session (portable on macOS; no setsid required)
   if [[ -x "$VENV_PY" ]]; then
     DETACH_PY="$VENV_PY"
   else
@@ -50,65 +61,55 @@ PY
 
 start_api() {
   if lsof -iTCP:8000 -sTCP:LISTEN -t >/dev/null 2>&1; then
-    echo "API already listening on http://localhost:8000 — leaving it running."
+    echo "API already listening on port 8000 — leaving it running."
     API_PID="$(lsof -iTCP:8000 -sTCP:LISTEN -t | head -n1)"
     return 0
   fi
 
   if [[ ! -x "$VENV_PY" ]]; then
     echo "WARN: API skipped — no usable venv python at $VENV_PY" >&2
-    echo "      To start API later:" >&2
-    echo "        python3 -m venv .venv && .venv/bin/python -m pip install -r apps/api/requirements.txt" >&2
-    echo "        (cd \"$API_DIR\" && \"$PROJECT_ROOT/.venv/bin/python\" -m uvicorn main:app --host 127.0.0.1 --port 8000)" >&2
+    echo "      python3 -m venv .venv && .venv/bin/python -m pip install -r apps/api/requirements.txt" >&2
     return 1
   fi
 
-  # Prefer python -m uvicorn so relocated venvs with stale console-script shebangs still work.
-  if ! "$VENV_PY" -c "import uvicorn" >/dev/null 2>&1; then
-    echo "WARN: API skipped — uvicorn not importable in .venv (broken/incomplete install)." >&2
-    echo "      Quick fix:" >&2
-    echo "        .venv/bin/python -m pip install -r apps/api/requirements.txt" >&2
-    echo "      Or recreate:" >&2
-    echo "        rm -rf .venv && python3 -m venv .venv && .venv/bin/python -m pip install -r apps/api/requirements.txt" >&2
+  if ! "$VENV_PY" -c "import uvicorn, fastapi" >/dev/null 2>&1; then
+    echo "WARN: API skipped — fastapi/uvicorn not importable. Fix:" >&2
+    echo "      .venv/bin/python -m pip install -r apps/api/requirements.txt" >&2
     return 1
   fi
 
-  echo "Starting API (http://localhost:8000) -> logs: $API_LOG"
+  echo "Starting API (http://0.0.0.0:8000) -> logs: $API_LOG"
   API_PID="$(detach_run "$API_DIR" "$API_LOG" "$API_DIR/__api.pid" \
-    "$VENV_PY" -m uvicorn main:app --host 127.0.0.1 --port 8000)"
+    "$VENV_PY" -m uvicorn main:app --host 0.0.0.0 --port 8000)"
   sleep 0.5
   if ! kill -0 "$API_PID" 2>/dev/null; then
     echo "WARN: API exited immediately. See $API_LOG" >&2
     API_PID=""
     return 1
   fi
-  if ! lsof -iTCP:8000 -sTCP:LISTEN -t >/dev/null 2>&1; then
-    # give it a moment more to bind
-    sleep 0.5
-  fi
+  sleep 0.3
   return 0
 }
 
-# --- API (best-effort; never blocks frontend) ---
+# --- API (best-effort) ---
 cd "$API_DIR"
 set +e
 start_api
 set -e
 
-# --- Web (always attempt) ---
+# --- Web ---
 cd "$WEB_DIR"
 
 PORT=5175
 while [[ $PORT -le 5180 ]]; do
   if lsof -iTCP:"$PORT" -sTCP:LISTEN -t >/dev/null 2>&1; then
     if [[ $PORT -eq 5175 ]]; then
-      echo "Web already listening on http://$HOST:$PORT/ — leaving it running."
-      echo "Open locally: http://$HOST:$PORT/"
+      LAN="$(lan_ip)"
+      echo "Web already listening on port $PORT — leaving it running."
+      echo "Open on this Mac:  http://localhost:$PORT/"
+      echo "Open on phone LAN: http://$LAN:$PORT/"
       if [[ -n "${API_PID}" ]]; then
-        echo "API PID: $API_PID (stop with: kill $API_PID)"
-      else
-        echo "API not running. Start later with:"
-        echo "  (cd \"$API_DIR\" && \"$VENV_PY\" -m uvicorn main:app --host 127.0.0.1 --port 8000)"
+        echo "API: http://$LAN:8000/docs  (PID $API_PID)"
       fi
       exit 0
     fi
@@ -123,7 +124,7 @@ if [[ $PORT -gt 5180 ]]; then
   exit 1
 fi
 
-echo "Starting web dev server (http://$HOST:$PORT/) -> logs: $WEB_LOG"
+echo "Starting web (http://0.0.0.0:$PORT/) -> logs: $WEB_LOG"
 WEB_PID="$(detach_run "$WEB_DIR" "$WEB_LOG" "$WEB_DIR/__web.pid" \
   npm run dev -- --host "$HOST" --port "$PORT")"
 
@@ -138,15 +139,22 @@ for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
   sleep 0.3
 done
 
-open "http://$HOST:$PORT/" 2>/dev/null || true
+LAN="$(lan_ip)"
+open "http://localhost:$PORT/" 2>/dev/null || true
 
-echo "Open locally: http://$HOST:$PORT/"
+echo ""
+echo "============================================"
+echo " Lichte Klimop — local + phone LAN"
+echo "============================================"
+echo " Mac:   http://localhost:$PORT/"
+echo " Phone: http://$LAN:$PORT/   ← same Wi‑Fi"
+echo " API:   http://$LAN:8000/docs"
+echo " Pair:  open Sync tool on Mac → Create code → Join on phone"
+echo "============================================"
 if [[ -n "${API_PID}" ]]; then
-  echo "Running. PIDs — API: $API_PID  WEB: $WEB_PID"
-  echo "To stop: kill $API_PID $WEB_PID"
+  echo "PIDs — API: $API_PID  WEB: $WEB_PID"
+  echo "Stop: kill $API_PID $WEB_PID"
 else
-  echo "Running. WEB PID: $WEB_PID (API skipped — see warnings above)"
-  echo "To stop web: kill $WEB_PID"
-  echo "To start API later:"
-  echo "  (cd \"$API_DIR\" && \"$VENV_PY\" -m uvicorn main:app --host 127.0.0.1 --port 8000)"
+  echo "WEB PID: $WEB_PID (API skipped — see warnings)"
+  echo "Stop web: kill $WEB_PID"
 fi

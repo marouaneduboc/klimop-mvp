@@ -28,10 +28,17 @@ apps/**/__*.pid
 klimop-mvp/
 apps/web/public/images/
 
-# Audio assets (do not push)
-apps/web/public/audio/
+# Audio assets (do not push binaries; keep DROP_HERE guides)
+apps/web/public/audio/**
+!apps/web/public/audio/**/
+!apps/web/public/audio/**/DROP_HERE.md
 assets_raw/audio/
 *.mp3
 *.wav
 *.m4a
 *.tsbuildinfo
+
+# Local sync DB
+apps/api/data/
+apps/api/__api.log
+apps/web/__web.log

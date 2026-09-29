@@ -4,5 +4,13 @@ export default defineConfig({
   // Use relative paths so the built app works on GitHub Pages subpaths.
   base: './',
   plugins: [react()],
-  server: { port: 5173, strictPort: true }
+  server: {
+    host: '0.0.0.0',
+    port: 5175,
+    strictPort: false,
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: 5175,
+  },
 })

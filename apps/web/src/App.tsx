@@ -11,6 +11,13 @@ import {
   OnboardArt,
   ProgressHeaderArt,
 } from './assets/illustrations'
+import Listening, { ListeningSlice } from './modules/Listening'
+import Speaking, { SpeakingSlice } from './modules/Speaking'
+import Stories from './modules/Stories'
+import AccountSync from './modules/AccountSync'
+import { SessionTip, CelebrateTip } from './modules/SessionTip'
+import { loadRemindPrefs, saveRemindPrefs, ensureNotifyPermission, maybeNudge, registerServiceWorker } from './lib/reminders'
+
 
 type Vocab = { id:string; theme:number; nl:string; en?:string|null; article?:'de'|'het'|null }
 type Review = { id:string; due:number; interval:number; ease:number; reps:number; lapses:number; learningStep?:number }
@@ -32,6 +39,8 @@ type Settings = {
   speed:number
   dailyTarget:number
   newPerDay:number
+  remindEnabled?:boolean
+  remindTime?:string
 }
 type Course = { version:string; themes:{id:number;title:string}[]; vocab:Vocab[]; audio:{groups:Record<string, any>} }
 type GrammarVerb = { id:string; infinitive:string; en:string; type:string; auxiliary:string; present:Record<string,string>; past:Record<string,string>; perfect:string }
@@ -136,6 +145,8 @@ function normalizeSettings(raw:any):Settings{
     voice:'',
     speed:1.0,
     dailyTarget:DEFAULT_DAILY_TARGET,
+    remindEnabled: !!raw?.remindEnabled,
+    remindTime: typeof raw?.remindTime==='string' && /^\d{1,2}:\d{2}$/.test(raw.remindTime) ? raw.remindTime : '18:00',
     newPerDay:DEFAULT_NEW_PER_DAY,
   }
   const s = {...base, ...(raw||{})}
@@ -145,6 +156,8 @@ function normalizeSettings(raw:any):Settings{
     voice: String(s.voice || ''),
     speed: clamp(Number(s.speed || 1), 0.6, 1.4),
     dailyTarget: Math.round(clamp(Number(s.dailyTarget || DEFAULT_DAILY_TARGET), MIN_DAILY_TARGET, MAX_DAILY_TARGET)),
+    remindEnabled: !!s.remindEnabled,
+    remindTime: (typeof s.remindTime==='string' && /^\d{1,2}:\d{2}$/.test(s.remindTime)) ? s.remindTime : '18:00',
     newPerDay: Math.round(clamp(Number(s.newPerDay || DEFAULT_NEW_PER_DAY), MIN_NEW_PER_DAY, MAX_NEW_PER_DAY)),
   }
 }
@@ -344,7 +357,9 @@ function DailyPractice({
   type StudyCard =
     | { kind:'vocab'; id:string; theme:number; title:string; vocab:Vocab }
     | { kind:'grammar'; id:string; theme:number; title:string; prompt:string; correct:string; options:string[]; subject:string }
-  const [practiceMode,setPracticeMode]=useState<'mixed'|'vocab'|'grammar'>('vocab')
+    | { kind:'listening'; id:string; theme:number; title:string; vocab:Vocab }
+    | { kind:'speaking'; id:string; theme:number; title:string; phrase:{nl:string; en?:string} }
+  const [practiceMode,setPracticeMode]=useState<'mixed'|'vocab'|'grammar'>('mixed')
   const [showTranslation,setShowTranslation]=useState(false)
   const [showClue,setShowClue]=useState(false)
   const [grammarAnswerMode,setGrammarAnswerMode]=useState<'mc'|'typing'>('mc')
@@ -710,9 +725,29 @@ function DailyPractice({
         effectiveMain.filter(c=>c.kind==='grammar') as StudyCard[]
       )
       : effectiveMain
-    const merged = interleaveAfter(mixedMain,effectiveWrongList,3)
+    // Retention: weave listening + speaking every ~4 cards in mixed mode
+    let retentionMain = mixedMain
+    if(practiceMode==='mixed' && mixedMain.length>0){
+      const withSkills:StudyCard[] = []
+      let skillIdx = 0
+      for(let i=0;i<mixedMain.length;i++){
+        withSkills.push(mixedMain[i])
+        if((i+1)%4===0){
+          const v = course.vocab[strHash(mixedMain[i].id + ':listen') % Math.max(1, course.vocab.length)]
+          if(skillIdx%2===0 && v){
+            withSkills.push({ kind:'listening', id:`listen:${v.id}:${i}`, theme:v.theme, title:`Listen · ${v.nl}`, vocab:v })
+          } else {
+            const phraseNl = v ? (v.article ? `${v.article} ${v.nl}` : v.nl) : 'Hallo!'
+            withSkills.push({ kind:'speaking', id:`speak:${v?.id||i}:${i}`, theme:v?.theme||0, title:`Speak · ${phraseNl}`, phrase:{ nl:phraseNl, en:v?.en||undefined } })
+          }
+          skillIdx++
+        }
+      }
+      retentionMain = withSkills
+    }
+    const merged = interleaveAfter(retentionMain,effectiveWrongList,3)
     return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
-  },[activeDeck,practiceMode,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode])
+  },[activeDeck,practiceMode,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode,course.vocab])
 
   const cur=queue[0]
   const answeredSessionCount = Object.keys(studySeenSession).length
@@ -891,6 +926,7 @@ function DailyPractice({
           </div>
         )}
         <div className="row practiceModeQuick">
+          <button type="button" className={`topBarNavBtn${practiceMode==='mixed'?' is-active':''}`} onClick={()=>setPractice('mixed')}>Retention</button>
           <button type="button" className={`topBarNavBtn${practiceMode==='vocab'?' is-active':''}`} onClick={()=>setPractice('vocab')}>Vocabulary</button>
           <button type="button" className={`topBarNavBtn${practiceMode==='grammar'?' is-active':''}`} onClick={()=>setPractice('grammar')}>Grammar</button>
           {cur.kind==='grammar' && (
@@ -901,7 +937,26 @@ function DailyPractice({
         </div>
 
         <div style={{textAlign:'center',color:'var(--muted)',letterSpacing:8,margin:'6px 0',fontSize:16,opacity:0.45}}>···</div>
-        {cur.kind==='vocab' ? (
+        {cur.kind==='listening' ? (
+          <ListeningSlice
+            vocab={cur.vocab}
+            pool={course.vocab}
+            speak={speak}
+            onDone={(ok)=>{
+              advance(cur, ok)
+              setTimeout(()=>{ setSrsHint(null) }, ok ? FEEDBACK_CORRECT_MS : FEEDBACK_WRONG_MS)
+            }}
+          />
+        ) : cur.kind==='speaking' ? (
+          <SpeakingSlice
+            phrase={cur.phrase}
+            speak={speak}
+            onDone={(ok)=>{
+              advance(cur, ok)
+              setTimeout(()=>{ setSrsHint(null) }, ok ? FEEDBACK_CORRECT_MS : FEEDBACK_WRONG_MS)
+            }}
+          />
+        ) : cur.kind==='vocab' ? (
           <>
             <div className={`bigword${vocabFeedback==='correct'?' feedbackPulse':''}${vocabFeedback==='wrong'?' feedbackShake':''}`}>
               {cur.vocab.en ?? '—'}
@@ -998,7 +1053,7 @@ function DailyPractice({
 
       <div className="card studyQueue">
         <div className="h1">Queue</div>
-        <div className="h2">Planned now: {queue.length} - {practiceMode==='mixed' ? 'Mixed' : (practiceMode==='vocab' ? 'Vocabulary' : 'Grammar')}</div>
+        <div className="h2">Planned now: {queue.length} - {practiceMode==='mixed' ? 'Retention mix' : (practiceMode==='vocab' ? 'Vocabulary' : 'Grammar')}</div>
         <div className="sep" />
         <div className="row" style={{marginBottom:8}}>
           <button onClick={()=>setStudyTheme(0)} style={{width:'100%',textAlign:'left',padding:'8px 10px',background:studyTheme===0?'var(--primary-soft)':'var(--panel)'}}>All themes</button>
@@ -1032,7 +1087,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   const [placeholdersCount,setPlaceholdersCount]=useState(0)
   const [coursesByBookId,setCoursesByBookId]=useState<Record<string,Course>>({})
   const [currentBookId,setCurrentBookId]=useState<string>('klimop')
-  const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'|'deofhet'|'grammar'>('home')
+  const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'|'deofhet'|'grammar'|'listening'|'speaking'|'stories'|'sync'>('home')
   const rawReviews=useMemo(()=>loadJSON<Record<string,Review>>(sk(LS.reviews),{}),[currentUserId])
   const rawDifficult=useMemo(()=>loadJSON<Record<string,boolean>>(sk(LS.difficult),{}),[currentUserId])
   const {reviews:migratedReviews,difficult:migratedDifficult}=useMemo(()=>
@@ -1138,8 +1193,27 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   useEffect(()=>saveJSON(sk(LS.difficult),difficultMap),[difficultMap,currentUserId])
   useEffect(()=>saveJSON(sk(LS.settings),settings),[settings,currentUserId])
   useEffect(()=>{
+    const prev = loadRemindPrefs(currentUserId)
+    saveRemindPrefs(currentUserId, {
+      ...prev,
+      enabled: !!settings.remindEnabled,
+      time: settings.remindTime || '18:00',
+    })
+  },[currentUserId, settings.remindEnabled, settings.remindTime])
+  useEffect(()=>{
     if(route!=='study') setStudySeenSession({})
   },[route])
+  useEffect(()=>{ registerServiceWorker() },[])
+  useEffect(()=>{
+    if(settings.remindEnabled){
+      maybeNudge(currentUserId, stats.reviewsToday, settings.dailyTarget)
+    }
+    const t = window.setInterval(()=>{
+      if(settings.remindEnabled) maybeNudge(currentUserId, stats.reviewsToday, settings.dailyTarget)
+    }, 60_000)
+    return ()=> clearInterval(t)
+  },[currentUserId, stats.reviewsToday, settings.dailyTarget, settings.remindEnabled, settings.remindTime])
+
   useEffect(()=>{
     setStudySeenSession({})
   },[studyTheme])
@@ -1310,6 +1384,10 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         <div className="topBarRowTools">
           <button type="button" onClick={()=>setRoute('deofhet')} className={`pill topBarBookPill${route==='deofhet'?' is-active':''}`}>De of Het</button>
           <button type="button" onClick={()=>setRoute('grammar')} className={`pill topBarBookPill${route==='grammar'?' is-active':''}`}>Grammar</button>
+          <button type="button" onClick={()=>setRoute('listening')} className={`pill topBarBookPill${route==='listening'?' is-active':''}`}>Listening</button>
+          <button type="button" onClick={()=>setRoute('speaking')} className={`pill topBarBookPill${route==='speaking'?' is-active':''}`}>Speaking</button>
+          <button type="button" onClick={()=>setRoute('stories')} className={`pill topBarBookPill${route==='stories'?' is-active':''}`}>Stories</button>
+          <button type="button" onClick={()=>setRoute('sync')} className={`pill topBarBookPill${route==='sync'?' is-active':''}`}>Sync</button>
         </div>
         <div className="topBarRow2">
           <div className="profilePillWrap" ref={profileWrapRef}>
@@ -1415,15 +1493,21 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             </div>
           </div>
           <div className="sep" />
-          <div className="row">
+          <div className="row" style={{flexWrap:'wrap'}}>
             <button className="btn-primary" onClick={()=>setRoute('study')}>Start Daily</button>
+            <button onClick={()=>setRoute('listening')}>Listening</button>
+            <button onClick={()=>setRoute('speaking')}>Speaking</button>
+            <button onClick={()=>setRoute('stories')}>Stories</button>
+            <button onClick={()=>setRoute('sync')}>Sync</button>
             <button onClick={()=>speak('Hallo! Hoe gaat het?')}>🔊 Test Speak</button>
             <button onClick={()=>setRoute('progress')}>Progress</button>
           </div>
+          <SessionTip slot="home" />
           {goalDone && (
             <div className="celebrateBanner" style={{marginTop:14}}>
                   <CelebrateArt />
               <div className="title">Today&apos;s goal is done — goed zo!</div>
+              <CelebrateTip />
             </div>
           )}
           <div className="sep" />
@@ -1449,7 +1533,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         </div>
         <div className="card" style={{flex:1}}>
           <div className="h1">Coach</div>
-          <div className="h2">Local-only · private on this device.</div>
+          <div className="h2">Local-first · sync phone↔Mac on your LAN.</div>
           <div className="sep" />
           <div className="row">
             <div className="pill pill-streak">Streak {stats.streak}</div>
@@ -1603,6 +1687,39 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               <div>
                 <div className="small">New/day</div>
                 <input ref={newPerDayRef} type="number" min={MIN_NEW_PER_DAY} max={MAX_NEW_PER_DAY} defaultValue={settings.newPerDay} onBlur={commitNewPerDay} style={{width:'100%'}} className="iosInputFix" />
+              </div>
+            </div>
+            <div className="targetGrid" style={{marginTop:12}}>
+              <div>
+                <div className="small">Daily reminder</div>
+                <select
+                  value={settings.remindEnabled?'yes':'no'}
+                  onChange={async e=>{
+                    const enabled = e.target.value==='yes'
+                    if(enabled){
+                      const perm = await ensureNotifyPermission()
+                      if(perm!=='granted'){
+                        setSettings(s=>({...s,remindEnabled:false}))
+                        return
+                      }
+                    }
+                    setSettings(s=>({...s,remindEnabled:enabled}))
+                  }}
+                  style={{width:'100%'}}
+                >
+                  <option value="no">Off</option>
+                  <option value="yes">On (Notification)</option>
+                </select>
+              </div>
+              <div>
+                <div className="small">Remind time</div>
+                <input
+                  type="time"
+                  value={settings.remindTime || '18:00'}
+                  onChange={e=>setSettings(s=>({...s,remindTime:e.target.value || '18:00'}))}
+                  style={{width:'100%'}}
+                  className="iosInputFix"
+                />
               </div>
             </div>
             {last14.length>0 && (
@@ -1779,6 +1896,30 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               <div>
                 <div className="small">New cards/day</div>
                 <input ref={newPerDayRef} type="number" min={MIN_NEW_PER_DAY} max={MAX_NEW_PER_DAY} defaultValue={settings.newPerDay} onBlur={commitNewPerDay} style={{width:'100%'}} className="iosInputFix" />
+              </div>
+            </div>
+            <div className="targetGrid" style={{marginTop:12}}>
+              <div>
+                <div className="small">Daily reminder</div>
+                <select
+                  value={settings.remindEnabled?'yes':'no'}
+                  onChange={async e=>{
+                    const enabled = e.target.value==='yes'
+                    if(enabled){
+                      const perm = await ensureNotifyPermission()
+                      if(perm!=='granted'){ setSettings(s=>({...s,remindEnabled:false})); return }
+                    }
+                    setSettings(s=>({...s,remindEnabled:enabled}))
+                  }}
+                  style={{width:'100%'}}
+                >
+                  <option value="no">Off</option>
+                  <option value="yes">On</option>
+                </select>
+              </div>
+              <div>
+                <div className="small">Remind time</div>
+                <input type="time" className="iosInputFix" value={settings.remindTime||'18:00'} onChange={e=>setSettings(s=>({...s,remindTime:e.target.value||'18:00'}))} style={{width:'100%'}} />
               </div>
             </div>
             <div className="small" style={{marginTop:8}}>You can still override the plan anytime in Study with the Continue button.</div>
@@ -2530,13 +2671,13 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   }
 
   const hasAnyCourse = Object.keys(coursesByBookId).length > 0
-  if(!hasAnyCourse && !err && route!=='grammar'){
+  if(!hasAnyCourse && !err && route!=='grammar' && route!=='stories' && route!=='sync' && route!=='listening' && route!=='speaking'){
     return <div className="container"><Top /><div className="sep" /><div className="card">Loading books…</div></div>
   }
-  if(err && !hasAnyCourse && route!=='grammar'){
+  if(err && !hasAnyCourse && route!=='grammar' && route!=='stories' && route!=='sync' && route!=='listening' && route!=='speaking'){
     return <div className="container"><Top /><div className="sep" /><div className="card">Error: {err}</div></div>
   }
-  if(!course && route!=='grammar'){
+  if(!course && route!=='grammar' && route!=='stories' && route!=='sync' && route!=='listening' && route!=='speaking'){
     return <div className="container"><Top /><div className="sep" /><div className="card">Loading course…</div></div>
   }
 
@@ -2573,9 +2714,13 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         {route==='tts' && <div className="pagePane"><TTS /></div>}
         {route==='deofhet' && <div className="pagePane"><DeOfHet currentUserId={currentUserId} coursesByBookId={coursesByBookId} reviewsMap={reviewsMap} difficultMap={difficultMap} speak={speak} /></div>}
         {route==='grammar' && <div className="pagePane"><Grammar currentUserId={currentUserId} currentBookId={currentBookId} speak={speak} /></div>}
+        {route==='listening' && <div className="pagePane"><Listening course={course} speak={speak} /></div>}
+        {route==='speaking' && <div className="pagePane"><Speaking course={course} speak={speak} /></div>}
+        {route==='stories' && <div className="pagePane"><Stories speak={speak} /></div>}
+        {route==='sync' && <div className="pagePane"><AccountSync currentUserId={currentUserId} displayName={displayNames[currentUserId] ?? (currentUserId==='default'?'Guest':currentUserId.replace(/_/g,' '))} /></div>}
       </div>
       <div className="sep appFooterSep" />
-      <div className="small appFooterText">Lichte Klimop • Dutch lion • tulips & molens • local-only</div>
+      <div className="small appFooterText">Lichte Klimop • Dutch lion • tulips & molens • local-first LAN</div>
       {onboardStep>0 && (
         <div className="onboardOverlay" role="dialog" aria-modal="true" aria-label="Welcome to Klimop">
           <div className="onboardCard">

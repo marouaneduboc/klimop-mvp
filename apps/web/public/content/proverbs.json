@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "proverbs": [
+    {"id":"p01","nl":"Wie het eerst komt, het eerst maalt.","en":"First come, first served.","note":"Fair order — common at shops and queues."},
+    {"id":"p02","nl":"Hoge bomen vangen veel wind.","en":"Tall trees catch a lot of wind.","note":"Success invites criticism."},
+    {"id":"p03","nl":"Beter één vogel in de hand dan tien in de lucht.","en":"A bird in the hand is worth two in the bush.","note":"Value what you already have."},
+    {"id":"p04","nl":"De appel valt niet ver van de boom.","en":"The apple doesn't fall far from the tree.","note":"Children resemble their parents."},
+    {"id":"p05","nl":"Al is de leugen nog zo snel, de waarheid achterhaalt haar wel.","en":"Truth catches up with a lie.","note":"Honesty wins in the end."},
+    {"id":"p06","nl":"Wie niet waagt, die niet wint.","en":"Nothing ventured, nothing gained.","note":"Take a small risk to learn."},
+    {"id":"p07","nl":"Oost west, thuis best.","en":"East or west, home is best.","note":"Comfort of home after travel."},
+    {"id":"p08","nl":"Doe maar gewoon, dan doe je al gek genoeg.","en":"Just act normal — that's crazy enough.","note":"Dutch understatement culture."}
+  ],
+  "wistJeDat": [
+    {"id":"w01","nl":"Wist je dat Nederland meer fietsen dan inwoners heeft?","en":"The Netherlands has more bikes than people."},
+    {"id":"w02","nl":"Wist je dat 'gezellig' lastig te vertalen is? Het zit tussen cozy, fun en togetherness.","en":"Gezellig mixes cozy, fun, and togetherness."},
+    {"id":"w03","nl":"Wist je dat oranje de kleur van het koningshuis is (Huis van Oranje)?","en":"Orange comes from the House of Orange."},
+    {"id":"w04","nl":"Wist je dat veel Nederlands land onder zeeniveau ligt — dankzij dijken en polders?","en":"Much of the country sits below sea level."},
+    {"id":"w05","nl":"Wist je dat 'doe normaal' een vriendelijke nudge is om niet te overdrijven?","en":"Doe normaal gently means don't overdo it."},
+    {"id":"w06","nl":"Wist je dat Sinterklaas in november aankomt, weken vóór 5 december?","en":"Sinterklaas arrives weeks before Dec 5."},
+    {"id":"w07","nl":"Wist je dat een 'borrel' een casual drink is — vaak met bitterballen?","en":"A borrel is a casual drink, often with snacks."},
+    {"id":"w08","nl":"Wist je dat Nederlandse kinderen vroeg leren fietsen — soms zonder handen?","en":"Dutch kids learn to bike early — sometimes hands-free."}
+  ]
+}
