@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { playListenClip, speakDutch } from '../lib/speech'
 
 type Vocab = { id: string; theme: number; nl: string; en?: string | null; article?: 'de' | 'het' | null }
@@ -64,8 +64,21 @@ export default function Listening({ course, speak }: { course: Course | null; sp
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null)
   const [source, setSource] = useState<'mp3' | 'tts' | null>(null)
   const [score, setScore] = useState({ ok: 0, n: 0 })
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const feedbackRef = useRef<'correct' | 'wrong' | null>(null)
+
+  const clearAdvanceTimer = () => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current)
+      advanceTimerRef.current = null
+    }
+  }
+
+  useEffect(() => () => clearAdvanceTimer(), [])
 
   const next = (m: Mode = mode) => {
+    clearAdvanceTimer()
+    feedbackRef.current = null
     setFeedback(null)
     setTyped('')
     setPickedIds([])
@@ -106,13 +119,25 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q?.vocab.id, q?.mode])
 
+  const scheduleAdvance = (ok: boolean) => {
+    clearAdvanceTimer()
+    advanceTimerRef.current = setTimeout(() => {
+      advanceTimerRef.current = null
+      next()
+    }, ok ? 900 : 1600)
+  }
+
+  /** Grade current answer; show brief feedback then auto-advance. No-op if already checked. */
   const grade = (answer: string) => {
-    if (!q || feedback) return
+    if (!q || feedbackRef.current) return false
     const ok = q.mode === 'order'
       ? normAns(answer) === normAns(q.words.join(' '))
       : normAns(answer) === normAns(q.vocab.nl)
-    setFeedback(ok ? 'correct' : 'wrong')
+    feedbackRef.current = ok ? 'correct' : 'wrong'
+    setFeedback(feedbackRef.current)
     setScore(s => ({ ok: s.ok + (ok ? 1 : 0), n: s.n + 1 }))
+    scheduleAdvance(ok)
+    return true
   }
 
   const pickedTexts = q?.mode === 'order'
@@ -121,6 +146,23 @@ export default function Listening({ course, speak }: { course: Course | null; sp
   const availableOrder = q?.mode === 'order'
     ? q.shuffled.filter(c => !pickedIds.includes(c.id))
     : []
+
+  /** Next: if already checked, advance now; else grade (when answer ready) then brief feedback + advance. */
+  const handleNext = () => {
+    if (feedback) {
+      clearAdvanceTimer()
+      next()
+      return
+    }
+    if (!q) return
+    if (q.mode === 'type' && typed.trim()) {
+      grade(typed)
+      return
+    }
+    if (q.mode === 'order' && pickedIds.length === q.words.length) {
+      grade(pickedTexts.join(' '))
+    }
+  }
 
   if (!course) return <div className="card">Loading course…</div>
 
@@ -175,9 +217,9 @@ export default function Listening({ course, speak }: { course: Course | null; sp
             </div>
           )}
           {q.mode === 'type' && (
-            <form className="listenTypeForm" onSubmit={e => { e.preventDefault(); grade(typed) }}>
+            <form className="listenTypeForm" onSubmit={e => { e.preventDefault(); handleNext() }}>
               <input className="iosInputFix listenTypeInput" value={typed} onChange={e => setTyped(e.target.value)} placeholder="Type what you heard…" autoCapitalize="off" autoCorrect="off" disabled={!!feedback} />
-              <button type="submit" className="btn-primary" disabled={!!feedback || !typed.trim()}>Check</button>
+              <button type="submit" className="btn-primary" disabled={!feedback && !typed.trim()}>{feedback ? 'Next' : 'Check'}</button>
             </form>
           )}
           {q.mode === 'order' && (
@@ -222,15 +264,15 @@ export default function Listening({ course, speak }: { course: Course | null; sp
                 <button
                   type="button"
                   className="btn-primary"
-                  disabled={!!feedback || pickedIds.length !== q.words.length}
-                  onClick={() => grade(pickedTexts.join(' '))}
-                >Check</button>
+                  disabled={!feedback && pickedIds.length !== q.words.length}
+                  onClick={handleNext}
+                >{feedback ? 'Next' : 'Check'}</button>
               </div>
             </div>
           )}
-          {feedback && (
+          {feedback && q.mode === 'mc' && (
             <div className="row" style={{ marginTop: 14 }}>
-              <button type="button" className="btn-primary" onClick={() => next()}>Next</button>
+              <button type="button" className="btn-primary" onClick={handleNext}>Next</button>
             </div>
           )}
         </>

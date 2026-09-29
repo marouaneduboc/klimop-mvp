@@ -1107,6 +1107,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   const [coursesByBookId,setCoursesByBookId]=useState<Record<string,Course>>({})
   const [currentBookId,setCurrentBookId]=useState<string>('klimop')
   const [route,setRoute]=useState<'home'|'study'|'progress'|'tts'|'deofhet'|'grammar'|'listening'|'speaking'|'stories'|'sync'>('home')
+  const [syncPaired,setSyncPaired]=useState(()=>!!(localStorage.getItem('klimop.syncProfileId.v1')&&localStorage.getItem('klimop.pairToken.v1')))
+  useEffect(()=>{ const sync=()=>setSyncPaired(!!(localStorage.getItem('klimop.syncProfileId.v1')&&localStorage.getItem('klimop.pairToken.v1'))); sync(); window.addEventListener('storage', sync); return ()=>window.removeEventListener('storage', sync) },[route])
   const rawReviews=useMemo(()=>loadJSON<Record<string,Review>>(sk(LS.reviews),{}),[currentUserId])
   const rawDifficult=useMemo(()=>loadJSON<Record<string,boolean>>(sk(LS.difficult),{}),[currentUserId])
   const {reviews:migratedReviews,difficult:migratedDifficult}=useMemo(()=>
@@ -1393,7 +1395,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           <button type="button" onClick={()=>setRoute('listening')} className={`pill topBarBookPill${route==='listening'?' is-active':''}`}>Listening</button>
           <button type="button" onClick={()=>setRoute('speaking')} className={`pill topBarBookPill${route==='speaking'?' is-active':''}`}>Speaking</button>
           <button type="button" onClick={()=>setRoute('stories')} className={`pill topBarBookPill${route==='stories'?' is-active':''}`}>Stories</button>
-          <button type="button" onClick={()=>setRoute('sync')} className={`pill topBarBookPill${route==='sync'?' is-active':''}`}>Sync</button>
+          <button type="button" onClick={()=>setRoute('sync')} className={`pill topBarBookPill${route==='sync'?' is-active':''}${syncPaired?' is-synced':''}`} title={syncPaired?'Sync active':'Sync'}>Sync{syncPaired?' ●':''}</button>
         </div>
         <div className="topBarRow2">
           <div className="profilePillWrap" ref={profileWrapRef}>
@@ -1512,7 +1514,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <button className="homeToolBtn" onClick={()=>setRoute('listening')}><img className="homeToolIcon" src="./assets/listen-icon.png" alt="" width={22} height={22} />Listening</button>
             <button className="homeToolBtn" onClick={()=>setRoute('speaking')}><img className="homeToolIcon" src="./assets/speak-icon.png" alt="" width={22} height={22} />Speaking</button>
             <button className="homeToolBtn" onClick={()=>setRoute('stories')}><img className="homeToolIcon" src="./assets/story-icon.png" alt="" width={22} height={22} />Stories</button>
-            <button className="homeToolBtn" onClick={()=>setRoute('sync')}><img className="homeToolIcon" src="./assets/sync-icon.png" alt="" width={22} height={22} />Sync</button>
+            <button className={`homeToolBtn${syncPaired?' is-synced':''}`} onClick={()=>setRoute('sync')} title={syncPaired?'Sync active':'Sync'}><img className="homeToolIcon" src="./assets/sync-icon.png" alt="" width={22} height={22} />Sync{syncPaired?' ●':''}</button>
             <button onClick={()=>speak('Hallo! Hoe gaat het?')}>🔊 Test Speak</button>
             <button onClick={()=>setRoute('progress')}>Progress</button>
           </div>

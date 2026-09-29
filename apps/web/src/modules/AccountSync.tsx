@@ -3,6 +3,8 @@ import { apiFetch, defaultApiBase } from '../lib/apiBase'
 
 const PAIR_TOKEN_KEY = 'klimop.pairToken.v1'
 const SYNC_PROFILE_KEY = 'klimop.syncProfileId.v1'
+const LAST_PUSH_KEY = 'klimop.syncLastPush.v1'
+const LAST_PULL_KEY = 'klimop.syncLastPull.v1'
 
 const MIGRATE_KEYS = [
   'klimop.reviews.v1',
@@ -47,6 +49,48 @@ function applyBlob(blob: Record<string, unknown>) {
   }
 }
 
+function formatSyncTime(iso: string | null): string {
+  if (!iso) return 'never'
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return 'never'
+  try {
+    return d.toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' })
+  } catch {
+    return d.toISOString()
+  }
+}
+
+/** Clipboard API fails on non-secure HTTP (LAN). Fallback: select textarea, execCommand copy. */
+async function copyText(text: string): Promise<boolean> {
+  if (!text) return false
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text)
+      return true
+    }
+  } catch { /* fall through */ }
+  try {
+    const ta = document.createElement('textarea')
+    ta.value = text
+    ta.setAttribute('readonly', '')
+    ta.style.position = 'fixed'
+    ta.style.top = '0'
+    ta.style.left = '0'
+    ta.style.width = '1px'
+    ta.style.height = '1px'
+    ta.style.opacity = '0'
+    document.body.appendChild(ta)
+    ta.focus()
+    ta.select()
+    ta.setSelectionRange(0, text.length)
+    const ok = document.execCommand('copy')
+    document.body.removeChild(ta)
+    return ok
+  } catch {
+    return false
+  }
+}
+
 export default function AccountSync({
   currentUserId,
   displayName,
@@ -57,12 +101,30 @@ export default function AccountSync({
   const [apiBase, setApiBase] = useState(defaultApiBase())
   const [status, setStatus] = useState('')
   const [err, setErr] = useState('')
+  const [toast, setToast] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null)
   const [pairCode, setPairCode] = useState('')
   const [joinCode, setJoinCode] = useState('')
   const [profileId, setProfileId] = useState(() => localStorage.getItem(SYNC_PROFILE_KEY) || '')
+  const [hasToken, setHasToken] = useState(() => !!localStorage.getItem(PAIR_TOKEN_KEY))
+  const [lastPush, setLastPush] = useState(() => localStorage.getItem(LAST_PUSH_KEY))
+  const [lastPull, setLastPull] = useState(() => localStorage.getItem(LAST_PULL_KEY))
   const [busy, setBusy] = useState(false)
 
+  const paired = !!(profileId && hasToken)
+
   useEffect(() => { setApiBase(defaultApiBase()) }, [])
+
+  useEffect(() => {
+    if (!toast) return
+    const t = window.setTimeout(() => setToast(null), 4200)
+    return () => clearTimeout(t)
+  }, [toast])
+
+  const showToast = (kind: 'ok' | 'err', text: string) => {
+    setToast({ kind, text })
+    if (kind === 'ok') { setStatus(text); setErr('') }
+    else { setErr(text); setStatus('') }
+  }
 
   const health = async () => {
     setErr(''); setStatus('Checking API…')
@@ -71,7 +133,7 @@ export default function AccountSync({
       if (!r.ok) throw new Error(`HTTP ${r.status}`)
       const j = await r.json()
       setStatus(`API OK · ${j.service || 'klimop'} · ${apiBase}`)
-    } catch (e: any) {
+    } catch {
       setErr(`API unreachable at ${apiBase}. Start ./run-local.sh on the Mac (binds 0.0.0.0:8000).`)
       setStatus('')
     }
@@ -95,11 +157,12 @@ export default function AccountSync({
       const j = await r.json()
       setPairCode(j.code)
       setProfileId(j.profile_id)
+      setHasToken(true)
       localStorage.setItem(SYNC_PROFILE_KEY, j.profile_id)
       localStorage.setItem(PAIR_TOKEN_KEY, j.token)
-      setStatus(`Pairing code ready — enter it on your phone. Expires in ${j.expires_minutes || 15} min.`)
+      showToast('ok', `Pairing code ready — enter it on your phone. Expires in ${j.expires_minutes || 15} min.`)
     } catch (e: any) {
-      setErr(String(e?.message || e))
+      showToast('err', String(e?.message || e))
     } finally { setBusy(false) }
   }
 
@@ -114,20 +177,24 @@ export default function AccountSync({
       if (!r.ok) throw new Error(await r.text())
       const j = await r.json()
       setProfileId(j.profile_id)
+      setHasToken(true)
       localStorage.setItem(SYNC_PROFILE_KEY, j.profile_id)
       localStorage.setItem(PAIR_TOKEN_KEY, j.token)
       if (j.progress) applyBlob(j.progress)
-      setStatus('Joined — progress pulled from Mac. Reloading…')
-      setTimeout(() => window.location.reload(), 600)
+      const now = new Date().toISOString()
+      localStorage.setItem(LAST_PULL_KEY, now)
+      setLastPull(now)
+      showToast('ok', 'Joined — sync active. Progress pulled from Mac. Reloading…')
+      setTimeout(() => window.location.reload(), 900)
     } catch (e: any) {
-      setErr(String(e?.message || e))
+      showToast('err', `Join failed: ${String(e?.message || e)}`)
     } finally { setBusy(false) }
   }
 
   const pushProgress = async () => {
     const token = localStorage.getItem(PAIR_TOKEN_KEY)
     const pid = localStorage.getItem(SYNC_PROFILE_KEY)
-    if (!token || !pid) { setErr('Pair first (create or join).'); return }
+    if (!token || !pid) { showToast('err', 'Pair first (create or join).'); return }
     setBusy(true); setErr('')
     try {
       const blob = collectLocalBlob(currentUserId)
@@ -137,16 +204,19 @@ export default function AccountSync({
         body: JSON.stringify({ profile_id: pid, progress: blob }),
       })
       if (!r.ok) throw new Error(await r.text())
-      setStatus('Progress pushed to Mac.')
+      const now = new Date().toISOString()
+      localStorage.setItem(LAST_PUSH_KEY, now)
+      setLastPush(now)
+      showToast('ok', 'Progress pushed to Mac.')
     } catch (e: any) {
-      setErr(String(e?.message || e))
+      showToast('err', String(e?.message || e))
     } finally { setBusy(false) }
   }
 
   const pullProgress = async () => {
     const token = localStorage.getItem(PAIR_TOKEN_KEY)
     const pid = localStorage.getItem(SYNC_PROFILE_KEY)
-    if (!token || !pid) { setErr('Pair first (create or join).'); return }
+    if (!token || !pid) { showToast('err', 'Pair first (create or join).'); return }
     setBusy(true); setErr('')
     try {
       const r = await apiFetch(`/sync/progress/${encodeURIComponent(pid)}`, {
@@ -155,10 +225,13 @@ export default function AccountSync({
       if (!r.ok) throw new Error(await r.text())
       const j = await r.json()
       if (j.progress) applyBlob(j.progress)
-      setStatus('Progress pulled. Reloading…')
-      setTimeout(() => window.location.reload(), 600)
+      const now = new Date().toISOString()
+      localStorage.setItem(LAST_PULL_KEY, now)
+      setLastPull(now)
+      showToast('ok', 'Progress pulled. Reloading…')
+      setTimeout(() => window.location.reload(), 900)
     } catch (e: any) {
-      setErr(String(e?.message || e))
+      showToast('err', String(e?.message || e))
     } finally { setBusy(false) }
   }
 
@@ -167,13 +240,9 @@ export default function AccountSync({
   const pageUrl = typeof window !== 'undefined' ? window.location.origin : ''
 
   const copy = async (text: string, label: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setStatus(`Copied ${label}`)
-      setErr('')
-    } catch {
-      setErr(`Could not copy. Select and copy this: ${text}`)
-    }
+    const ok = await copyText(text)
+    if (ok) showToast('ok', `Copied ${label}`)
+    else showToast('err', `Could not copy automatically. Select and copy: ${text}`)
   }
 
   return (
@@ -181,6 +250,23 @@ export default function AccountSync({
       <img className="listenToolIcon" src="./assets/sync-icon.png" width={36} height={36} alt="" />
       <div className="h1">Pair your phone</div>
       <div className="h2">Same Wi‑Fi · Mac makes a code · phone types it</div>
+
+      {paired ? (
+        <div className="syncPairedBanner" role="status" aria-live="polite">
+          <span className="syncPairedBadge">Synced</span>
+          <div className="syncPairedMeta">
+            <div><strong>Profile</strong> <code className="syncProfileId">{profileId}</code></div>
+            <div className="small">Last push: {formatSyncTime(lastPush)}</div>
+            <div className="small">Last pull: {formatSyncTime(lastPull)}</div>
+          </div>
+        </div>
+      ) : (
+        <div className="syncUnpairedBanner" role="status">
+          <span className="syncUnpairedBadge">Not paired</span>
+          <div className="small">Create a code on the Mac, or join with a code on the phone.</div>
+        </div>
+      )}
+
       <div className="sep" />
 
       <div className="syncUrlBox">
@@ -251,11 +337,17 @@ export default function AccountSync({
       <div className="sep" />
       <div className="small">Already paired? Push or pull progress.</div>
       <div className="row" style={{ flexWrap: 'wrap', gap: 8, marginTop: 8 }}>
-        <button type="button" disabled={busy || !profileId} onClick={pushProgress}>Push progress</button>
-        <button type="button" disabled={busy || !profileId} onClick={pullProgress}>Pull progress</button>
+        <button type="button" disabled={busy || !paired} onClick={pushProgress}>Push progress</button>
+        <button type="button" disabled={busy || !paired} onClick={pullProgress}>Pull progress</button>
       </div>
       {status && <div className="okBanner" style={{ marginTop: 12 }}>{status}</div>}
       {err && <div className="teachBanner" style={{ marginTop: 12 }} role="alert">{err}</div>}
+
+      {toast && (
+        <div className={`syncToast syncToast-${toast.kind}`} role="status" aria-live="assertive">
+          {toast.text}
+        </div>
+      )}
     </div>
   )
 }
