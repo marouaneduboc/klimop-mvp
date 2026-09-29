@@ -18,6 +18,7 @@ import AccountSync from './modules/AccountSync'
 import { SessionTip, CelebrateTip } from './modules/SessionTip'
 import { loadRemindPrefs, saveRemindPrefs, ensureNotifyPermission, maybeNudge, registerServiceWorker } from './lib/reminders'
 import { speakDutch } from './lib/speech'
+import { defaultApiBase } from './lib/apiBase'
 
 
 type Vocab = { id:string; theme:number; nl:string; en?:string|null; article?:'de'|'het'|null }
@@ -159,7 +160,7 @@ const MAX_NEW_PER_DAY = 80
 const clamp = (n:number, min:number, max:number)=>Math.min(max, Math.max(min, n))
 function normalizeSettings(raw:any):Settings{
   const base = {
-    ttsBaseUrl:'http://localhost:8000',
+    ttsBaseUrl: defaultApiBase(),
     autoSpeak:false,
     voice:'',
     speed:1.0,

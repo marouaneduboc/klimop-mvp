@@ -44,11 +44,24 @@ export default function Speaking({ course, speak }: { course: Course | null; spe
   const [result, setResult] = useState<{ ok: boolean; detail: string; score: number } | null>(null)
   const [score, setScore] = useState({ ok: 0, n: 0 })
   const [micHint, setMicHint] = useState<string | null>(() => recognitionSupportMessage())
+  const [supported, setSupported] = useState(() => canRecognize() && recognitionSecureOk())
   const inputRef = useRef<HTMLInputElement>(null)
-  const supported = canRecognize() && recognitionSecureOk()
   const cur = phrases[idx % Math.max(1, phrases.length)]
 
-  useEffect(() => () => { stopRecognizing() }, [])
+  useEffect(() => {
+    const refresh = () => {
+      setSupported(canRecognize() && recognitionSecureOk())
+      setMicHint(recognitionSupportMessage())
+    }
+    refresh()
+    window.addEventListener('focus', refresh)
+    document.addEventListener('visibilitychange', refresh)
+    return () => {
+      window.removeEventListener('focus', refresh)
+      document.removeEventListener('visibilitychange', refresh)
+      stopRecognizing()
+    }
+  }, [])
 
   const next = () => {
     stopRecognizing()
@@ -192,12 +205,23 @@ export function SpeakingSlice({
   const [fallback, setFallback] = useState('')
   const [result, setResult] = useState<{ ok: boolean; detail: string } | null>(null)
   const [hint, setHint] = useState<string | null>(() => recognitionSupportMessage())
-  const supported = canRecognize() && recognitionSecureOk()
+  const [supported, setSupported] = useState(() => canRecognize() && recognitionSecureOk())
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    const refresh = () => {
+      setSupported(canRecognize() && recognitionSecureOk())
+      setHint(recognitionSupportMessage())
+    }
+    refresh()
+    window.addEventListener('focus', refresh)
+    document.addEventListener('visibilitychange', refresh)
     speak(phrase.nl).catch(() => speakDutch(phrase.nl))
-    return () => { stopRecognizing() }
+    return () => {
+      window.removeEventListener('focus', refresh)
+      document.removeEventListener('visibilitychange', refresh)
+      stopRecognizing()
+    }
   }, [phrase.nl])
 
   const finish = (ok: boolean, detail: string) => {

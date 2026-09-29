@@ -389,7 +389,7 @@ export default function AccountSync({
         <button type="button" onClick={() => { void copy(apiBase, 'API URL') }}>Copy API URL</button>
         <div className="small" style={{ marginTop: 8 }}>
           {onThisMac
-            ? 'You are on the Mac. After ./run-local.sh, the terminal prints a http://192.168… link — use that on the phone.'
+            ? 'You are on the Mac. After ./run-local.sh, the terminal prints a https://192.168… link — use that on the phone (trust mkcert CA once; see LOCAL_RUN.md).'
             : 'You are on another device. Stay on this link, then join with the code from the Mac.'}
         </div>
       </div>

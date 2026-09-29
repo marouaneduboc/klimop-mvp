@@ -47,3 +47,8 @@ apps/web/public/_asset_work/
 apps/api/data/
 apps/api/__api.log
 apps/web/__web.log
+
+# Local TLS (mkcert) — never commit keys
+apps/web/certs/*.pem
+apps/web/public/mkcert-rootCA.pem
+tools/mkcert
