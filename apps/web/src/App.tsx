@@ -2020,7 +2020,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           <div className="sep" />
           {cur && (
             <>
-              <div className={`deofhetWord ${feedback?`feedback-${feedback}`:''}`}>
+              <div className={`deofhetWord${cur.nl.length>=16?' is-xlong':cur.nl.length>=12?' is-long':''}${feedback?` feedback-${feedback}`:''}`}>
                 {cur.nl}
               </div>
               {showTranslation && (
