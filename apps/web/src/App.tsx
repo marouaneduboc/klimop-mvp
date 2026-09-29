@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
+  BRAND_NAME,
   CelebrateArt,
   DailyHeaderArt,
   DeHetTagsArt,
@@ -7,7 +8,6 @@ import {
   GrammarNotebookArt,
   HomeHeaderArt,
   IvyMark,
-  MASCOT_NAME,
   OnboardArt,
   ProgressHeaderArt,
 } from './assets/illustrations'
@@ -203,22 +203,7 @@ function exampleForVocab(v:Vocab):string{
   return `Kun je "${v.nl}" gebruiken in een zin?`
 }
 
-// Illustrated assets (Klimmie mascot + scenes) live in ./assets/illustrations
-
-function ConfettiBurst(){
-  const bits = Array.from({length:14},(_,i)=>({
-    left: 6 + (i*7)%88,
-    delay: (i%5)*0.08,
-    color: i%3===0 ? 'c-oranje' : i%3===1 ? 'c-wit' : 'c-blauw',
-  }))
-  return (
-    <div className="confettiLayer" aria-hidden>
-      {bits.map((b,i)=>(
-        <span key={i} className={`confettiBit ${b.color}`} style={{left:`${b.left}%`, animationDelay:`${b.delay}s`}} />
-      ))}
-    </div>
-  )
-}
+// Illustrated assets (Dutch motifs) live in ./assets/illustrations
 
 
 function interleaveAfter<T>(main:T[], wrong:T[], everyN:number):T[]{
@@ -838,10 +823,9 @@ function DailyPractice({
       <div className="card emptyState">
         <EmptyQueueArt />
         <div className="h1">{goalDone ? 'Goal gehaald!' : 'Even pauze'}</div>
-        <div className="h2">{goalDone ? 'Today\'s daily target is done — lekker bezig.' : 'Klimmie is resting — no cards left in this plan right now.'}</div>
+        <div className="h2">{goalDone ? 'Today\'s daily target is done — lekker bezig.' : 'Nothing left in this plan right now — even pauze.'}</div>
         {goalDone && (
           <div className="celebrateBanner" style={{marginTop:14}}>
-                        <ConfettiBurst />
             <CelebrateArt />
             <div className="title">Goed zo!</div>
             <div className="small" style={{marginTop:4}}>Streak {stats.streak} · {stats.reviewsToday}/{settings.dailyTarget} today</div>
@@ -895,7 +879,6 @@ function DailyPractice({
         </div>
         {showCelebrate && (
           <div className="celebrateBanner">
-                        <ConfettiBurst />
             <CelebrateArt />
             <div className="title">Goed zo — daily goal done!</div>
             <div className="small" style={{marginTop:4}}>Keep the streak warm ☀️</div>
@@ -1298,7 +1281,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     return (
       <header className="topBar">
         <div className="topBarRowNav">
-          <div className="topBarBrand" aria-label={`Klimop · ${MASCOT_NAME}`}>
+          <div className="topBarBrand" aria-label={`Klimop · ${BRAND_NAME}`}>
             <IvyMark />
             <span className="topBarBrandName">Klimop</span>
           </div>
@@ -1422,7 +1405,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <HomeHeaderArt />
             <div style={{flex:1, minWidth:200}}>
               <div className="h1" style={{marginBottom:4}}>Lichte Klimop</div>
-              <div className="h2">Modern Dutch practice with Klimmie — bikes, light, and a calm queue.</div>
+              <div className="h2">Modern Dutch practice — bikes, tulips, molens, and a calm queue.</div>
               <div className="homeCoachLine">{greeting}</div>
               {weak && weak.weakness > 0 && (
                 <button type="button" className="weakThemeChip" onClick={()=>startTheme(weak.id)}>
@@ -1439,8 +1422,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           </div>
           {goalDone && (
             <div className="celebrateBanner" style={{marginTop:14}}>
-                            <ConfettiBurst />
-              <CelebrateArt />
+                  <CelebrateArt />
               <div className="title">Today&apos;s goal is done — goed zo!</div>
             </div>
           )}
@@ -2548,7 +2530,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         {route==='grammar' && <div className="pagePane"><Grammar currentUserId={currentUserId} currentBookId={currentBookId} speak={speak} /></div>}
       </div>
       <div className="sep appFooterSep" />
-      <div className="small appFooterText">Lichte Klimop • {MASCOT_NAME} the ivy • local-only • warm Dutch practice</div>
+      <div className="small appFooterText">Lichte Klimop • tulips & molens • local-only • warm Dutch practice</div>
       {onboardStep>0 && (
         <div className="onboardOverlay" role="dialog" aria-modal="true" aria-label="Welcome to Klimop">
           <div className="onboardCard">
@@ -2559,7 +2541,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
                   <IvyMark size={28} />
                   <div className="h1" style={{fontSize:22, marginBottom:0}}>Welkom bij Klimop</div>
                 </div>
-                <div className="h2">Meet Klimmie — three soft steps to start</div>
+                <div className="h2">Three soft steps to start</div>
               </div>
             </div>
             <div className="onboardSteps" aria-hidden>

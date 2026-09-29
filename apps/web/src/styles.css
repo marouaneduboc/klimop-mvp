@@ -471,23 +471,6 @@ button:hover{border-color:rgba(28,36,48,0.18);background:var(--panel2);cursor:po
 }
 .feedbackPulse{ animation:pulseOk 0.5s var(--ease); }
 .feedbackShake{ animation:shakeWrong 0.45s var(--ease); }
-.confettiLayer{
-  pointer-events:none;
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-}
-.confettiBit{
-  position:absolute;
-  top:-8px;
-  width:8px;
-  height:12px;
-  border-radius:2px;
-  animation:confettiFall 1.2s linear forwards;
-}
-.confettiBit.c-oranje{ background:#E36A1E; }
-.confettiBit.c-wit{ background:#FFFFFF; border:1px solid rgba(28,36,48,0.12); }
-.confettiBit.c-blauw{ background:#3B82C4; }
 
 /* ---- De of Het ---- */
 .grammarCardContent{ animation: grammarFadeIn 0.2s ease; }
@@ -920,23 +903,6 @@ button.grammarOptionBtn.is-wrong:disabled{ opacity:1; }
   height:74px;
   flex-shrink:0;
 }
-.klimmieFigure.klimmie-wave,
-.klimmieFigure.klimmie-cheer{
-  transform-origin:center bottom;
-  animation:klimmieBob 2.8s ease-in-out infinite;
-}
-.celebrateSparkle{
-  transform-origin:center;
-  animation:sparklePulse 1.8s ease-in-out infinite;
-}
-@keyframes klimmieBob{
-  0%,100%{ transform:translateY(0); }
-  50%{ transform:translateY(-3px); }
-}
-@keyframes sparklePulse{
-  0%,100%{ opacity:0.55; transform:scale(0.9); }
-  50%{ opacity:1; transform:scale(1.08); }
-}
 
 @keyframes routeIn{
   from{ opacity:0; transform:translateY(8px); }
@@ -948,7 +914,7 @@ button.grammarOptionBtn.is-wrong:disabled{ opacity:1; }
 }
 @keyframes pulseOk{
   0%{ transform:scale(1); }
-  40%{ transform:scale(1.04); }
+  40%{ transform:scale(1.02); }
   100%{ transform:scale(1); }
 }
 @keyframes shakeWrong{
@@ -961,10 +927,6 @@ button.grammarOptionBtn.is-wrong:disabled{ opacity:1; }
 @keyframes fadeSlideUp{
   from{ opacity:0; transform:translateY(8px); }
   to{ opacity:1; transform:translateY(0); }
-}
-@keyframes confettiFall{
-  0%{ transform:translateY(0) rotate(0deg); opacity:1; }
-  100%{ transform:translateY(110px) rotate(220deg); opacity:0; }
 }
 
 @media (prefers-reduced-motion: reduce){
