@@ -31,3 +31,9 @@ Free / open-licensed icons only. No paid assets. No homemade Klimmie ivy. No AI-
 - Homemade Klimmie ivy / custom animal characters.
 - Confetti spam or over-the-top bobbing animations.
 - Paid stock, proprietary icon kits, or AI-generated characters.
+
+
+## Public PNGs / PWA / listen MP3s
+Raster assets live under `apps/web/public/assets/` (Fluent Emoji 3D MIT, converted with ImageMagick).
+Listening clips live under `apps/web/public/audio/listen/` (macOS `say -v Xander` nl_NL → ffmpeg MP3).
+Full table: `apps/web/public/assets/ATTRIBUTION.md`.
