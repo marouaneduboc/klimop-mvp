@@ -44,6 +44,7 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
   if (!active) {
     return (
       <div className="card">
+        <img className="listenToolIcon" src="./assets/story-icon.png" width={36} height={36} alt="" />
         <div className="h1">Stories</div>
         <div className="h2">Short graded reads · culture · comprehension</div>
         <div className="sep" />

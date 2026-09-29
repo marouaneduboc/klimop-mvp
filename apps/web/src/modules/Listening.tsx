@@ -89,9 +89,12 @@ export default function Listening({ course, speak }: { course: Course | null; sp
   return (
     <div className="card listenCard">
       <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
-        <div>
-          <div className="h1" style={{ marginBottom: 4 }}>Listening</div>
-          <div className="h2">Hear Dutch → choose, type, or order the words</div>
+        <div className="row" style={{ alignItems: 'center', gap: 10 }}>
+          <img className="listenToolIcon" src="./assets/listen-icon.png" width={36} height={36} alt="" />
+          <div>
+            <div className="h1" style={{ marginBottom: 4 }}>Listening</div>
+            <div className="h2">Hear Dutch → choose, type, or order the words</div>
+          </div>
         </div>
         <div className="pill">{score.ok}/{score.n}</div>
       </div>

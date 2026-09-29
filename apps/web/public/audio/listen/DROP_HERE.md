@@ -20,3 +20,6 @@ Drop MP3 files here: `apps/web/public/audio/listen/*.mp3`
 - Length: short phrases 1–4 s; stories ≤ 45 s
 
 Until files exist, Listening mode uses **Web Speech Synthesis** (browser TTS) as fallback.
+
+## Status
+Seeded 2026-09-29 with macOS `say -v Xander` (nl_NL) → ffmpeg MP3s — see `../../assets/ATTRIBUTION.md`. Replace clips to customize.

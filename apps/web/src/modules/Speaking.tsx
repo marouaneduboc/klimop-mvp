@@ -78,7 +78,8 @@ export default function Speaking({ course, speak }: { course: Course | null; spe
     <div className="card speakCard">
       <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <div className="h1" style={{ marginBottom: 4 }}>Speaking</div>
+          <img className="listenToolIcon" src="./assets/speak-icon.png" width={36} height={36} alt="" />
+        <div className="h1" style={{ marginBottom: 4 }}>Speaking</div>
           <div className="h2">Say it out loud · score · retry</div>
         </div>
         <div className="pill">{score.ok}/{score.n}</div>

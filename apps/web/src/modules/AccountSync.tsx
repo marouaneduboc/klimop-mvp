@@ -164,7 +164,8 @@ export default function AccountSync({
 
   return (
     <div className="card syncCard">
-      <div className="h1">Account sync</div>
+      <img className="listenToolIcon" src="./assets/sync-icon.png" width={36} height={36} alt="" />
+        <div className="h1">Account sync</div>
       <div className="h2">Local-first · pair phone ↔ Mac on your LAN</div>
       <div className="sep" />
       <div className="small">API: <code>{apiBase}</code></div>

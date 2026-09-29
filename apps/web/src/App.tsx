@@ -1480,7 +1480,15 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       <div className="row studyLayout" style={{alignItems:'stretch'}}>
         <div className="card" style={{flex:2}}>
           <div className="homeHero">
-            <HomeHeaderArt />
+            <img
+              className="homeHeroArt homeHeroPng"
+              src="./assets/home-hero.png"
+              width={240}
+              height={105}
+              alt=""
+              onError={(e)=>{ const el=e.currentTarget; el.style.display='none'; const sib=el.nextElementSibling as HTMLElement|null; if(sib) sib.style.display='block' }}
+            />
+            <span className="homeHeroSvgFallback" style={{display:'none'}}><HomeHeaderArt /></span>
             <div style={{flex:1, minWidth:200}}>
               <div className="h1" style={{marginBottom:4}}>Lichte Klimop</div>
               <div className="h2">Modern Dutch practice — a calm lion, bikes, tulips, and molens.</div>
@@ -1493,12 +1501,12 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             </div>
           </div>
           <div className="sep" />
-          <div className="row" style={{flexWrap:'wrap'}}>
+          <div className="row homeToolRow" style={{flexWrap:'wrap'}}>
             <button className="btn-primary" onClick={()=>setRoute('study')}>Start Daily</button>
-            <button onClick={()=>setRoute('listening')}>Listening</button>
-            <button onClick={()=>setRoute('speaking')}>Speaking</button>
-            <button onClick={()=>setRoute('stories')}>Stories</button>
-            <button onClick={()=>setRoute('sync')}>Sync</button>
+            <button className="homeToolBtn" onClick={()=>setRoute('listening')}><img className="homeToolIcon" src="./assets/listen-icon.png" alt="" width={22} height={22} />Listening</button>
+            <button className="homeToolBtn" onClick={()=>setRoute('speaking')}><img className="homeToolIcon" src="./assets/speak-icon.png" alt="" width={22} height={22} />Speaking</button>
+            <button className="homeToolBtn" onClick={()=>setRoute('stories')}><img className="homeToolIcon" src="./assets/story-icon.png" alt="" width={22} height={22} />Stories</button>
+            <button className="homeToolBtn" onClick={()=>setRoute('sync')}><img className="homeToolIcon" src="./assets/sync-icon.png" alt="" width={22} height={22} />Sync</button>
             <button onClick={()=>speak('Hallo! Hoe gaat het?')}>🔊 Test Speak</button>
             <button onClick={()=>setRoute('progress')}>Progress</button>
           </div>

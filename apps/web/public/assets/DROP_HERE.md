@@ -24,3 +24,6 @@ Place files in this folder (`apps/web/public/assets/`). Do **not** ask the AI to
 
 ## After dropping
 Restart `./run-local.sh` if the browser cached missing assets. The app falls back to current SVG/CSS art until these files exist.
+
+## Status
+Seeded 2026-09-29 with Microsoft Fluent Emoji (MIT) PNGs — see `ATTRIBUTION.md`. Replace any file to customize.

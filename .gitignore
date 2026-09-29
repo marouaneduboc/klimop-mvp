@@ -28,14 +28,19 @@ apps/**/__*.pid
 klimop-mvp/
 apps/web/public/images/
 
-# Audio assets (do not push binaries; keep DROP_HERE guides)
+# Audio assets — seeded listen/*.mp3 are committed; other audio stays local
 apps/web/public/audio/**
 !apps/web/public/audio/**/
 !apps/web/public/audio/**/DROP_HERE.md
+!apps/web/public/audio/listen/*.mp3
 assets_raw/audio/
 *.mp3
+!apps/web/public/audio/listen/*.mp3
 *.wav
 *.m4a
+
+# Temp asset conversion workspace
+apps/web/public/_asset_work/
 *.tsbuildinfo
 
 # Local sync DB

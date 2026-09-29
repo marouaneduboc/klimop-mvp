@@ -1153,3 +1153,29 @@ button.grammarOptionBtn.is-wrong:disabled{ opacity:1; }
 @media (max-width: 420px){
   .storyGrid{ grid-template-columns:1fr; }
 }
+
+.homeToolBtn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.homeToolIcon{
+  width:22px;
+  height:22px;
+  border-radius:999px;
+  object-fit:cover;
+  flex:0 0 auto;
+}
+.homeHeroPng{
+  width:min(240px, 72vw);
+  height:auto;
+  border-radius:18px;
+  object-fit:cover;
+  background:#DCEBFA;
+}
+.listenToolIcon{
+  width:36px;
+  height:36px;
+  border-radius:999px;
+  object-fit:cover;
+}
