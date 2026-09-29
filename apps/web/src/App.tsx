@@ -1405,7 +1405,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <HomeHeaderArt />
             <div style={{flex:1, minWidth:200}}>
               <div className="h1" style={{marginBottom:4}}>Lichte Klimop</div>
-              <div className="h2">Modern Dutch practice — bikes, tulips, molens, and a calm queue.</div>
+              <div className="h2">Modern Dutch practice — a calm lion, bikes, tulips, and molens.</div>
               <div className="homeCoachLine">{greeting}</div>
               {weak && weak.weakness > 0 && (
                 <button type="button" className="weakThemeChip" onClick={()=>startTheme(weak.id)}>
@@ -2530,7 +2530,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         {route==='grammar' && <div className="pagePane"><Grammar currentUserId={currentUserId} currentBookId={currentBookId} speak={speak} /></div>}
       </div>
       <div className="sep appFooterSep" />
-      <div className="small appFooterText">Lichte Klimop • tulips & molens • local-only • warm Dutch practice</div>
+      <div className="small appFooterText">Lichte Klimop • Dutch lion • tulips & molens • local-only</div>
       {onboardStep>0 && (
         <div className="onboardOverlay" role="dialog" aria-modal="true" aria-label="Welcome to Klimop">
           <div className="onboardCard">
