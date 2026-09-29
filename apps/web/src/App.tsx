@@ -1798,7 +1798,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   }
 
   type DeHetStats = { correct:number; total:number; wrongIds:Record<string,number>; mastered:Record<string,boolean>; streak:Record<string,number> }
-  function DeOfHet({ currentUserId, coursesByBookId, reviewsMap, difficultMap, speak }:{
+  function DeOfHet({ currentUserId, coursesByBookId, reviewsMap: _reviewsMap, difficultMap, speak }:{
     currentUserId:string; coursesByBookId:Record<string,Course>; reviewsMap:Record<string,Review>; difficultMap:Record<string,boolean>; speak:(t:string)=>Promise<void> }){
     const deofhetLsKey = userScopedKey(DEHET_LS_BASE, currentUserId)
     const wrongKey = (v:Vocab)=>v.nl.toLowerCase()
@@ -1829,18 +1829,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       return out
     },[coursesByBookId])
 
-    const learnedNls = useMemo(()=>{
-      const set = new Set<string>()
-      for(const [bookId,c] of Object.entries(coursesByBookId)){
-        if(!c?.vocab) continue
-        for(const v of c.vocab){
-          const r = reviewsMap[scopedKey(bookId,v.id)]
-          if(r && r.interval >= 1) set.add(v.nl.toLowerCase())
-        }
-      }
-      return set
-    },[coursesByBookId,reviewsMap])
-
     const [stats,setStats]=useState<DeHetStats>(()=>{
       const raw=loadJSON<any>(deofhetLsKey,{correct:0,total:0,wrongIds:{}})
       return {
@@ -1857,30 +1845,35 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     const [sessionWrong,setSessionWrong]=useState<string[]>([])
     const [picksSinceWrong,setPicksSinceWrong]=useState(0)
     const [triggerPick,setTriggerPick]=useState(0)
+    const [showTranslation,setShowTranslation]=useState(false)
     const lastShownNlsRef = useRef<string[]>([])
+    const curNlRef = useRef<string|null>(null)
+    const feedbackLockRef = useRef(false)
+    const advanceTimerRef = useRef<ReturnType<typeof setTimeout>|null>(null)
+    const seededRef = useRef(false)
+    const lastProcessedTriggerRef = useRef(-1)
 
     useEffect(()=>{
       saveJSON(deofhetLsKey,stats)
       updateDayHistory(userScopedKey(LS.deofhetHistory,currentUserId), stats.correct, stats.total)
     },[stats])
 
+    useEffect(()=>()=>{
+      if(advanceTimerRef.current) clearTimeout(advanceTimerRef.current)
+    },[])
+
     const activePool = useMemo(()=>
       fullPool.filter(v=>!stats.mastered[wrongKey(v)]),
     [fullPool,stats.mastered])
-    const learnedPool = useMemo(()=>
-      activePool.filter(v=>learnedNls.has(wrongKey(v))),
-    [activePool,learnedNls])
-    const unlearnedPool = useMemo(()=>
-      activePool.filter(v=>!learnedNls.has(wrongKey(v))),
-    [activePool,learnedNls])
 
     const pickNext = useCallback(()=>{
       if(activePool.length===0) return null
+      const currentNl = curNlRef.current
       const recent = lastShownNlsRef.current.map(n=>n.toLowerCase())
       let pool = activePool.filter(v=>!recent.includes(wrongKey(v)))
-      if(pool.length===0) pool = activePool.filter(v=>wrongKey(v)!==cur?.nl?.toLowerCase())
+      if(pool.length===0) pool = activePool.filter(v=>wrongKey(v)!==currentNl)
       if(pool.length===0) pool = activePool
-      const wrongReady = sessionWrong.filter(nl=>!cur?.nl||nl.toLowerCase()!==cur.nl.toLowerCase())
+      const wrongReady = sessionWrong.filter(nl=>!currentNl||nl.toLowerCase()!==currentNl)
       const shouldRetry = wrongReady.length>0 && picksSinceWrong>=2
       if(shouldRetry && wrongReady.length>0){
         const idx = Math.floor(Math.random()*wrongReady.length)
@@ -1908,20 +1901,45 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       const difficultInPool = pool.filter(v=>difficultNls.has(wrongKey(v)))
       if(difficultInPool.length>0 && Math.random()<0.6) return difficultInPool[Math.floor(Math.random()*difficultInPool.length)]
       return pool[Math.floor(Math.random()*pool.length)]
-    },[activePool,learnedPool,unlearnedPool,stats.wrongIds,sessionWrong,picksSinceWrong,cur?.nl,difficultNls])
+    },[activePool,stats.wrongIds,sessionWrong,picksSinceWrong,difficultNls])
 
+    // Advance only on triggerPick. Do NOT depend on active/learned pool lengths:
+    // mastering or review churn would re-pick mid-feedback and race the answer timeout (flicker).
     useEffect(()=>{
+      if(triggerPick===0) return // wait for seed once vocab is ready
+      if(lastProcessedTriggerRef.current===triggerPick) return // StrictMode double-invoke
+      lastProcessedTriggerRef.current = triggerPick
       const next = pickNext()
+      const prev = curNlRef.current
       if(next){
-        lastShownNlsRef.current = [next.nl.toLowerCase(), cur?.nl?.toLowerCase()].filter((v): v is string => !!v).slice(0,2)
+        curNlRef.current = next.nl.toLowerCase()
+        lastShownNlsRef.current = [next.nl.toLowerCase(), prev].filter((v): v is string => !!v).slice(0,2)
+      } else {
+        curNlRef.current = null
       }
+      feedbackLockRef.current = false
       setCur(next ?? null)
       setFeedback(null)
       setChosenArticle(null)
-    },[triggerPick,activePool.length,learnedPool.length,unlearnedPool.length])
+      setShowTranslation(false)
+      // pickNext intentionally omitted: only re-run when triggerPick advances (or seed below).
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[triggerPick])
+
+    // Seed when vocab is ready or after "reset mastered". Skip while a card is showing / mid-feedback
+    // so shrinking activePool on master never re-picks. StrictMode: seededRef + trigger dedupe.
+    useEffect(()=>{
+      if(fullPool.length===0){ seededRef.current = false; return }
+      if(activePool.length===0) return
+      if(curNlRef.current!==null || feedbackLockRef.current) return
+      if(seededRef.current && cur!==null) return
+      seededRef.current = true
+      setTriggerPick(t=>t+1)
+    },[fullPool.length, activePool.length, cur])
 
     function answer(guess:'de'|'het'){
-      if(!cur) return
+      if(!cur || feedbackLockRef.current) return
+      feedbackLockRef.current = true
       setChosenArticle(guess)
       const correct = guess===cur.article
       const k = wrongKey(cur)
@@ -1943,7 +1961,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       } else {
         setPicksSinceWrong(p=>p+1)
       }
-      setTimeout(()=>setTriggerPick(t=>t+1),correct?FEEDBACK_CORRECT_MS:FEEDBACK_WRONG_MS)
+      if(advanceTimerRef.current) clearTimeout(advanceTimerRef.current)
+      advanceTimerRef.current = setTimeout(()=>{
+        advanceTimerRef.current = null
+        setTriggerPick(t=>t+1)
+      },correct?FEEDBACK_CORRECT_MS:FEEDBACK_WRONG_MS)
     }
 
     const pct = stats.total>0 ? Math.round(100*stats.correct/stats.total) : 0
@@ -1956,7 +1978,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
         </div>
       )
     }
-    if(activePool.length===0){
+    // Keep the current card visible through feedback even if mastering emptied the pool.
+    if(activePool.length===0 && !cur){
       return (
         <div className="card">
           <div className="h1">De of Het</div>
@@ -1969,7 +1992,13 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <span className="deofhetStatPill total">{Object.keys(stats.mastered).length} mastered</span>
           </div>
           <div className="sep" />
-          <button className="pill" onClick={()=>setStats(s=>({...s,mastered:{}}))}>Practice again (reset mastered)</button>
+          <button className="pill" onClick={()=>{
+            seededRef.current = false
+            curNlRef.current = null
+            lastProcessedTriggerRef.current = -1
+            setCur(null)
+            setStats(s=>({...s,mastered:{}}))
+          }}>Practice again (reset mastered)</button>
         </div>
       )
     }
@@ -1994,6 +2023,11 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
               <div className={`deofhetWord ${feedback?`feedback-${feedback}`:''}`}>
                 {cur.nl}
               </div>
+              {showTranslation && (
+                <div className="deofhetTranslation" aria-live="polite">
+                  {cur.en && cur.en.trim() ? cur.en.trim() : 'Translation not available'}
+                </div>
+              )}
               {feedback && (
                 <div className={`deofhetFeedback feedback-${feedback}`}>
                   {feedback==='correct'?(
@@ -2019,12 +2053,23 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
                   <span className="deofhetTag het">het</span>
                 </button>
               </div>
-              <button
-                className="deofhetSpeak"
-                onClick={()=>speak(cur.nl)}
-              >
-                🔊 Hear it
-              </button>
+              <div className="deofhetHelpRow">
+                <button
+                  type="button"
+                  className="deofhetSpeak"
+                  onClick={()=>setShowTranslation(v=>!v)}
+                  aria-pressed={showTranslation}
+                >
+                  {showTranslation ? 'Hide translation' : 'Translation'}
+                </button>
+                <button
+                  type="button"
+                  className="deofhetSpeak"
+                  onClick={()=>speak(cur.nl)}
+                >
+                  🔊 Hear it
+                </button>
+              </div>
             </>
           )}
         </div>
