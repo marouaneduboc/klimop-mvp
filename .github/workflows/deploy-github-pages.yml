@@ -3,12 +3,8 @@ name: Deploy Klimop Web (GitHub Pages)
 on:
   push:
     branches:
-      # Canonical Pages branch (kept in sync with latest app tip).
-      - share/github-pages
-      # App work branch — auto-publish so Pages stays current without a manual merge.
-      - retention-local-app
-      # Design/integration branch after merges from app work.
-      - lichte-klimop
+      # Canonical source of truth — Pages builds from main.
+      - main
 
 permissions:
   contents: read

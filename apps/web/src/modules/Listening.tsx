@@ -496,31 +496,46 @@ export function ListeningSlice({
   onDone: (correct: boolean) => void
   speak: (t: string) => Promise<void>
 }) {
-  const options = useMemo(() => pickOptions(vocab, pool), [vocab, pool])
+  // Stable options for this vocab id — do not reshuffle when parent re-renders with a new pool/vocab ref.
+  const options = useMemo(() => pickOptions(vocab, pool), [vocab.id]) // eslint-disable-line react-hooks/exhaustive-deps
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null)
+  const doneRef = useRef(false)
+
   useEffect(() => {
+    doneRef.current = false
+    setFeedback(null)
     const nl = cleanNlLabel(vocab.nl)
     const text = vocab.article ? `${vocab.article} ${nl}` : nl
     playListenClip(vocab.id, text).catch(() => speak(text).catch(() => speakDutch(text)))
-  }, [vocab.id])
+  }, [vocab.id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const hearText = () => {
+    const nl = cleanNlLabel(vocab.nl)
+    return vocab.article ? `${vocab.article} ${nl}` : nl
+  }
+
+  const finish = (ok: boolean) => {
+    if (doneRef.current) return
+    doneRef.current = true
+    setFeedback(ok ? 'correct' : 'wrong')
+    if (ok) playSoftSuccess()
+    else playSoftMiss()
+    setTimeout(() => onDone(ok), ok ? FEEDBACK_MS_OK : FEEDBACK_MS_MISS)
+  }
+
   return (
     <div className="listenSlice">
       <div className="small" style={{ marginBottom: 8 }}>Listening · what did you hear?</div>
       <button type="button" className="btn-primary" onClick={() => {
         unlockSfx()
-        const nl = cleanNlLabel(vocab.nl)
-        const text = vocab.article ? `${vocab.article} ${nl}` : nl
+        const text = hearText()
         playListenClip(vocab.id, text).catch(() => speakDutch(text).catch(() => speak(text)))
       }}>▶ Replay</button>
       <div className="listenOptions" style={{ marginTop: 12 }}>
         {options.map(o => (
-          <button key={o.nl} type="button" className="listenOpt" disabled={!!feedback} onClick={() => {
+          <button key={o.nl} type="button" className="listenOpt" disabled={!!feedback || doneRef.current} onClick={() => {
             unlockSfx()
-            const ok = o.nl === cleanNlLabel(vocab.nl)
-            setFeedback(ok ? 'correct' : 'wrong')
-            if (ok) playSoftSuccess()
-            else playSoftMiss()
-            setTimeout(() => onDone(ok), ok ? FEEDBACK_MS_OK : FEEDBACK_MS_MISS)
+            finish(o.nl === cleanNlLabel(vocab.nl))
           }}>
             <span className="listenOptNl">{o.nl}</span>
             {o.en ? <span className="listenOptEn">{o.en}</span> : null}

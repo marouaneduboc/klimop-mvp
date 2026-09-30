@@ -1,4 +1,5 @@
-/* Klimop shell SW — caches app shell + content JSON for offline reopen on LAN. */
+/* Klimop shell SW — caches app shell + content JSON for offline reopen.
+ * Vite build (swPrecacheBundles) appends hashed ./assets/*.js|css into PRECACHE. */
 const CACHE = 'klimop-shell-v1'
 const PRECACHE = [
   './',

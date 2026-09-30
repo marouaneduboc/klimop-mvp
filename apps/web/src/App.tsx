@@ -16,7 +16,7 @@ import Speaking, { SpeakingSlice } from './modules/Speaking'
 import Stories from './modules/Stories'
 import AccountSync from './modules/AccountSync'
 import { SessionTip, CelebrateTip } from './modules/SessionTip'
-import { loadRemindPrefs, saveRemindPrefs, ensureNotifyPermission, maybeNudge, registerServiceWorker } from './lib/reminders'
+import { loadRemindPrefs, saveRemindPrefs, ensureNotifyPermission, maybeNudge } from './lib/reminders'
 import { speakDutch } from './lib/speech'
 import { playSoftMiss, playSoftSuccess, unlockSfx } from './lib/sfx'
 import { defaultApiBase } from './lib/apiBase'
@@ -264,6 +264,57 @@ function interleaveAlternating<T>(a:T[], b:T[]):T[]{
   return out
 }
 
+/** Retention listen/speak card — stable id from skill index (not shifting queue index). */
+type RetentionSkillCard =
+  | { kind:'listening'; id:string; theme:number; title:string; vocab:Vocab }
+  | { kind:'speaking'; id:string; theme:number; title:string; phrase:{nl:string; en?:string} }
+
+function makeRetentionSkill(skillIdx:number, vocabPool:Vocab[]): RetentionSkillCard | null {
+  if(!vocabPool.length) return null
+  const v = vocabPool[strHash(`retention-skill:${skillIdx}`) % vocabPool.length]
+  if(!v) return null
+  if(skillIdx % 2 === 0){
+    return { kind:'listening', id:`listen:${v.id}:s${skillIdx}`, theme:v.theme, title:`Listen · ${v.nl}`, vocab:v }
+  }
+  const phraseNl = v.article ? `${v.article} ${v.nl}` : v.nl
+  return { kind:'speaking', id:`speak:${v.id}:s${skillIdx}`, theme:v.theme, title:`Speak · ${phraseNl}`, phrase:{ nl:phraseNl, en:v.en||undefined } }
+}
+
+/**
+ * Weave listening/speaking after every 4th *session* base card.
+ * Uses baseDone (answered vocab/grammar count) so insertions stay reachable as the
+ * remaining queue shrinks — fixes Codex: retention cards never reaching queue[0].
+ */
+function weaveRetentionSkills<T extends {id:string}>(
+  mixedMain:T[],
+  baseDone:number,
+  vocabPool:Vocab[],
+  skillSeen:(id:string)=>boolean,
+): Array<T | RetentionSkillCard> {
+  const out: Array<T | RetentionSkillCard> = []
+  const skillsOwed = Math.floor(baseDone / 4)
+  // Emit the next owed-but-unseen skill at the front (just after finishing a 4th base card).
+  for(let s = 0; s < skillsOwed; s++){
+    const skill = makeRetentionSkill(s, vocabPool)
+    if(skill && !skillSeen(skill.id)){
+      out.push(skill)
+      break
+    }
+  }
+  for(let i=0;i<mixedMain.length;i++){
+    out.push(mixedMain[i])
+    const absolutePos = baseDone + i + 1
+    if(absolutePos % 4 === 0){
+      const skillIdx = Math.floor(absolutePos / 4) - 1
+      const skill = makeRetentionSkill(skillIdx, vocabPool)
+      if(skill && !skillSeen(skill.id) && !out.some(c => c.id === skill.id)){
+        out.push(skill)
+      }
+    }
+  }
+  return out
+}
+
 function strHash(x:string):number{
   let h=2166136261
   for(let i=0;i<x.length;i++){h^=x.charCodeAt(i);h=Math.imul(h,16777619)}
@@ -385,6 +436,8 @@ function DailyPractice({
   const [showClue,setShowClue]=useState(false)
   const [grammarAnswerMode,setGrammarAnswerMode]=useState<'mc'|'typing'>('mc')
   const [sessionWrongIds,setSessionWrongIds]=useState<Set<string>>(new Set())
+  /** Vocab/grammar cards answered this session (correct or wrong) — drives stable retention weave. */
+  const [retentionBaseAnswered,setRetentionBaseAnswered]=useState(0)
   const [skipWrongCardId,setSkipWrongCardId]=useState<string | null>(null)
   const [grammarFeedback,setGrammarFeedback]=useState<'correct'|'wrong'|null>(null)
   const [grammarChosen,setGrammarChosen]=useState<string | null>(null)
@@ -759,29 +812,15 @@ function DailyPractice({
         effectiveMain.filter(c=>c.kind==='grammar') as StudyCard[]
       )
       : effectiveMain
-    // Retention: weave listening + speaking every ~4 cards in mixed mode
-    let retentionMain = mixedMain
+    // Retention: weave listening + speaking every ~4 *session* base cards (stable as queue shrinks)
+    let retentionMain: StudyCard[] = mixedMain
     if(practiceMode==='mixed' && mixedMain.length>0){
-      const withSkills:StudyCard[] = []
-      let skillIdx = 0
-      for(let i=0;i<mixedMain.length;i++){
-        withSkills.push(mixedMain[i])
-        if((i+1)%4===0){
-          const v = course.vocab[strHash(mixedMain[i].id + ':listen') % Math.max(1, course.vocab.length)]
-          if(skillIdx%2===0 && v){
-            withSkills.push({ kind:'listening', id:`listen:${v.id}:${i}`, theme:v.theme, title:`Listen · ${v.nl}`, vocab:v })
-          } else {
-            const phraseNl = v ? (v.article ? `${v.article} ${v.nl}` : v.nl) : 'Hallo!'
-            withSkills.push({ kind:'speaking', id:`speak:${v?.id||i}:${i}`, theme:v?.theme||0, title:`Speak · ${phraseNl}`, phrase:{ nl:phraseNl, en:v?.en||undefined } })
-          }
-          skillIdx++
-        }
-      }
-      retentionMain = withSkills
+      const skillSeen = (id:string) => !!studySeenSession[id]
+      retentionMain = weaveRetentionSkills(mixedMain, retentionBaseAnswered, course.vocab, skillSeen) as StudyCard[]
     }
     const merged = interleaveAfter(retentionMain,effectiveWrongList,3)
     return studyContinueMode ? merged : merged.slice(0,settings.dailyTarget)
-  },[activeDeck,practiceMode,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode,course.vocab])
+  },[activeDeck,practiceMode,reviewsMap,difficultMap,studySeenSession,sessionWrongIds,skipWrongCardId,stats.newToday,settings.newPerDay,settings.dailyTarget,studyContinueMode,course.vocab,retentionBaseAnswered])
 
   const cur=queue[0]
   const answeredSessionCount = Object.keys(studySeenSession).length
@@ -802,6 +841,7 @@ function DailyPractice({
   useEffect(()=>{
     setSessionWrongIds(new Set())
     setSkipWrongCardId(null)
+    setRetentionBaseAnswered(0)
     setStudySeenSession({})
     setGrammarFeedback(null)
     setGrammarChosen(null)
@@ -852,10 +892,20 @@ function DailyPractice({
       setShowCelebrate(true)
       maybeShowCultureTip()
     }
+    if(card.kind==='vocab' || card.kind==='grammar'){
+      setRetentionBaseAnswered(n => n + 1)
+    }
     if(correct){
-      if(graduated) setStudySeenSession(prev=>({ ...prev, [card.id]: true }))
+      // Retention listen/speak slices are one-shot in the Daily mix (not full SRS graduate).
+      if(graduated || card.kind==='listening' || card.kind==='speaking'){
+        setStudySeenSession(prev=>({ ...prev, [card.id]: true }))
+      }
       setSessionWrongIds(prev=>{ const n=new Set(prev); n.delete(card.id); return n })
     } else {
+      if(card.kind==='listening' || card.kind==='speaking'){
+        // Still consume the skill slot so the queue can advance after feedback.
+        setStudySeenSession(prev=>({ ...prev, [card.id]: true }))
+      }
       setSessionWrongIds(prev=>new Set(prev).add(card.id))
     }
     setSkipWrongCardId(card.id)
@@ -1245,7 +1295,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   useEffect(()=>{
     if(route!=='study') setStudySeenSession({})
   },[route])
-  useEffect(()=>{ registerServiceWorker() },[])
   useEffect(()=>{
     if(settings.remindEnabled){
       maybeNudge(currentUserId, stats.reviewsToday, settings.dailyTarget)

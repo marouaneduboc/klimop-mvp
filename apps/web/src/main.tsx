@@ -1,6 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import { registerServiceWorker } from './lib/reminders'
 import './styles.css'
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean; error: string | null }> {
@@ -21,6 +22,10 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boole
     return this.props.children
   }
 }
+
+// Register at the app entry so the SW can control the first load and precache
+// hashed bundles (see vite swPrecacheBundles + public/sw.js).
+registerServiceWorker()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

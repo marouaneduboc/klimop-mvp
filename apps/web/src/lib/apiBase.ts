@@ -1,9 +1,15 @@
-/** Resolve FastAPI base for localhost or phone-on-LAN (same host + protocol as the page). */
+/** Resolve FastAPI base for localhost or phone-on-LAN. */
 export function defaultApiBase(): string {
   if (typeof window === 'undefined') return 'http://127.0.0.1:8000'
+  const port = window.location.port
+  // Vite dev/preview: same-origin so HTTPS UI can reach HTTP API via the Vite proxy
+  // (see apps/web/vite.config.ts). Avoids scheme mismatch when basicSsl/mkcert serves the page.
+  if (port === '5175' || port === '4173') {
+    return window.location.origin
+  }
   const host = window.location.hostname || '127.0.0.1'
   const proto = window.location.protocol === 'https:' ? 'https' : 'http'
-  // When opened via LAN IP / HTTPS, hit API on same host:8000 with matching scheme.
+  // Direct API (mkcert on :8000, or plain HTTP local runs).
   return `${proto}://${host}:8000`
 }
 

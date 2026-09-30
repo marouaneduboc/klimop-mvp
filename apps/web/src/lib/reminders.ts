@@ -54,8 +54,14 @@ export function maybeNudge(userId: string, reviewsToday: number, dailyTarget: nu
 
 export function registerServiceWorker(): void {
   if (typeof navigator === 'undefined' || !('serviceWorker' in navigator)) return
-  // Only in production build or when served; Vite mid-HMR can be noisy — still OK for LAN MVP
-  window.addEventListener('load', () => {
+  // Secure context required (HTTPS / localhost). Phone LAN must use HTTPS (see LOCAL_RUN.md).
+  if (typeof window !== 'undefined' && !window.isSecureContext) {
+    console.info('[klimop] Service worker skipped — open via HTTPS on the LAN for offline/PWA.')
+    return
+  }
+  const start = () => {
     navigator.serviceWorker.register('./sw.js').catch(() => {})
-  })
+  }
+  if (document.readyState === 'complete') start()
+  else window.addEventListener('load', start, { once: true })
 }
