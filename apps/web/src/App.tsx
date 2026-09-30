@@ -6,7 +6,7 @@ import {
   DeHetTagsArt,
   EmptyQueueArt,
   GrammarNotebookArt,
-  HomeHeaderArt,
+  BookCoverArt,
   IvyMark,
   OnboardArt,
   ProgressHeaderArt,
@@ -1505,15 +1505,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       <div className="row studyLayout" style={{alignItems:'stretch'}}>
         <div className="card" style={{flex:2}}>
           <div className="homeHero">
-            <img
-              className="homeHeroArt homeHeroPng"
-              src="./assets/home-hero.png"
-              width={240}
-              height={105}
-              alt=""
-              onError={(e)=>{ const el=e.currentTarget; el.style.display='none'; const sib=el.nextElementSibling as HTMLElement|null; if(sib) sib.style.display='block' }}
-            />
-            <span className="homeHeroSvgFallback" style={{display:'none'}}><HomeHeaderArt /></span>
+            <BookCoverArt bookId={currentBookId} />
             <div style={{flex:1, minWidth:200}}>
               <div className="h1" style={{marginBottom:4}}>Lichte Klimop</div>
               <div className="h2">Modern Dutch practice — a calm lion, bikes, tulips, and molens.</div>

@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { canSpeak, speakDutchLines, stopSpeaking } from '../lib/speech'
 
+type StoryTip = {
+  afterLine: number
+  kind?: 'tip' | 'grammar' | 'culture' | 'wistJeDat' | 'vocab'
+  nl: string
+  en?: string
+}
+
 type Story = {
   id: string
   level: string
@@ -9,7 +16,16 @@ type Story = {
   titleEn: string
   lines: string[]
   glossary: { nl: string; en: string }[]
+  tips?: StoryTip[]
   questions: { q: string; options: string[]; correct: string; explanation?: string }[]
+}
+
+const TIP_LABEL: Record<NonNullable<StoryTip['kind']>, string> = {
+  tip: 'Tip',
+  grammar: 'Grammatica',
+  culture: 'Cultuur',
+  wistJeDat: 'Wist je dat',
+  vocab: 'Vocab',
 }
 
 export default function Stories({ speak }: { speak: (t: string) => Promise<void> }) {
@@ -21,6 +37,8 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
   const [score, setScore] = useState({ ok: 0, n: 0 })
   const [reading, setReading] = useState(false)
   const [lineIdx, setLineIdx] = useState<number | null>(null)
+  /** Selected paragraph for Read aloud — tap a line to select. */
+  const [selectedLine, setSelectedLine] = useState<number | null>(null)
   const [speechErr, setSpeechErr] = useState('')
   // Keep speak prop referenced so call sites stay compatible; Stories uses speakDutchLines for multi-line.
   void speak
@@ -29,7 +47,7 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
   activeIdRef.current = active?.id ?? null
 
   useEffect(() => {
-    fetch('content/stories.json?v=2.0')
+    fetch('content/stories.json?v=2.2')
       .then(r => r.json())
       .then(d => setStories(d.stories || []))
       .catch(() => setStories([]))
@@ -41,6 +59,7 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
     stopSpeaking()
     setReading(false)
     setLineIdx(null)
+    setSelectedLine(0) // nicer UX: first paragraph pre-selected so Read aloud is ready
     setSpeechErr('')
     setActive(s)
     setQIdx(0)
@@ -53,6 +72,7 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
     stopSpeaking()
     setReading(false)
     setLineIdx(null)
+    setSelectedLine(null)
     setSpeechErr('')
     setActive(null)
   }
@@ -69,14 +89,22 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
       setLineIdx(null)
       return
     }
+
+    // Speak ONLY the selected paragraph. If none selected, select first and speak that.
+    let target = selectedLine
+    if (target == null || target < 0 || target >= s.lines.length) {
+      target = 0
+      setSelectedLine(0)
+    }
+    const linesToSpeak = [s.lines[target]]
+
     setReading(true)
-    setLineIdx(0)
+    setLineIdx(target)
     try {
-      // User-gesture click starts this; speakDutchLines queues nl-NL lines without cancelling between them.
-      await speakDutchLines(s.lines, {
+      await speakDutchLines(linesToSpeak, {
         rate: 0.92,
-        onLineStart: (i) => {
-          if (activeIdRef.current === s.id) setLineIdx(i)
+        onLineStart: () => {
+          if (activeIdRef.current === s.id) setLineIdx(target)
         },
       })
     } catch (e: unknown) {
@@ -112,6 +140,7 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
   }
 
   const q = active.questions[qIdx]
+  const tips = active.tips || []
 
   return (
     <div className="card">
@@ -125,19 +154,55 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
         <button type="button" className="btn-primary" onClick={() => { void readAloud(active) }}>
           {reading ? '⏹ Stop' : '🔊 Read aloud'}
         </button>
-        {reading && <span className="small">Speaking Dutch… {lineIdx != null ? `(${lineIdx + 1}/${active.lines.length})` : ''}</span>}
+        {reading && (
+          <span className="small">
+            Speaking paragraph {(selectedLine ?? 0) + 1}/{active.lines.length}…
+          </span>
+        )}
+        {!reading && selectedLine != null && (
+          <span className="small">Selected §{selectedLine + 1} — Read aloud speaks this paragraph only</span>
+        )}
+      </div>
+      <div className="small" style={{ marginTop: 6 }}>
+        Tip: tap a paragraph to select it, then Read aloud.
       </div>
       {!!speechErr && (
         <div className="teachBanner" style={{ marginTop: 10 }} role="alert">{speechErr}</div>
       )}
       <div className="storyBody">
-        {active.lines.map((line, i) => (
-          <p
-            key={i}
-            className="storyLine"
-            style={reading && lineIdx === i ? { background: 'rgba(255, 186, 73, 0.25)', borderRadius: 6, padding: '2px 4px' } : undefined}
-          >{line}</p>
-        ))}
+        {active.lines.map((line, i) => {
+          const lineTips = tips.filter(t => t.afterLine === i)
+          const isSelected = selectedLine === i
+          const isSpeaking = reading && lineIdx === i
+          return (
+            <div key={i} className="storyParaBlock">
+              <button
+                type="button"
+                className={`storyLine${isSelected ? ' is-selected' : ''}${isSpeaking ? ' is-speaking' : ''}`}
+                onClick={() => {
+                  if (reading) {
+                    stopSpeaking()
+                    setReading(false)
+                    setLineIdx(null)
+                  }
+                  setSelectedLine(i)
+                }}
+                aria-pressed={isSelected}
+                aria-label={`Select paragraph ${i + 1}`}
+              >
+                {line}
+              </button>
+              {lineTips.map((t, ti) => (
+                <div key={`${i}-${ti}`} className="teachBanner storyTip" role="note">
+                  <strong>{TIP_LABEL[t.kind || 'tip']}</strong>
+                  {' — '}
+                  {t.nl}
+                  {t.en ? <div className="small" style={{ marginTop: 4 }}>{t.en}</div> : null}
+                </div>
+              ))}
+            </div>
+          )
+        })}
       </div>
       {!!active.glossary.length && (
         <div className="storyGlossary">
@@ -166,7 +231,7 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
                     setFeedback(null)
                     if (qIdx + 1 >= active.questions.length) setDone(true)
                     else setQIdx(i => i + 1)
-                  }, ok ? 900 : 1800)
+                  }, ok ? 1200 : 1800)
                 }}
               >{o}</button>
             ))}
@@ -177,10 +242,10 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
               {q.explanation ? <div className="small" style={{ marginTop: 6 }}>{q.explanation}</div> : null}
             </div>
           )}
-          {feedback === 'correct' && q.explanation && (
+          {feedback === 'correct' && (
             <div className="okBanner" style={{ marginTop: 10 }}>
               Goed!
-              <div className="small" style={{ marginTop: 6 }}>{q.explanation}</div>
+              {q.explanation ? <div className="small" style={{ marginTop: 6 }}>{q.explanation}</div> : null}
             </div>
           )}
         </div>

@@ -7,10 +7,14 @@ type Course = { themes: { id: number; title: string }[]; vocab: Vocab[] }
 
 type Mode = 'mc' | 'type' | 'order'
 type OrderChip = { id: string; text: string }
+type OrderPhrase = { id: string; nl: string; en?: string | null; words: string[]; hearText: string }
 type Q =
   | { mode: 'mc'; vocab: Vocab; options: string[] }
   | { mode: 'type'; vocab: Vocab }
-  | { mode: 'order'; vocab: Vocab; words: string[]; shuffled: OrderChip[]; hearText: string }
+  | { mode: 'order'; phrase: OrderPhrase; shuffled: OrderChip[] }
+
+const FEEDBACK_MS_OK = 1200
+const FEEDBACK_MS_MISS = 1800
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
@@ -26,23 +30,67 @@ function pickOptions(correct: Vocab, pool: Vocab[]): string[] {
   return shuffle([correct.nl, ...distractors])
 }
 
-/** Dutch-only order tokens — never inject English (that broke Check for single-word vocab). */
-function orderTokensFor(vocab: Vocab): { words: string[]; hearText: string } | null {
-  const raw = (vocab.nl || '').trim()
+/** Tokenize Dutch phrase into order chips (words only; drop bare punctuation). */
+function tokenizeNl(raw: string): string[] {
+  return (raw.match(/[A-Za-zÀ-ÿ0-9']+/g) || []).filter(Boolean)
+}
+
+/**
+ * Full-sentence / full-phrase tokens for Order mode.
+ * Skips short scraps (article+noun) and slash alternatives.
+ */
+function orderPhraseFromText(id: string, nl: string, en?: string | null): OrderPhrase | null {
+  const raw = (nl || '').trim()
   if (!raw) return null
-  if (/\//.test(raw)) return null // skip "zij / ze"
-  const parts = raw.split(/\s+/).map(p => p.trim()).filter(Boolean)
-  if (parts.length >= 2 && parts.length <= 6) {
-    return { words: parts, hearText: parts.join(' ') }
+  if (/\//.test(raw) || /\.\.\./.test(raw)) return null
+  const words = tokenizeNl(raw)
+  if (words.length < 4 || words.length > 12) return null
+  return { id, nl: raw.replace(/\s+/g, ' ').trim(), en: en || null, words, hearText: words.join(' ') }
+}
+
+function orderPhraseFromVocab(vocab: Vocab): OrderPhrase | null {
+  // Prefer the full nl string (phrase), not article + single noun scraps.
+  const parts = (vocab.nl || '').trim().split(/\s+/).filter(Boolean)
+  if (parts.length < 4) return null
+  return orderPhraseFromText(`vocab:${vocab.id}`, vocab.nl, vocab.en)
+}
+
+/** Split story paragraphs into usable full sentences (4–12 words). */
+function sentencesFromStoryLine(line: string): string[] {
+  const chunks = line.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean)
+  const out: string[] = []
+  for (const chunk of chunks) {
+    const words = tokenizeNl(chunk)
+    if (words.length >= 4 && words.length <= 12) {
+      out.push(chunk)
+      continue
+    }
+    if (words.length > 12) {
+      // Prefer clause-sized pieces on commas / "en"
+      const bits = chunk.split(/,\s+|\s+en\s+/i)
+      let buf: string[] = []
+      for (const bit of bits) {
+        const w = tokenizeNl(bit)
+        if (!w.length) continue
+        const cand = buf.concat(w)
+        if (cand.length <= 12) buf = cand
+        else {
+          if (buf.length >= 4) out.push(buf.join(' '))
+          buf = w
+        }
+      }
+      if (buf.length >= 4 && buf.length <= 12) out.push(buf.join(' '))
+    }
   }
-  if (parts.length === 1 && vocab.article) {
-    return { words: [vocab.article, parts[0]], hearText: `${vocab.article} ${parts[0]}` }
-  }
-  return null
+  return out
 }
 
 function normAns(s: string): string {
   return s.trim().toLowerCase().replace(/\s+/g, ' ')
+}
+
+function displayNl(vocab: Vocab): string {
+  return `${vocab.article ? `${vocab.article} ` : ''}${vocab.nl}`
 }
 
 export default function Listening({ course, speak }: { course: Course | null; speak: (t: string) => Promise<void> }) {
@@ -51,12 +99,54 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     return course.vocab.filter(v => v.nl && v.nl.split(/\s+/).length <= 6)
   }, [course])
 
+  const [storyPhrases, setStoryPhrases] = useState<OrderPhrase[]>([])
+
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      const collected: OrderPhrase[] = []
+      try {
+        const storiesRes = await fetch('content/stories.json?v=2.1')
+        const storiesData = await storiesRes.json()
+        for (const s of storiesData.stories || []) {
+          for (let li = 0; li < (s.lines || []).length; li++) {
+            for (const sent of sentencesFromStoryLine(s.lines[li])) {
+              const built = orderPhraseFromText(`story:${s.id}:L${li}:${sent.slice(0, 24)}`, sent, s.titleEn || null)
+              if (built) collected.push(built)
+            }
+          }
+        }
+      } catch { /* optional */ }
+      try {
+        const provRes = await fetch('content/proverbs.json?v=1')
+        const provData = await provRes.json()
+        for (const p of provData.proverbs || []) {
+          const built = orderPhraseFromText(`proverb:${p.id}`, p.nl, p.en)
+          if (built) collected.push(built)
+        }
+      } catch { /* optional */ }
+      if (!cancelled) setStoryPhrases(collected)
+    })()
+    return () => { cancelled = true }
+  }, [])
+
   const orderPool = useMemo(() => {
-    const usable = pool.filter(v => orderTokensFor(v))
-    const multi = usable.filter(v => (v.nl || '').trim().split(/\s+/).length >= 2)
-    const base = multi.length >= 12 ? multi : usable
-    return shuffle(base).slice(0, 400)
-  }, [pool])
+    const fromVocab = (course?.vocab || [])
+      .map(orderPhraseFromVocab)
+      .filter((p): p is OrderPhrase => !!p)
+    // Prefer full sentences from stories/proverbs; fold in longer vocab phrases.
+    const merged = [...storyPhrases, ...fromVocab]
+    // Dedupe by normalized hearText
+    const seen = new Set<string>()
+    const uniq: OrderPhrase[] = []
+    for (const p of merged) {
+      const key = normAns(p.hearText)
+      if (seen.has(key)) continue
+      seen.add(key)
+      uniq.push(p)
+    }
+    return shuffle(uniq).slice(0, 500)
+  }, [course, storyPhrases])
 
   const [mode, setMode] = useState<Mode>('mc')
   const [q, setQ] = useState<Q | null>(null)
@@ -90,11 +180,9 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     playGenRef.current += 1
     if (m === 'order') {
       if (!orderPool.length) { setQ(null); return }
-      const vocab = orderPool[Math.floor(Math.random() * orderPool.length)]
-      const built = orderTokensFor(vocab)
-      if (!built) { setQ(null); return }
-      const shuffled = shuffle(built.words.map((text, i) => ({ id: `${vocab.id}-${i}-${text}`, text })))
-      setQ({ mode: 'order', vocab, words: built.words, shuffled, hearText: built.hearText })
+      const phrase = orderPool[Math.floor(Math.random() * orderPool.length)]
+      const shuffled = shuffle(phrase.words.map((text, i) => ({ id: `${phrase.id}-${i}-${text}`, text })))
+      setQ({ mode: 'order', phrase, shuffled })
       return
     }
     if (!pool.length) { setQ(null); return }
@@ -103,18 +191,19 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     else setQ({ mode: 'type', vocab })
   }
 
-  useEffect(() => { next(mode) }, [course, mode])
+  useEffect(() => { next(mode) }, [course, mode, orderPool.length])
 
   const play = async (fromUserGesture = false) => {
     if (!q) return
     if (fromUserGesture) unlockSfx()
     const myGen = playGenRef.current
     const text = q.mode === 'order'
-      ? q.hearText
-      : (q.vocab.article ? `${q.vocab.article} ${q.vocab.nl}` : q.vocab.nl)
+      ? q.phrase.hearText
+      : displayNl(q.vocab)
+    const clipId = q.mode === 'order' ? q.phrase.id.replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 48) : q.vocab.id
     setPlayHint(null)
     try {
-      const kind = await playListenClip(q.vocab.id, text)
+      const kind = await playListenClip(clipId, text)
       if (myGen !== playGenRef.current) return
       setSource(kind)
     } catch (e: any) {
@@ -124,7 +213,6 @@ export default function Listening({ course, speak }: { course: Course | null; sp
         if (myGen !== playGenRef.current) return
         setSource('tts')
       } catch (err: any) {
-        // App.speak swallows errors — call speakDutch directly so we surface blockers.
         try {
           await speak(text)
         } catch { /* */ }
@@ -143,22 +231,22 @@ export default function Listening({ course, speak }: { course: Course | null; sp
   useEffect(() => {
     if (q) void play(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q?.vocab.id, q?.mode])
+  }, [q?.mode === 'order' ? q.phrase.id : q?.vocab.id, q?.mode])
 
   const scheduleAdvance = (ok: boolean) => {
     clearAdvanceTimer()
     advanceTimerRef.current = setTimeout(() => {
       advanceTimerRef.current = null
       next()
-    }, ok ? 500 : 900)
+    }, ok ? FEEDBACK_MS_OK : FEEDBACK_MS_MISS)
   }
 
-  /** Grade current answer; show brief feedback then auto-advance. No-op if already checked. */
+  /** Grade current answer; show feedback then auto-advance (slow enough to read NL+EN). */
   const grade = (answer: string) => {
     if (!q || feedbackRef.current) return false
     unlockSfx()
     const ok = q.mode === 'order'
-      ? normAns(answer) === normAns(q.words.join(' '))
+      ? normAns(answer) === normAns(q.phrase.words.join(' '))
       : normAns(answer) === normAns(q.vocab.nl)
     feedbackRef.current = ok ? 'correct' : 'wrong'
     setFeedback(feedbackRef.current)
@@ -176,6 +264,13 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     ? q.shuffled.filter(c => !pickedIds.includes(c.id))
     : []
 
+  const resultNl = q
+    ? (q.mode === 'order' ? q.phrase.words.join(' ') : displayNl(q.vocab))
+    : ''
+  const resultEn = q
+    ? (q.mode === 'order' ? (q.phrase.en || null) : (q.vocab.en || null))
+    : null
+
   /** Next: if already checked, advance now; else grade (when answer ready) then brief feedback + advance. */
   const handleNext = () => {
     if (feedback) {
@@ -188,7 +283,7 @@ export default function Listening({ course, speak }: { course: Course | null; sp
       grade(typed)
       return
     }
-    if (q.mode === 'order' && pickedIds.length === q.words.length) {
+    if (q.mode === 'order' && pickedIds.length === q.phrase.words.length) {
       grade(pickedTexts.join(' '))
     }
   }
@@ -216,7 +311,7 @@ export default function Listening({ course, speak }: { course: Course | null; sp
       </div>
       <div className="sep" />
       {!q ? (
-        <div className="small">{mode === 'order' ? 'No phrases available for ordering in this book.' : 'No vocab loaded.'}</div>
+        <div className="small">{mode === 'order' ? 'No full sentences available for ordering yet.' : 'No vocab loaded.'}</div>
       ) : (
         <>
           <div className="listenPlayRow">
@@ -229,11 +324,21 @@ export default function Listening({ course, speak }: { course: Course | null; sp
           {feedback === 'wrong' && (
             <div className="teachBanner" style={{ marginTop: 12 }}>
               <strong>Heard:</strong>{' '}
-              {q.mode === 'order' ? q.words.join(' ') : `${q.vocab.article ? `${q.vocab.article} ` : ''}${q.vocab.nl}`}
-              {q.vocab.en ? <span className="small"> · {q.vocab.en}</span> : null}
+              {resultNl}
+              {resultEn ? <span className="listenEn"> · {resultEn}</span> : null}
             </div>
           )}
-          {feedback === 'correct' && <div className="okBanner" style={{ marginTop: 12 }}>Goed zo!</div>}
+          {feedback === 'correct' && (
+            <div className="okBanner" style={{ marginTop: 12 }}>
+              Goed zo!
+              {(q.mode === 'type' || q.mode === 'order') && (
+                <div className="listenResultLine" style={{ marginTop: 6 }}>
+                  <strong>{resultNl}</strong>
+                  {resultEn ? <span className="listenEn"> · {resultEn}</span> : null}
+                </div>
+              )}
+            </div>
+          )}
 
           {q.mode === 'mc' && (
             <div className="listenOptions">
@@ -258,6 +363,7 @@ export default function Listening({ course, speak }: { course: Course | null; sp
             <div>
               <div className="small" style={{ marginBottom: 4 }}>
                 Tap words in the right order{pickedTexts.length ? ' · tap a chosen word to undo' : ''}
+                {' · '}full sentence
               </div>
               <div className="orderPicked" aria-live="polite">
                 {pickedTexts.length ? (
@@ -296,7 +402,7 @@ export default function Listening({ course, speak }: { course: Course | null; sp
                 <button
                   type="button"
                   className="btn-primary"
-                  disabled={!feedback && pickedIds.length !== q.words.length}
+                  disabled={!feedback && pickedIds.length !== q.phrase.words.length}
                   onClick={handleNext}
                 >{feedback ? 'Next' : 'Check'}</button>
               </div>
@@ -347,11 +453,17 @@ export function ListeningSlice({
             setFeedback(ok ? 'correct' : 'wrong')
             if (ok) playSoftSuccess()
             else playSoftMiss()
-            setTimeout(() => onDone(ok), ok ? 500 : 900)
+            setTimeout(() => onDone(ok), ok ? FEEDBACK_MS_OK : FEEDBACK_MS_MISS)
           }}>{o}</button>
         ))}
       </div>
       {feedback === 'wrong' && <div className="teachBanner" style={{ marginTop: 10 }}>{vocab.nl}{vocab.en ? ` · ${vocab.en}` : ''}</div>}
+      {feedback === 'correct' && (
+        <div className="okBanner" style={{ marginTop: 10 }}>
+          Goed zo!
+          {vocab.en ? <span className="listenEn"> · {vocab.en}</span> : null}
+        </div>
+      )}
     </div>
   )
 }

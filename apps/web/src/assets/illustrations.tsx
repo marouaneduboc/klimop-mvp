@@ -191,12 +191,12 @@ export function HomeHeaderArt({ className = 'homeHeroArt illustration', ...rest 
       {/* bike — Lucide-adapted */}
       <BikeIcon x={28} y={78} scale={1.15} />
 
-      {/* cute Dutch lion mascot (Fluent Emoji) */}
-      <LionFace x={52} y={52} scale={1.55} />
+      {/* cute Dutch lion mascot — inset so mane stays inside rounded frame */}
+      <LionFace x={18} y={52} scale={1.35} />
 
-      {/* tulips on the bank */}
-      <TulipIcon x={210} y={78} scale={0.7} uid="home-t1" />
-      <TulipIcon x={222} y={82} scale={0.55} uid="home-t2" />
+      {/* tulips inset from right edge */}
+      <TulipIcon x={196} y={68} scale={0.85} uid="home-t1" />
+      <TulipIcon x={212} y={76} scale={0.62} uid="home-t2" />
     </svg>
   )
 }
@@ -352,6 +352,92 @@ export function OnboardArt({ className = 'onboardArt illustration', ...rest }: A
       <WindmillIcon x={8} y={18} scale={1.15} />
       <LionFace x={36} y={18} scale={2.15} />
       <TulipIcon x={92} y={52} scale={0.95} uid="ob-t" />
+    </svg>
+  )
+}
+
+/** Per-book cover banner — lion + flower inset with padding; palette/motif shift by bookId. */
+const BOOK_COVER: Record<string, {
+  sky0: string; sky1: string; ground: string; bank: string; water0: string; water1: string
+  accent: string; sun: string; motif: 'tulip' | 'bike' | 'windmill' | 'canal'
+}> = {
+  klimop: {
+    sky0: '#E8F3FC', sky1: '#DCEBFA', ground: '#E8D5BC', bank: '#D9C4A8',
+    water0: '#A8CDEA', water1: '#3B82C4', accent: '#E36A1E', sun: '#F0B429', motif: 'tulip',
+  },
+  windmee: {
+    sky0: '#E6F7F5', sky1: '#CFF1EC', ground: '#D4E8E0', bank: '#B8D4C8',
+    water0: '#9AD4CB', water1: '#0D9488', accent: '#0D9488', sun: '#F0B429', motif: 'bike',
+  },
+  blinkuit: {
+    sky0: '#F3EEFF', sky1: '#E8DEFF', ground: '#E5D9F5', bank: '#D0C0E8',
+    water0: '#C4B0F0', water1: '#7C3AED', accent: '#7C3AED', sun: '#F0B429', motif: 'windmill',
+  },
+  defineale: {
+    sky0: '#FCE7F0', sky1: '#FAD1E2', ground: '#F0D4E0', bank: '#E0B8CC',
+    water0: '#F0A8C4', water1: '#BE185D', accent: '#BE185D', sun: '#F0B429', motif: 'canal',
+  },
+}
+
+export function BookCoverArt({
+  bookId = 'klimop',
+  className = 'homeHeroArt illustration bookCoverArt',
+  ...rest
+}: ArtProps & { bookId?: string }) {
+  const p = BOOK_COVER[bookId] || BOOK_COVER.klimop
+  const uid = `bc-${bookId}`
+  return (
+    <svg className={className} viewBox="0 0 240 150" aria-hidden {...rest}>
+      <defs>
+        <linearGradient id={`${uid}-sky`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={p.sky0} />
+          <stop offset="100%" stopColor={p.sky1} />
+        </linearGradient>
+        <linearGradient id={`${uid}-water`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={p.water0} />
+          <stop offset="100%" stopColor={p.water1} />
+        </linearGradient>
+        <clipPath id={`${uid}-clip`}>
+          <rect width="240" height="150" rx="18" />
+        </clipPath>
+      </defs>
+
+      <g clipPath={`url(#${uid}-clip)`}>
+        <rect width="240" height="150" rx="18" fill={`url(#${uid}-sky)`} />
+        <circle cx="56" cy="34" r="14" fill={p.sun} opacity="0.95" />
+        <circle cx="56" cy="34" r="20" fill={p.sun} opacity="0.16" />
+        <ellipse cx="168" cy="26" rx="20" ry="9" fill="#FFFFFF" opacity="0.65" />
+        <ellipse cx="184" cy="28" rx="12" ry="7" fill="#FFFFFF" opacity="0.5" />
+
+        <path d="M0 108h240v42H0z" fill={`url(#${uid}-water)`} opacity="0.5" />
+        <path d="M0 108c40 8 80-6 120 2s70 6 120-4v12H0z" fill={p.water1} opacity="0.18" />
+        <rect x="0" y="98" width="240" height="12" fill={p.bank} />
+        <rect x="0" y="110" width="240" height="40" fill={p.ground} opacity="0.35" />
+
+        {/* Motif accent — varies by book; kept clear of lion/flower padding zones */}
+        {p.motif === 'windmill' && <WindmillIcon x={102} y={46} scale={1.2} />}
+        {p.motif === 'bike' && <BikeIcon x={100} y={72} scale={1.35} stroke={p.accent} />}
+        {p.motif === 'canal' && (
+          <g>
+            <path d="M98 98 L120 68 L142 98 Z" fill={p.accent} />
+            <rect x={104} y={78} width={32} height={24} fill="#FFF8F0" stroke="#1C2430" strokeWidth="1.4" />
+            <rect x={114} y={88} width={10} height={14} rx="1" fill={p.accent} />
+          </g>
+        )}
+        {p.motif === 'tulip' && (
+          <g opacity="0.9">
+            <TulipIcon x={108} y={70} scale={0.55} uid={`${uid}-mid`} />
+          </g>
+        )}
+
+        {/* Lion + flower fully INSIDE frame with ~14–18px padding (no edge clip) */}
+        <LionFace x={18} y={52} scale={1.35} />
+        <TulipIcon x={196} y={68} scale={0.85} uid={`${uid}-t1`} />
+        <TulipIcon x={212} y={76} scale={0.62} uid={`${uid}-t2`} />
+      </g>
+
+      {/* Soft rim so rounded frame reads as a cover card */}
+      <rect width="240" height="150" rx="18" fill="none" stroke={p.accent} strokeOpacity="0.28" strokeWidth="2.5" />
     </svg>
   )
 }

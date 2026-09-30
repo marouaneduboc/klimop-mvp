@@ -52,3 +52,6 @@ apps/web/__web.log
 apps/web/certs/*.pem
 apps/web/public/mkcert-rootCA.pem
 tools/mkcert
+
+# All PEM certs / keys (never commit)
+*.pem

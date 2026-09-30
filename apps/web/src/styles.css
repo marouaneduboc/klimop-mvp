@@ -1124,7 +1124,44 @@ button.grammarOptionBtn.is-wrong:disabled{ opacity:1; }
 }
 .storyTitle{ font-weight:750; font-size:16px; }
 .storyBody{ margin:14px 0; }
-.storyLine{ margin:0 0 8px; font-size:17px; line-height:1.45; }
+/* storyLine moved below */
+
+.storyParaBlock{ margin:0 0 10px; }
+.storyLine{
+  display:block;
+  width:100%;
+  text-align:left;
+  margin:0;
+  padding:10px 12px;
+  font-size:17px;
+  line-height:1.45;
+  border-radius:12px;
+  border:1px solid transparent;
+  background:transparent;
+  cursor:pointer;
+  color:inherit;
+  font-family:inherit;
+}
+.storyLine:hover{ background:rgba(227,106,30,0.06); }
+.storyLine.is-selected{
+  background:rgba(227,106,30,0.12);
+  border-color:rgba(227,106,30,0.35);
+  box-shadow:0 0 0 2px rgba(227,106,30,0.12);
+}
+.storyLine.is-speaking{
+  background:rgba(255,186,73,0.28);
+  border-color:rgba(240,180,41,0.45);
+}
+.storyTip{ margin-top:8px; }
+.listenEn{ font-weight:500; color:var(--muted); }
+.listenResultLine{ font-weight:600; }
+.bookCoverArt{
+  width:min(240px, 72vw);
+  height:auto;
+  flex-shrink:0;
+  filter:drop-shadow(0 8px 16px rgba(28,36,48,0.08));
+}
+
 .storyGlossary{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
 .pairCodeBox{
   margin-top:14px;

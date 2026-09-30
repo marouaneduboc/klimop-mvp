@@ -62,6 +62,32 @@
           "correct": "belegen en kibbeling",
           "explanation": "Thuis noteert ze belegen en kibbeling."
         }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "culture",
+          "nl": "De Albert Cuypmarkt in De Pijp is een van de bekendste straatmarkten van Amsterdam.",
+          "en": "Albert Cuyp is one of Amsterdam’s best-known street markets."
+        },
+        {
+          "afterLine": 0,
+          "kind": "vocab",
+          "nl": "Belegen kaas = medium-aged (sterker dan jong, milder dan oud).",
+          "en": "Belegen cheese sits between young and old."
+        },
+        {
+          "afterLine": 1,
+          "kind": "wistJeDat",
+          "nl": "Wist je dat veel Nederlanders op de markt met pin betalen — cash is niet meer standaard?",
+          "en": "Card payment is common at Dutch markets now."
+        },
+        {
+          "afterLine": 2,
+          "kind": "tip",
+          "nl": "Noteer twee smaken of producten die je ruikt of proeft — zo blijft vocab langer hangen.",
+          "en": "Jot two tastes or smells to lock in new words."
+        }
       ]
     },
     {
@@ -124,6 +150,32 @@
           ],
           "correct": "vanwege gladheid",
           "explanation": "Hij vertrekt extra vroeg vanwege gladheid."
+        }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "culture",
+          "nl": "Op het fietspad houd je rechts; bel vriendelijk vóór je inhaalt.",
+          "en": "Stay right on the cycle path; ring before overtaking."
+        },
+        {
+          "afterLine": 1,
+          "kind": "grammar",
+          "nl": "Hij belt vriendelijk = tegenwoordige tijd. Let op: bel / belt / bellen.",
+          "en": "Present tense: ik bel, hij belt, wij bellen."
+        },
+        {
+          "afterLine": 2,
+          "kind": "vocab",
+          "nl": "Gladheid = slippery conditions (regen, blad, ijs).",
+          "en": "Gladheid means slippery road conditions."
+        },
+        {
+          "afterLine": 3,
+          "kind": "wistJeDat",
+          "nl": "Wist je dat Nederland meer fietsen dan inwoners heeft?",
+          "en": "The Netherlands has more bikes than people."
         }
       ]
     },
@@ -188,6 +240,32 @@
           "correct": "twee stroopwafels",
           "explanation": "Oma stopt twee stroopwafels in een zakje."
         }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "culture",
+          "nl": "Koffie met een koekje is een klassiek Nederlands “momentje” — vaak gezellig, niet haastig.",
+          "en": "Coffee + biscuit is a classic Dutch pause together."
+        },
+        {
+          "afterLine": 0,
+          "kind": "vocab",
+          "nl": "Gezelligheid is lastig te vertalen: cozy + fun + togetherness.",
+          "en": "Gezellig mixes cozy, fun, and togetherness."
+        },
+        {
+          "afterLine": 1,
+          "kind": "grammar",
+          "nl": "Ze praten over… = praten + over + onderwerp.",
+          "en": "praten over = talk about."
+        },
+        {
+          "afterLine": 2,
+          "kind": "tip",
+          "nl": "Oefen hardop: “Mag ik nog een koekje?” — eerst langzaam, dan normaal tempo.",
+          "en": "Say the request slowly, then at normal speed."
+        }
       ]
     },
     {
@@ -250,6 +328,32 @@
           ],
           "correct": "juichen, tegengoal, supporter",
           "explanation": "Hij schrijft juichen, tegengoal en supporter op."
+        }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "wistJeDat",
+          "nl": "Wist je dat oranje de kleur van het koningshuis is (Huis van Oranje)?",
+          "en": "Orange comes from the House of Orange."
+        },
+        {
+          "afterLine": 1,
+          "kind": "vocab",
+          "nl": "Aftrap = kick-off. Tegengoal = equalizer / goal against.",
+          "en": "Aftrap = kick-off; tegengoal = equalizer."
+        },
+        {
+          "afterLine": 2,
+          "kind": "culture",
+          "nl": "Op het plein zingen supporters vaak meezingers — vals mag, luid is beter.",
+          "en": "Crowd songs are loud; perfect pitch is optional."
+        },
+        {
+          "afterLine": 3,
+          "kind": "tip",
+          "nl": "Markeer drie nieuwe sportwoorden in een kort artikel — herhaal ze de volgende dag.",
+          "en": "Mark three sports words and review them tomorrow."
         }
       ]
     },
@@ -314,6 +418,32 @@
           "correct": "na regen komt zonneschijn",
           "explanation": "Ze lacht om dat spreekwoord in het boek."
         }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "culture",
+          "nl": "“Aprilse grillen” = typisch wisselvallig aprilweer: zon, bui, wind, opnieuw zon.",
+          "en": "Aprilse grillen = fickle April weather."
+        },
+        {
+          "afterLine": 1,
+          "kind": "vocab",
+          "nl": "Luifel = canopy/awning waar je onder schuilt.",
+          "en": "Luifel = shop awning / canopy."
+        },
+        {
+          "afterLine": 1,
+          "kind": "grammar",
+          "nl": "Ze schuilt onder de luifel = schuilen (onder) + plaats.",
+          "en": "schuilen onder = take shelter under."
+        },
+        {
+          "afterLine": 3,
+          "kind": "tip",
+          "nl": "Schrijf drie zinnetjes over het weer van vandaag — simpel maar echt.",
+          "en": "Write three short weather sentences about today."
+        }
       ]
     },
     {
@@ -376,6 +506,32 @@
           ],
           "correct": "een herhaalrecept",
           "explanation": "Hij vraagt hoe hij een herhaalrecept digitaal aanvraagt."
+        }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "vocab",
+          "nl": "OV-chipkaart = public-transport smart card (check-in / check-out).",
+          "en": "OV-chipkaart is the transit smart card."
+        },
+        {
+          "afterLine": 1,
+          "kind": "culture",
+          "nl": "Conducteurs checken soms steekproefsgewijs — houd je kaart klaar.",
+          "en": "Conductors may spot-check; keep your card ready."
+        },
+        {
+          "afterLine": 2,
+          "kind": "grammar",
+          "nl": "Hoe vraag je beleefd? “Kunt u uitleggen hoe…?” of “Mag ik vragen…?”",
+          "en": "Polite asks: Kunt u…? / Mag ik vragen…?"
+        },
+        {
+          "afterLine": 3,
+          "kind": "tip",
+          "nl": "Herhaal digitale stappen hardop — zo oefen je instructietaal.",
+          "en": "Say app steps out loud to practice instruction language."
         }
       ]
     },
@@ -440,6 +596,32 @@
           "correct": "een tweedehands lampenkap",
           "explanation": "Ze koopt een tweedehands lampenkap voor haar kamer."
         }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "culture",
+          "nl": "Koningsdag: vrijmarkt — iedereen mag tweedehands spullen op straat verkopen.",
+          "en": "King’s Day flea market: anyone can sell second-hand goods outside."
+        },
+        {
+          "afterLine": 1,
+          "kind": "vocab",
+          "nl": "Onderhandelen = bargain. “Mag het iets minder?” is een klassieker.",
+          "en": "Onderhandelen = to bargain."
+        },
+        {
+          "afterLine": 2,
+          "kind": "wistJeDat",
+          "nl": "Wist je dat de straten op Koningsdag letterlijk oranje kleuren?",
+          "en": "Streets turn orange for King’s Day."
+        },
+        {
+          "afterLine": 3,
+          "kind": "tip",
+          "nl": "Beschrijf één vrijmarkt-vondst in twee zinnen (prijs + waarom leuk).",
+          "en": "Describe one flea-market find in two sentences."
+        }
       ]
     },
     {
@@ -502,6 +684,32 @@
           ],
           "correct": "kaas en melk",
           "explanation": "Op de terugweg koopt ze kaas en melk."
+        }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "culture",
+          "nl": "Een polder is land dat vaak lager ligt dan de zee — dijken en gemalen houden het droog.",
+          "en": "Polders are often below sea level; dikes and pumps keep them dry."
+        },
+        {
+          "afterLine": 1,
+          "kind": "vocab",
+          "nl": "Gemaal = pumping station. Dijk = embankment / dike.",
+          "en": "Gemaal = pumping station."
+        },
+        {
+          "afterLine": 2,
+          "kind": "wistJeDat",
+          "nl": "Wist je dat fietsknooppunten een genummerd netwerk zijn voor routes plannen?",
+          "en": "Numbered cycle junctions help plan bike routes."
+        },
+        {
+          "afterLine": 3,
+          "kind": "grammar",
+          "nl": "Waarom-vraag: “Waarom zijn dijken belangrijk?” → omdat… + reden.",
+          "en": "Answer waarom with omdat + reason."
         }
       ]
     },
@@ -566,6 +774,32 @@
           "correct": "een boek",
           "explanation": "Zij krijgt een boek over Amsterdam."
         }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "culture",
+          "nl": "Schoen zetten: ’s avonds de schoen klaarzetten; ’s ochtends soms een presentje of gedicht.",
+          "en": "Schoen zetten = leave a shoe out for a small gift/poem."
+        },
+        {
+          "afterLine": 1,
+          "kind": "vocab",
+          "nl": "Pepernoten / pepernoot = small spiced biscuits around Sinterklaas.",
+          "en": "Pepernoten are tiny Sinterklaas biscuits."
+        },
+        {
+          "afterLine": 2,
+          "kind": "grammar",
+          "nl": "Gedichten gebruiken vaak rijm — let op klinkers aan het eind van de regel.",
+          "en": "Poems often rhyme; watch end vowels."
+        },
+        {
+          "afterLine": 3,
+          "kind": "tip",
+          "nl": "Onderstreep rijmwoorden en zeg ze hardop — goed voor uitspraak.",
+          "en": "Underline rhyme words and say them aloud."
+        }
       ]
     },
     {
@@ -628,6 +862,32 @@
           ],
           "correct": "hij oefent zinnen en krijgt een correctie",
           "explanation": "Hij zegt drie zinnen; een man corrigeert een voorzetsel."
+        }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "tip",
+          "nl": "Vraag aan de balie: “Hoe word ik lid?” en “Wat kost een lidmaatschap?”",
+          "en": "Ask: How do I join? What does membership cost?"
+        },
+        {
+          "afterLine": 1,
+          "kind": "culture",
+          "nl": "Veel bibliotheken hebben een taalcafé — laagdrempelig Nederlands oefenen.",
+          "en": "Many libraries host a language café."
+        },
+        {
+          "afterLine": 2,
+          "kind": "vocab",
+          "nl": "Inleverdata = due dates. Catalogus = catalogue / search system.",
+          "en": "Inleverdata = due dates."
+        },
+        {
+          "afterLine": 3,
+          "kind": "wistJeDat",
+          "nl": "Wist je dat je in de bieb vaak gratis wifi én stille werkplekken vindt?",
+          "en": "Libraries often offer free wifi and quiet desks."
         }
       ]
     },
@@ -692,6 +952,32 @@
           "correct": "moe maar trots",
           "explanation": "Ze belt haar moeder: moe, maar trots."
         }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "vocab",
+          "nl": "Overdracht = handover between shifts. Zorgplan = care plan.",
+          "en": "Overdracht = shift handover."
+        },
+        {
+          "afterLine": 1,
+          "kind": "culture",
+          "nl": "In de zorg noteer je feiten rustig en duidelijk — geen paniektaal.",
+          "en": "Care notes stay calm, factual, and clear."
+        },
+        {
+          "afterLine": 2,
+          "kind": "grammar",
+          "nl": "Morgen mag je zelf… = mogen + infinitief (toestemming).",
+          "en": "mogen + infinitive = permission."
+        },
+        {
+          "afterLine": 3,
+          "kind": "tip",
+          "nl": "Herhaal steekwoorden hardop voor het slapen — kort en ritmisch.",
+          "en": "Repeat keyword drills aloud before sleep."
+        }
       ]
     },
     {
@@ -754,6 +1040,32 @@
           ],
           "correct": "notificaties van schreeuwerige apps",
           "explanation": "Hij zet notificaties van schreeuwerige apps uit."
+        }
+      ],
+      "tips": [
+        {
+          "afterLine": 0,
+          "kind": "tip",
+          "nl": "Begin met korte clips + transcript — niet met een heel journaal in één keer.",
+          "en": "Start with short clips + transcript, not a full bulletin."
+        },
+        {
+          "afterLine": 1,
+          "kind": "grammar",
+          "nl": "Signaalwoorden structureren tekst: eerst, daarna, daarom, tot slot.",
+          "en": "Signal words: first, then, therefore, finally."
+        },
+        {
+          "afterLine": 2,
+          "kind": "vocab",
+          "nl": "Factchecken = check facts. Hoofdlijn = main point / headline idea.",
+          "en": "Factchecken = fact-checking; hoofdlijn = main thread."
+        },
+        {
+          "afterLine": 3,
+          "kind": "wistJeDat",
+          "nl": "Wist je dat één onderwerp samenvatten sterker is dan tien artikelen scannen?",
+          "en": "One deep summary beats skimming ten articles."
         }
       ]
     }
