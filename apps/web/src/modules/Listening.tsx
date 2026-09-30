@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { playSoftMiss, playSoftSuccess, unlockSfx } from '../lib/sfx'
 import { playListenClip, speakDutch } from '../lib/speech'
 
 type Vocab = { id: string; theme: number; nl: string; en?: string | null; article?: 'de' | 'het' | null }
@@ -63,9 +64,11 @@ export default function Listening({ course, speak }: { course: Course | null; sp
   const [pickedIds, setPickedIds] = useState<string[]>([])
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null)
   const [source, setSource] = useState<'mp3' | 'tts' | null>(null)
+  const [playHint, setPlayHint] = useState<string | null>(null)
   const [score, setScore] = useState({ ok: 0, n: 0 })
   const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const feedbackRef = useRef<'correct' | 'wrong' | null>(null)
+  const playGenRef = useRef(0)
 
   const clearAdvanceTimer = () => {
     if (advanceTimerRef.current) {
@@ -83,6 +86,8 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     setTyped('')
     setPickedIds([])
     setSource(null)
+    setPlayHint(null)
+    playGenRef.current += 1
     if (m === 'order') {
       if (!orderPool.length) { setQ(null); return }
       const vocab = orderPool[Math.floor(Math.random() * orderPool.length)]
@@ -100,22 +105,43 @@ export default function Listening({ course, speak }: { course: Course | null; sp
 
   useEffect(() => { next(mode) }, [course, mode])
 
-  const play = async () => {
+  const play = async (fromUserGesture = false) => {
     if (!q) return
+    if (fromUserGesture) unlockSfx()
+    const myGen = playGenRef.current
     const text = q.mode === 'order'
       ? q.hearText
       : (q.vocab.article ? `${q.vocab.article} ${q.vocab.nl}` : q.vocab.nl)
+    setPlayHint(null)
     try {
       const kind = await playListenClip(q.vocab.id, text)
+      if (myGen !== playGenRef.current) return
       setSource(kind)
-    } catch {
-      await speak(text).catch(() => speakDutch(text))
-      setSource('tts')
+    } catch (e: any) {
+      if (myGen !== playGenRef.current) return
+      try {
+        await speakDutch(text)
+        if (myGen !== playGenRef.current) return
+        setSource('tts')
+      } catch (err: any) {
+        // App.speak swallows errors — call speakDutch directly so we surface blockers.
+        try {
+          await speak(text)
+        } catch { /* */ }
+        if (myGen !== playGenRef.current) return
+        setSource('tts')
+        const msg = String(err?.message || e?.message || '')
+        if (/not-allowed|blocked|gesture/i.test(msg) || !fromUserGesture) {
+          setPlayHint('Tap ▶ Hear again to play audio (browser blocked autoplay).')
+        } else if (msg) {
+          setPlayHint(msg)
+        }
+      }
     }
   }
 
   useEffect(() => {
-    if (q) void play()
+    if (q) void play(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q?.vocab.id, q?.mode])
 
@@ -136,6 +162,8 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     feedbackRef.current = ok ? 'correct' : 'wrong'
     setFeedback(feedbackRef.current)
     setScore(s => ({ ok: s.ok + (ok ? 1 : 0), n: s.n + 1 }))
+    if (ok) playSoftSuccess()
+    else playSoftMiss()
     scheduleAdvance(ok)
     return true
   }
@@ -191,9 +219,12 @@ export default function Listening({ course, speak }: { course: Course | null; sp
       ) : (
         <>
           <div className="listenPlayRow">
-            <button type="button" className="btn-primary listenPlayBtn" onClick={() => { void play() }} aria-label="Play audio">▶ Hear again</button>
-            <span className="small">{source === 'mp3' ? 'Audio file' : source === 'tts' ? 'Browser voice (drop MP3s in public/audio/listen/)' : '…'}</span>
+            <button type="button" className="btn-primary listenPlayBtn" onClick={() => { void play(true) }} aria-label="Play audio">▶ Hear again</button>
+            <span className="small">{source === 'mp3' ? 'Audio file' : source === 'tts' ? 'Browser voice' : '…'}</span>
           </div>
+          {playHint && (
+            <div className="teachBanner" style={{ marginTop: 10 }} role="status">{playHint}</div>
+          )}
           {feedback === 'wrong' && (
             <div className="teachBanner" style={{ marginTop: 12 }}>
               <strong>Heard:</strong>{' '}
@@ -297,20 +328,24 @@ export function ListeningSlice({
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null)
   useEffect(() => {
     const text = vocab.article ? `${vocab.article} ${vocab.nl}` : vocab.nl
-    playListenClip(vocab.id, text).catch(() => speak(text))
+    playListenClip(vocab.id, text).catch(() => speak(text).catch(() => speakDutch(text)))
   }, [vocab.id])
   return (
     <div className="listenSlice">
       <div className="small" style={{ marginBottom: 8 }}>Listening · what did you hear?</div>
       <button type="button" className="btn-primary" onClick={() => {
+        unlockSfx()
         const text = vocab.article ? `${vocab.article} ${vocab.nl}` : vocab.nl
-        playListenClip(vocab.id, text).catch(() => speak(text))
+        playListenClip(vocab.id, text).catch(() => speakDutch(text).catch(() => speak(text)))
       }}>▶ Replay</button>
       <div className="listenOptions" style={{ marginTop: 12 }}>
         {options.map(o => (
           <button key={o} type="button" className="listenOpt" disabled={!!feedback} onClick={() => {
+            unlockSfx()
             const ok = o === vocab.nl
             setFeedback(ok ? 'correct' : 'wrong')
+            if (ok) playSoftSuccess()
+            else playSoftMiss()
             setTimeout(() => onDone(ok), ok ? 900 : 1600)
           }}>{o}</button>
         ))}

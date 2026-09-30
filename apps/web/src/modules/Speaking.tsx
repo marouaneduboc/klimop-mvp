@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { playSoftMiss, playSoftSuccess, unlockSfx } from '../lib/sfx'
 import {
   canRecognize,
   recognitionSecureOk,
@@ -25,6 +26,9 @@ const STARTER_PHRASES = [
 
 type Phrase = { id: string; nl: string; en: string }
 
+const ADVANCE_OK_MS = 750
+const ADVANCE_MISS_MS = 1600
+
 export default function Speaking({ course, speak }: { course: Course | null; speak: (t: string) => Promise<void> }) {
   const phrases: Phrase[] = useMemo(() => {
     const fromVocab: Phrase[] = (course?.vocab || [])
@@ -40,13 +44,19 @@ export default function Speaking({ course, speak }: { course: Course | null; spe
 
   const [idx, setIdx] = useState(0)
   const [listening, setListening] = useState(false)
-  const [fallback, setFallback] = useState('')
   const [result, setResult] = useState<{ ok: boolean; detail: string; score: number } | null>(null)
   const [score, setScore] = useState({ ok: 0, n: 0 })
   const [micHint, setMicHint] = useState<string | null>(() => recognitionSupportMessage())
   const [supported, setSupported] = useState(() => canRecognize() && recognitionSecureOk())
-  const inputRef = useRef<HTMLInputElement>(null)
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const cur = phrases[idx % Math.max(1, phrases.length)]
+
+  const clearAdvance = () => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current)
+      advanceTimerRef.current = null
+    }
+  }
 
   useEffect(() => {
     const refresh = () => {
@@ -59,50 +69,64 @@ export default function Speaking({ course, speak }: { course: Course | null; spe
     return () => {
       window.removeEventListener('focus', refresh)
       document.removeEventListener('visibilitychange', refresh)
+      clearAdvance()
       stopRecognizing()
     }
   }, [])
 
   const next = () => {
+    clearAdvance()
     stopRecognizing()
     setListening(false)
     setResult(null)
-    setFallback('')
     setMicHint(recognitionSupportMessage())
     setIdx(i => i + 1)
   }
 
+  const scheduleAdvance = (ok: boolean) => {
+    clearAdvance()
+    advanceTimerRef.current = setTimeout(() => {
+      advanceTimerRef.current = null
+      next()
+    }, ok ? ADVANCE_OK_MS : ADVANCE_MISS_MS)
+  }
+
+  const applyGrade = (scored: { ok: boolean; detail: string; score: number }) => {
+    setResult(scored)
+    setScore(s => ({ ok: s.ok + (scored.ok ? 1 : 0), n: s.n + 1 }))
+    if (scored.ok) playSoftSuccess()
+    else playSoftMiss()
+    // Auto-advance after success; brief pause on miss then still advance so flow stays moving.
+    scheduleAdvance(scored.ok)
+  }
+
   const hearModel = () => {
+    unlockSfx()
     if (!cur) return
     speak(cur.nl).catch(() => speakDutch(cur.nl))
   }
 
-  const focusType = () => {
-    window.setTimeout(() => inputRef.current?.focus(), 50)
-  }
-
   const startMic = async () => {
     if (!cur) return
+    unlockSfx()
     const supportMsg = recognitionSupportMessage()
     if (supportMsg) {
       setMicHint(supportMsg)
       setResult({ ok: false, detail: supportMsg, score: 0 })
-      focusType()
       return
     }
+    clearAdvance()
     setResult(null)
     setMicHint(null)
     setListening(true)
     try {
       const r = await recognizeDutch(9000)
-      const scored = scorePhrase(cur.nl, r.transcript)
-      setResult(scored)
-      setScore(s => ({ ok: s.ok + (scored.ok ? 1 : 0), n: s.n + 1 }))
+      applyGrade(scorePhrase(cur.nl, r.transcript))
     } catch (e: any) {
-      const detail = e?.message || 'Mic failed — type the phrase below.'
+      const detail = e?.message || 'Mic failed — try again or Skip.'
       setResult({ ok: false, detail, score: 0 })
       setMicHint(detail)
-      focusType()
+      playSoftMiss()
     } finally {
       setListening(false)
     }
@@ -113,11 +137,12 @@ export default function Speaking({ course, speak }: { course: Course | null; spe
     setListening(false)
   }
 
-  const checkTyped = () => {
-    if (!cur || !fallback.trim()) return
-    const scored = scorePhrase(cur.nl, fallback)
-    setResult(scored)
-    setScore(s => ({ ok: s.ok + (scored.ok ? 1 : 0), n: s.n + 1 }))
+  /** Manual credit when mic is unavailable but the learner said it aloud. */
+  const iSaidIt = () => {
+    if (!cur || result?.ok) return
+    unlockSfx()
+    clearAdvance()
+    applyGrade({ ok: true, detail: 'Marked as said', score: 1 })
   }
 
   if (!cur) return <div className="card">No phrases.</div>
@@ -128,7 +153,7 @@ export default function Speaking({ course, speak }: { course: Course | null; spe
         <div>
           <img className="listenToolIcon" src="./assets/speak-icon.png" width={36} height={36} alt="" />
           <div className="h1" style={{ marginBottom: 4 }}>Speaking</div>
-          <div className="h2">Say it out loud · score · or type</div>
+          <div className="h2">Hear the model · say it out loud · score</div>
         </div>
         <div className="pill">{score.ok}/{score.n}</div>
       </div>
@@ -142,49 +167,29 @@ export default function Speaking({ course, speak }: { course: Course | null; spe
         {listening ? (
           <button type="button" className="btn-primary" onClick={stopMic}>⏹ Stop</button>
         ) : (
-          <button type="button" className="btn-primary" disabled={!supported} onClick={() => { void startMic() }} title={supported ? 'Speak in Dutch' : 'Mic unavailable — type below'}>
+          <button type="button" className="btn-primary" disabled={!supported || !!result?.ok} onClick={() => { void startMic() }} title={supported ? 'Speak in Dutch' : 'Mic unavailable'}>
             🎤 Speak
           </button>
         )}
         <button type="button" onClick={next}>Skip</button>
+        {!supported && (
+          <button type="button" className="pill speakSaidPill" onClick={iSaidIt} title="Credit yourself if you said it aloud">I said it</button>
+        )}
       </div>
       {!!micHint && (
         <div className="teachBanner" style={{ marginTop: 10 }} role="status">{micHint}</div>
       )}
-      <div className="speakFallback" style={{ marginTop: 14 }}>
-        <div className="small" style={{ width: '100%', marginBottom: 6 }}>
-          {supported ? 'Or type the phrase (always works):' : 'Type the phrase to practise (mic unavailable):'}
-        </div>
-        <form
-          className="listenTypeForm"
-          style={{ marginTop: 0, width: '100%' }}
-          onSubmit={e => { e.preventDefault(); checkTyped() }}
-        >
-          <input
-            ref={inputRef}
-            className="iosInputFix listenTypeInput"
-            value={fallback}
-            onChange={e => setFallback(e.target.value)}
-            placeholder="Type the Dutch phrase…"
-            autoCapitalize="off"
-            autoCorrect="off"
-            autoComplete="off"
-            enterKeyHint="done"
-          />
-          <button type="submit" className="btn-primary" disabled={!fallback.trim()}>Check</button>
-        </form>
-      </div>
       {result && (
         <div className={result.ok ? 'okBanner' : 'teachBanner'} style={{ marginTop: 12 }}>
           {result.ok ? `Goed! (${Math.round(result.score * 100)}%)` : result.detail}
           <div className="row" style={{ marginTop: 10, gap: 8, flexWrap: 'wrap' }}>
             {!result.ok && supported && (
-              <button type="button" onClick={() => { setResult(null); void startMic() }}>Retry mic</button>
+              <button type="button" onClick={() => { clearAdvance(); setResult(null); void startMic() }}>Retry mic</button>
             )}
-            {!result.ok && (
-              <button type="button" onClick={() => { setResult(null); focusType() }}>Edit typed</button>
+            {!result.ok && !supported && (
+              <button type="button" onClick={iSaidIt}>I said it</button>
             )}
-            <button type="button" className="btn-primary" onClick={next}>Next</button>
+            <button type="button" className="btn-primary" onClick={next}>{result.ok ? 'Next…' : 'Next'}</button>
           </div>
         </div>
       )}
@@ -202,11 +207,10 @@ export function SpeakingSlice({
   speak: (t: string) => Promise<void>
 }) {
   const [listening, setListening] = useState(false)
-  const [fallback, setFallback] = useState('')
   const [result, setResult] = useState<{ ok: boolean; detail: string } | null>(null)
   const [hint, setHint] = useState<string | null>(() => recognitionSupportMessage())
   const [supported, setSupported] = useState(() => canRecognize() && recognitionSecureOk())
-  const inputRef = useRef<HTMLInputElement>(null)
+  const doneRef = useRef(false)
 
   useEffect(() => {
     const refresh = () => {
@@ -225,8 +229,12 @@ export function SpeakingSlice({
   }, [phrase.nl])
 
   const finish = (ok: boolean, detail: string) => {
+    if (doneRef.current) return
+    doneRef.current = true
     setResult({ ok, detail })
-    setTimeout(() => onDone(ok), ok ? 900 : 1800)
+    if (ok) playSoftSuccess()
+    else playSoftMiss()
+    setTimeout(() => onDone(ok), ok ? ADVANCE_OK_MS : ADVANCE_MISS_MS)
   }
 
   return (
@@ -235,7 +243,7 @@ export function SpeakingSlice({
       <div className="speakNl">{phrase.nl}</div>
       {phrase.en && <div className="small">{phrase.en}</div>}
       <div className="row" style={{ marginTop: 10, gap: 8, flexWrap: 'wrap' }}>
-        <button type="button" onClick={() => speak(phrase.nl).catch(() => speakDutch(phrase.nl))}>🔊</button>
+        <button type="button" onClick={() => { unlockSfx(); speak(phrase.nl).catch(() => speakDutch(phrase.nl)) }}>🔊</button>
         {listening ? (
           <button type="button" className="btn-primary" onClick={() => { stopRecognizing(); setListening(false) }}>⏹</button>
         ) : (
@@ -244,10 +252,10 @@ export function SpeakingSlice({
             className="btn-primary"
             disabled={!supported || !!result}
             onClick={async () => {
+              unlockSfx()
               const msg = recognitionSupportMessage()
               if (msg) {
                 setHint(msg)
-                inputRef.current?.focus()
                 return
               }
               setListening(true)
@@ -257,38 +265,20 @@ export function SpeakingSlice({
                 const s = scorePhrase(phrase.nl, r.transcript)
                 finish(s.ok, s.detail)
               } catch (e: any) {
-                setHint(e?.message || 'Try typing')
-                inputRef.current?.focus()
+                setHint(e?.message || 'Try again')
+                playSoftMiss()
               } finally {
                 setListening(false)
               }
             }}
           >🎤</button>
         )}
+        {!supported && !result && (
+          <button type="button" className="pill speakSaidPill" onClick={() => finish(true, 'Marked as said')}>I said it</button>
+        )}
+        <button type="button" disabled={!!result} onClick={() => finish(false, 'Skipped')}>Skip</button>
       </div>
       {!!hint && <div className="small" style={{ marginTop: 8 }}>{hint}</div>}
-      <form
-        className="speakFallback"
-        style={{ marginTop: 8 }}
-        onSubmit={e => {
-          e.preventDefault()
-          if (!fallback.trim() || result) return
-          const s = scorePhrase(phrase.nl, fallback)
-          finish(s.ok, s.detail)
-        }}
-      >
-        <input
-          ref={inputRef}
-          className="iosInputFix listenTypeInput"
-          value={fallback}
-          onChange={e => setFallback(e.target.value)}
-          placeholder="Type the phrase…"
-          disabled={!!result}
-          autoCapitalize="off"
-          autoCorrect="off"
-        />
-        <button type="submit" className="btn-primary" disabled={!fallback.trim() || !!result}>Check</button>
-      </form>
       {result && <div className={result.ok ? 'okBanner' : 'teachBanner'} style={{ marginTop: 8 }}>{result.ok ? 'Goed!' : result.detail}</div>}
     </div>
   )

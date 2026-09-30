@@ -213,23 +213,46 @@ export async function speakDutchLines(
 }
 
 export function listenAudioUrl(vocabId: string): string {
-  return `audio/listen/${vocabId}.mp3`
+  // Resolve against the document base so relative Vite `base: './'` stays correct on LAN/HTTPS.
+  try {
+    return new URL(`audio/listen/${encodeURIComponent(vocabId)}.mp3`, document.baseURI).href
+  } catch {
+    return `audio/listen/${encodeURIComponent(vocabId)}.mp3`
+  }
 }
 
+/**
+ * Play a listen clip. Prefers public/audio/listen/{id}.mp3 when it is real audio;
+ * otherwise browser TTS.
+ *
+ * Important: Vite SPA fallback serves index.html with HTTP 200 for missing paths.
+ * A bare `res.ok` HEAD check is NOT enough — require an audio Content-Type, or
+ * Listening silently "plays" HTML and never falls back to TTS.
+ */
 export async function playListenClip(vocabId: string, fallbackText: string, rate = 0.92): Promise<'mp3' | 'tts'> {
   const url = listenAudioUrl(vocabId)
   try {
     const res = await fetch(url, { method: 'HEAD' })
-    if (res.ok) {
+    const ct = (res.headers.get('content-type') || '').toLowerCase()
+    const isAudio = res.ok && (ct.includes('audio') || ct.includes('mpeg') || ct.includes('mp3') || ct.includes('ogg') || ct.includes('wav'))
+    if (isAudio) {
       const audio = new Audio(url)
       await audio.play()
-      await new Promise<void>((resolve) => {
-        audio.onended = () => resolve()
-        audio.onerror = () => resolve()
+      await new Promise<void>((resolve, reject) => {
+        let settled = false
+        const done = (fn: () => void) => {
+          if (settled) return
+          settled = true
+          fn()
+        }
+        audio.onended = () => done(resolve)
+        audio.onerror = () => done(() => reject(new Error('Audio playback failed')))
+        // Safety: don't hang forever if neither event fires.
+        window.setTimeout(() => done(resolve), 12_000)
       })
       return 'mp3'
     }
-  } catch { /* fall through */ }
+  } catch { /* fall through to TTS */ }
   await speakDutch(fallbackText, { rate })
   return 'tts'
 }
@@ -277,10 +300,10 @@ export function recognitionSecureOk(): boolean {
 
 export function recognitionSupportMessage(): string | null {
   if (!canRecognize()) {
-    return 'Speech recognition is not available in this browser (common on Safari desktop). Type the Dutch phrase below — Check still scores you.'
+    return 'Speech recognition is not available in this browser (common on Safari desktop). Use Skip, or open in Chrome/Edge on HTTPS.'
   }
   if (!recognitionSecureOk()) {
-    return 'Microphone speech needs HTTPS (or localhost). On plain LAN HTTP, type the phrase below instead.'
+    return 'Microphone speech needs HTTPS (or localhost). Use Skip, or open via the local HTTPS URL.'
   }
   return null
 }
@@ -288,14 +311,14 @@ export function recognitionSupportMessage(): string | null {
 function mapRecogError(code: string | undefined): string {
   const c = (code || '').toLowerCase()
   if (c === 'not-allowed' || c === 'service-not-allowed') {
-    return 'Microphone permission denied — allow mic for this site, or type the phrase below.'
+    return 'Microphone permission denied — allow mic for this site, then try Speak again.'
   }
-  if (c === 'no-speech') return 'No speech detected — try again or type the phrase.'
-  if (c === 'audio-capture') return 'No microphone found — type the phrase below.'
-  if (c === 'network') return 'Speech service network error — type the phrase below (common offline / some Safari builds).'
+  if (c === 'no-speech') return 'No speech detected — try Speak again.'
+  if (c === 'audio-capture') return 'No microphone found — check device settings.'
+  if (c === 'network') return 'Speech service network error (common offline / some Safari builds). Try again or Skip.'
   if (c === 'aborted') return 'Listening stopped.'
-  if (c === 'language-not-supported') return 'Dutch (nl-NL) not supported by this browser’s recognizer — type instead.'
-  return code ? `Recognition failed (${code}) — type the phrase below.` : 'Recognition failed — type the phrase below.'
+  if (c === 'language-not-supported') return 'Dutch (nl-NL) not supported by this browser’s recognizer — try Chrome/Edge.'
+  return code ? `Recognition failed (${code}). Try again or Skip.` : 'Recognition failed — try again or Skip.'
 }
 
 export function stopRecognizing(): void {
@@ -316,7 +339,7 @@ async function ensureMicPermission(): Promise<void> {
   } catch (e: any) {
     const name = String(e?.name || e?.message || e)
     if (/notallowed|permission|denied/i.test(name)) {
-      throw new Error('Microphone permission denied — allow mic for this site, or type the phrase below.')
+      throw new Error('Microphone permission denied — allow mic for this site, then try Speak again.')
     }
     // Some browsers expose SpeechRecognition without getUserMedia — continue.
   }
@@ -325,10 +348,10 @@ async function ensureMicPermission(): Promise<void> {
 export async function recognizeDutch(timeoutMs = 9000): Promise<RecogResult> {
   const Ctor = getRecogCtor()
   if (!Ctor) {
-    throw new Error('Speech recognition not supported — type the phrase below.')
+    throw new Error('Speech recognition not supported in this browser.')
   }
   if (!recognitionSecureOk()) {
-    throw new Error('Microphone speech needs HTTPS or localhost — on LAN HTTP, type the phrase below.')
+    throw new Error('Microphone speech needs HTTPS or localhost.')
   }
 
   stopRecognizing()
@@ -360,7 +383,7 @@ export async function recognizeDutch(timeoutMs = 9000): Promise<RecogResult> {
       window.setTimeout(() => {
         if (done) return
         if (best) finish(() => resolve({ transcript: best, confidence: bestConf }))
-        else finish(() => reject(new Error('Listening timed out — try again or type the phrase.')))
+        else finish(() => reject(new Error('Listening timed out — try Speak again.')))
       }, 200)
     }, timeoutMs)
 

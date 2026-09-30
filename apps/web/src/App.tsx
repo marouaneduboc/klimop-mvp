@@ -18,6 +18,7 @@ import AccountSync from './modules/AccountSync'
 import { SessionTip, CelebrateTip } from './modules/SessionTip'
 import { loadRemindPrefs, saveRemindPrefs, ensureNotifyPermission, maybeNudge, registerServiceWorker } from './lib/reminders'
 import { speakDutch } from './lib/speech'
+import { playSoftMiss, playSoftSuccess, unlockSfx } from './lib/sfx'
 import { defaultApiBase } from './lib/apiBase'
 
 
@@ -834,6 +835,8 @@ function DailyPractice({
     setSrsHint(srsFeedbackLabel(r))
     if(card.kind==='vocab'){
       setVocabFeedback(correct?'correct':'wrong')
+      if(correct) playSoftSuccess()
+      else playSoftMiss()
       if(!correct){
         setTeachTip({ nl: card.vocab.article ? `${card.vocab.article} ${card.vocab.nl}` : card.vocab.nl, example: exampleForVocab(card.vocab) })
       } else {
@@ -1528,8 +1531,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <button className="homeToolBtn" onClick={()=>setRoute('listening')}><img className="homeToolIcon" src="./assets/listen-icon.png" alt="" width={22} height={22} />Listening</button>
             <button className="homeToolBtn" onClick={()=>setRoute('speaking')}><img className="homeToolIcon" src="./assets/speak-icon.png" alt="" width={22} height={22} />Speaking</button>
             <button className="homeToolBtn" onClick={()=>setRoute('stories')}><img className="homeToolIcon" src="./assets/story-icon.png" alt="" width={22} height={22} />Stories</button>
-            <button className={`homeToolBtn${syncPaired?' is-synced':''}`} onClick={()=>setRoute('sync')} title={syncPaired?'Sync active':'Sync'}><img className="homeToolIcon" src="./assets/sync-icon.png" alt="" width={22} height={22} />Sync{syncPaired?' ●':''}</button>
-            <button onClick={()=>speak('Hallo! Hoe gaat het?')}>🔊 Test Speak</button>
             <button onClick={()=>setRoute('progress')}>Progress</button>
           </div>
           <SessionTip slot="home" />
@@ -1955,7 +1956,26 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <div className="small" style={{marginTop:8}}>You can still override the plan anytime in Study with the Continue button.</div>
           </div>
           <div className="sep" />
-          <button onClick={()=>speak('Hallo! Hoe gaat het?')}>Test</button>
+          <div className="row" style={{flexWrap:'wrap', gap:8, alignItems:'center'}}>
+            <button
+              type="button"
+              className="pill topBarBookPill ttsTestSpeakPill"
+              onClick={()=>{ unlockSfx(); void speak('Hallo! Hoe gaat het?') }}
+              title="Test browser voice"
+            >
+              <span aria-hidden>🔊</span> Test Speak
+            </button>
+            <button
+              type="button"
+              className={`pill topBarBookPill${syncPaired?' is-synced':''}`}
+              onClick={()=>setRoute('sync')}
+              title={syncPaired?'Sync active — open Sync':'Open Sync / pair devices'}
+            >
+              <img className="homeToolIcon" src="./assets/sync-icon.png" alt="" width={16} height={16} style={{width:16,height:16}} />
+              Sync{syncPaired?' ●':''}
+            </button>
+          </div>
+          <div className="small" style={{marginTop:8}}>Sync lives here (and in the top tools row) so device pairing stays one tap away.</div>
           {err && <div className="card" style={{marginTop:12}}><div className="small" style={{whiteSpace:'pre-wrap'}}>{err}</div></div>}
         </div>
         <div className="card" style={{flex:1}}>
