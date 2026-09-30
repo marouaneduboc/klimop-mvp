@@ -2,6 +2,17 @@
 
 let speakGeneration = 0
 
+/** App TTS settings voice — used when callers omit opts.voiceName (Listening / Stories / playListenClip). */
+let preferredDutchVoiceName: string | undefined
+
+export function setPreferredDutchVoice(name?: string | null): void {
+  preferredDutchVoiceName = (name || '').trim() || undefined
+}
+
+export function getPreferredDutchVoice(): string | undefined {
+  return preferredDutchVoiceName
+}
+
 export function canSpeak(): boolean {
   return typeof window !== 'undefined' && 'speechSynthesis' in window
 }
@@ -109,7 +120,7 @@ export function speakDutch(text: string, opts?: SpeakOpts): Promise<void> {
       const utter = new SpeechSynthesisUtterance(trimmed)
       utter.lang = 'nl-NL'
       utter.rate = opts?.rate ?? 0.92
-      const voice = pickDutchVoice(voices, opts?.voiceName)
+      const voice = pickDutchVoice(voices, opts?.voiceName ?? preferredDutchVoiceName)
       if (voice) utter.voice = voice
 
       let settled = false
@@ -165,7 +176,7 @@ export async function speakDutchLines(
   if (myGen !== speakGeneration) return
 
   const voices = await ensureVoices()
-  const voice = pickDutchVoice(voices, opts?.voiceName)
+  const voice = pickDutchVoice(voices, opts?.voiceName ?? preferredDutchVoiceName)
   const rate = opts?.rate ?? 0.92
 
   for (let i = 0; i < parts.length; i++) {
@@ -258,7 +269,13 @@ async function probeListenMp3(url: string, timeoutMs = 400): Promise<boolean> {
  * Important: Vite SPA fallback can serve index.html with HTTP 200 for missing paths.
  * Probe with a short abort + audio Content-Type check, cache misses, then TTS quickly.
  */
-export async function playListenClip(vocabId: string, fallbackText: string, rate = 0.92): Promise<'mp3' | 'tts'> {
+export async function playListenClip(
+  vocabId: string,
+  fallbackText: string,
+  rateOrOpts: number | { rate?: number; voiceName?: string } = 0.92,
+): Promise<'mp3' | 'tts'> {
+  const rate = typeof rateOrOpts === 'number' ? rateOrOpts : (rateOrOpts.rate ?? 0.92)
+  const voiceName = typeof rateOrOpts === 'number' ? undefined : rateOrOpts.voiceName
   const url = listenAudioUrl(vocabId)
 
   let tryMp3 = !listenMp3Missing.has(vocabId)
@@ -295,7 +312,7 @@ export async function playListenClip(vocabId: string, fallbackText: string, rate
     }
   }
 
-  await speakDutch(fallbackText, { rate })
+  await speakDutch(fallbackText, { rate, voiceName })
   return 'tts'
 }
 

@@ -41,7 +41,7 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
   /** Selected paragraph for Read aloud — tap a line to select. */
   const [selectedLine, setSelectedLine] = useState<number | null>(null)
   const [speechErr, setSpeechErr] = useState('')
-  // Keep speak prop referenced so call sites stay compatible; Stories uses speakDutchLines for multi-line.
+  // Speak prop kept for App compatibility; Read aloud uses speakDutchLines which picks up App TTS voice via setPreferredDutchVoice.
   void speak
 
   const activeIdRef = useRef<string | null>(null)

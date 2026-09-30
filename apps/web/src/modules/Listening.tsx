@@ -15,7 +15,7 @@ type Q =
   | { mode: 'order'; phrase: OrderPhrase; shuffled: OrderChip[] }
 
 const FEEDBACK_MS_OK = 1500
-const FEEDBACK_MS_MISS = 1500
+const FEEDBACK_MS_MISS = 2800
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]

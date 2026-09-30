@@ -17,7 +17,7 @@ import Stories from './modules/Stories'
 import AccountSync from './modules/AccountSync'
 import { SessionTip, CelebrateTip } from './modules/SessionTip'
 import { loadRemindPrefs, saveRemindPrefs, ensureNotifyPermission, maybeNudge } from './lib/reminders'
-import { speakDutch } from './lib/speech'
+import { setPreferredDutchVoice, speakDutch } from './lib/speech'
 import { playSoftMiss, playSoftSuccess, unlockSfx } from './lib/sfx'
 import { defaultApiBase } from './lib/apiBase'
 
@@ -1284,6 +1284,8 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
   useEffect(()=>saveJSON(sk(LS.reviews),reviewsMap),[reviewsMap,currentUserId])
   useEffect(()=>saveJSON(sk(LS.difficult),difficultMap),[difficultMap,currentUserId])
   useEffect(()=>saveJSON(sk(LS.settings),settings),[settings,currentUserId])
+  // Keep Listening / Stories / playListenClip on the same TTS voice as Test Speak / Daily.
+  useEffect(()=>{ setPreferredDutchVoice(settings.voice) },[settings.voice])
   useEffect(()=>{
     const prev = loadRemindPrefs(currentUserId)
     saveRemindPrefs(currentUserId, {
