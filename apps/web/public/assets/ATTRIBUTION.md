@@ -5,7 +5,7 @@ Free / open-licensed binaries only. No proprietary Duolingo/Babbel art. No AI-ge
 ## Microsoft Fluent Emoji (MIT License)
 - Upstream: https://github.com/microsoft/fluentui-emoji
 - License: MIT (see `vendor/` copies and upstream `LICENSE`)
-- Downloaded 2026-09-29 from `main` via raw.githubusercontent.com
+- Downloaded 2026-09-29 (seed) and 2026-09-30 (Progress / Dutch motifs) from `main` via raw.githubusercontent.com
 
 | File | Upstream asset | Notes |
 |---|---|---|
@@ -14,12 +14,23 @@ Free / open-licensed binaries only. No proprietary Duolingo/Babbel art. No AI-ge
 | `speak-icon.png` | `assets/Microphone/3D/microphone_3d.png` | On cream circle |
 | `story-icon.png` | `assets/Books/3D/books_3d.png` | On cream circle |
 | `sync-icon.png` | `assets/Counterclockwise arrows button/3D/…_3d.png` | On cream circle |
+| `progress-icon.png` | `assets/Chart increasing/3D/chart_increasing_3d.png` | On cream circle |
+| `bike-icon.png` | `assets/Bicycle/3D/bicycle_3d.png` | On cream circle |
+| `houses-icon.png` | `assets/Houses/3D/houses_3d.png` | On cream circle (canal-house stand-in) |
+| `tulip-icon.png` | `assets/Tulip/3D/tulip_3d.png` | On cream circle |
+| `progress-hero.png` | Chart increasing + Bicycle + Tulip + Seedling 3D composite | Soft sky/bank Progress banner |
 | `home-hero.png` | Lion 3D + Tulip 3D composite | Soft sky/bank banner |
 | `og-cover.png` | Lion 3D + typography | 1200×630 share card |
 | `favicon.png` / `icon-512.png` (+ `../icon-192.png`, `../icon-512.png`) | Lion 3D on cream/orange plate | PWA icons |
-| `vendor/*_flat.svg`, `vendor/lion_3d.png` | Matching Flat/3D upstream files | Source copies |
+| `vendor/*_flat.svg`, `vendor/*_3d.png` | Matching Flat/3D upstream files | Source copies |
 
-Vendored Flat SVGs: `vendor/lion_flat.svg`, `headphone_flat.svg`, `microphone_flat.svg`, `books_flat.svg`, `counterclockwise_arrows_button_flat.svg`, `tulip_flat.svg`.
+Vendored Fluent assets include: `lion_flat.svg`, `lion_3d.png`, `headphone_flat.svg`, `microphone_flat.svg`, `books_flat.svg`, `counterclockwise_arrows_button_flat.svg`, `tulip_flat.svg`, `tulip_3d.png`, `bicycle_flat.svg`, `bicycle_3d.png`, `chart_increasing_flat.svg`, `chart_increasing_3d.png`, `bar_chart_flat.svg`, `bar_chart_3d.png`, `seedling_flat.svg`, `seedling_3d.png`, `house_flat.svg`, `house_3d.png`, `houses_flat.svg`, `houses_3d.png`, `house_with_garden_flat.svg`, `house_with_garden_3d.png`, `trophy_3d.png`, `fire_3d.png`.
+
+## IBM Carbon Pictograms — Amsterdam windmill (Apache License 2.0)
+- Upstream: https://github.com/carbon-design-system/carbon (`amsterdam--windmill` pictogram)
+- License: Apache-2.0 (see `vendor/CARBON-PICTOGRAMS-LICENSE.txt`)
+- Files: `vendor/amsterdam_windmill.svg` (source), `vendor/molen_colored.png` (ImageMagick orange tint), `molen-icon.png` (cream-circle badge)
+- Used as the Dutch molen motif where Fluent Emoji has no windmill Unicode asset.
 
 ## Listening audio (`../audio/listen/*.mp3`)
 - Generated locally on macOS with system TTS: `say -v Xander` (nl_NL) → AIFF → `ffmpeg` MP3 (mono, 22.05 kHz, 96 kbps).
@@ -28,4 +39,5 @@ Vendored Flat SVGs: `vendor/lion_flat.svg`, `headphone_flat.svg`, `microphone_fl
 - Browser Web Speech Synthesis remains the fallback when an MP3 is missing.
 
 ## Also used in-app (SVG React illustrations)
-See `apps/web/src/assets/ATTRIBUTION.md` for Lucide / Phosphor / project CC0 geometric motifs and the inlined Fluent Flat lion paths.
+See `apps/web/src/assets/ATTRIBUTION.md` for Lucide / Phosphor references and inlined Fluent Flat lion paths.
+Hero scenes wire Fluent/Carbon rasters via `<image href>` / `<img>` — no homemade bike/house/molen/tulip geometry.

@@ -1,10 +1,11 @@
 /**
- * Lichte Klimop illustrated asset set — Dutch motifs (tulip, bike, windmill, canal)
- * plus a cute Dutch-lion mascot from Microsoft Fluent Emoji (MIT).
- * Soft flat fills + Lucide-adapted strokes. Calm UI — no confetti spam.
- * See ./ATTRIBUTION.md for licenses.
+ * Lichte Klimop illustrated asset set — Dutch motifs from licensed web assets
+ * (Microsoft Fluent Emoji MIT + IBM Carbon Amsterdam windmill Apache-2.0)
+ * plus Fluent Flat lion paths for the brand mark.
+ * No homemade geometric bike/house/molen/tulip SVGs in heroes.
+ * See ./ATTRIBUTION.md and ../../public/assets/ATTRIBUTION.md.
  */
-import type { SVGProps } from 'react'
+import type { ImgHTMLAttributes, SVGProps } from 'react'
 
 const C = {
   cream: '#FFF8F0',
@@ -14,89 +15,42 @@ const C = {
   orange: '#E36A1E',
   orangeLite: '#F08A45',
   green: '#2F9E6B',
-  greenDeep: '#1F7A52',
-  greenLite: '#5BC48F',
   sky: '#3B82C4',
   skyLite: '#DCEBFA',
   gold: '#F0B429',
   bank: '#E8D5BC',
 } as const
 
+/** Public asset paths (Vite serves apps/web/public at ./). */
+const A = {
+  bike: './assets/vendor/bicycle_3d.png',
+  tulip: './assets/vendor/tulip_3d.png',
+  houses: './assets/vendor/houses_3d.png',
+  houseGarden: './assets/vendor/house_with_garden_3d.png',
+  molen: './assets/vendor/molen_colored.png',
+  chart: './assets/vendor/chart_increasing_3d.png',
+  seedling: './assets/vendor/seedling_3d.png',
+  progressHero: './assets/progress-hero.png',
+} as const
+
 type ArtProps = SVGProps<SVGSVGElement> & { title?: string }
 
-/** Soft-fill tulip motif (project CC0 geometric mark). */
-function TulipIcon({
-  x = 0,
-  y = 0,
-  scale = 1,
-  uid = 'tulip',
+/** Fluent Emoji 3D raster placed inside an SVG scene. */
+function AssetImg({
+  href,
+  x,
+  y,
+  w,
+  h,
 }: {
-  x?: number
-  y?: number
-  scale?: number
-  uid?: string
+  href: string
+  x: number
+  y: number
+  w: number
+  h: number
 }) {
-  return (
-    <g transform={`translate(${x} ${y}) scale(${scale})`}>
-      <path d="M16 4c-1.2 5-6 9-6 14 0 4 3 6.5 6 6.5s6-2.5 6-6.5c0-5-4.8-9-6-14z" fill={C.orange} />
-      <path d="M16 4c1 4 4 7 5 12-2-3-4-6-5-9V4z" fill={C.orangeLite} opacity="0.9" />
-      <path d="M16 24.5v8" stroke={C.green} strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M16 28c-5 1.2-9 0-10-2.5 4 0 7.5 1.2 10 2.5z" fill={C.green} />
-      <path d="M16 27c5 1.2 9 0 10-2.5-4 0-7.5 1.2-10 2.5z" fill={C.greenLite} />
-      <circle cx="16" cy="12" r="1.6" fill={C.gold} opacity="0.85" />
-      {/* uid kept for unique defs if needed later */}
-      <title id={uid} />
-    </g>
-  )
+  return <image href={href} x={x} y={y} width={w} height={h} preserveAspectRatio="xMidYMid meet" />
 }
-
-/** Soft-fill windmill / molen motif (project CC0 geometric mark). */
-function WindmillIcon({
-  x = 0,
-  y = 0,
-  scale = 1,
-}: {
-  x?: number
-  y?: number
-  scale?: number
-}) {
-  return (
-    <g transform={`translate(${x} ${y}) scale(${scale})`}>
-      <rect x="14" y="18" width="4" height="18" rx="1.2" fill={C.muted} />
-      <path d="M8 36h16" stroke={C.ink} strokeWidth="2" strokeLinecap="round" opacity="0.3" />
-      <circle cx="16" cy="16" r="3" fill={C.orange} />
-      <path d="M16 16 L26 6 L28.5 8.5 L18.5 18.5 Z" fill={C.sky} />
-      <path d="M16 16 L26 26 L23.5 28.5 L13.5 18.5 Z" fill={C.gold} />
-      <path d="M16 16 L6 26 L3.5 23.5 L13.5 13.5 Z" fill={C.sky} />
-      <path d="M16 16 L6 6 L8.5 3.5 L18.5 13.5 Z" fill={C.gold} />
-    </g>
-  )
-}
-
-/** Bike motif adapted from Lucide bike (MIT) — colored soft dots on hubs. */
-function BikeIcon({
-  x = 0,
-  y = 0,
-  scale = 1,
-  stroke = C.ink,
-}: {
-  x?: number
-  y?: number
-  scale?: number
-  stroke?: string
-}) {
-  return (
-    <g transform={`translate(${x} ${y}) scale(${scale})`} fill="none" stroke={stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="18.5" cy="17.5" r="3.5" />
-      <circle cx="5.5" cy="17.5" r="3.5" />
-      <circle cx="15" cy="5" r="1" fill={C.orange} stroke="none" />
-      <path d="M12 17.5V14l-3-3 4-3 2 3h2" />
-      <circle cx="5.5" cy="17.5" r="1.2" fill={C.orange} stroke="none" />
-      <circle cx="18.5" cy="17.5" r="1.2" fill={C.orange} stroke="none" />
-    </g>
-  )
-}
-
 
 /** Cute cartoon lion face — Microsoft Fluent Emoji Flat "Lion" (MIT). Vendored: icons/lion.svg */
 function LionFace({
@@ -143,13 +97,12 @@ export function IvyMark({ size = 26, className = 'topBarBrandMark illustration',
       </defs>
       <circle cx="32" cy="32" r="30" fill={C.cream} />
       <circle cx="32" cy="32" r="28" fill="none" stroke="url(#mark-rim)" strokeWidth="2.5" />
-      {/* Fluent Emoji lion — Dutch-lion symbolism, calm brand mark */}
       <LionFace x={10} y={10} scale={1.375} />
     </svg>
   )
 }
 
-/** Home hero — Dutch lion mascot + canal, bike, windmill, tulips. */
+/** Home hero — Fluent Dutch motifs (houses, bike, molen, tulips) + large lion. */
 export function HomeHeaderArt({ className = 'homeHeroArt illustration', ...rest }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 240 150" aria-hidden {...rest}>
@@ -162,46 +115,42 @@ export function HomeHeaderArt({ className = 'homeHeroArt illustration', ...rest 
           <stop offset="0%" stopColor="#A8CDEA" />
           <stop offset="100%" stopColor={C.sky} />
         </linearGradient>
-        <linearGradient id="home-house" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={C.cream} />
-          <stop offset="100%" stopColor="#F5E6D4" />
-        </linearGradient>
+        <clipPath id="home-clip">
+          <rect width="240" height="150" rx="18" />
+        </clipPath>
       </defs>
 
-      <rect width="240" height="150" rx="18" fill="url(#home-sky)" />
-      <circle cx="48" cy="36" r="16" fill={C.gold} opacity="0.95" />
-      <circle cx="48" cy="36" r="22" fill={C.gold} opacity="0.18" />
-      <ellipse cx="170" cy="28" rx="22" ry="10" fill={C.white} opacity="0.7" />
-      <ellipse cx="188" cy="30" rx="14" ry="8" fill={C.white} opacity="0.55" />
+      <g clipPath="url(#home-clip)">
+        <rect width="240" height="150" rx="18" fill="url(#home-sky)" />
+        <circle cx="48" cy="36" r="16" fill={C.gold} opacity="0.95" />
+        <circle cx="48" cy="36" r="22" fill={C.gold} opacity="0.18" />
+        <ellipse cx="170" cy="28" rx="22" ry="10" fill={C.white} opacity="0.7" />
+        <ellipse cx="188" cy="30" rx="14" ry="8" fill={C.white} opacity="0.55" />
 
-      <path d="M0 108h240v42H0z" fill="url(#home-water)" opacity="0.55" />
-      <path d="M0 108c40 8 80-6 120 2s70 6 120-4v12H0z" fill={C.sky} opacity="0.2" />
-      <rect x="0" y="98" width="240" height="12" fill={C.bank} />
+        <path d="M0 108h240v42H0z" fill="url(#home-water)" opacity="0.55" />
+        <path d="M0 108c40 8 80-6 120 2s70 6 120-4v12H0z" fill={C.sky} opacity="0.2" />
+        <rect x="0" y="98" width="240" height="12" fill={C.bank} />
+        <rect x="0" y="110" width="240" height="40" fill="#E8D5BC" opacity="0.35" />
 
-      {/* canal house */}
-      <path d="M148 98 L178 58 L208 98 Z" fill={C.orange} />
-      <rect x="154" y="72" width="48" height="36" fill="url(#home-house)" stroke={C.ink} strokeWidth="1.5" />
-      <rect x="168" y="84" width="12" height="24" rx="1" fill={C.orange} />
-      <rect x="158" y="78" width="10" height="10" rx="1" fill={C.skyLite} stroke={C.sky} strokeWidth="1" />
-      <rect x="188" y="78" width="10" height="10" rx="1" fill={C.skyLite} stroke={C.sky} strokeWidth="1" />
+        {/* Fluent Houses — canal-house row (MIT) */}
+        <AssetImg href={A.houses} x={148} y={48} w={72} h={72} />
+        {/* Carbon Amsterdam molen (Apache-2.0), tinted */}
+        <AssetImg href={A.molen} x={100} y={38} w={48} h={48} />
+        {/* Fluent Bicycle (MIT) on the bank */}
+        <AssetImg href={A.bike} x={18} y={82} w={44} h={44} />
 
-      {/* windmill (molen) */}
-      <WindmillIcon x={95} y={48} scale={1.35} />
+        {/* Larger lion — restored pre-inset size, kept inside frame */}
+        <LionFace x={52} y={48} scale={1.55} />
 
-      {/* bike — Lucide-adapted */}
-      <BikeIcon x={28} y={78} scale={1.15} />
-
-      {/* cute Dutch lion mascot — inset so mane stays inside rounded frame */}
-      <LionFace x={18} y={52} scale={1.35} />
-
-      {/* tulips inset from right edge */}
-      <TulipIcon x={196} y={68} scale={0.85} uid="home-t1" />
-      <TulipIcon x={212} y={76} scale={0.62} uid="home-t2" />
+        {/* Fluent Tulips planted on tan ground/bank (not mid-sky) */}
+        <AssetImg href={A.tulip} x={196} y={86} w={32} h={32} />
+        <AssetImg href={A.tulip} x={214} y={94} w={24} h={24} />
+      </g>
     </svg>
   )
 }
 
-/** Daily practice header — morning sun + open book + tulip. */
+/** Daily practice header — morning sun + open book + Fluent tulip. */
 export function DailyHeaderArt({ className = 'dailyHeaderArt illustration', ...rest }: ArtProps) {
   return (
     <svg className={className} width="96" height="64" viewBox="0 0 140 90" aria-hidden {...rest}>
@@ -217,49 +166,36 @@ export function DailyHeaderArt({ className = 'dailyHeaderArt illustration', ...r
       </defs>
       <circle cx="32" cy="30" r="18" fill="url(#daily-sun)" />
       <circle cx="32" cy="30" r="24" fill={C.gold} opacity="0.2" />
-      {/* open book — Lucide book-open spirit */}
       <g transform="translate(58 38)">
         <path d="M0 8 L22 0 L22 28 L0 32 Z" fill="url(#daily-book)" stroke={C.ink} strokeWidth="1.4" />
         <path d="M22 0 L44 8 L44 32 L22 28 Z" fill={C.cream} stroke={C.ink} strokeWidth="1.4" />
         <path d="M6 12h10M6 18h8M28 12h10M28 18h8" stroke={C.muted} strokeWidth="1.2" strokeLinecap="round" opacity="0.5" />
         <path d="M22 0v28" stroke={C.orange} strokeWidth="2" />
       </g>
-      <TulipIcon x={108} y={42} scale={0.85} uid="daily-t" />
+      <AssetImg href={A.tulip} x={104} y={42} w={32} h={32} />
     </svg>
   )
 }
 
-/** Progress — rising bars + climbing vine + windmill accent. */
-export function ProgressHeaderArt({ className = 'progressHeroArt illustration', ...rest }: ArtProps) {
+/** Progress — Fluent chart + Dutch bike/tulip hero (no homemade green/yellow vine). */
+export function ProgressHeaderArt({
+  className = 'progressHeroArt illustration',
+  ...rest
+}: { className?: string } & ImgHTMLAttributes<HTMLImageElement>) {
   return (
-    <svg className={className} viewBox="0 0 260 100" aria-hidden {...rest}>
-      <defs>
-        <linearGradient id="prog-bar" x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0%" stopColor={C.orange} />
-          <stop offset="100%" stopColor={C.orangeLite} />
-        </linearGradient>
-        <linearGradient id="prog-vine" x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0%" stopColor={C.greenDeep} />
-          <stop offset="100%" stopColor={C.greenLite} />
-        </linearGradient>
-      </defs>
-      <ellipse cx="130" cy="92" rx="110" ry="8" fill={C.sky} opacity="0.12" />
-      <path d="M24 88h212" stroke={C.sky} strokeWidth="3" opacity="0.3" strokeLinecap="round" />
-      {[
-        [40, 52], [70, 40], [100, 28], [130, 44], [160, 20], [190, 34],
-      ].map(([x, h], i) => (
-        <rect key={i} x={x} y={88 - h} width="14" height={h} rx="7" fill="url(#prog-bar)" opacity={0.75 + i * 0.04} />
-      ))}
-      <path d="M210 88c4-20 14-32 28-40" fill="none" stroke="url(#prog-vine)" strokeWidth="4" strokeLinecap="round" />
-      <ellipse cx="228" cy="42" rx="10" ry="7" fill={C.green} transform="rotate(-30 228 42)" />
-      <ellipse cx="238" cy="52" rx="8" ry="5" fill={C.greenLite} transform="rotate(20 238 52)" />
-      <circle cx="242" cy="36" r="4" fill={C.gold} />
-      <WindmillIcon x={145} y={18} scale={1.4} />
-    </svg>
+    <img
+      className={className}
+      src={A.progressHero}
+      alt=""
+      width={960}
+      height={320}
+      decoding="async"
+      {...rest}
+    />
   )
 }
 
-/** Empty queue / pause — parked bike + tulips under soft sun. */
+/** Empty queue / pause — Fluent bike + tulips under soft sun. */
 export function EmptyQueueArt({ className = 'emptyStateArt illustration', ...rest }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 180 120" aria-hidden {...rest}>
@@ -272,15 +208,14 @@ export function EmptyQueueArt({ className = 'emptyStateArt illustration', ...res
       <ellipse cx="90" cy="100" rx="55" ry="10" fill={C.sky} opacity="0.14" />
       <circle cx="140" cy="28" r="16" fill="url(#empty-sun)" />
       <circle cx="140" cy="28" r="22" fill={C.gold} opacity="0.18" />
-      <path d="M30 95c4-10 10-10 12 0M48 95c3-8 8-8 10 0M118 95c4-9 9-9 11 0" fill="none" stroke={C.green} strokeWidth="3" strokeLinecap="round" opacity="0.55" />
-      <BikeIcon x={48} y={52} scale={2.2} />
-      <TulipIcon x={118} y={48} scale={1.1} uid="empty-t1" />
-      <TulipIcon x={138} y={54} scale={0.85} uid="empty-t2" />
+      <AssetImg href={A.bike} x={40} y={40} w={72} h={72} />
+      <AssetImg href={A.tulip} x={118} y={58} w={40} h={40} />
+      <AssetImg href={A.tulip} x={142} y={68} w={32} h={32} />
     </svg>
   )
 }
 
-/** Grammar — notebook with tulip accent (no peeking character). */
+/** Grammar — notebook with Fluent tulip accent. */
 export function GrammarNotebookArt({ className = 'grammarHeaderArt illustration', ...rest }: ArtProps) {
   return (
     <svg className={className} width="88" height="64" viewBox="0 0 130 95" aria-hidden {...rest}>
@@ -296,13 +231,13 @@ export function GrammarNotebookArt({ className = 'grammarHeaderArt illustration'
       {[28, 42, 56, 70].map((cy) => (
         <circle key={cy} cx="40" cy={cy} r="3.5" fill="none" stroke={C.sky} strokeWidth="1.5" />
       ))}
-      <TulipIcon x={96} y={8} scale={0.75} uid="gram-t" />
+      <AssetImg href={A.tulip} x={96} y={4} w={28} h={28} />
       <circle cx="108" cy="72" r="4" fill={C.gold} />
     </svg>
   )
 }
 
-/** De of Het — polished article tags with orange accent mark. */
+/** De of Het — polished article tags with Fluent tulip accent. */
 export function DeHetTagsArt({ className = 'deofhetArt illustration', ...rest }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 160 80" aria-hidden {...rest}>
@@ -310,12 +245,12 @@ export function DeHetTagsArt({ className = 'deofhetArt illustration', ...rest }:
       <text x="36" y="46" textAnchor="middle" fontSize="18" fontWeight="800" fill={C.orange} fontFamily="ui-sans-serif,system-ui,sans-serif">de</text>
       <rect x="72" y="22" width="56" height="36" rx="18" fill="rgba(59,130,196,0.14)" stroke={C.sky} strokeWidth="2.2" />
       <text x="100" y="46" textAnchor="middle" fontSize="18" fontWeight="800" fill={C.sky} fontFamily="ui-sans-serif,system-ui,sans-serif">het</text>
-      <TulipIcon x={128} y={18} scale={0.9} uid="dh-t" />
+      <AssetImg href={A.tulip} x={128} y={22} w={28} h={28} />
     </svg>
   )
 }
 
-/** Celebrate / streak — soft glow + Dutch lion mascot + quiet static sparkles (no confetti spam). */
+/** Celebrate / streak — soft glow + Dutch lion mascot + Fluent tulip. */
 export function CelebrateArt({ className = 'celebrateArt illustration', ...rest }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 160 100" aria-hidden {...rest}>
@@ -326,7 +261,6 @@ export function CelebrateArt({ className = 'celebrateArt illustration', ...rest 
         </radialGradient>
       </defs>
       <circle cx="80" cy="50" r="48" fill="url(#cel-glow)" />
-      {/* quiet sparkles — Lucide sparkles spirit, static */}
       {[
         [28, 24], [128, 22], [36, 70], [124, 68],
       ].map(([sx, sy], i) => (
@@ -339,24 +273,24 @@ export function CelebrateArt({ className = 'celebrateArt illustration', ...rest 
         />
       ))}
       <LionFace x={52} y={18} scale={2.0} />
-      <TulipIcon x={118} y={58} scale={0.7} uid="cel-t" />
+      <AssetImg href={A.tulip} x={118} y={58} w={28} h={28} />
     </svg>
   )
 }
 
-/** Onboarding — cute Dutch lion mascot + soft windmill / tulip accents. */
+/** Onboarding — cute Dutch lion + Fluent molen / tulip accents. */
 export function OnboardArt({ className = 'onboardArt illustration', ...rest }: ArtProps) {
   return (
     <svg className={className} viewBox="0 0 120 100" aria-hidden {...rest}>
       <ellipse cx="60" cy="90" rx="40" ry="8" fill={C.sky} opacity="0.14" />
-      <WindmillIcon x={8} y={18} scale={1.15} />
+      <AssetImg href={A.molen} x={2} y={18} w={36} h={36} />
       <LionFace x={36} y={18} scale={2.15} />
-      <TulipIcon x={92} y={52} scale={0.95} uid="ob-t" />
+      <AssetImg href={A.tulip} x={90} y={52} w={28} h={28} />
     </svg>
   )
 }
 
-/** Per-book cover banner — lion + flower inset with padding; palette/motif shift by bookId. */
+/** Per-book cover banner — larger lion; Fluent motifs; tulips on ground. */
 const BOOK_COVER: Record<string, {
   sky0: string; sky1: string; ground: string; bank: string; water0: string; water1: string
   accent: string; sun: string; motif: 'tulip' | 'bike' | 'windmill' | 'canal'
@@ -414,29 +348,20 @@ export function BookCoverArt({
         <rect x="0" y="98" width="240" height="12" fill={p.bank} />
         <rect x="0" y="110" width="240" height="40" fill={p.ground} opacity="0.35" />
 
-        {/* Motif accent — varies by book; kept clear of lion/flower padding zones */}
-        {p.motif === 'windmill' && <WindmillIcon x={102} y={46} scale={1.2} />}
-        {p.motif === 'bike' && <BikeIcon x={100} y={72} scale={1.35} stroke={p.accent} />}
-        {p.motif === 'canal' && (
-          <g>
-            <path d="M98 98 L120 68 L142 98 Z" fill={p.accent} />
-            <rect x={104} y={78} width={32} height={24} fill="#FFF8F0" stroke="#1C2430" strokeWidth="1.4" />
-            <rect x={114} y={88} width={10} height={14} rx="1" fill={p.accent} />
-          </g>
-        )}
-        {p.motif === 'tulip' && (
-          <g opacity="0.9">
-            <TulipIcon x={108} y={70} scale={0.55} uid={`${uid}-mid`} />
-          </g>
-        )}
+        {/* Licensed motif accents — Fluent / Carbon, clear of lion zone */}
+        {p.motif === 'windmill' && <AssetImg href={A.molen} x={100} y={42} w={48} h={48} />}
+        {p.motif === 'bike' && <AssetImg href={A.bike} x={98} y={68} w={48} h={48} />}
+        {p.motif === 'canal' && <AssetImg href={A.houses} x={96} y={48} w={56} h={56} />}
+        {p.motif === 'tulip' && <AssetImg href={A.tulip} x={108} y={78} w={28} h={28} />}
 
-        {/* Lion + flower fully INSIDE frame with ~14–18px padding (no edge clip) */}
-        <LionFace x={18} y={52} scale={1.35} />
-        <TulipIcon x={196} y={68} scale={0.85} uid={`${uid}-t1`} />
-        <TulipIcon x={212} y={76} scale={0.62} uid={`${uid}-t2`} />
+        {/* Larger lion (pre-inset scale), fully inside frame */}
+        <LionFace x={20} y={46} scale={1.55} />
+
+        {/* Fluent tulips on tan ground/bank — kept inside right padding */}
+        <AssetImg href={A.tulip} x={188} y={86} w={34} h={34} />
+        <AssetImg href={A.tulip} x={208} y={94} w={26} h={26} />
       </g>
 
-      {/* Soft rim so rounded frame reads as a cover card */}
       <rect width="240" height="150" rx="18" fill="none" stroke={p.accent} strokeOpacity="0.28" strokeWidth="2.5" />
     </svg>
   )
