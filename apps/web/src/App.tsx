@@ -1495,7 +1495,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       const weakness = dueReview * 2 + difficult * 3 + Math.min(unseen, 8)
       return {id:t.id,title:t.title,dueReview,unseen,total:cards.length,difficult,seen,weakness}
     })
-    const weak = [...byTheme].sort((a,b)=>b.weakness-a.weakness)[0]
     const goalDone = stats.reviewsToday >= settings.dailyTarget
 
     return (
@@ -1505,11 +1504,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
             <BookCoverArt bookId={currentBookId} />
             <div style={{flex:1, minWidth:200}}>
               <div className="h1" style={{marginBottom:0}}>Dutch Practice</div>
-              {weak && weak.weakness > 0 && (
-                <button type="button" className="weakThemeChip" onClick={()=>startTheme(weak.id)}>
-                  Weak theme · {weak.title} ({weak.dueReview} due)
-                </button>
-              )}
             </div>
           </div>
           <div className="sep" />
