@@ -1497,9 +1497,6 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
     })
     const weak = [...byTheme].sort((a,b)=>b.weakness-a.weakness)[0]
     const goalDone = stats.reviewsToday >= settings.dailyTarget
-    const greeting = stats.streak > 1
-      ? `Streak ${stats.streak} — keep the light on.`
-      : 'Warm up with a short Daily. Small steps, gezellig pace.'
 
     return (
       <div className="row studyLayout" style={{alignItems:'stretch'}}>
@@ -1507,9 +1504,7 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
           <div className="homeHero">
             <BookCoverArt bookId={currentBookId} />
             <div style={{flex:1, minWidth:200}}>
-              <div className="h1" style={{marginBottom:4}}>Lichte Klimop</div>
-              <div className="h2">Modern Dutch practice — a calm lion, bikes, tulips, and molens.</div>
-              <div className="homeCoachLine">{greeting}</div>
+              <div className="h1" style={{marginBottom:0}}>Dutch Practice</div>
               {weak && weak.weakness > 0 && (
                 <button type="button" className="weakThemeChip" onClick={()=>startTheme(weak.id)}>
                   Weak theme · {weak.title} ({weak.dueReview} due)
