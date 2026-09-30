@@ -21,6 +21,9 @@ type Story = {
   questions: { q: string; options: string[]; correct: string; explanation?: string }[]
 }
 
+const FEEDBACK_MS_OK = 3000
+const FEEDBACK_MS_MISS = 3000
+
 const TIP_LABEL: Record<NonNullable<StoryTip['kind']>, string> = {
   tip: 'Tip',
   grammar: 'Grammatica',
@@ -235,7 +238,7 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
                     setFeedback(null)
                     if (qIdx + 1 >= active.questions.length) setDone(true)
                     else setQIdx(i => i + 1)
-                  }, ok ? 1200 : 1800)
+                  }, ok ? FEEDBACK_MS_OK : FEEDBACK_MS_MISS)
                 }}
               >{o}</button>
             ))}

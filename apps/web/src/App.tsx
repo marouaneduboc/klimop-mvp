@@ -209,8 +209,8 @@ function upsertReview(map:Record<string,Review>, id:string):Review{
 
 const LEARNING_STEP_1_MS = 60*1000
 const LEARNING_STEP_2_MS = 10*60*1000
-const FEEDBACK_CORRECT_MS = 2200
-const FEEDBACK_WRONG_MS = 3200
+const FEEDBACK_CORRECT_MS = 3000
+const FEEDBACK_WRONG_MS = 3000
 
 
 const ONBOARDING_KEY = 'klimop.onboarding.v1'

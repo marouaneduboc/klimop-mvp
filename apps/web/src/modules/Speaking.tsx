@@ -26,8 +26,8 @@ const STARTER_PHRASES = [
 
 type Phrase = { id: string; nl: string; en: string }
 
-const ADVANCE_OK_MS = 750
-const ADVANCE_MISS_MS = 1600
+const ADVANCE_OK_MS = 3000
+const ADVANCE_MISS_MS = 3000
 
 export default function Speaking({ course, speak }: { course: Course | null; speak: (t: string) => Promise<void> }) {
   const phrases: Phrase[] = useMemo(() => {
