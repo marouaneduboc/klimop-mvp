@@ -14,7 +14,7 @@ export function stopSpeaking(): void {
 }
 
 /** Wait briefly for async voice lists (Chrome/Safari often empty until voiceschanged). */
-export function ensureVoices(timeoutMs = 2000): Promise<SpeechSynthesisVoice[]> {
+export function ensureVoices(timeoutMs = 600): Promise<SpeechSynthesisVoice[]> {
   return new Promise((resolve) => {
     if (!canSpeak()) {
       resolve([])
@@ -221,21 +221,58 @@ export function listenAudioUrl(vocabId: string): string {
   }
 }
 
+/** In-memory probe cache — most vocab has no MP3; skip repeat HEAD waits. */
+const listenMp3Present = new Set<string>()
+const listenMp3Missing = new Set<string>()
+
+function isAudioContentType(ct: string): boolean {
+  const c = (ct || '').toLowerCase()
+  return c.includes('audio') || c.includes('mpeg') || c.includes('mp3') || c.includes('ogg') || c.includes('wav')
+}
+
+/**
+ * Quick existence probe for listen MP3s.
+ * Abort fast: Vite SPA can return 200 HTML for missing paths; never wait long on that.
+ */
+async function probeListenMp3(url: string, timeoutMs = 400): Promise<boolean> {
+  const ctrl = new AbortController()
+  const timer = window.setTimeout(() => ctrl.abort(), timeoutMs)
+  try {
+    const res = await fetch(url, { method: 'HEAD', signal: ctrl.signal, cache: 'no-cache' })
+    if (!res.ok) return false
+    const ct = res.headers.get('content-type') || ''
+    // SPA/HTML fallback must never count as a clip.
+    if (!isAudioContentType(ct)) return false
+    return true
+  } catch {
+    return false
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
 /**
  * Play a listen clip. Prefers public/audio/listen/{id}.mp3 when it is real audio;
  * otherwise browser TTS.
  *
- * Important: Vite SPA fallback serves index.html with HTTP 200 for missing paths.
- * A bare `res.ok` HEAD check is NOT enough — require an audio Content-Type, or
- * Listening silently "plays" HTML and never falls back to TTS.
+ * Important: Vite SPA fallback can serve index.html with HTTP 200 for missing paths.
+ * Probe with a short abort + audio Content-Type check, cache misses, then TTS quickly.
  */
 export async function playListenClip(vocabId: string, fallbackText: string, rate = 0.92): Promise<'mp3' | 'tts'> {
   const url = listenAudioUrl(vocabId)
-  try {
-    const res = await fetch(url, { method: 'HEAD' })
-    const ct = (res.headers.get('content-type') || '').toLowerCase()
-    const isAudio = res.ok && (ct.includes('audio') || ct.includes('mpeg') || ct.includes('mp3') || ct.includes('ogg') || ct.includes('wav'))
-    if (isAudio) {
+
+  let tryMp3 = !listenMp3Missing.has(vocabId)
+  if (tryMp3 && !listenMp3Present.has(vocabId)) {
+    const ok = await probeListenMp3(url, 400)
+    if (ok) listenMp3Present.add(vocabId)
+    else {
+      listenMp3Missing.add(vocabId)
+      tryMp3 = false
+    }
+  }
+
+  if (tryMp3) {
+    try {
       const audio = new Audio(url)
       await audio.play()
       await new Promise<void>((resolve, reject) => {
@@ -251,8 +288,13 @@ export async function playListenClip(vocabId: string, fallbackText: string, rate
         window.setTimeout(() => done(resolve), 12_000)
       })
       return 'mp3'
+    } catch {
+      listenMp3Present.delete(vocabId)
+      listenMp3Missing.add(vocabId)
+      /* fall through to TTS */
     }
-  } catch { /* fall through to TTS */ }
+  }
+
   await speakDutch(fallbackText, { rate })
   return 'tts'
 }
@@ -383,7 +425,7 @@ export async function recognizeDutch(timeoutMs = 9000): Promise<RecogResult> {
       window.setTimeout(() => {
         if (done) return
         if (best) finish(() => resolve({ transcript: best, confidence: bestConf }))
-        else finish(() => reject(new Error('Listening timed out — try Speak again.')))
+        else finish(() => reject(new Error('Speech timed out — try Speak again.')))
       }, 200)
     }, timeoutMs)
 

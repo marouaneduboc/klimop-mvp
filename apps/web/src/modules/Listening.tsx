@@ -150,12 +150,13 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     advanceTimerRef.current = setTimeout(() => {
       advanceTimerRef.current = null
       next()
-    }, ok ? 900 : 1600)
+    }, ok ? 500 : 900)
   }
 
   /** Grade current answer; show brief feedback then auto-advance. No-op if already checked. */
   const grade = (answer: string) => {
     if (!q || feedbackRef.current) return false
+    unlockSfx()
     const ok = q.mode === 'order'
       ? normAns(answer) === normAns(q.words.join(' '))
       : normAns(answer) === normAns(q.vocab.nl)
@@ -346,7 +347,7 @@ export function ListeningSlice({
             setFeedback(ok ? 'correct' : 'wrong')
             if (ok) playSoftSuccess()
             else playSoftMiss()
-            setTimeout(() => onDone(ok), ok ? 900 : 1600)
+            setTimeout(() => onDone(ok), ok ? 500 : 900)
           }}>{o}</button>
         ))}
       </div>
