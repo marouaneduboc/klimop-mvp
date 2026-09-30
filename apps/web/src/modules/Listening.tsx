@@ -8,8 +8,9 @@ type Course = { themes: { id: number; title: string }[]; vocab: Vocab[] }
 type Mode = 'mc' | 'type' | 'order'
 type OrderChip = { id: string; text: string }
 type OrderPhrase = { id: string; nl: string; en?: string | null; words: string[]; hearText: string }
+type McOption = { nl: string; en: string | null }
 type Q =
-  | { mode: 'mc'; vocab: Vocab; options: string[] }
+  | { mode: 'mc'; vocab: Vocab; options: McOption[] }
   | { mode: 'type'; vocab: Vocab }
   | { mode: 'order'; phrase: OrderPhrase; shuffled: OrderChip[] }
 
@@ -50,20 +51,20 @@ function cleanEnGloss(raw?: string | null): string | null {
   return s || null
 }
 
-function pickOptions(correct: Vocab, pool: Vocab[]): string[] {
+function pickOptions(correct: Vocab, pool: Vocab[]): McOption[] {
   const correctNl = cleanNlLabel(correct.nl)
   const seen = new Set<string>([correctNl.toLowerCase()])
-  const distractors: string[] = []
+  const options: McOption[] = [{ nl: correctNl, en: cleanEnGloss(correct.en) }]
   for (const v of shuffle(pool.filter(x => x.id !== correct.id))) {
     const nl = cleanNlLabel(v.nl)
     if (!nl) continue
     const key = nl.toLowerCase()
     if (seen.has(key)) continue
     seen.add(key)
-    distractors.push(nl)
-    if (distractors.length >= 3) break
+    options.push({ nl, en: cleanEnGloss(v.en) })
+    if (options.length >= 4) break
   }
-  return shuffle([correctNl, ...distractors])
+  return shuffle(options)
 }
 
 /** Tokenize Dutch phrase into order chips (words only; drop bare punctuation). */
@@ -312,6 +313,14 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     ? (q.mode === 'order' ? cleanEnGloss(q.phrase.en) : cleanEnGloss(q.vocab.en))
     : null
 
+  /** After Check, Order chips stay interactive — clear feedback so the learner can reorder and retry. */
+  const unlockOrderRetry = () => {
+    if (!feedbackRef.current) return
+    clearAdvanceTimer()
+    feedbackRef.current = null
+    setFeedback(null)
+  }
+
   /** Next: if already checked, advance now; else grade (when answer ready) then brief feedback + advance. */
   const handleNext = () => {
     if (feedback) {
@@ -324,7 +333,8 @@ export default function Listening({ course, speak }: { course: Course | null; sp
       grade(typed)
       return
     }
-    if (q.mode === 'order' && pickedIds.length === q.phrase.words.length) {
+    if (q.mode === 'order') {
+      // Allow Check with incomplete placement — incomplete is graded as incorrect.
       grade(pickedTexts.join(' '))
     }
   }
@@ -385,12 +395,15 @@ export default function Listening({ course, speak }: { course: Course | null; sp
             <div className="listenOptions">
               {q.options.map(o => (
                 <button
-                  key={o}
+                  key={o.nl}
                   type="button"
-                  className={`listenOpt${feedback && o === cleanNlLabel(q.vocab.nl) ? ' is-correct' : ''}`}
+                  className={`listenOpt${feedback && o.nl === cleanNlLabel(q.vocab.nl) ? ' is-correct' : ''}`}
                   disabled={!!feedback}
-                  onClick={() => grade(o)}
-                >{o}</button>
+                  onClick={() => grade(o.nl)}
+                >
+                  <span className="listenOptNl">{o.nl}</span>
+                  {o.en ? <span className="listenOptEn">{o.en}</span> : null}
+                </button>
               ))}
             </div>
           )}
@@ -405,6 +418,7 @@ export default function Listening({ course, speak }: { course: Course | null; sp
               <div className="small" style={{ marginBottom: 4 }}>
                 Tap words in the right order{pickedTexts.length ? ' · tap a chosen word to undo' : ''}
                 {' · '}full sentence
+                {feedback ? ' · reorder to retry' : ''}
               </div>
               <div className="orderPicked" aria-live="polite">
                 {pickedTexts.length ? (
@@ -417,8 +431,10 @@ export default function Listening({ course, speak }: { course: Course | null; sp
                           key={`picked-${id}`}
                           type="button"
                           className="orderChip is-picked"
-                          disabled={!!feedback}
-                          onClick={() => setPickedIds(ids => ids.filter(x => x !== id))}
+                          onClick={() => {
+                            unlockOrderRetry()
+                            setPickedIds(ids => ids.filter(x => x !== id))
+                          }}
                         >{chip.text}</button>
                       )
                     })}
@@ -433,17 +449,25 @@ export default function Listening({ course, speak }: { course: Course | null; sp
                     key={chip.id}
                     type="button"
                     className="orderChip"
-                    disabled={!!feedback}
-                    onClick={() => setPickedIds(ids => [...ids, chip.id])}
+                    onClick={() => {
+                      unlockOrderRetry()
+                      setPickedIds(ids => [...ids, chip.id])
+                    }}
                   >{chip.text}</button>
                 ))}
               </div>
               <div className="row" style={{ marginTop: 10, gap: 8, flexWrap: 'wrap' }}>
-                <button type="button" onClick={() => setPickedIds([])} disabled={!!feedback || !pickedIds.length}>Clear</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    unlockOrderRetry()
+                    setPickedIds([])
+                  }}
+                  disabled={!pickedIds.length}
+                >Clear</button>
                 <button
                   type="button"
                   className="btn-primary"
-                  disabled={!feedback && pickedIds.length !== q.phrase.words.length}
                   onClick={handleNext}
                 >{feedback ? 'Next' : 'Check'}</button>
               </div>
@@ -490,14 +514,17 @@ export function ListeningSlice({
       }}>▶ Replay</button>
       <div className="listenOptions" style={{ marginTop: 12 }}>
         {options.map(o => (
-          <button key={o} type="button" className="listenOpt" disabled={!!feedback} onClick={() => {
+          <button key={o.nl} type="button" className="listenOpt" disabled={!!feedback} onClick={() => {
             unlockSfx()
-            const ok = o === cleanNlLabel(vocab.nl)
+            const ok = o.nl === cleanNlLabel(vocab.nl)
             setFeedback(ok ? 'correct' : 'wrong')
             if (ok) playSoftSuccess()
             else playSoftMiss()
             setTimeout(() => onDone(ok), ok ? FEEDBACK_MS_OK : FEEDBACK_MS_MISS)
-          }}>{o}</button>
+          }}>
+            <span className="listenOptNl">{o.nl}</span>
+            {o.en ? <span className="listenOptEn">{o.en}</span> : null}
+          </button>
         ))}
       </div>
       {feedback === 'wrong' && (
