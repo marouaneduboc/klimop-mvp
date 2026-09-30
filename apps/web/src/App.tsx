@@ -835,13 +835,17 @@ function DailyPractice({
     setSrsHint(srsFeedbackLabel(r))
     if(card.kind==='vocab'){
       setVocabFeedback(correct?'correct':'wrong')
-      if(correct) playSoftSuccess()
-      else playSoftMiss()
       if(!correct){
         setTeachTip({ nl: card.vocab.article ? `${card.vocab.article} ${card.vocab.nl}` : card.vocab.nl, example: exampleForVocab(card.vocab) })
       } else {
         setTeachTip(null)
       }
+    }
+    // Soft SFX for graded Daily cards. Listening/Speaking slices play their own tones.
+    if(card.kind==='vocab' || card.kind==='grammar'){
+      unlockSfx()
+      if(correct) playSoftSuccess()
+      else playSoftMiss()
     }
     const hitGoal = s.reviewsToday >= settings.dailyTarget && stats.reviewsToday < settings.dailyTarget
     if(hitGoal){
@@ -2114,6 +2118,9 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       feedbackLockRef.current = true
       setChosenArticle(guess)
       const correct = guess===cur.article
+      unlockSfx()
+      if(correct) playSoftSuccess()
+      else playSoftMiss()
       const k = wrongKey(cur)
       setStats(s=>{
         const next={...s,total:s.total+1,correct:s.correct+(correct?1:0)}
@@ -2571,6 +2578,9 @@ function AppContent({ currentUserId, users, setUsers, setCurrentUserId }: { curr
       if(!cur) return
       const normalized = guess.toLowerCase().trim()
       const correct = normalized===cur.correct.toLowerCase()
+      unlockSfx()
+      if(correct) playSoftSuccess()
+      else playSoftMiss()
       setStats(s=>{
         const next={...s,total:s.total+1,correct:s.correct+(correct?1:0)}
         if(!correct){ next.wrongIds={...next.wrongIds,[cur.key]:(next.wrongIds[cur.key]??0)+1}; next.streak={...next.streak,[cur.key]:0} }

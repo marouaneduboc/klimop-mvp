@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { canSpeak, speakDutchLines, stopSpeaking } from '../lib/speech'
+import { playSoftMiss, playSoftSuccess, unlockSfx } from '../lib/sfx'
 
 type StoryTip = {
   afterLine: number
@@ -225,6 +226,9 @@ export default function Stories({ speak }: { speak: (t: string) => Promise<void>
                 disabled={!!feedback}
                 onClick={() => {
                   const ok = o === q.correct
+                  unlockSfx()
+                  if (ok) playSoftSuccess()
+                  else playSoftMiss()
                   setFeedback(ok ? 'correct' : 'wrong')
                   setScore(s => ({ ok: s.ok + (ok ? 1 : 0), n: s.n + 1 }))
                   setTimeout(() => {
