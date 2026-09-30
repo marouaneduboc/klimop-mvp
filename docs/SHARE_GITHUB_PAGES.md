@@ -1,17 +1,17 @@
 # Share the app with students (GitHub Pages)
 
-## What this branch does
+## What this does
 - Publishes the web UI (`apps/web`) to GitHub Pages via GitHub Actions.
-- Ensures the app loads its data from `content/*` using relative paths, so it works on GitHub Pages subpaths.
+- Ensures the app loads its data from `content/*` using relative paths (`vite` `base: './'`), so it works on GitHub Pages subpaths.
 - Leaves **voice/TTS** as-is for now. Students may see errors on the `TTS` tab; everything else should work.
 
-Last updated: redeploy triggered for Pages validation (workflow mode).
-
 ## Student access
-- After GitHub Pages finishes deploying, students will get the Pages URL from the workflow logs / GitHub Pages settings.
+- URL: https://marouaneduboc.github.io/klimop-mvp/
 
-## Maintainer access (you)
-- This is implemented in branch: `share/github-pages`
-- Workflow file: `.github/workflows/deploy-github-pages.yml`
-- Deployments run on pushes to `share/github-pages`.
-
+## Maintainer: keep Pages in sync
+- Workflow: `.github/workflows/deploy-github-pages.yml`
+- Deploys on every push to:
+  - `share/github-pages` (canonical Pages branch)
+  - `retention-local-app` (active app tip — auto-publishes)
+  - `lichte-klimop` (design/integration branch)
+- Prefer pushing app work to `retention-local-app` (Pages updates automatically). Periodically merge that tip into `share/github-pages` and `lichte-klimop` so those branches stay aligned.
