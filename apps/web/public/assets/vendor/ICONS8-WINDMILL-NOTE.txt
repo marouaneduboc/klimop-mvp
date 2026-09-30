@@ -1,0 +1,4 @@
+Icons8 3D Fluency — Windmill
+Source: https://icons8.com/icon/set/windmill/3d-fluency
+CDN: https://img.icons8.com/3d-fluency/512/windmill.png
+Free use with attribution (link to icons8.com). See apps/web/public/assets/ATTRIBUTION.md.

@@ -1,6 +1,6 @@
 /**
  * Lichte Klimop illustrated asset set — Dutch motifs from licensed web assets
- * (Microsoft Fluent Emoji MIT + IBM Carbon Amsterdam windmill Apache-2.0)
+ * (Microsoft Fluent Emoji MIT + Icons8 3D Fluency windmill / molen)
  * plus Fluent Flat lion paths for the brand mark.
  * No homemade geometric bike/house/molen/tulip SVGs in heroes.
  * See ./ATTRIBUTION.md and ../../public/assets/ATTRIBUTION.md.
@@ -27,7 +27,7 @@ const A = {
   tulip: './assets/vendor/tulip_3d.png',
   houses: './assets/vendor/houses_3d.png',
   houseGarden: './assets/vendor/house_with_garden_3d.png',
-  molen: './assets/vendor/molen_colored.png',
+  molen: './assets/vendor/molen_3d.png',
   chart: './assets/vendor/chart_increasing_3d.png',
   seedling: './assets/vendor/seedling_3d.png',
   progressHero: './assets/progress-hero.png',
@@ -134,8 +134,8 @@ export function HomeHeaderArt({ className = 'homeHeroArt illustration', ...rest 
 
         {/* Fluent Houses — canal-house row (MIT) */}
         <AssetImg href={A.houses} x={148} y={48} w={72} h={72} />
-        {/* Carbon Amsterdam molen (Apache-2.0), tinted */}
-        <AssetImg href={A.molen} x={100} y={38} w={48} h={48} />
+        {/* Icons8 3D Fluency molen — planted on tan bank (not mid-sky) */}
+        <AssetImg href={A.molen} x={96} y={52} w={64} h={64} />
         {/* Fluent Bicycle (MIT) on the bank */}
         <AssetImg href={A.bike} x={18} y={82} w={44} h={44} />
 
@@ -283,7 +283,7 @@ export function OnboardArt({ className = 'onboardArt illustration', ...rest }: A
   return (
     <svg className={className} viewBox="0 0 120 100" aria-hidden {...rest}>
       <ellipse cx="60" cy="90" rx="40" ry="8" fill={C.sky} opacity="0.14" />
-      <AssetImg href={A.molen} x={2} y={18} w={36} h={36} />
+      <AssetImg href={A.molen} x={0} y={52} w={36} h={36} />
       <LionFace x={36} y={18} scale={2.15} />
       <AssetImg href={A.tulip} x={90} y={52} w={28} h={28} />
     </svg>
@@ -348,8 +348,8 @@ export function BookCoverArt({
         <rect x="0" y="98" width="240" height="12" fill={p.bank} />
         <rect x="0" y="110" width="240" height="40" fill={p.ground} opacity="0.35" />
 
-        {/* Licensed motif accents — Fluent / Carbon, clear of lion zone */}
-        {p.motif === 'windmill' && <AssetImg href={A.molen} x={100} y={42} w={48} h={48} />}
+        {/* Licensed motif accents — Fluent / Icons8 molen, clear of lion zone */}
+        {p.motif === 'windmill' && <AssetImg href={A.molen} x={96} y={52} w={64} h={64} />}
         {p.motif === 'bike' && <AssetImg href={A.bike} x={98} y={68} w={48} h={48} />}
         {p.motif === 'canal' && <AssetImg href={A.houses} x={96} y={48} w={56} h={56} />}
         {p.motif === 'tulip' && <AssetImg href={A.tulip} x={108} y={78} w={28} h={28} />}

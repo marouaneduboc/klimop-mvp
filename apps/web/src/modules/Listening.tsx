@@ -25,9 +25,45 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
+/** Strip leaked theme-key / id suffixes from vocab labels: "lidmaatschap · cultuure80" → "lidmaatschap". */
+function cleanNlLabel(raw: string): string {
+  let s = (raw || '').trim()
+  // "word · themeKey12" or "word · slug99"
+  s = s.replace(/\s*·\s*[A-Za-z][A-Za-z0-9_-]*\d[A-Za-z0-9_-]*\s*$/u, '').trim()
+  // Any leftover " · <no-spaces token with a digit>" (raw ids / hashes)
+  if (s.includes('·')) {
+    const [left, right] = s.split('·').map(p => p.trim())
+    if (right && !/\s/.test(right) && /\d/.test(right)) s = left
+  }
+  return s
+}
+
+/** Readable English gloss only — never raw ids, theme keys, or truncated junk. */
+function cleanEnGloss(raw?: string | null): string | null {
+  if (!raw) return null
+  let s = String(raw).trim()
+  if (!s) return null
+  s = s.replace(/\s*\(variant\)\s*$/i, '').trim()
+  // Reject theme-key / id-like glosses
+  if (/^[A-Za-z]+\d+$/.test(s)) return null
+  if (/^[a-z]+[a-z0-9_-]*\d{2,}$/i.test(s) && s.length < 18 && !/\s/.test(s)) return null
+  return s || null
+}
+
 function pickOptions(correct: Vocab, pool: Vocab[]): string[] {
-  const distractors = shuffle(pool.filter(v => v.id !== correct.id && v.nl !== correct.nl)).slice(0, 3).map(v => v.nl)
-  return shuffle([correct.nl, ...distractors])
+  const correctNl = cleanNlLabel(correct.nl)
+  const seen = new Set<string>([correctNl.toLowerCase()])
+  const distractors: string[] = []
+  for (const v of shuffle(pool.filter(x => x.id !== correct.id))) {
+    const nl = cleanNlLabel(v.nl)
+    if (!nl) continue
+    const key = nl.toLowerCase()
+    if (seen.has(key)) continue
+    seen.add(key)
+    distractors.push(nl)
+    if (distractors.length >= 3) break
+  }
+  return shuffle([correctNl, ...distractors])
 }
 
 /** Tokenize Dutch phrase into order chips (words only; drop bare punctuation). */
@@ -50,9 +86,10 @@ function orderPhraseFromText(id: string, nl: string, en?: string | null): OrderP
 
 function orderPhraseFromVocab(vocab: Vocab): OrderPhrase | null {
   // Prefer the full nl string (phrase), not article + single noun scraps.
-  const parts = (vocab.nl || '').trim().split(/\s+/).filter(Boolean)
+  const nl = cleanNlLabel(vocab.nl)
+  const parts = nl.split(/\s+/).filter(Boolean)
   if (parts.length < 4) return null
-  return orderPhraseFromText(`vocab:${vocab.id}`, vocab.nl, vocab.en)
+  return orderPhraseFromText(`vocab:${vocab.id}`, nl, cleanEnGloss(vocab.en))
 }
 
 /** Split story paragraphs into usable full sentences (4–12 words). */
@@ -90,13 +127,17 @@ function normAns(s: string): string {
 }
 
 function displayNl(vocab: Vocab): string {
-  return `${vocab.article ? `${vocab.article} ` : ''}${vocab.nl}`
+  const nl = cleanNlLabel(vocab.nl)
+  return `${vocab.article ? `${vocab.article} ` : ''}${nl}`
 }
 
 export default function Listening({ course, speak }: { course: Course | null; speak: (t: string) => Promise<void> }) {
   const pool = useMemo(() => {
     if (!course) return [] as Vocab[]
-    return course.vocab.filter(v => v.nl && v.nl.split(/\s+/).length <= 6)
+    return course.vocab.filter(v => {
+      const nl = cleanNlLabel(v.nl)
+      return nl && nl.split(/\s+/).length <= 6
+    })
   }, [course])
 
   const [storyPhrases, setStoryPhrases] = useState<OrderPhrase[]>([])
@@ -247,7 +288,7 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     unlockSfx()
     const ok = q.mode === 'order'
       ? normAns(answer) === normAns(q.phrase.words.join(' '))
-      : normAns(answer) === normAns(q.vocab.nl)
+      : normAns(answer) === normAns(cleanNlLabel(q.vocab.nl))
     feedbackRef.current = ok ? 'correct' : 'wrong'
     setFeedback(feedbackRef.current)
     setScore(s => ({ ok: s.ok + (ok ? 1 : 0), n: s.n + 1 }))
@@ -268,7 +309,7 @@ export default function Listening({ course, speak }: { course: Course | null; sp
     ? (q.mode === 'order' ? q.phrase.words.join(' ') : displayNl(q.vocab))
     : ''
   const resultEn = q
-    ? (q.mode === 'order' ? (q.phrase.en || null) : (q.vocab.en || null))
+    ? (q.mode === 'order' ? cleanEnGloss(q.phrase.en) : cleanEnGloss(q.vocab.en))
     : null
 
   /** Next: if already checked, advance now; else grade (when answer ready) then brief feedback + advance. */
@@ -346,7 +387,7 @@ export default function Listening({ course, speak }: { course: Course | null; sp
                 <button
                   key={o}
                   type="button"
-                  className={`listenOpt${feedback && o === q.vocab.nl ? ' is-correct' : ''}`}
+                  className={`listenOpt${feedback && o === cleanNlLabel(q.vocab.nl) ? ' is-correct' : ''}`}
                   disabled={!!feedback}
                   onClick={() => grade(o)}
                 >{o}</button>
@@ -434,7 +475,8 @@ export function ListeningSlice({
   const options = useMemo(() => pickOptions(vocab, pool), [vocab, pool])
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null)
   useEffect(() => {
-    const text = vocab.article ? `${vocab.article} ${vocab.nl}` : vocab.nl
+    const nl = cleanNlLabel(vocab.nl)
+    const text = vocab.article ? `${vocab.article} ${nl}` : nl
     playListenClip(vocab.id, text).catch(() => speak(text).catch(() => speakDutch(text)))
   }, [vocab.id])
   return (
@@ -442,14 +484,15 @@ export function ListeningSlice({
       <div className="small" style={{ marginBottom: 8 }}>Listening · what did you hear?</div>
       <button type="button" className="btn-primary" onClick={() => {
         unlockSfx()
-        const text = vocab.article ? `${vocab.article} ${vocab.nl}` : vocab.nl
+        const nl = cleanNlLabel(vocab.nl)
+        const text = vocab.article ? `${vocab.article} ${nl}` : nl
         playListenClip(vocab.id, text).catch(() => speakDutch(text).catch(() => speak(text)))
       }}>▶ Replay</button>
       <div className="listenOptions" style={{ marginTop: 12 }}>
         {options.map(o => (
           <button key={o} type="button" className="listenOpt" disabled={!!feedback} onClick={() => {
             unlockSfx()
-            const ok = o === vocab.nl
+            const ok = o === cleanNlLabel(vocab.nl)
             setFeedback(ok ? 'correct' : 'wrong')
             if (ok) playSoftSuccess()
             else playSoftMiss()
@@ -457,11 +500,16 @@ export function ListeningSlice({
           }}>{o}</button>
         ))}
       </div>
-      {feedback === 'wrong' && <div className="teachBanner" style={{ marginTop: 10 }}>{vocab.nl}{vocab.en ? ` · ${vocab.en}` : ''}</div>}
+      {feedback === 'wrong' && (
+        <div className="teachBanner" style={{ marginTop: 10 }}>
+          {cleanNlLabel(vocab.nl)}
+          {cleanEnGloss(vocab.en) ? ` · ${cleanEnGloss(vocab.en)}` : ''}
+        </div>
+      )}
       {feedback === 'correct' && (
         <div className="okBanner" style={{ marginTop: 10 }}>
           Goed zo!
-          {vocab.en ? <span className="listenEn"> · {vocab.en}</span> : null}
+          {cleanEnGloss(vocab.en) ? <span className="listenEn"> · {cleanEnGloss(vocab.en)}</span> : null}
         </div>
       )}
     </div>

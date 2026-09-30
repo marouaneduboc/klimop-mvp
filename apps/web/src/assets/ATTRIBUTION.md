@@ -14,10 +14,11 @@ Free / open-licensed icons only. No paid assets. No homemade Klimmie ivy. No AI-
   - Seedling 3D — Progress banner accent
 - Used as the cute Dutch-lion logo/mascot (brand mark, celebrate, onboard).
 
-## IBM Carbon Pictograms — Amsterdam windmill / molen (Apache-2.0)
-- Source: https://github.com/carbon-design-system/carbon (`amsterdam--windmill`)
-- Vendored: `public/assets/vendor/amsterdam_windmill.svg`, tinted `molen_colored.png`
-- Wired into Home / Onboard / blinkuit book cover (Fluent has no windmill emoji).
+## Icons8 3D Fluency — Windmill / molen (free with attribution)
+- Source: https://icons8.com/icons/set/windmill--style-3d-fluency — Icons by [Icons8](https://icons8.com)
+- Vendored: `public/assets/vendor/molen_3d.png`, cream badge `molen-icon.png`
+- Wired into Home / Onboard / blinkuit book cover; sits on the ground/bank like Fluent tulips (Fluent has no windmill emoji).
+- Replaces the thin IBM Carbon Amsterdam pictogram (SVG retained under `vendor/` as unused Apache-2.0 reference).
 
 ## Lucide Icons (MIT License)
 - Source: https://lucide.dev / https://github.com/lucide-icons/lucide
@@ -38,6 +39,6 @@ Free / open-licensed icons only. No paid assets. No homemade Klimmie ivy. No AI-
 - Paid stock, proprietary icon kits, or AI-generated characters.
 
 ## Public PNGs / PWA / listen MP3s
-Raster assets live under `apps/web/public/assets/` (Fluent Emoji 3D MIT + Carbon molen Apache-2.0, converted with ImageMagick).
+Raster assets live under `apps/web/public/assets/` (Fluent Emoji 3D MIT + Icons8 3D Fluency molen, converted with ImageMagick).
 Listening clips live under `apps/web/public/audio/listen/` (macOS `say -v Xander` nl_NL → ffmpeg MP3).
 Full table: `apps/web/public/assets/ATTRIBUTION.md`.
